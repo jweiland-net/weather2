@@ -1,0 +1,16 @@
+plugin.tx_weather2_currentweather {
+    view {
+        # cat=plugin.tx_weather2_currentweather/file; type=string; label=Path to template root (FE)
+        templateRootPath = EXT:weather2/Resources/Private/Templates/
+        # cat=plugin.tx_weather2_currentweather/file; type=string; label=Path to template partials (FE)
+        partialRootPath = EXT:weather2/Resources/Private/Partials/
+        # cat=plugin.tx_weather2_currentweather/file; type=string; label=Path to template layouts (FE)
+        layoutRootPath = EXT:weather2/Resources/Private/Layouts/
+    }
+    persistence {
+        # cat=plugin.tx_weather2_currentweather//a; type=string; label=Default storage PID
+        storagePid =
+    }
+    iconsPath = EXT:weather2/Resources/Public/WeatherIcons/
+    # cat=plugin.tx_weather2_currentweather/file; type=string; label=Path to icons (FE)
+}

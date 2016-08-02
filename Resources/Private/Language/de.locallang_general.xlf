@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-05-04T14:55:13Z"
+				product-name="weather2">
+		<header/>
+		<body>
+			<trans-unit id="tx_weather2.name">
+				<source>Display record</source>
+				<target>Datensatz anzeigen</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.measureUnits.label">
+				<source>Measure Units</source>
+				<target>Maßeinheit</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.measureUnits.metric">
+				<source>Metric (°C)</source>
+				<target>Metrisch (°C)</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.measureUnits.imperial">
+				<source>Imperial (°F)</source>
+				<target>Imperialistisch (°F)</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.measureUnits.isou">
+				<source>ISoU (K)</source>
+				<target>Internationales Einheitensystem (K)</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

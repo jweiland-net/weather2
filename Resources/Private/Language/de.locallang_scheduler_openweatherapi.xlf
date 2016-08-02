@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-05-04T14:55:13Z"
+				product-name="weather2">
+		<header/>
+		<body>
+			<trans-unit id="name">
+				<source>Name</source>
+				<target>Name</target>
+			</trans-unit>
+			<trans-unit id="city">
+				<source>City name</source>
+				<target>Stadtname</target>
+			</trans-unit>
+			<trans-unit id="country">
+				<source>Country</source>
+				<target>Land</target>
+			</trans-unit>
+			<trans-unit id="api_key">
+				<source>API-Key</source>
+				<target>API-Key</target>
+			</trans-unit>
+			<trans-unit id="mail_config">
+				<source>TYPO3 Mail configuration</source>
+				<target>TYPO3 Mail Konfiguration</target>
+			</trans-unit>
+			<trans-unit id="record_storage_page">
+				<source>Record storage page (optional)</source>
+				<target>Speicherort des Datensatzes (Optional)</target>
+			</trans-unit>
+			<trans-unit id="error_notification">
+				<source>Notify via mail if task was not successful</source>
+				<target>E-Mail Benachrichtigung bei Fehlern</target>
+			</trans-unit>
+			<trans-unit id="email_sendername">
+				<source>Mail notification sender name</source>
+				<target>Absendername für E-Mail Benachrichtigung</target>
+			</trans-unit>
+			<trans-unit id="email_sender">
+				<source>Mail notification sender E-Mail</source>
+				<target>Absenderadresse für E-Mail Benachrichtigung</target>
+			</trans-unit>
+			<trans-unit id="placeholder.email_sendername">
+				<source>default:</source>
+				<target>standard:</target>
+			</trans-unit>
+			<trans-unit id="placeholder.email_sender">
+				<source>default:</source>
+				<target>standard:</target>
+			</trans-unit>
+			<trans-unit id="placeholder.record_storage_page">
+				<source>click on the button and select a page</source>
+				<target>klicke auf den Button und wähle eine Seite aus</target>
+			</trans-unit>
+			<trans-unit id="buttons.record_storage_page">
+				<source>Select</source>
+				<target>Auswählen</target>
+			</trans-unit>
+			<trans-unit id="email_receiver">
+				<source>Mail notification receiver E-Mail</source>
+				<target>Empfängeradresse für E-Mail Benachrichtigung</target>
+			</trans-unit>
+			<trans-unit id="message.mail_configuration.notice">
+				<source>You can change the mail configuration via the TYPO3 Install Tool > All configuration > Mail.</source>
+				<target>Die Mail-Konfiguration kann im TYPO3 Install Tool unter dem Punkt All configuration > Mail bearbeitet
+					werden.
+				</target>
+			</trans-unit>
+			<trans-unit id="message.api_code_200">
+				<source>API request successfully. API will use measure data from %s, %s.</source>
+				<target>API-Anfrage erfolgreich. Station %s, %s wird verwendet.</target>
+			</trans-unit>
+			<trans-unit id="message.api_code_404">
+				<source>API returns code 404, please check the city name!</source>
+				<target>Die API gab Code 404 zurück. Bitte überprüfe den Stadtname!</target>
+			</trans-unit>
+			<trans-unit id="message.api_code_none">
+				<source>API returns no status code. Return value of API-request was %s</source>
+				<target>Die API gab keinen Status-Code zurück. Inhalt der Antwort: %s</target>
+			</trans-unit>
+			<trans-unit id="message.api_response_null">
+				<source>API request failed. Please check your internet connection and try again later!</source>
+				<target>Die Anfrage schlug fehl. Bitte die Internetverbindung überprüfen und später erneut versuchen!</target>
+			</trans-unit>
+			<trans-unit id="message.api_response_401">
+				<source>Got Error 401 while API request. Please check your API-Key.</source>
+				<target>Die Anfrage gab Fehlercode 401 zurück. Bitte API-Key überprüfen.</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

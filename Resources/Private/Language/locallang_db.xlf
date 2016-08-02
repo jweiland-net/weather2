@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-05-04T14:55:13Z"
+				product-name="weather2">
+		<header/>
+		<body>
+			<trans-unit id="tx_weather2_domain_model_currentweather">
+				<source>Current Weather</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.measure_timestamp">
+				<source>Measure Timestamp</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.temperature_c">
+				<source>Temperature C</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.pressure_hpa">
+				<source>Pressure Hpa</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.humidity_percentage">
+				<source>Humidity Percentage</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.min_temp_c">
+				<source>Min Temp C</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.max_temp_c">
+				<source>Max Temp C</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.wind_speed_m_p_s">
+				<source>Wind Speed M P S</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.wind_direction_deg">
+				<source>Wind Direction Deg</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.pop_percentage">
+				<source>Pop Percentage</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.snow_volume">
+				<source>Snow Volume</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.clouds_percentage">
+				<source>Clouds Percentage</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.serialized_array">
+				<source>Serialized Array</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.icon">
+				<source>Icon</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

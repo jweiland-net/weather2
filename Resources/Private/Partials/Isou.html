@@ -1,0 +1,52 @@
+{namespace weather=JWeiland\Weather2\ViewHelpers}
+
+<weather:ConvertMetricToISoU weatherModel="{currentWeather}" as="convertedData">
+	<f:image src="{settings.iconsPath}{convertedData.icon}.png" alt="icon"/>
+	<ul class="primaryProperties">
+		<li>{convertedData.name}</li>
+		<li>
+			<f:translate key="tx_weather2_domain_model_currentweather.temperature_c"/>
+			: {convertedData.temperatureC} K
+		</li>
+		<li>
+			<f:translate key="tx_weather2_domain_model_currentweather.pop_percentage"/>
+			: {convertedData.popPercentage} %
+		</li>
+	</ul>
+	<div class="divMore">
+		<span><f:translate key="tx_weather2_domain_model_currentweather.min_temp_c"/>: {convertedData.minTempC} K</span>
+		<span><f:translate key="tx_weather2_domain_model_currentweather.max_temp_c"/>: {convertedData.maxTempC} K</span>
+		<span class="showMore">+</span>
+		<span class="showLess">-</span>
+	</div>
+	<ul class="secondaryProperties">
+		<li>
+			<f:translate key="tx_weather2_domain_model_currentweather.rain_volume"/>
+			: {convertedData.rainVolume} mm
+		</li>
+		<li>
+			<f:translate key="tx_weather2_domain_model_currentweather.snow_volume"/>
+			: {convertedData.snowVolume} mm
+		</li>
+		<li>
+			<f:translate key="tx_weather2_domain_model_currentweather.clouds_percentage"/>
+			: {convertedData.cloudsPercentage} %
+		</li>
+		<li>
+			<f:translate key="tx_weather2_domain_model_currentweather.pressure_hpa"/>
+			: {convertedData.pressureHpa} hPa
+		</li>
+		<li>
+			<f:translate key="tx_weather2_domain_model_currentweather.wind_speed_m_p_s"/>
+			: {convertedData.windSpeedMPS} meters/s
+		</li>
+		<li>
+			<f:translate key="tx_weather2_domain_model_currentweather.wind_direction_deg"/>
+			: {convertedData.windDirectionDeg}°
+		</li>
+		<li>
+			<f:translate key="tx_weather2_domain_model_currentweather.measure_timestamp"/>
+			: {convertedData.measureTimestamp -> f:format.date(format: 'd.m.Y - H:i')}
+		</li>
+	</ul>
+</weather:ConvertMetricToISoU>

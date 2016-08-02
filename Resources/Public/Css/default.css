@@ -1,0 +1,67 @@
+.cursorPointer {
+  cursor: pointer;
+}
+
+.notSelectable {
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+}
+
+/* Hide/Show javascript used elements so that they are not shown if javascript is not loaded */
+.tx-weather2 .showMore {
+  display: none;
+}
+
+.tx-weather2 .showLess {
+  display: none;
+}
+
+.tx-weather2 {
+  display: inline-block;
+}
+
+.tx-weather2 h2 {
+  padding: 0;
+  margin: 0;
+}
+
+/* Plugin design */
+.tx-weather2 > ul {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  height: 59px;
+}
+
+.tx-weather2 ul li {
+  list-style: none;
+}
+
+.tx-weather2 ul.secondaryProperties {
+  height: auto;
+  width: 100%;
+  background-color: ghostwhite;
+}
+
+.tx-weather2 ul.primaryProperties li:first-child {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.tx-weather2 ul.secondaryProperties li {
+  border: 1px solid black;
+}
+
+.tx-weather2 .divMore {
+  display: block;
+  background-color: lightslategrey;
+}
+
+.tx-weather2 .showMore,
+.tx-weather2 .showLess {
+  font-size: 1.5em;
+}
+

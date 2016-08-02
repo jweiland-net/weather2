@@ -1,0 +1,53 @@
+<f:image src="{settings.iconsPath}{currentWeather.icon}.png" alt="icon"/>
+<ul class="primaryProperties">
+	<li>{currentWeather.name}</li>
+	<li>
+		<f:translate key="tx_weather2_domain_model_currentweather.temperature_c"/>
+		: {currentWeather.temperatureC} °C
+	</li>
+	<li>
+		<f:translate key="tx_weather2_domain_model_currentweather.pop_percentage"/>
+		: {currentWeather.popPercentage} %
+	</li>
+</ul>
+<div class="divMore">
+	<span><f:translate key="tx_weather2_domain_model_currentweather.min_temp_c"/>: {currentWeather.minTempC} °C</span>
+	<span><f:translate key="tx_weather2_domain_model_currentweather.max_temp_c"/>: {currentWeather.maxTempC} °C</span>
+	<span class="showMore">+</span>
+	<span class="showLess">-</span>
+</div>
+<ul class="secondaryProperties">
+	<li>
+		<f:translate key="tx_weather2_domain_model_currentweather.rain_volume"/>
+		: {currentWeather.rainVolume} mm
+	</li>
+	<li>
+		<f:translate key="tx_weather2_domain_model_currentweather.snow_volume"/>
+		: {currentWeather.snowVolume} mm
+	</li>
+	<li>
+		<f:translate key="tx_weather2_domain_model_currentweather.clouds_percentage"/>
+		: {currentWeather.cloudsPercentage} %
+	</li>
+	<li>
+		<f:translate key="tx_weather2_domain_model_currentweather.pressure_hpa"/>
+		: {currentWeather.pressureHpa} hPa
+	</li>
+	<li>
+		<f:translate key="tx_weather2_domain_model_currentweather.wind_speed_m_p_s"/>
+		: {currentWeather.windSpeedMPS} meters/s
+	</li>
+	<li>
+		<f:translate key="tx_weather2_domain_model_currentweather.wind_direction_deg"/>
+		:
+		<f:translate key="tx_weather2_domain_model_currentweather.wind_readable_direction.{currentWeather.windDirSection}"/>
+	</li>
+	<li>
+		<f:translate key="tx_weather2_domain_model_currentweather.wind_direction_deg"/>
+		: {currentWeather.windDirectionDeg}°
+	</li>
+	<li>
+		<f:translate key="tx_weather2_domain_model_currentweather.measure_timestamp"/>
+		: {currentWeather.measureTimestamp -> f:format.date(format: 'd.m.Y - H:i')}
+	</li>
+</ul>

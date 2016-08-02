@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-05-04T14:55:13Z"
+				product-name="weather2">
+		<header/>
+		<body>
+			<trans-unit id="tx_weather2_domain_model_currentweather">
+				<source>Current Weather</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.measure_timestamp">
+				<source>Measure Timestamp</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.temperature_c">
+				<source>Temperature</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.pressure_hpa">
+				<source>Pressure</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.humidity_percentage">
+				<source>Humidity</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.min_temp_c">
+				<source>Min</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.max_temp_c">
+				<source>Max</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.wind_speed_m_p_s">
+				<source>Wind Speed</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.wind_direction_deg">
+				<source>Meteorological wind direction</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.pop_percentage">
+				<source>Probability of Precipitation</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.snow_volume">
+				<source>Snow Volume</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.rain_volume">
+				<source>Rain Volume</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.clouds_percentage">
+				<source>Clouds</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.serialized_array">
+				<source>Serialized Array</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.icon">
+				<source>Icon</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.wind_readable_direction.0">
+				<source>North</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.wind_readable_direction.1">
+				<source>Northeast</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.wind_readable_direction.2">
+				<source>East</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.wind_readable_direction.3">
+				<source>Southeast</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.wind_readable_direction.4">
+				<source>South</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.wind_readable_direction.5">
+				<source>Southwest</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.wind_readable_direction.6">
+				<source>West</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.wind_readable_direction.7">
+				<source>Northwest</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.utility.showMore">
+				<source>Show more</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.utility.showLess">
+				<source>Show less</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.error.noRecord">
+				<source>No weather record found</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-05-04T14:55:13Z"
+				product-name="weather2">
+		<header/>
+		<body>
+			<trans-unit id="name.description">
+				<source>name</source>
+			</trans-unit>
+			<trans-unit id="measure_timestamp.description">
+				<source>measureTimestamp</source>
+			</trans-unit>
+			<trans-unit id="temperature_c.description">
+				<source>temperatureC</source>
+			</trans-unit>
+			<trans-unit id="pressure_hpa.description">
+				<source>pressureHpa</source>
+			</trans-unit>
+			<trans-unit id="humidity_percentage.description">
+				<source>humidityPercentage</source>
+			</trans-unit>
+			<trans-unit id="min_temp_c.description">
+				<source>minTempC</source>
+			</trans-unit>
+			<trans-unit id="max_temp_c.description">
+				<source>maxTempC</source>
+			</trans-unit>
+			<trans-unit id="wind_speed_m_p_s.description">
+				<source>windSpeedMPS</source>
+			</trans-unit>
+			<trans-unit id="wind_direction_deg.description">
+				<source>windDirectionDeg</source>
+			</trans-unit>
+			<trans-unit id="pop_percentage.description">
+				<source>popPercentage</source>
+			</trans-unit>
+			<trans-unit id="snow_volume.description">
+				<source>snowVolume</source>
+			</trans-unit>
+			<trans-unit id="clouds_percentage.description">
+				<source>cloudsPercentage</source>
+			</trans-unit>
+			<trans-unit id="serialized_array.description">
+				<source>serializedArray</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

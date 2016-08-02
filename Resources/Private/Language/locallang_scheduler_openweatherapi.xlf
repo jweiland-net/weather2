@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-05-04T14:55:13Z"
+				product-name="weather2">
+		<header/>
+		<body>
+			<trans-unit id="name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="city">
+				<source>City name</source>
+			</trans-unit>
+			<trans-unit id="country">
+				<source>Country</source>
+			</trans-unit>
+			<trans-unit id="api_key">
+				<source>API-Key</source>
+			</trans-unit>
+			<trans-unit id="mail_config">
+				<source>TYPO3 Mail configuration</source>
+			</trans-unit>
+			<trans-unit id="error_notification">
+				<source>Notify via mail if task was not successful</source>
+			</trans-unit>
+			<trans-unit id="email_sendername">
+				<source>Mail notification sender name</source>
+			</trans-unit>
+			<trans-unit id="email_sender">
+				<source>Mail notification sender E-Mail</source>
+			</trans-unit>
+			<trans-unit id="record_storage_page">
+				<source>Record storage page (optional)</source>
+			</trans-unit>
+			<trans-unit id="placeholder.email_sendername">
+				<source>default:</source>
+			</trans-unit>
+			<trans-unit id="placeholder.email_sender">
+				<source>default:</source>
+			</trans-unit>
+			<trans-unit id="buttons.record_storage_page">
+				<source>Select</source>
+			</trans-unit>
+			<trans-unit id="placeholder.record_storage_page">
+				<source>click on the button and select a page</source>
+			</trans-unit>
+			<trans-unit id="email_receiver">
+				<source>Mail notification receiver E-Mail</source>
+			</trans-unit>
+			<trans-unit id="message.mail_configuration.notice">
+				<source>You can change the mail configuration via the TYPO3 Install Tool > All configuration > Mail.</source>
+			</trans-unit>
+			<trans-unit id="message.api_code_200">
+				<source>API request successfully. API will use measure data from %s, %s.</source>
+			</trans-unit>
+			<trans-unit id="message.api_code_404">
+				<source>API returns code 404, please check the city name!</source>
+			</trans-unit>
+			<trans-unit id="message.api_code_none">
+				<source>API returns no status code. Return value of API-request was %s</source>
+			</trans-unit>
+			<trans-unit id="message.api_response_null">
+				<source>API request failed. Please check your internet connection and try again later!</source>
+			</trans-unit>
+			<trans-unit id="message.api_response_401">
+				<source>Got Error 401 while API request. Please check your API-Key.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
