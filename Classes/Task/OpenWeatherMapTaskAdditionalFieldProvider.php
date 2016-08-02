@@ -252,7 +252,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         
         $response = @file_get_contents($url);
         if (strpos($http_response_header[0], '401')) {
-            $schedulerModule->addMessage(WeatherUtility::translate('xlf:message.api_response_401'),
+            $schedulerModule->addMessage(WeatherUtility::translate('message.api_response_401'),
                 FlashMessage::ERROR);
             return false;
         } elseif ($response == false) {
