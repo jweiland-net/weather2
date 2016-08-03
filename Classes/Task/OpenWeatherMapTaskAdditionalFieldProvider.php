@@ -71,13 +71,7 @@ class OpenWeatherMapTaskAdditionalFieldProvider implements AdditionalFieldProvid
     ) {
         /** @var PageRenderer $pageRenderer */
         $pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
-        $pageRenderer->addJsLibrary(
-            'TYPO3.jQuery', '//code.jquery.com/jquery-2.1.4.min.js',
-            'text/javascript',
-            false,
-            true,
-            '|<script type="text/javascript">/*<![CDATA[*/ var TYPO3 = TYPO3 || {}; TYPO3.jQuery = jQuery.noConflict(true); /*]]>*/</script>'
-        );
+        $pageRenderer->loadJquery();
         $pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Weather2/StoragePathModule');
         $pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', BackendUtility::getModuleUrl('record_edit'));
