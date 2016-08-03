@@ -3,35 +3,25 @@
 		<sDEF>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>
-						LLL:EXT:weather2/Resources/Private/Language/locallang_flexform_currentweather.xlf:tx_weather2_flex_currentweather.title
-					</sheetTitle>
+					<sheetTitle>LLL:EXT:weather2/Resources/Private/Language/locallang_flexform_currentweather.xlf:tx_weather2_flex_currentweather.title</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
 					<settings.measureUnits>
 						<TCEforms>
-							<label>LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.measureUnits.label
-							</label>
+							<label>LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.measureUnits.label</label>
 							<config>
 								<type>select</type>
 								<items type="array">
 									<numIndex index="0" type="array">
-										<numIndex index="0">
-											LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.measureUnits.metric
-										</numIndex>
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.measureUnits.metric</numIndex>
 										<numIndex index="1">Metric</numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
-										<numIndex index="0">
-											LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.measureUnits.imperial
-										</numIndex>
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.measureUnits.imperial</numIndex>
 										<numIndex index="1">Imperial</numIndex>
 									</numIndex>
-									<numIndex index="2" type="array">
-										<numIndex index="0">
-											LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.measureUnits.isou
-										</numIndex>
+									<numIndex index="2" type="array"><numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.measureUnits.isou</numIndex>
 										<numIndex index="1">Isou</numIndex>
 									</numIndex>
 								</items>
