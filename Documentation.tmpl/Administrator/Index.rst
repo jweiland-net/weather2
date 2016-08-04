@@ -24,25 +24,16 @@ Language should be non / semi-technical, explaining, using small examples.
 
 Installation
 ------------
-
-- How should the extension be installed?
-- Are they dependencies to resolve?
-- Is it a static template file to be included?
-
-To install the extension, perform the following steps:
-
-#. Go to the Extension Manager
-#. Install the extension
-#. Load the static template
-#. ...
-
-For a list of configuration options, using a definition list is recommended:
-
-Some Configuration
-  This option enables...
-
-Other configuration
-  This other option is for all the rest...
+How do I get set up?
+^^^^^^^^^^^^^^^^^^^^
+    #. Create a new http://openweathermap.org account
+    #. Download the extension from the TYPO3 extension repository.
+    #. Create a new scheduler with the Call openweathermap.org api selected
+    #. Configure the scheduler by filling out the required fields
+    #. Create a new content element with the weather extension plugin selected
+    #. Select the desired measure units to display
+    #. Add extension template file to your template
+    #. Enjoy! ;)
 
 
 .. figure:: ../Images/AdministratorManual/ExtensionManager.png
@@ -57,12 +48,24 @@ Other configuration
 
 Configuration
 -------------
+Storage Page
+^^^^^^^^^^^^
+    #. Create a storage page
+    #. Refer to it in the scheduler task
+    #. Also refer to it in the plugin
 
-* Where and how the extension should be configured? TypoScript? PHP?
 
-* Are there other prerequisite to full fill beforehand?
-  For example, configure a setting in a special way somewhere.
+Multi plugin use
+^^^^^^^^^^^^^^^^
+You can configure your scheduler task to save data to a specific storage page that you can later use in the plugin to access data.
+There is also an option to display only specific rows. Please use the field "name" to do this.
+In the plugin you can configure which "name" to use. To select the latest entry use the empty field.
 
+Change timezone
+^^^^^^^^^^^^^^^
+Go into your TYPO3-Install tool and change the timezone.
+Currently this will change the timezone for every plugin and your whole TYPO3-Installation.
+May be changed in the future
 
 .. _admin-faq:
 
