@@ -26,9 +26,10 @@ Installation
 ------------
 How do I get set up?
 ^^^^^^^^^^^^^^^^^^^^
-    #. Create a new http://openweathermap.org account
-    #. Download the extension from the TYPO3 extension repository.
-    #. Create a new scheduler with the Call openweathermap.org api selected
+    #. Create a new http://openweathermap.org account and copy your api key
+    #. Download the extension from the TYPO3 extension repository
+    #. Enable the scheduler extension in your TYPO3 installation if not already done
+    #. Create a new scheduler with the Call openweathermap.org api selected with the scheduler module
     #. Configure the scheduler by filling out the required fields
     #. Create a new content element with the weather extension plugin selected
     #. Select the desired measure units to display
