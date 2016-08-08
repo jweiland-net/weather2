@@ -11,7 +11,4 @@
 Known Problems
 ==============
 
-Say where bugs can be reported / followed up. Is it a
-`bug tracker <http://forge.typo3.org/projects/typo3cms-doc-official-extension-template/issues>`_?
-Use this section for informing about any type of of problem
-that are not necessarily named in the bug tracker such as performance issues, ...
+If you found a bug, you can notify us using the `Bug Tracker <https://github.com/jweiland-net/weather2/issues>`_ of Github.
