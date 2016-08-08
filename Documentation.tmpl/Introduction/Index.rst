@@ -33,13 +33,13 @@ Moreover it is possible to organize records using storage pages and a custom ide
 
 Screenshots
 -----------
-.. figure:: ../Images/FrontendView.png
+.. figure:: ../Images/FrontendView.gif
 :width: 500px
    :alt: Frontend view
 
      Displaying basic information
 
-.. figure:: ../Images/FrontendViewExtended.png
+.. figure:: ../Images/FrontendViewExtended.gif
 :width: 500px
    :alt: Extended frontend view
 

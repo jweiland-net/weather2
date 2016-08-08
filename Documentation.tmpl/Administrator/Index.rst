@@ -38,7 +38,7 @@ How do I get set up?
     #. Enjoy! ;)
 
 
-.. figure:: ../Images/AdministratorManual/BackendPluginContentElement.png
+.. figure:: ../Images/AdministratorManual/BackendPluginContentElement.gif
    :alt: Backend plugin content element
 
    This is how the content element plugin looks like
