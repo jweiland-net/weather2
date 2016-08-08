@@ -14,5 +14,5 @@ Users Manual
 Adding a new plugin
 ^^^^^^^^^^^^^^^^^^^
 
-To add a new plugin just create a new content element, choose insert plugin and under plugin select *Current Weather*
-now you can select the desired measure unit and record identifier to display records.
+To add a new plugin just create a new content element, choose insert plugin and select *Current Weather* under plugin.
+Now you can select the desired measure unit and record identifier to display records.

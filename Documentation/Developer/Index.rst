@@ -8,7 +8,7 @@
 .. _developer:
 
 Developer Corner
-----------------
+================
 
 Target group: **Developers**
 

@@ -20,7 +20,7 @@ What does it do?
 ----------------
 
 This extension is mainly used to display weather data received from openweathermap.org. The extension however
-is designed to work with every weather api by creating an own scheduler and map values to the database structure.
+is designed to work with every weather api by creating your own scheduler and map values to the existing database structure.
 Moreover it is possible to organize records using storage pages and a custom identifier for each record.
 
 .. _screenshots:
