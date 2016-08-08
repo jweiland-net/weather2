@@ -38,13 +38,10 @@ How do I get set up?
     #. Enjoy! ;)
 
 
-.. figure:: ../Images/AdministratorManual/ExtensionManager.png
-   :alt: Extension Manager
+.. figure:: ../Images/AdministratorManual/BackendPluginContentElement.png
+   :alt: Backend plugin content element
 
-   Extension Manager (caption of the image)
-
-   List of extensions within the Extension Manager also shorten with "EM" (legend of the image)
-
+   This is how the content element plugin looks like
 
 .. _admin-configuration:
 
@@ -55,7 +52,6 @@ Storage Page
     #. Create a storage page
     #. Refer to it in the scheduler task
     #. Also refer to it in the plugin
-
 
 Multi plugin use
 ^^^^^^^^^^^^^^^^

@@ -19,6 +19,7 @@ What does it do?
 
 This extension is mainly used to display weather data received from openweathermap.org. The extension however
 is designed to work with every weather api by creating an own scheduler and map values to the database structure.
+Moreover it is possible to organize records using storage pages and a custom identifier for each record.
 
 .. important::
 
@@ -32,14 +33,14 @@ is designed to work with every weather api by creating an own scheduler and map 
 
 Screenshots
 -----------
+.. figure:: ../Images/FrontendView.png
+:width: 500px
+   :alt: Frontend view
 
-This chapter should help people figure how the extension works. Remove it
-if not relevant.
+     Displaying basic information
 
-.. figure:: ../Images/IntroductionPackage.png
-   :width: 500px
-   :alt: Introduction Package
+.. figure:: ../Images/FrontendViewExtended.png
+:width: 500px
+   :alt: Extended frontend view
 
-   Introduction Package just after installation (caption of the image)
-
-   How the Frontend of the Introduction Package looks like just after installation (legend of the image)
+       Displaying more information
