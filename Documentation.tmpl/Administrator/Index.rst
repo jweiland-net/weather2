@@ -30,9 +30,10 @@ How do I get set up?
     #. Download the extension from the TYPO3 extension repository
     #. Enable the scheduler extension in your TYPO3 installation if not already done
     #. Create a new scheduler with the Call openweathermap.org api selected with the scheduler module
-    #. Configure the scheduler by filling out the required fields
+    #. Configure the scheduler by filling out the required fields. Please Note that the field "name" is later used to only display specific records
     #. Create a new content element with the weather extension plugin selected
     #. Select the desired measure units to display
+    #. If you want to select a display record to display only records with the same name that you specified earlier
     #. Add extension template file to your template
     #. Enjoy! ;)
 
@@ -64,9 +65,8 @@ In the plugin you can configure which "name" to use. To select the latest entry 
 
 Change timezone
 ^^^^^^^^^^^^^^^
-Go into your TYPO3-Install tool and change the timezone.
-Currently this will change the timezone for every plugin and your whole TYPO3-Installation.
-May be changed in the future
+Go into your TYPO3-Install tool and change the timezone under *All configuration* -> *System* -> *phpTimeZone*.
+This will change the timezone for every plugin and your whole TYPO3-Installation.
 
 .. _admin-faq:
 
