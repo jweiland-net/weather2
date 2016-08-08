@@ -36,9 +36,9 @@ Screenshots
 .. figure:: ../Images/FrontendView.gif
    :alt: Frontend view
 
-     Displaying basic information
+   Displaying basic information
 
 .. figure:: ../Images/FrontendViewExtended.gif
    :alt: Extended frontend view
 
-       Displaying more information
+   Displaying more information
