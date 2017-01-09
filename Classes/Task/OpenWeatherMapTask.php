@@ -63,13 +63,6 @@ class OpenWeatherMapTask extends AbstractTask
     protected $responseClass = null;
     
     /**
-     * TYPO3 Logger
-     *
-     * @var Logger $logger
-     */
-    protected $logger = null;
-    
-    /**
      * City
      *
      * @var string $city
@@ -140,7 +133,6 @@ class OpenWeatherMapTask extends AbstractTask
      */
     public function execute()
     {
-        $this->logger = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger(__CLASS__);
         $this->execTime = $GLOBALS['EXEC_TIME'];
         $logEntry = array();
         $logEntry[] = '**************** [%s] ****************';
@@ -246,14 +238,18 @@ class OpenWeatherMapTask extends AbstractTask
     }
     
     /**
-     * Writes a string into the log file
+     * Writes a string into the TYPO3 syslog
      *
      * @param string $message Message that will be written into the log
      * @param bool $indent If true, the message will indented
+     * @param int $errorLevel error level of log entry (look into BackendUserAuthentication > simplelog comment
+     * to get more details about errorLevels)
+     *
+     * @return void
      */
-    protected function writeToLog($message, $indent = true)
+    protected function writeToLog($message, $indent = true, $errorLevel = 0)
     {
-        $this->logger->info(($indent == true ? "\t" : '') . (string)$message);
+        $GLOBALS['BE_USER']->simplelog(($indent == true ? "\t" : '') . (string)$message, 'weather2', (int)$errorLevel);
     }
     
     /**

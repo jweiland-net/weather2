@@ -22,10 +22,3 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['JWeiland\\Weath
 
     )
 );
-
-// Register DatabaseWriter for scheduler task
-$GLOBALS['TYPO3_CONF_VARS']['LOG']['JWeiland']['Weather2']['Task']['writerConfiguration'] = array(
-    \TYPO3\CMS\Core\Log\LogLevel::INFO => array(
-        'TYPO3\\CMS\\Core\\Log\\Writer\\DatabaseWriter' => array(),
-    )
-);
