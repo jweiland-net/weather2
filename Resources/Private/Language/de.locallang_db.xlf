@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-05-04T14:55:13Z"
+				product-name="weather2">
+		<header/>
+		<body>
+			<trans-unit id="plugin.currentweather.title">
+				<target>Aktueller Wetterbericht</target>
+			</trans-unit>
+			<trans-unit id="plugin.weatheralert.title">
+				<target>Unwetterwarnungen</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

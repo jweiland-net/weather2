@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-05-04T14:55:13Z"
+				product-name="weather2">
+		<header/>
+		<body>
+			<trans-unit id="regions">
+				<source>Save selected regions</source>
+			</trans-unit>
+			<trans-unit id="selectedRegions">
+				<source>Selected regions</source>
+			</trans-unit>
+			<trans-unit id="removeOldAlerts">
+				<source>Remove old alerts</source>
+			</trans-unit>
+			<trans-unit id="removeOldAlertsHours">
+				<source>Remove old alerts after X hours</source>
+			</trans-unit>
+			<trans-unit id="placeholder.recordStoragePage">
+				<source>click on the button and select a page</source>
+			</trans-unit>
+			<trans-unit id="recordStoragePage">
+				<source>Record storage page (optional)</source>
+			</trans-unit>
+			<trans-unit id="buttons.recordStoragePage">
+				<source>Select</source>
+			</trans-unit>
+			<trans-unit id="message.api_response_null">
+				<source>API request failed. The server could not get a response from Deutscher Wetterdienst.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

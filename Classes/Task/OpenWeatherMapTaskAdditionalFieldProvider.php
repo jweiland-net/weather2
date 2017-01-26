@@ -14,6 +14,7 @@ namespace JWeiland\Weather2\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use JWeiland\Weather2\Utility\WeatherUtility;
 use SJBR\StaticInfoTables\PiBaseApi;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -24,7 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
-use JWeiland\Weather2\Utility\WeatherUtility;
 
 /**
  * Additional fields for OpenWeatherMap scheduler task
@@ -73,7 +73,7 @@ class OpenWeatherMapTaskAdditionalFieldProvider implements AdditionalFieldProvid
         $pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
         $pageRenderer->loadJquery();
         $pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Weather2/StoragePathModule');
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Weather2/OpenWeatherMapTaskModule');
         $pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', BackendUtility::getModuleUrl('record_edit'));
         $pageRenderer->addInlineSetting('FormEngine', 'formName', 'tx_scheduler_form');
         $pageRenderer->addInlineSetting('FormEngine', 'backPath', '');
@@ -105,10 +105,10 @@ class OpenWeatherMapTaskAdditionalFieldProvider implements AdditionalFieldProvid
         
         $fieldID = 'recordStoragePage';
         $fieldCode = '<div class="input-group"><input type="text" class="form-control" name="tx_scheduler[recordStoragePage]" id="' . $fieldID . '" value="' . $taskInfo['recordStoragePage'] . '"
-size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage_page') . ' --->"/><span class="input-group-btn"><a href="#" class="btn btn-default" onclick="TYPO3.FormEngine.openPopupWindow(\'db\',\'tx_scheduler[recordStoragePage]|||pages|\'); return false;">
+size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage_page', 'openweatherapi') . ' --->"/><span class="input-group-btn"><a href="#" class="btn btn-default" onclick="TYPO3.FormEngine.openPopupWindow(\'db\',\'tx_scheduler[recordStoragePage]|||pages|\'); return false;">
 <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-insert-record" data-identifier="actions-insert-record">
 <span class="icon-markup"><span title="Browse for records" class="t3-icon t3-icon-actions t3-icon-actions-insert t3-icon-insert-record">&nbsp;</span></span>
-	</span> ' . WeatherUtility::translate('buttons.record_storage_page') . '</a></span></div>';
+	</span> ' . WeatherUtility::translate('buttons.record_storage_page', 'openweatherapi') . '</a></span></div>';
         
         $additionalFields[$fieldID] = array(
             'code' => $fieldCode,
@@ -151,14 +151,14 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         );
         
         $fieldID = 'emailSenderName';
-        $fieldCode = '<input type="text" class="form-control" name="tx_scheduler[emailSenderName]" id="' . $fieldID . '" value="' . $taskInfo['emailSenderName'] . '" size="60"' . ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'] ? 'placeholder="' . WeatherUtility::translate('placeholder.emailSendername') . $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'] . '"' : '') . '/>';
+        $fieldCode = '<input type="text" class="form-control" name="tx_scheduler[emailSenderName]" id="' . $fieldID . '" value="' . $taskInfo['emailSenderName'] . '" size="60"' . ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'] ? 'placeholder="' . WeatherUtility::translate('placeholder.emailSendername', 'openweatherapi') . $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'] . '"' : '') . '/>';
         $additionalFields[$fieldID] = array(
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:email_sendername'
         );
         
         $fieldID = 'emailSender';
-        $fieldCode = '<input type="email" class="form-control" name="tx_scheduler[emailSender]" id="' . $fieldID . '" value="' . $taskInfo['emailSender'] . '" size="60"' . ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] ? 'placeholder="' . WeatherUtility::translate('placeholder.emailSender') . $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] . '"' : '') . '/>';
+        $fieldCode = '<input type="email" class="form-control" name="tx_scheduler[emailSender]" id="' . $fieldID . '" value="' . $taskInfo['emailSender'] . '" size="60"' . ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] ? 'placeholder="' . WeatherUtility::translate('placeholder.emailSender', 'openweatherapi') . $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] . '"' : '') . '/>';
         $additionalFields[$fieldID] = array(
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:email_sender'
@@ -246,11 +246,11 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         
         $response = @file_get_contents($url);
         if (strpos($http_response_header[0], '401')) {
-            $schedulerModule->addMessage(WeatherUtility::translate('message.api_response_401'),
+            $schedulerModule->addMessage(WeatherUtility::translate('message.api_response_401', 'openweatherapi'),
                 FlashMessage::ERROR);
             return false;
         } elseif ($response == false) {
-            $schedulerModule->addMessage(WeatherUtility::translate('message.api_response_null'),
+            $schedulerModule->addMessage(WeatherUtility::translate('message.api_response_null', 'openweatherapi'),
                 FlashMessage::ERROR);
             return false;
         }
@@ -260,15 +260,15 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         
         switch ($responseClass->cod) {
             case '200':
-                $schedulerModule->addMessage(sprintf(WeatherUtility::translate('message.api_code_200'),
+                $schedulerModule->addMessage(sprintf(WeatherUtility::translate('message.api_code_200', 'openweatherapi'),
                     $responseClass->name, $responseClass->sys->country), FlashMessage::INFO);
                 return true;
             case '404':
-                $schedulerModule->addMessage(WeatherUtility::translate('message.api_code_404'),
+                $schedulerModule->addMessage(WeatherUtility::translate('message.api_code_404', 'openweatherapi'),
                     FlashMessage::ERROR);
                 return false;
             default:
-                $schedulerModule->addMessage(sprintf(WeatherUtility::translate('message.api_code_none'),
+                $schedulerModule->addMessage(sprintf(WeatherUtility::translate('message.api_code_none', 'openweatherapi'),
                     json_encode($responseClass)), FlashMessage::ERROR);
                 return false;
         }
@@ -304,7 +304,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         $text = '';
         $mailConfiguration = $GLOBALS['TYPO3_CONF_VARS']['MAIL'];
         
-        $text .= '<div class="alert alert-info" role="alert">' . WeatherUtility::translate('message.mail_configuration.notice') . '</div>';
+        $text .= '<div class="alert alert-info" role="alert">' . WeatherUtility::translate('message.mail_configuration.notice', 'openweatherapi') . '</div>';
         $text .= '<p><b>Transport:</b> ' . $mailConfiguration['transport'] . '</p>';
         if ($mailConfiguration['transport'] == 'smtp') {
             $text .= '<p><b>SMTP Server:</b> ' . $mailConfiguration['transport_smtp_server'] . '</p><p><b>SMTP Encryption: </b> ' . $mailConfiguration['transport_smtp_encrypt'] . '</p><p><b>SMTP Username: </b>' . $mailConfiguration['transport_smtp_username'] . '</p>';

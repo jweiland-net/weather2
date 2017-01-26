@@ -3,6 +3,9 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
+// cache to temporary save dwd regions
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['weather2_dwd_regions']['backend'] = 'TYPO3\\CMS\\Core\\Cache\\Backend\\SimpleFileBackend';
+
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['JWeiland\\Weather2\\Task\\OpenWeatherMapTask'] = array(
     'extension' => $_EXTKEY,
     'title' => 'Call openweathermap.org api',
@@ -10,15 +13,31 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['JWeiland\\Weath
     'additionalFields' => 'JWeiland\\Weather2\\Task\\OpenWeatherMapTaskAdditionalFieldProvider'
 );
 
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['JWeiland\\Weather2\\Task\\DeutscherWetterdienstTask'] = array(
+    'extension' => $_EXTKEY,
+    'title' => 'Get weather alerts from Deutscher Wetterdienst',
+    'description' => 'Calls the Deutscher Wetterdienst api and saves response in weather2 format into database',
+    'additionalFields' => 'JWeiland\\Weather2\\Task\\DeutscherWetterdienstTaskAdditionalFieldProvider'
+);
+
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'JWeiland.' . $_EXTKEY,
     'Currentweather',
     array(
         'CurrentWeather' => 'show, list',
-
+    
     ),
     // non-cacheable actions
-    array(
+    array()
+);
 
-    )
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+    'JWeiland.' . $_EXTKEY,
+    'Weatheralert',
+    array(
+        'WeatherAlert' => 'show, list',
+    
+    ),
+    // non-cacheable actions
+    array()
 );

@@ -1,0 +1,16 @@
+#dwd_selected_regions_ul {
+  max-width: 230px;
+  list-style: none;
+  padding: 0;
+}
+
+#dwd_selected_regions_ul li {
+  background: #ccc;
+  border: 1px solid #c3c3c3;
+  padding: 0 .5em;
+  margin: .3em 0;
+}
+
+.dwd_removeItem {
+  float: right;
+}

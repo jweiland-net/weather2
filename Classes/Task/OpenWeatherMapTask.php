@@ -194,17 +194,17 @@ class OpenWeatherMapTask extends AbstractTask
     private function checkResponseCode($response)
     {
         if ($response === false) {
-            $this->writeToLog('Error: ' . WeatherUtility::translate('message.api_response_null'));
+            $this->writeToLog('Error: ' . WeatherUtility::translate('message.api_response_null', 'openweatherapi'));
             $this->sendMail(
                 'Error while requesting weather data',
-                WeatherUtility::translate('message.api_response_null')
+                WeatherUtility::translate('message.api_response_null', 'openweatherapi')
             );
             return false;
         } elseif (strpos($http_response_header[0], '401')) {
-            $this->writeToLog('Error: ' . WeatherUtility::translate('message.api_response_401'));
+            $this->writeToLog('Error: ' . WeatherUtility::translate('message.api_response_401', 'openweatherapi'));
             $this->sendMail(
                 'Error while requesting weather data',
-                WeatherUtility::translate('message.api_response_401')
+                WeatherUtility::translate('message.api_response_401', 'openweatherapi')
             );
             return false;
         }
@@ -219,19 +219,19 @@ class OpenWeatherMapTask extends AbstractTask
                 $this->writeToLog('Error: ' . WeatherUtility::translate('messages.api_code_404'));
                 $this->sendMail(
                     'Error while requesting weather data',
-                    WeatherUtility::translate('messages.api_code_404')
+                    WeatherUtility::translate('messages.api_code_404', 'openweatherapi')
                 );
                 return false;
             default:
                 $this->writeToLog(
                     'Error: ' . sprintf(
-                        WeatherUtility::translate('messages.api_code_none'),
+                        WeatherUtility::translate('messages.api_code_none', 'openweatherapi'),
                         json_encode($responseClass)
                     )
                 );
                 $this->sendMail(
                     'Error while requesting weather data',
-                    sprintf(WeatherUtility::translate('messages.api_code_none'), json_encode($responseClass))
+                    sprintf(WeatherUtility::translate('messages.api_code_none', 'openweatherapi'), json_encode($responseClass))
                 );
                 return false;
         }

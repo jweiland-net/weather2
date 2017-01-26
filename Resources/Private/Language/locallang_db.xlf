@@ -49,6 +49,33 @@
 			<trans-unit id="tx_weather2_domain_model_currentweather.icon">
 				<source>Icon</source>
 			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_weatheralert">
+				<source>Weather alert</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_weatheralert.region_name">
+				<source>Region name</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_weatheralert.level">
+				<source>Alert level</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_weatheralert.type">
+				<source>Alert type</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_weatheralert.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_weatheralert.description">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_weatheralert.instruction">
+				<source>Instruction</source>
+			</trans-unit>
+			<trans-unit id="plugin.currentweather.title">
+				<source>Current Weather</source>
+			</trans-unit>
+			<trans-unit id="plugin.weatheralert.title">
+				<source>Weather Alerts</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
