@@ -15,6 +15,7 @@ namespace JWeiland\Weather2\Controller;
  */
 
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * WeatherAlertController
@@ -24,21 +25,10 @@ class WeatherAlertController extends ActionController
     /**
      * currentWeatherRepository
      *
-     * @var \JWeiland\Weather2\Domain\Repository\CurrentWeatherRepository
+     * @var \JWeiland\Weather2\Domain\Repository\WeatherAlertRepository
      * @inject
      */
-    protected $currentWeatherRepository = null;
-
-    /**
-     * action list displays a list of CurrentWeather models
-     *
-     * @return void
-     */
-    public function listAction()
-    {
-        $currentWeathers = $this->currentWeatherRepository->findAll();
-        $this->view->assign('currentWeathers', $currentWeathers);
-    }
+    protected $weatherAlertRepository = null;
     
     /**
      * action show displays the newest CurrentWeather model
@@ -47,7 +37,8 @@ class WeatherAlertController extends ActionController
      */
     public function showAction()
     {
-        $currentWeather = $this->currentWeatherRepository->findCurrent();
-        $this->view->assign('currentWeather', $currentWeather);
+        $alerts = $this->weatherAlertRepository->findCurrentSelection();
+        DebuggerUtility::var_dump($alerts);
+        $this->view->assign('weatherAlerts', $alerts);
     }
 }

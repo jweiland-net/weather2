@@ -34,9 +34,9 @@ define('TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule', ['jquery', 'jquery-
       source: TYPO3.settings.ajaxUrls['Weather2Dwd::renderRegions'], classes: {
         "ui-autocomplete": "highlight"
       }, select: function (e, ui) {
-        if (!$('#dwd_regionItem_' + ui.item.id).length) {
-          $('#dwd_selected_regions_ul').append('<li id="dwd_regionItem_' + ui.item.id + '"><a href="#" class="dwd_removeItem">' + TYPO3.lang.removeItem + '</a>' + ui.item.label + '</div><input type="hidden" name="tx_scheduler[dwd_selectedRegions][]" value="' + ui.item.value + '" /></li>');
-          $('#dwd_regionItem_' + ui.item.id + ' .dwd_removeItem').click(function () {
+        if (!$('#dwd_regionItem_' + ui.item.value).length) {
+          $('#dwd_selected_regions_ul').append('<li id="dwd_regionItem_' + ui.item.value + '"><a href="#" class="dwd_removeItem">' + TYPO3.lang.removeItem + '</a>' + ui.item.label + '</div><input type="hidden" name="tx_scheduler[dwd_selectedRegions][]" value="' + ui.item.value + '" /></li>');
+          $('#dwd_regionItem_' + ui.item.value + ' .dwd_removeItem').click(function () {
               $(this).parent('li').remove();
             });
         }

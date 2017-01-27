@@ -24,6 +24,78 @@
 				<source>ISoU (K)</source>
 				<target>Internationales Einheitensystem (K)</target>
 			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes">
+				<target>Zeige ausgewählte Warntypen an</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.thunderstorm">
+				<target>Gewitter</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.storm">
+				<target>Sturm</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.rain">
+				<target>Regen</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.snow">
+				<target>Schnee</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.fog">
+				<target>Nebel</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.frost">
+				<target>Frost</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.ice">
+				<target>Glatteis</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.thaw">
+				<target>Tauwetter</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.hotness">
+				<target>Hitze</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.uv">
+				<target>UV</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.coast">
+				<target>Küste</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.lake">
+				<target>Binnensee</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.sea">
+				<target>See</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels">
+				<target>Zeige ausgewählte Warnlevel an</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.0">
+				<target>0 (Amtliche Wetterwarnung)</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.1">
+				<target>1 (Amtliche Wetterwarnung)</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.20">
+				<target>1.4 (Hitze-Warnung)</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.10">
+				<target>1.5 (UV-Warnung)</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.2">
+				<target>2 (Amtliche Wetterwarnung)</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.3">
+				<target>3 (Amtliche Warnung vor markantem Wetter)</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.4">
+				<target>4 (Amtliche Unwetterwarnung)</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.5">
+				<target>5 (Amtliche Warnung vor extremem Unwetter)</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.selectedRegions">
+				<target>Zeige Warnungen für ausgewählte Regionen an</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -52,8 +52,8 @@
 			<trans-unit id="tx_weather2_domain_model_weatheralert">
 				<source>Weather alert</source>
 			</trans-unit>
-			<trans-unit id="tx_weather2_domain_model_weatheralert.region_name">
-				<source>Region name</source>
+			<trans-unit id="tx_weather2_domain_model_weatheralert.regions">
+				<source>Affected regions</source>
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_weatheralert.level">
 				<source>Alert level</source>
@@ -69,6 +69,12 @@
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_weatheralert.instruction">
 				<source>Instruction</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_weatheralertregion">
+				<source>Weather Alert Region</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_weatheralertregion.district">
+				<source>District</source>
 			</trans-unit>
 			<trans-unit id="plugin.currentweather.title">
 				<source>Current Weather</source>

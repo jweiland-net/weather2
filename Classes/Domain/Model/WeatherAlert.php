@@ -22,12 +22,13 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 class WeatherAlert extends AbstractEntity
 {
     /**
-     * Region name of alert
-     * e.g. Stadt Stuttgart
+     * Regions affected to this alert
+     * e.g. 0 (single)
+     * e.g. 0,2,7,3 (multiple)
      *
      * @var string
      */
-    protected $regionName = '';
+    protected $regions = '';
     
     /**
      * Level of alert
@@ -84,23 +85,23 @@ class WeatherAlert extends AbstractEntity
     protected $endtime;
     
     /**
-     * Returns RegionName
+     * Returns Regions
      *
      * @return string
      */
-    public function getRegionName()
+    public function getRegions()
     {
-        return (string)$this->regionName;
+        return (string)$this->regions;
     }
     
     /**
-     * Sets RegionName
+     * Sets Regions
      *
-     * @param string $regionName
+     * @param string $regions
      */
-    public function setRegionName($regionName)
+    public function setRegions($regions)
     {
-        $this->regionName = $regionName;
+        $this->regions = $regions;
     }
     
     /**

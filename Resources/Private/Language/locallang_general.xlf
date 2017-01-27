@@ -19,6 +19,78 @@
 			<trans-unit id="tx_weather2.measureUnits.isou">
 				<source>ISoU (K)</source>
 			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes">
+				<source>Display selected warning types</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.thunderstorm">
+				<source>Thunderstorm</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.storm">
+				<source>Storm</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.rain">
+				<source>Rain</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.snow">
+				<source>Snow</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.fog">
+				<source>Fog</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.frost">
+				<source>Frost</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.ice">
+				<source>Ice</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.thaw">
+				<source>Thaw</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.hotness">
+				<source>Hotness</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.uv">
+				<source>UV</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.coast">
+				<source>Coast</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.lake">
+				<source>Lake</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningTypes.sea">
+				<source>Sea</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels">
+				<source>Display selected warning levels</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.0">
+				<source>0 (Official weather warning)</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.1">
+				<source>1 (Official weather warning)</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.20">
+				<source>1.4 (UV warning)</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.10">
+				<source>1.5 (Hotness warning)</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.2">
+				<source>2 (Official weather warning)</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.3">
+				<source>3 (Official warning of striking weather)</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.4">
+				<source>4 (Official storm warning)</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.5">
+				<source>5 (Official warning of extreme weather)</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.selectedRegions">
+				<source>Display warnings for selected regions</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

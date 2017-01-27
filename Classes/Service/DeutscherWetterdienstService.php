@@ -14,12 +14,15 @@ namespace JWeiland\Weather2\Service;
 * The TYPO3 project - inspiring people to share!
 */
 
-use JWeiland\Weather2\Utility\WeatherUtility;
+use JWeiland\Weather2\Domain\Model\WeatherAlertRegion;
+use JWeiland\Weather2\Domain\Repository\WeatherAlertRegionRepository;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Http\AjaxRequestHandler;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Class DeutscherWetterdienstService
@@ -44,42 +47,14 @@ class DeutscherWetterdienstService implements SingletonInterface
      * @var FrontendInterface
      */
     protected $cacheFrontend;
-    
-    /**
-     * Returns a string with options for all regions from dwd api
-     * in HTML format like on https://www.w3.org/wiki/HTML/Elements/option#Example_A
-     *
-     * @return string
-     */
-    public function getOptionsForRegions()
-    {
-//        /** @var CacheManager $cacheManager */
-//        $cacheManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
-//        $this->cacheFrontend = $cacheManager->getCache('weather2_dwd_regions');
-        if ($this->cacheFrontend->has($this::REGIONS_CACHE_IDENTIFIER)) {
-            return $this->cacheFrontend->get($this::REGIONS_CACHE_IDENTIFIER);
-        }
         
-        $html = '';
-        /** @var \stdClass $regions */
-        $regions = $this->getRegions();
-        /** @var \stdClass $region */
-        foreach ($regions as $region) {
-            $value = WeatherUtility::convertRegionObjectToValueString($region);
-            $displayText = WeatherUtility::convertValueStringToHumanReadableString($value);
-            $html .= '<option value="' . $value . '">' . $displayText . '</option>';
-        }
-        
-//        $this->cacheFrontend->set($this::REGIONS_CACHE_IDENTIFIER, $html);
-        return $html;
-    }
-    
     /**
-     * Checks the JSON response
+     * Fetch and returns the regions from Deutscher Wetterdienst
+     * Regions will be cached
      *
      * @return \stdClass|bool Returns a stdClass if response was valid otherwise false
      */
-    protected function getRegions()
+    public function getRegions()
     {
         /** @var CacheManager $cacheManager */
         $cacheManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager');
@@ -112,21 +87,25 @@ class DeutscherWetterdienstService implements SingletonInterface
      */
     public function renderRegions($params = array(), AjaxRequestHandler &$ajaxObj = null)
     {
+        /** @var ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        /** @var WeatherAlertRegionRepository $repository */
+        $repository = $objectManager->get('JWeiland\\Weather2\\Domain\\Repository\\WeatherAlertRegionRepository');
         /** @var string $term */
         $term = GeneralUtility::_GET('term');
-
+        
+        $regions = $repository->findByName($term);
         $results = array();
-        foreach ($this->getRegions() as $region) {
-            $value = WeatherUtility::convertRegionObjectToValueString($region);
-            $label = WeatherUtility::convertValueStringToHumanReadableString($value);
-            if (stripos($label, $term) !== false) {
-                $results[] = array(
-                    'value' => $value,
-                    'label' => $label,
-                    'id' => md5($value)
-                );
-            }
+
+        /** @var WeatherAlertRegion $region */
+        foreach ($regions as $region) {
+            $label = $region->getName() . ($region->getDistrict() ? ' (' . $region->getDistrict() . ')' : '');
+            $results[] = array(
+                'value' => $region->getUid(),
+                'label' => $label,
+            );
         }
+        
         $ajaxObj->setContent($results);
         $ajaxObj->setContentFormat('json');
     }

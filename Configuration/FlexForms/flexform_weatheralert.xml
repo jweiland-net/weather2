@@ -3,40 +3,136 @@
 		<sDEF>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:weather2/Resources/Private/Language/locallang_flexform_currentweather.xlf:tx_weather2_flex_currentweather.title</sheetTitle>
+					<sheetTitle>LLL:EXT:weather2/Resources/Private/Language/locallang_flexform_weatheralert.xlf:tx_weather2_flex_weatheralert.title</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
-					<settings.measureUnits>
+					<settings.warningTypes>
 						<TCEforms>
-							<label>LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.measureUnits.label</label>
+							<label>LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes</label>
 							<config>
 								<type>select</type>
 								<items type="array">
 									<numIndex index="0" type="array">
-										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.measureUnits.metric</numIndex>
-										<numIndex index="1">Metric</numIndex>
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.thunderstorm</numIndex>
+										<numIndex index="1">0</numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.measureUnits.imperial</numIndex>
-										<numIndex index="1">Imperial</numIndex>
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.storm</numIndex>
+										<numIndex index="1">1</numIndex>
 									</numIndex>
-									<numIndex index="2" type="array"><numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.measureUnits.isou</numIndex>
-										<numIndex index="1">Isou</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.rain</numIndex>
+										<numIndex index="1">2</numIndex>
+									</numIndex>
+									<numIndex index="3" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.snow</numIndex>
+										<numIndex index="1">3</numIndex>
+									</numIndex>
+									<numIndex index="4" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.fog</numIndex>
+										<numIndex index="1">4</numIndex>
+									</numIndex>
+									<numIndex index="5" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.frost</numIndex>
+										<numIndex index="1">5</numIndex>
+									</numIndex>
+									<numIndex index="6" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.ice</numIndex>
+										<numIndex index="1">6</numIndex>
+									</numIndex>
+									<numIndex index="7" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.thaw</numIndex>
+										<numIndex index="1">7</numIndex>
+									</numIndex>
+									<numIndex index="8" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.hotness</numIndex>
+										<numIndex index="1">8</numIndex>
+									</numIndex>
+									<numIndex index="9" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.uv</numIndex>
+										<numIndex index="1">9</numIndex>
+									</numIndex>
+									<numIndex index="10" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.coast</numIndex>
+										<numIndex index="1">10</numIndex>
+									</numIndex>
+									<numIndex index="11" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.lake</numIndex>
+										<numIndex index="1">11</numIndex>
+									</numIndex>
+									<numIndex index="12" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.sea</numIndex>
+										<numIndex index="1">12</numIndex>
 									</numIndex>
 								</items>
+								<enableMultiSelectFilterTextfield>true</enableMultiSelectFilterTextfield>
+								<minitems>0</minitems>
+								<maxitems>999</maxitems>
+								<size>5</size>
 							</config>
 						</TCEforms>
-					</settings.measureUnits>
-					<settings.selection>
+					</settings.warningTypes>
+					<settings.warningLevels>
 						<TCEforms>
-							<label>LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.name</label>
+							<label>LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels</label>
 							<config>
 								<type>select</type>
-								<itemsProcFunc>JWeiland\Weather2\UserFunc\FlexFormUserFunc->getSelection</itemsProcFunc>
+								<items type="array">
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.0</numIndex>
+										<numIndex index="1">0</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.1</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+									<numIndex index="20" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.20</numIndex>
+										<numIndex index="1">20</numIndex>
+									</numIndex>
+									<numIndex index="10" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.10</numIndex>
+										<numIndex index="1">10</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.2</numIndex>
+										<numIndex index="1">2</numIndex>
+									</numIndex>
+									<numIndex index="3" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.3</numIndex>
+										<numIndex index="1">3</numIndex>
+									</numIndex>
+									<numIndex index="4" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.4</numIndex>
+										<numIndex index="1">4</numIndex>
+									</numIndex>
+									<numIndex index="5" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.5</numIndex>
+										<numIndex index="1">5</numIndex>
+									</numIndex>
+								</items>
+								<enableMultiSelectFilterTextfield>true</enableMultiSelectFilterTextfield>
+								<size>5</size>
+								<minitems>0</minitems>
+								<maxitems>999</maxitems>
 							</config>
 						</TCEforms>
-					</settings.selection>
+					</settings.warningLevels>
+					<settings.regions>
+						<TCEforms>
+							<label>LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.selectedRegions</label>
+							<config>
+								<type>select</type>
+								<foreign_table>tx_weather2_domain_model_weatheralertregion</foreign_table>
+								<foreign_table_where>ORDER BY name ASC</foreign_table_where>
+								<enableMultiSelectFilterTextfield>true</enableMultiSelectFilterTextfield>
+								<minitems>0</minitems>
+								<maxitems>999</maxitems>
+								<size>5</size>
+							</config>
+						</TCEforms>
+					</settings.regions>
 				</el>
 			</ROOT>
 		</sDEF>

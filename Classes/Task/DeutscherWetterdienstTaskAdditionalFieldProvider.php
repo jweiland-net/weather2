@@ -14,6 +14,8 @@ namespace JWeiland\Weather2\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use JWeiland\Weather2\Domain\Model\WeatherAlertRegion;
+use JWeiland\Weather2\Domain\Repository\WeatherAlertRegionRepository;
 use JWeiland\Weather2\Service\DeutscherWetterdienstService;
 use JWeiland\Weather2\Utility\WeatherUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -21,6 +23,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
@@ -30,6 +33,20 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  */
 class DeutscherWetterdienstTaskAdditionalFieldProvider implements AdditionalFieldProviderInterface
 {
+    /**
+     * Weather alert repository
+     *
+     * @var WeatherAlertRegionRepository
+     */
+    protected $weatherAlertRepository;
+    
+    /**
+     * Object manager
+     *
+     * @var ObjectManager
+     */
+    protected $objectManager;
+    
     /**
      * This fields can not be empty!
      *
@@ -69,52 +86,35 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider implements AdditionalFiel
         $task,
         SchedulerModuleController $schedulerModule
     ) {
-        $extRelPath = ExtensionManagementUtility::extRelPath('weather2');
-        /** @var PageRenderer $pageRenderer */
-        $pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
-        $pageRenderer->loadJquery();
-        $pageRenderer->loadRequireJs();
-        $pageRenderer->addInlineLanguageLabelFile(ExtensionManagementUtility::extPath('weather2') .
-            'Resources/Private/Language/locallang_scheduler_javascript_deutscherwetterdienst.xlf');
-        $pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js');
-        $pageRenderer->addCssFile($extRelPath . 'Resources/Public/Css/jquery-ui.min.css');
-        $pageRenderer->addCssFile($extRelPath . 'Resources/Public/Css/dwdScheduler.css');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule');
-        $pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', BackendUtility::getModuleUrl('record_edit'));
-        $pageRenderer->addInlineSetting('FormEngine', 'formName', 'tx_scheduler_form');
-        $pageRenderer->addInlineSetting('FormEngine', 'backPath', '');
-        $pageRenderer->loadRequireJsModule(
-            'TYPO3/CMS/Backend/FormEngine',
-            'function(FormEngine) {
-            FormEngine.setBrowserUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_element_browser')) . ');
-        }'
-        );
-        $pageRenderer->addJsFile(
-            ExtensionManagementUtility::extRelPath('backend') .
-            'Resources/Public/JavaScript/jsfunc.tbe_editor.js'
-        );
-        /** @var DeutscherWetterdienstService $deutscherWetterdienstService */
-        $this->deutscherWetterdienstService = GeneralUtility::makeInstance(
-            'JWeiland\\Weather2\\Service\\DeutscherWetterdienstService'
-        );
-        
+        $this->initialize();
         foreach ($this->insertFields as $fieldID) {
             if (empty($taskInfo[$fieldID])) {
                 $propertyName = str_replace('dwd_', '', $fieldID);
                 $taskInfo[$fieldID] = $task->$propertyName;
             }
         }
-    
+        
         $additionalFields = array();
         
         $fieldID = 'dwd_selectedRegions';
-        $fieldCode = '<input type="text" class="form-control ui-autocomplete-input" name="dwd_region_search" id="dwd_region_search" ' .
-            'placeholder="e.g. Pforzheim" size="30" />' . $this->getHtmlForSelectedRegions($taskInfo);
+        if ($this->areRegionsAvailable()) {
+            $fieldCode = '<input type="text" class="form-control ui-autocomplete-input" name="dwd_region_search" id="dwd_region_search" ' .
+                'placeholder="e.g. Pforzheim" size="30" />' . $this->getHtmlForSelectedRegions($taskInfo);
+        } else {
+            /** @var FlashMessage $flashMessage */
+            $flashMessage = GeneralUtility::makeInstance(
+                'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+                WeatherUtility::translate('message.noRegionsFound', 'deutscherwetterdienst'),
+                '',
+                FlashMessage::WARNING
+            );
+            $fieldCode = $flashMessage->render();
+        }
         $additionalFields[$fieldID] = array(
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_deutscherwetterdienst.xlf:regions'
         );
-                
+        
         $fieldID = 'dwd_recordStoragePage';
         $fieldCode = '<div class="input-group"><input type="text" class="form-control" name="tx_scheduler[' . $fieldID . ']" id="' . $fieldID . '" value="' . $taskInfo[$fieldID] . '"
 size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStoragePage', 'openweatherapi') . ' --->"/><span class="input-group-btn"><a href="#" class="btn btn-default" onclick="TYPO3.FormEngine.openPopupWindow(\'db\',\'tx_scheduler[dwd_recordStoragePage]|||pages|\'); return false;">
@@ -144,6 +144,61 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
     }
     
     /**
+     * Initialize class
+     *
+     * @return void
+     */
+    protected function initialize()
+    {
+        /** @var ObjectManager $objectManager */
+        $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        /** @var WeatherAlertRegionRepository $repository */
+        $this->weatherAlertRepository = $this->objectManager->get('JWeiland\\Weather2\\Domain\\Repository\\WeatherAlertRegionRepository');
+        $extRelPath = ExtensionManagementUtility::extRelPath('weather2');
+        /** @var PageRenderer $pageRenderer */
+        $pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
+        $pageRenderer->loadJquery();
+        $pageRenderer->loadRequireJs();
+        $pageRenderer->addInlineLanguageLabelFile(ExtensionManagementUtility::extPath('weather2') .
+            'Resources/Private/Language/locallang_scheduler_javascript_deutscherwetterdienst.xlf');
+        $pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js');
+        $pageRenderer->addCssFile($extRelPath . 'Resources/Public/Css/jquery-ui.min.css');
+        $pageRenderer->addCssFile($extRelPath . 'Resources/Public/Css/dwdScheduler.css');
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule');
+        $pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', BackendUtility::getModuleUrl('record_edit'));
+        $pageRenderer->addInlineSetting('FormEngine', 'formName', 'tx_scheduler_form');
+        $pageRenderer->addInlineSetting('FormEngine', 'backPath', '');
+        $pageRenderer->loadRequireJsModule(
+            'TYPO3/CMS/Backend/FormEngine',
+            'function(FormEngine) {
+            FormEngine.setBrowserUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_element_browser')) . ');
+        }'
+        );
+        $pageRenderer->addJsFile(
+            ExtensionManagementUtility::extRelPath('backend') .
+            'Resources/Public/JavaScript/jsfunc.tbe_editor.js'
+        );
+        /** @var DeutscherWetterdienstService $deutscherWetterdienstService */
+        $this->deutscherWetterdienstService = GeneralUtility::makeInstance(
+            'JWeiland\\Weather2\\Service\\DeutscherWetterdienstService'
+        );
+    }
+    
+    /**
+     * Checks if regions are available in the databas
+     *
+     * @return bool true if yes else false
+     */
+    protected function areRegionsAvailable()
+    {
+        if ($this->weatherAlertRepository->countAll() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
      * Returns HTML code for selected regions
      *
      * @param array $taskInfo
@@ -152,16 +207,22 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
     public function getHtmlForSelectedRegions($taskInfo)
     {
         $ulItems = '';
-        $hiddenFields = '';
         if (is_array($taskInfo['dwd_selectedRegions'])) {
-            foreach ($taskInfo['dwd_selectedRegions'] as $region) {
-                $ulItems .= '<li id="dwd_regionItem_' . md5($region) .'"><a href="#" class="dwd_removeItem">' .
-                    WeatherUtility::translate('removeItem', 'deutscherwetterdienstJs') . '</a>' .
-                    WeatherUtility::convertValueStringToHumanReadableString($region) .
-                    '<input type="hidden" name="tx_scheduler[dwd_selectedRegions][]" value="' . $region . '" /></li>';
+            foreach ($taskInfo['dwd_selectedRegions'] as $regionUid) {
+                /** @var WeatherAlertRegion $region */
+                $region = $this->weatherAlertRepository->findByUid($regionUid);
+                if ($region instanceof WeatherAlertRegion) {
+                    $label = $region->getName() . ($region->getDistrict() ? ' (' . $region->getDistrict() . ')' : '');
+                    $ulItems .= '<li id="dwd_regionItem_' . $region->getUid() . '"><a href="#" class="dwd_removeItem">' .
+                        WeatherUtility::translate('removeItem', 'deutscherwetterdienstJs') . '</a>' .
+                        $label .
+                        '<input type="hidden" name="tx_scheduler[dwd_selectedRegions][]" value="' . $region->getUid() .
+                        '" /></li>';
+                }
             }
         }
-        return '<ul id="dwd_selected_regions_ul">' . $ulItems . '</ul>' . $hiddenFields;
+        
+        return '<ul id="dwd_selected_regions_ul">' . $ulItems . '</ul>';
     }
     
     /**
@@ -178,7 +239,8 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
         $errorExists = false;
         
         if ($submittedData['dwd_recordStoragePage']) {
-            $submittedData['dwd_recordStoragePage'] = preg_replace('/[^0-9]/', '', $submittedData['dwd_recordStoragePage']);
+            $submittedData['dwd_recordStoragePage'] = preg_replace('/[^0-9]/', '',
+                $submittedData['dwd_recordStoragePage']);
         } else {
             $submittedData['dwd_recordStoragePage'] = 0;
         }

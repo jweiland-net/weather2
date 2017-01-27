@@ -20,6 +20,12 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['JWeiland\\Weath
     'additionalFields' => 'JWeiland\\Weather2\\Task\\DeutscherWetterdienstTaskAdditionalFieldProvider'
 );
 
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['JWeiland\\Weather2\\Task\\DeutscherWetterdienstRegionsTask'] = array(
+    'extension' => $_EXTKEY,
+    'title' => 'Get regions from Deutscher Wetterdienst',
+    'description' => 'Calls the Deutscher Wetterdienst api and saves regions into database. Required before using DeutscherWetterdienstTask!',
+);
+
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'JWeiland.' . $_EXTKEY,
     'Currentweather',
@@ -35,7 +41,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['JWeiland\\Weath
     'JWeiland.' . $_EXTKEY,
     'Weatheralert',
     array(
-        'WeatherAlert' => 'show, list',
+        'WeatherAlert' => 'show',
     
     ),
     // non-cacheable actions

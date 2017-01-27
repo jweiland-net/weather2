@@ -14,13 +14,14 @@ namespace JWeiland\Weather2\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Log\Logger;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MailUtility;
-use TYPO3\CMS\Scheduler\Task\AbstractTask;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
-use TYPO3\CMS\Core\Mail\MailMessage;
+use JWeiland\Weather2\Domain\Model\WeatherAlertRegion;
+use JWeiland\Weather2\Domain\Repository\WeatherAlertRegionRepository;
 use JWeiland\Weather2\Utility\WeatherUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * DeutscherWetterdienstTask Class for Scheduler
@@ -31,6 +32,20 @@ class DeutscherWetterdienstTask extends AbstractTask
      * Source for alerts
      */
     const API_URL = 'http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json';
+    
+    /**
+     * Weather alert repository
+     *
+     * @var WeatherAlertRegionRepository
+     */
+    protected $weatherAlertRepository;
+    
+    /**
+     * Object manager
+     *
+     * @var ObjectManager
+     */
+    protected $objectManager;
     
     /**
      * The TYPO3 database connection
@@ -103,6 +118,10 @@ class DeutscherWetterdienstTask extends AbstractTask
      */
     public function execute()
     {
+        /** @var ObjectManager $objectManager */
+        $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        /** @var WeatherAlertRegionRepository $repository */
+        $this->weatherAlertRepository = $this->objectManager->get('JWeiland\\Weather2\\Domain\\Repository\\WeatherAlertRegionRepository');
         $this->writeToLog('Executed with this settings: ' . json_encode($this), 0);
         $this->dbConnection = $this->getDatabaseConnection();
         $response = @file_get_contents($this::API_URL);
@@ -110,7 +129,6 @@ class DeutscherWetterdienstTask extends AbstractTask
             return false;
         }
         $this->responseClass = $this->decodeResponse($response);
-        $this->writeToLog('Response class: ' . json_encode($this->responseClass), 0);
         if ($this->removeOldAlerts) {
             $this->removeOldAlertsFromDb();
         }
@@ -145,25 +163,18 @@ class DeutscherWetterdienstTask extends AbstractTask
                 if (is_array($alertArray)) {
                     /** @var \stdClass $alertClass */
                     foreach ($alertArray as $alertClass) {
-                        $occurrences = 0;
-                        foreach($this->selectedRegions as $region) {
-                            if (strpos(trim($alertClass->regionName), $region)) {
-                                $occurrences++;
-                            }
-                        }
-                        // check if identical alert already exists
-                        if ($occurrences) {
-                            $result = $this->dbConnection->exec_SELECTgetSingleRow(
-                                'uid',
-                                $this->dbExtTable,
-                                'starttime = ' . (int)$alertClass->start/1000 . ' AND endtime = "' .
-                                (int)$alertClass->end/1000 . '" AND region_name = "' . trim($alertClass->regionName) .
-                                '" AND level = "' . (int)$alertClass->level . '" AND type = "' . $alertClass->type . '"'
-                            );
-                            if (!$result) {
+                        if ($regionUid = $this->uidOfRegionName($alertClass->regionName) !== false) {
+                            if (!$this->isIdenticalAlertExisting(
+                                $alertClass->start,
+                                $alertClass->end,
+                                $regionUid,
+                                $alertClass->level,
+                                $alertClass->type
+                            )
+                            ) {
                                 $this->dbConnection->exec_INSERTquery(
                                     $this->dbExtTable,
-                                    $this->mapArrayForDatabase($alertClass)
+                                    $this->mapArrayForDatabase($alertClass, $regionUid)
                                 );
                             }
                         }
@@ -171,6 +182,54 @@ class DeutscherWetterdienstTask extends AbstractTask
                 }
             }
         }
+    }
+    
+    /**
+     * Returns true if identical alert already exists
+     * otherwise false
+     *
+     * @param int $start
+     * @param int $end
+     * @param int $regionUid
+     * @param int $level
+     * @param int $type
+     * @return bool
+     */
+    protected function isIdenticalAlertExisting($start, $end, $regionUid, $level, $type)
+    {
+        $identicalAlerts = $this->dbConnection->exec_SELECTgetSingleRow(
+            'uid',
+            $this->dbExtTable,
+            'starttime = ' . (int)$start / 1000 . ' AND endtime = "' .
+            (int)$end / 1000 . '" AND regions = "' . (int)$regionUid .
+            '" AND level = "' . (int)$level . '" AND type = "' . (int)$type . '"'
+        );
+        if ($identicalAlerts !== false) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * Returns the uid of the region if $regionName is
+     * in $this->regionSelection otherwise returns false
+     *
+     * @param string $regionName
+     * @return int|bool
+     */
+    protected function uidOfRegionName($regionName)
+    {
+        foreach ($this->selectedRegions as $regionUid) {
+            /** @var WeatherAlertRegion $region */
+            $region = $this->weatherAlertRepository->findByUid($regionUid);
+            if ($region instanceof WeatherAlertRegion) {
+                if (strpos(trim($regionName), $region->getName()) !== false) {
+                    return $region->getUid();
+                }
+            }
+        }
+        return false;
     }
     
     /**
@@ -222,7 +281,17 @@ class DeutscherWetterdienstTask extends AbstractTask
      */
     protected function writeToLog($message, $errorLevel = 0)
     {
-        $GLOBALS['BE_USER']->simplelog(trim($message), 'weather2', (int)$errorLevel);
+        $this->getBackendUserAuthentication()->simplelog(trim($message), 'weather2', (int)$errorLevel);
+    }
+    
+    /**
+     * Returns the BackendUserAuthentication
+     *
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUserAuthentication()
+    {
+        return $GLOBALS['BE_USER'];
     }
     
     /**
@@ -230,7 +299,7 @@ class DeutscherWetterdienstTask extends AbstractTask
      * This function must be adjusted for different APIs
      * $mappingArray = array(
      *     'pid' => $this->recordStoragePage,
-     *     'region_name' => '',
+     *     'regions' => 0,
      *     'level' => 0,
      *     'type' => 0,
      *     'title' => '',
@@ -242,14 +311,15 @@ class DeutscherWetterdienstTask extends AbstractTask
      *  );
      *
      * @param \stdClass $alertClass
+     * @param int $regionUid
      * @return array mapped array
      */
-    private function mapArrayForDatabase($alertClass)
+    private function mapArrayForDatabase($alertClass, $regionUid)
     {
         // initialize all items with a default value
         $mappingArray = array(
             'pid' => $this->recordStoragePage,
-            'region_name' => '',
+            'regions' => 0,
             'level' => 0,
             'type' => 0,
             'title' => '',
@@ -260,8 +330,8 @@ class DeutscherWetterdienstTask extends AbstractTask
             'endtime' => 0,
         );
         
-        if (isset($alertClass->regionName)) {
-            $mappingArray['region_name'] = trim($alertClass->regionName);
+        if (isset($regionUid)) {
+            $mappingArray['regions'] = (int)$regionUid;
         }
         
         if (isset($alertClass->level)) {
@@ -285,11 +355,11 @@ class DeutscherWetterdienstTask extends AbstractTask
         }
         
         if (isset($alertClass->start)) {
-            $mappingArray['starttime'] = (int)$alertClass->start/1000;
+            $mappingArray['starttime'] = (int)$alertClass->start / 1000;
         }
         
         if (isset($alertClass->end)) {
-            $mappingArray['endtime'] = (int)$alertClass->end/1000;
+            $mappingArray['endtime'] = (int)$alertClass->end / 1000;
         }
         
         return $mappingArray;

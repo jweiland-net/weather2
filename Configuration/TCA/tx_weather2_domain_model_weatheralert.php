@@ -2,7 +2,7 @@
 return array(
     'ctrl' => array(
         'title' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_weatheralert',
-        'label' => 'region_name',
+        'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
@@ -15,14 +15,14 @@ return array(
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ),
-        'searchFields' => 'hidden,region_name,level,type,title,description,instruction,starttime,endtime',
+        'searchFields' => 'hidden,regions,level,type,title,description,instruction,starttime,endtime',
         'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('weather2') . 'Resources/Public/Icons/tx_weather2_domain_model_weatheralert.gif'
     ),
     'interface' => array(
-        'showRecordFieldList' => 'hidden, region_name, level, type, title, description, instruction, starttime, endtime',
-    ), // @todo add fields to list
+        'showRecordFieldList' => 'hidden, regions, level, type, title, description, instruction, starttime, endtime',
+    ),
     'types' => array(
-        '1' => array('showitem' => 'hidden;;1, region_name, level, type, title, description, instruction, starttime, endtime'),
+        '1' => array('showitem' => 'hidden;;1, regions, level, type, title, description, instruction, starttime, endtime'),
     ),
     'palettes' => array(
         '1' => array('showitem' => ''),
@@ -68,21 +68,36 @@ return array(
                 ),
             ),
         ),
-        'region_name' => array(
+        'regions' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_weatheralert.region_name',
+            'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_weatheralert.regions',
             'config' => array(
-                'type' => 'input',
-                'size' => 30,
-                'eval' => 'trim,required'
+                'type' => 'select',
+                'size' => 10,
+                'eval' => 'required',
+                'enableMultiSelectFilterTextfield' => true,
+                'foreign_table' => 'tx_weather2_domain_model_weatheralertregion',
+                'forgein_table_where' => 'ORDER BY name ASC',
+                'minitems' => 0,
+                'maxitems' => 999
             ),
         ),
         'level' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_weatheralert.level',
             'config' => array(
-                'type' => 'input',
-                'size' => 4,
+                'type' => 'select',
+                'items' => array(
+                    array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.0', 0),
+                    array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.1', 1),
+                    array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.20', 20),
+                    array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.10', 10),
+                    array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.2', 2),
+                    array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.3', 3),
+                    array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.4', 4),
+                    array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.5', 5)
+                ),
+                'size' => 1,
                 'eval' => 'int,required'
             )
         ),
@@ -90,8 +105,23 @@ return array(
             'exclude' => 1,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_weatheralert.type',
             'config' => array(
-                'type' => 'input',
-                'size' => 4,
+                'type' => 'select',
+                'items' => array(
+                    array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.thunderstorm', 0),
+                    array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.storm', 1),
+                    array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.rain', 2),
+                    array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.snow', 3),
+                    array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.fog', 4),
+                    array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.frost', 5),
+                    array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.ice', 6),
+                    array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.thaw', 7),
+                    array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.hotness', 8),
+                    array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.uv', 9),
+                    array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.coast', 10),
+                    array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.lake', 11),
+                    array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.sea', 12)
+                ),
+                'size' => 1,
                 'eval' => 'int,required'
             )
         ),
