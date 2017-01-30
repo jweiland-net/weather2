@@ -16,10 +16,10 @@ namespace JWeiland\Weather2\Task;
 
 use JWeiland\Weather2\Domain\Model\WeatherAlertRegion;
 use JWeiland\Weather2\Domain\Repository\WeatherAlertRegionRepository;
-use JWeiland\Weather2\Service\DeutscherWetterdienstService;
 use JWeiland\Weather2\Utility\WeatherUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -67,13 +67,6 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider implements AdditionalFiel
     );
     
     /**
-     * Service class
-     *
-     * @var DeutscherWetterdienstService
-     */
-    protected $deutscherWetterdienstService;
-    
-    /**
      * Gets the additional fields
      *
      * @param array $taskInfo
@@ -99,8 +92,11 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider implements AdditionalFiel
         $fieldID = 'dwd_selectedRegions';
         if ($this->areRegionsAvailable()) {
             $fieldCode = '<input type="text" class="form-control ui-autocomplete-input" name="dwd_region_search" id="dwd_region_search" ' .
-                'placeholder="e.g. Pforzheim" size="30" />' . $this->getHtmlForSelectedRegions($taskInfo);
+                'placeholder="e.g. Pforzheim" size="30" /><br />' . $this->getHtmlForSelectedRegions($taskInfo);
         } else {
+            /** @var FlashMessageService $flashMessageService */
+            $flashMessageService = $this->objectManager->get('TYPO3\\CMS\\Core\\Messaging\\FlashMessageService');
+            $messageQueue = $flashMessageService->getMessageQueueByIdentifier();
             /** @var FlashMessage $flashMessage */
             $flashMessage = GeneralUtility::makeInstance(
                 'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
@@ -108,7 +104,8 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider implements AdditionalFiel
                 '',
                 FlashMessage::WARNING
             );
-            $fieldCode = $flashMessage->render();
+            $messageQueue->addMessage($flashMessage);
+            $fieldCode = $messageQueue->renderFlashMessages();
         }
         $additionalFields[$fieldID] = array(
             'code' => $fieldCode,
@@ -174,13 +171,19 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
             FormEngine.setBrowserUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_element_browser')) . ');
         }'
         );
+        if (version_compare(TYPO3_version, '6.2.99', '<=')) {
+            // include jquery autocomplete used since TYPO3 7.3
+            $pageRenderer->addRequireJsConfiguration(array(
+                'paths' => array(
+                    'jquery/autocomplete' => $extRelPath . 'Resources/Public/JavaScript/jquery.autocomplete'
+                )
+            ));
+            // include bootstrap css for input group and badges
+            $pageRenderer->addCssFile($extRelPath . 'Resources/Public/Css/scheduler_6-2fallback.css');
+        }
         $pageRenderer->addJsFile(
             ExtensionManagementUtility::extRelPath('backend') .
             'Resources/Public/JavaScript/jsfunc.tbe_editor.js'
-        );
-        /** @var DeutscherWetterdienstService $deutscherWetterdienstService */
-        $this->deutscherWetterdienstService = GeneralUtility::makeInstance(
-            'JWeiland\\Weather2\\Service\\DeutscherWetterdienstService'
         );
     }
     
@@ -213,7 +216,8 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
                 $region = $this->weatherAlertRepository->findByUid($regionUid);
                 if ($region instanceof WeatherAlertRegion) {
                     $label = $region->getName() . ($region->getDistrict() ? ' (' . $region->getDistrict() . ')' : '');
-                    $ulItems .= '<li id="dwd_regionItem_' . $region->getUid() . '"><a href="#" class="dwd_removeItem">' .
+                    $ulItems .= '<li class="list-group-item" id="dwd_regionItem_' . $region->getUid() . '">' .
+                        '<a href="#" class="badge dwd_removeItem">' .
                         WeatherUtility::translate('removeItem', 'deutscherwetterdienstJs') . '</a>' .
                         $label .
                         '<input type="hidden" name="tx_scheduler[dwd_selectedRegions][]" value="' . $region->getUid() .
@@ -221,8 +225,8 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
                 }
             }
         }
-        
-        return '<ul id="dwd_selected_regions_ul">' . $ulItems . '</ul>';
+                
+        return '<ul class="list-group" id="dwd_selected_regions_ul">' . $ulItems . '</ul>';
     }
     
     /**

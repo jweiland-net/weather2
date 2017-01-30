@@ -2,7 +2,7 @@
  * Module: TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule
  * Object that replace pages_ID with ID
  */
-define('TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule', ['jquery', 'jquery-ui/jquery-ui-1.10.4.custom.min'], function ($) {
+define('TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule', ['jquery', 'jquery/autocomplete'], function ($) {
   $(document).ready(function () {
     $('#dwd_recordStoragePage').change(function () {
       $(this).val($(this).val().replace(/[^0-9]/g, ''));
@@ -17,7 +17,7 @@ define('TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule', ['jquery', 'jquery-
         setDisplayAttributeOfElements('none', autoRemoveFields);
       }
     }
-    
+
     /**
      * Sets the display property for each element in array elements
      *
@@ -31,12 +31,13 @@ define('TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule', ['jquery', 'jquery-
     }
     
     $('#dwd_region_search').autocomplete({
-      source: TYPO3.settings.ajaxUrls['Weather2Dwd::renderRegions'], classes: {
-        "ui-autocomplete": "highlight"
-      }, select: function (e, ui) {
-        if (!$('#dwd_regionItem_' + ui.item.value).length) {
-          $('#dwd_selected_regions_ul').append('<li id="dwd_regionItem_' + ui.item.value + '"><a href="#" class="dwd_removeItem">' + TYPO3.lang.removeItem + '</a>' + ui.item.label + '</div><input type="hidden" name="tx_scheduler[dwd_selectedRegions][]" value="' + ui.item.value + '" /></li>');
-          $('#dwd_regionItem_' + ui.item.value + ' .dwd_removeItem').click(function () {
+      serviceUrl: TYPO3.settings.ajaxUrls['Weather2Dwd::renderRegions'],
+      dataType: 'json',
+      minChars: 3,
+      onSelect: function (suggestion) {
+        if (!$('#dwd_regionItem_' + suggestion.data).length) {
+          $('#dwd_selected_regions_ul').append('<li class="list-group-item" id="dwd_regionItem_' + suggestion.data + '"><a href="#" class="badge dwd_removeItem">' + TYPO3.lang.removeItem + '</a>' + suggestion.value + '</div><input type="hidden" name="tx_scheduler[dwd_selectedRegions][]" value="' + suggestion.data + '" /></li>');
+          $('#dwd_regionItem_' + suggestion.data + ' .dwd_removeItem').click(function () {
               $(this).parent('li').remove();
             });
         }

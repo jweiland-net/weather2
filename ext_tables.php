@@ -25,7 +25,7 @@ if (!defined('TYPO3_MODE')) {
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler (
     'Weather2Dwd::renderRegions',
-    'JWeiland\\Weather2\\Service\\DeutscherWetterdienstService->renderRegions'
+    'JWeiland\\Weather2\\Ajax\\DeutscherWetterdienstRegionSearch->renderRegions'
 );
 
 $modifiedExtensionKey = strtolower(\TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($_EXTKEY));

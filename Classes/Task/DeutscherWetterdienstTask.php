@@ -163,7 +163,8 @@ class DeutscherWetterdienstTask extends AbstractTask
                 if (is_array($alertArray)) {
                     /** @var \stdClass $alertClass */
                     foreach ($alertArray as $alertClass) {
-                        if ($regionUid = $this->uidOfRegionName($alertClass->regionName) !== false) {
+                        $regionUid = $this->getUidOfRegionName($alertClass->regionName);
+                        if ($regionUid !== false) {
                             if (!$this->isIdenticalAlertExisting(
                                 $alertClass->start,
                                 $alertClass->end,
@@ -202,7 +203,8 @@ class DeutscherWetterdienstTask extends AbstractTask
             $this->dbExtTable,
             'starttime = ' . (int)$start / 1000 . ' AND endtime = "' .
             (int)$end / 1000 . '" AND regions = "' . (int)$regionUid .
-            '" AND level = "' . (int)$level . '" AND type = "' . (int)$type . '"'
+            '" AND level = "' . (int)$level . '" AND type = "' . (int)$type . '" AND pid = "'
+            . (int)$this->recordStoragePage . '"'
         );
         if ($identicalAlerts !== false) {
             return true;
@@ -218,14 +220,14 @@ class DeutscherWetterdienstTask extends AbstractTask
      * @param string $regionName
      * @return int|bool
      */
-    protected function uidOfRegionName($regionName)
+    protected function getUidOfRegionName($regionName)
     {
         foreach ($this->selectedRegions as $regionUid) {
             /** @var WeatherAlertRegion $region */
             $region = $this->weatherAlertRepository->findByUid($regionUid);
             if ($region instanceof WeatherAlertRegion) {
                 if (strpos(trim($regionName), $region->getName()) !== false) {
-                    return $region->getUid();
+                    return (int)$region->getUid();
                 }
             }
         }

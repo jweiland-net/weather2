@@ -3,9 +3,6 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
-// cache to temporary save dwd regions
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['weather2_dwd_regions']['backend'] = 'TYPO3\\CMS\\Core\\Cache\\Backend\\SimpleFileBackend';
-
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['JWeiland\\Weather2\\Task\\OpenWeatherMapTask'] = array(
     'extension' => $_EXTKEY,
     'title' => 'Call openweathermap.org api',
