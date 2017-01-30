@@ -1,5 +1,7 @@
 # TYPO3 Weather Extension #
 
+**Documentation will be updated soon!**
+
 The weather extension is designed to display data received from http://openweathermap.org
 However it is also possible to use any other weather API by creating your own scheduler that maps the API response to the database structure of the extension.
 

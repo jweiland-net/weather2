@@ -13,6 +13,8 @@ Open Weather
 
 .. only:: html
 
+  :!!! Documentation will be updated soon !!!:
+
 	:Classification:
 		weather2
 

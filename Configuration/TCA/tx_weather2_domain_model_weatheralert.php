@@ -78,7 +78,7 @@ return array(
                 'enableMultiSelectFilterTextfield' => true,
                 'foreign_table' => 'tx_weather2_domain_model_weatheralertregion',
                 'forgein_table_where' => 'ORDER BY name ASC',
-                'minitems' => 0,
+                'minitems' => 1,
                 'maxitems' => 999
             ),
         ),
