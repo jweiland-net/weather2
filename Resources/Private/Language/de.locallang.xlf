@@ -30,11 +30,11 @@
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_currentweather.min_temp_c">
 				<source>Min</source>
-				<target>Min</target>
+				<target>min</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_currentweather.max_temp_c">
 				<source>Max</source>
-				<target>Max</target>
+				<target>max</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_currentweather.wind_speed_m_p_s">
 				<source>Wind Speed</source>
@@ -101,6 +101,21 @@
 			<trans-unit id="tx_weather2.error.noRecord">
 				<source>No weather record found</source>
 				<target>Keine Wetterdaten gefunden</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.utility.showMore">
+				<target>Mehr Details</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.utility.showLess">
+				<target>Weniger Details</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_weatheralert.starttime">
+				<target>Gültig von</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_weatheralert.endtime">
+				<target>Gültig bis</target>
+			</trans-unit>
+			<trans-unit id="from">
+				<target>aus</target>
 			</trans-unit>
 		</body>
 	</file>

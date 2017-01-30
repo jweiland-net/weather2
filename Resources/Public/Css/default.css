@@ -1,67 +1,115 @@
-.cursorPointer {
-  cursor: pointer;
+.weather2-item {
+  background-color: #f1f1f1;
+  border-top: 4px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  display: block;
+  text-align: right;
+  margin: .3em 0;
+  width: 100%;
 }
 
-.notSelectable {
-  user-select: none;
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  -o-user-select: none;
-}
-
-/* Hide/Show javascript used elements so that they are not shown if javascript is not loaded */
-.tx-weather2 .showMore {
-  display: none;
-}
-
-.tx-weather2 .showLess {
-  display: none;
-}
-
-.tx-weather2 {
-  display: inline-block;
-}
-
-.tx-weather2 h2 {
+.weather2-item p {
+  font-size: .8em;
+  color: #666;
   padding: 0;
   margin: 0;
 }
 
-/* Plugin design */
-.tx-weather2 > ul {
-  display: inline-block;
-  margin: 0;
+.weather2-item h3 {
+  font-weight: normal;
   padding: 0;
-  height: 59px;
+  top: 0;
+  position: relative;
+  margin: 0;
 }
 
-.tx-weather2 ul li {
+.weather2-report h3 {
+  font-size: 1.54em;
+}
+
+.weather2-alert h3 {
+  font-size: 1.3em;
+}
+
+.weather2-item .primary {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.weather2-item .primary::after {
+  clear: both;
+}
+
+.weather2-item .primary .weather-icon {
+  float: left;
+  display: block;
+  padding: .5em;
+}
+
+.weather2-item .primary .weather-data {
+  text-align: right;
+  padding: .5em;
+}
+
+.weather2-item .showMore {
+  display: block;
+}
+
+.weather2-item {
+  display: inline-block;
+}
+
+.weather2-item h2 {
+  padding: 0;
+  margin: 0;
+}
+
+.weather2-item ul li {
   list-style: none;
 }
 
-.tx-weather2 ul.secondaryProperties {
+.weather2-item ul.secondaryProperties {
+  display: none;
   height: auto;
   width: 100%;
-  background-color: ghostwhite;
+  padding: 0 .8em;
+  margin: 0;
 }
 
-.tx-weather2 ul.primaryProperties li:first-child {
-  font-size: 1.2em;
-  font-weight: bold;
+.weather2-item ul.secondaryProperties li {
+  border-top: 1px solid #ccc;
+  padding: .3em;
 }
 
-.tx-weather2 ul.secondaryProperties li {
-  border: 1px solid black;
+.weather2-item ul.secondaryProperties li:first-of-type {
+  border-top: 2px solid #ccc;
 }
 
-.tx-weather2 .divMore {
-  display: block;
-  background-color: lightslategrey;
+.weather2-item ul.secondaryProperties.expanded {
+  display: inline-block;
 }
 
-.tx-weather2 .showMore,
-.tx-weather2 .showLess {
-  font-size: 1.5em;
+/* colors for different weather alert levels */
+.alert-level-0.weather2-item,
+.alert-level-1.weather2-item,
+.alert-level-2.weather2-item {
+  border-top-color: #e2d17f
 }
 
+.alert-level-3.weather2-item {
+  border-top-color: #b35223;
+}
+
+.alert-level-4.weather2-item {
+  border-top-color: #b54c4c;
+}
+
+.alert-level-5.weather2-item {
+  border-top-color: #8a3131;
+}
+
+.alert-level-10.weather2-item,
+.alert-level-20.weather2-item {
+  border-top-color: #8d3298;
+}

@@ -23,10 +23,10 @@
 				<source>Humidity</source>
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_currentweather.min_temp_c">
-				<source>Min</source>
+				<source>min</source>
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_currentweather.max_temp_c">
-				<source>Max</source>
+				<source>max</source>
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_currentweather.wind_speed_m_p_s">
 				<source>Wind Speed</source>
@@ -84,6 +84,15 @@
 			</trans-unit>
 			<trans-unit id="tx_weather2.error.noRecord">
 				<source>No weather record found</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_weatheralert.starttime">
+				<source>Start time</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_weatheralert.endtime">
+				<source>End time</source>
+			</trans-unit>
+			<trans-unit id="from">
+				<source>from</source>
 			</trans-unit>
 		</body>
 	</file>

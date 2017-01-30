@@ -1,17 +1,9 @@
 <f:layout name="Default"/>
 
 <f:section name="main">
-	<f:if condition="{weatherAlerts}}">
-		<f:then>
-			<h2>
-				<f:translate key="tx_weather2_domain_model_weatheralert"/>
-			</h2>
-
-			<f:flashMessages/>
-			<f:render partial="WeatherAlert/WeatherAlert" arguments="{weatherAlerts :weatherAlerts}"/>
-		</f:then>
-		<f:else>
-			<span><f:translate key="tx_weather2.error.noRecord"/></span>
-		</f:else>
+	<f:if condition="{weatherAlerts}">
+		<f:for each="{weatherAlerts}" as="weatherAlert">
+			<f:render partial="WeatherAlert/WeatherAlert" arguments="{weatherAlert: weatherAlert}"/>
+		</f:for>
 	</f:if>
 </f:section>

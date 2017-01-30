@@ -15,7 +15,6 @@ namespace JWeiland\Weather2\Controller;
  */
 
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * WeatherAlertController
@@ -38,7 +37,6 @@ class WeatherAlertController extends ActionController
     public function showAction()
     {
         $alerts = $this->weatherAlertRepository->findCurrentSelection();
-        DebuggerUtility::var_dump($alerts);
         $this->view->assign('weatherAlerts', $alerts);
     }
 }
