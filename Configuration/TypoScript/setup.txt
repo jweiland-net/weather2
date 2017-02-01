@@ -1,70 +1,37 @@
 page.includeCSS {
-    tx_weatherCss = EXT:weather2/Resources/Public/Css/default.css
+  tx_weatherCss = EXT:weather2/Resources/Public/Css/default.css
 }
 
 page.includeJSFooterlibs {
-    tx_weather2jQuery = //code.jquery.com/jquery-3.0.0.min.js
-    tx_weather2jQuery.external = 1
+  tx_weather2jQuery = //code.jquery.com/jquery-3.0.0.min.js
+  tx_weather2jQuery.external = 1
 
-    tx_weatherJs = EXT:weather2/Resources/Public/JavaScript/default.js
+  tx_weatherJs = EXT:weather2/Resources/Public/JavaScript/default.js
 }
 
-plugin.tx_weather2_currentweather {
-    view {
-        templateRootPaths {
-            0 = EXT:weather2/Resources/Private/Templates/
-            1 = {$plugin.tx_weather2_currentweather.view.templateRootPath}
-        }
-
-        partialRootPaths {
-            0 = EXT:weather2/Resources/Private/Partials/
-            1 = {$plugin.tx_weather2_currentweather.view.partialRootPath}
-        }
-
-        layoutRootPaths {
-            0 = EXT:weather2/Resources/Private/Layouts/
-            1 = {$plugin.tx_weather2_currentweather.view.layoutRootPath}
-        }
+plugin.tx_weather2 {
+  view {
+    templateRootPaths {
+      0 = EXT:weather2/Resources/Private/Templates/
+      1 = {$plugin.tx_weather2.view.templateRootPath}
     }
 
-    persistence {
-        storagePid = {$plugin.tx_weather2_currentweather.persistence.storagePid}
+    partialRootPaths {
+      0 = EXT:weather2/Resources/Private/Partials/
+      1 = {$plugin.tx_weather2.view.partialRootPath}
     }
 
-    settings {
-        iconsPath = {$plugin.tx_weather2_currentweather.iconsPath}
+    layoutRootPaths {
+      0 = EXT:weather2/Resources/Private/Layouts/
+      1 = {$plugin.tx_weather2.view.layoutRootPath}
     }
+  }
+
+  persistence {
+    storagePid = {$plugin.tx_weather2.persistence.storagePid}
+  }
+
+  settings {
+    iconsPath = {$plugin.tx_weather2.iconsPath}
+  }
 }
-
-plugin.tx_weather2._CSS_DEFAULT_STYLE (
-    textarea.f3-form-error {
-        background-color:#FF9F9F;
-        border: 1px #FF0000 solid;
-    }
-
-    input.f3-form-error {
-        background-color:#FF9F9F;
-        border: 1px #FF0000 solid;
-    }
-
-    .tx-jw-open-weather table {
-        border-collapse:separate;
-        border-spacing:10px;
-    }
-
-    .tx-jw-open-weather table th {
-        font-weight:bold;
-    }
-
-    .tx-jw-open-weather table td {
-        vertical-align:top;
-    }
-
-    .typo3-messages .message-error {
-        color:red;
-    }
-
-    .typo3-messages .message-ok {
-        color:green;
-    }
-)

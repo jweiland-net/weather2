@@ -15,8 +15,7 @@ namespace JWeiland\Weather2\Domain\Repository;
  */
 
 use JWeiland\Weather2\Domain\Model\CurrentWeather;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Persistence\Generic\Query;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
@@ -25,48 +24,23 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 class CurrentWeatherRepository extends Repository
 {
     /**
-     * Contains the settings of the current extension
-     *
-     * @var array
-     */
-    protected $settings;
-    
-    /**
-     * @var ConfigurationManagerInterface
-     */
-    protected $configurationManager;
-    
-    /**
-     * Injects a ConfigurationManager
-     *
-     * @param ConfigurationManagerInterface $configurationManager
-     * @return void
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
-    {
-        $this->configurationManager = $configurationManager;
-        $this->settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
-    }
-    
-    /**
      * Returns the latest weather
      *
+     * @param string $selection
      * @return \JWeiland\Weather2\Domain\Model\CurrentWeather
      */
-    public function findCurrent()
+    public function findBySelection($selection)
     {
-        // Get the selection identifier
-        $selection = trim($this->settings['selection']);
-        
-        /** @var Query $query */
         $query = $this->createQuery();
         // Only select rows where name == selection
         if ($selection !== '') {
-            $query->matching($query->equals('name', $selection));
+            $query->matching($query->equals('name', trim($selection)));
         }
         
         // Order desc to get the latest weather
-        $query->setOrderings(array('uid' => Query::ORDER_DESCENDING));
+        $query->setOrderings(array(
+            'uid' => QueryInterface::ORDER_DESCENDING
+        ));
         
         /** @var CurrentWeather $currentWeather */
         $currentWeather = $query->execute()->getFirst();

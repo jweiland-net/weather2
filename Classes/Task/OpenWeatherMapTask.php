@@ -39,7 +39,7 @@ class OpenWeatherMapTask extends AbstractTask
      *
      * @var DatabaseConnection
      */
-    protected $dbConnection = null;
+    protected $dbConnection;
     
     /**
      * Table name
@@ -60,7 +60,7 @@ class OpenWeatherMapTask extends AbstractTask
      *
      * @var \stdClass
      */
-    protected $responseClass = null;
+    protected $responseClass;
     
     /**
      * City
@@ -216,7 +216,7 @@ class OpenWeatherMapTask extends AbstractTask
             case '200':
                 return true;
             case '404':
-                $this->writeToLog('Error: ' . WeatherUtility::translate('messages.api_code_404'));
+                $this->writeToLog('Error: ' . WeatherUtility::translate('messages.api_code_404', 'openweatherapi'));
                 $this->sendMail(
                     'Error while requesting weather data',
                     WeatherUtility::translate('messages.api_code_404', 'openweatherapi')

@@ -52,7 +52,7 @@ class DeutscherWetterdienstTask extends AbstractTask
      *
      * @var DatabaseConnection
      */
-    protected $dbConnection = null;
+    protected $dbConnection;
     
     /**
      * Table name
@@ -73,7 +73,7 @@ class DeutscherWetterdienstTask extends AbstractTask
      *
      * @var \stdClass
      */
-    protected $responseClass = null;
+    protected $responseClass;
     
     /**
      * Timestamp from dwd response
@@ -118,17 +118,19 @@ class DeutscherWetterdienstTask extends AbstractTask
      */
     public function execute()
     {
-        /** @var ObjectManager $objectManager */
         $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        /** @var WeatherAlertRegionRepository $repository */
         $this->weatherAlertRepository = $this->objectManager->get('JWeiland\\Weather2\\Domain\\Repository\\WeatherAlertRegionRepository');
-        $this->writeToLog('Executed with this settings: ' . json_encode($this), 0);
         $this->dbConnection = $this->getDatabaseConnection();
         $response = @file_get_contents($this::API_URL);
-        if (!($this->checkResponse($response))) {
+        if (!$this->checkResponse($response)) {
             return false;
         }
-        $this->responseClass = $this->decodeResponse($response);
+        try {
+            $this->responseClass = $this->decodeResponse($response);
+        } catch (\Exception $e) {
+            $this->writeToLog($e->getMessage(), 2);
+            return false;
+        }
         if ($this->removeOldAlerts) {
             $this->removeOldAlertsFromDb();
         }
@@ -142,24 +144,32 @@ class DeutscherWetterdienstTask extends AbstractTask
      * the json file...
      *
      * @param string $response
-     * @return string
+     * @return \stdClass
+     * @throws \Exception
      */
     protected function decodeResponse($response)
     {
-        $pattern = '/^warnWetter.loadWarnings\(|\)\;$/';
-        return json_decode(preg_replace($pattern, '', $response));
+        $pattern = '/^warnWetter\.loadWarnings\(|\);$/';
+        $decodedResponse = json_decode(preg_replace($pattern, '', $response));
+        if (empty($decodedResponse)) {
+            throw new \Exception(
+                'Response can not be decoded because it is an invalid string',
+                1485944083
+            );
+        }
+        return $decodedResponse;
     }
     
     /**
      * Checks the responseClass for alerts in selected regions
      *
-     * @return mixed
+     * @return void
      */
     protected function handleResponse()
     {
         $this->responseTimestamp = (int)$this->responseClass->time;
-        if (is_object($this->responseClass->warnings)) {
-            foreach ($this->responseClass->warnings as $alertArray) {
+        if ($this->responseClass->warnings instanceof \stdClass) {
+            foreach ((array)$this->responseClass->warnings as $alertArray) {
                 if (is_array($alertArray)) {
                     /** @var \stdClass $alertClass */
                     foreach ($alertArray as $alertClass) {
@@ -265,12 +275,11 @@ class DeutscherWetterdienstTask extends AbstractTask
      */
     private function checkResponse($response)
     {
-        if ($response === false) {
+        if (empty($response)) {
             $this->writeToLog(WeatherUtility::translate('message.api_response_null', 'deutscherwetterdienst'), 2);
             return false;
-        } else {
-            return true;
         }
+        return true;
     }
     
     /**
@@ -301,7 +310,7 @@ class DeutscherWetterdienstTask extends AbstractTask
      * This function must be adjusted for different APIs
      * $mappingArray = array(
      *     'pid' => $this->recordStoragePage,
-     *     'regions' => 0,
+     *     'regions' => (int)$regionUid,
      *     'level' => 0,
      *     'type' => 0,
      *     'title' => '',
@@ -321,7 +330,7 @@ class DeutscherWetterdienstTask extends AbstractTask
         // initialize all items with a default value
         $mappingArray = array(
             'pid' => $this->recordStoragePage,
-            'regions' => 0,
+            'regions' => (int)$regionUid,
             'level' => 0,
             'type' => 0,
             'title' => '',
@@ -331,10 +340,6 @@ class DeutscherWetterdienstTask extends AbstractTask
             'starttime' => 0,
             'endtime' => 0,
         );
-        
-        if (isset($regionUid)) {
-            $mappingArray['regions'] = (int)$regionUid;
-        }
         
         if (isset($alertClass->level)) {
             $mappingArray['level'] = (int)$alertClass->level;

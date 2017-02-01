@@ -27,7 +27,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['JWeiland\\Weath
     'JWeiland.' . $_EXTKEY,
     'Currentweather',
     array(
-        'CurrentWeather' => 'show, list',
+        'CurrentWeather' => 'show',
     
     ),
     // non-cacheable actions

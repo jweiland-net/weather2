@@ -14,12 +14,10 @@ namespace JWeiland\Weather2\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\SingletonInterface;
-
 /**
  * WeatherConverterService
  */
-class WeatherConverterService implements SingletonInterface
+class WeatherConverterService
 {
     /**
      * Converts value from fahrenheit to celsius
@@ -31,7 +29,7 @@ class WeatherConverterService implements SingletonInterface
     {
         return $value * 5 / 9 - 32;
     }
-
+    
     /**
      * Converts value from kelvin to celsius
      *
@@ -42,7 +40,7 @@ class WeatherConverterService implements SingletonInterface
     {
         return $value - 273.15;
     }
-
+    
     /**
      * Converts value from celsius to fahrenheit
      *
@@ -53,7 +51,7 @@ class WeatherConverterService implements SingletonInterface
     {
         return $value * 9 / 5 + 32;
     }
-
+    
     /**
      * Converts value from celsius to kelvin
      *
@@ -64,7 +62,7 @@ class WeatherConverterService implements SingletonInterface
     {
         return $value + 273.15;
     }
-
+    
     /**
      * Converts value from meters to miles
      *

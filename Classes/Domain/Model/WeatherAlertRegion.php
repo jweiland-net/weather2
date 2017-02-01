@@ -64,7 +64,7 @@ class WeatherAlertRegion extends AbstractEntity
      */
     public function getDistrict()
     {
-        return (string)$this->district;
+        return $this->district;
     }
     
     /**
@@ -74,6 +74,6 @@ class WeatherAlertRegion extends AbstractEntity
      */
     public function setDistrict($district)
     {
-        $this->district = $district;
+        $this->district = (string)$district;
     }
 }

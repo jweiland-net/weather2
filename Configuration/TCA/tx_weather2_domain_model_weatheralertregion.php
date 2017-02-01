@@ -15,7 +15,7 @@ return array(
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ),
-        'searchFields' => 'hidden,name,district',
+        'searchFields' => 'name,district',
         'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('weather2') . 'Resources/Public/Icons/tx_weather2_domain_model_weatheralertregion.gif'
     ),
     'interface' => array(
@@ -51,7 +51,7 @@ return array(
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'trim'
-            )
+            ),
         ),
     ),
 );

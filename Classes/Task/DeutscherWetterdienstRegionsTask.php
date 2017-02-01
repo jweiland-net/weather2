@@ -33,7 +33,7 @@ class DeutscherWetterdienstRegionsTask extends AbstractTask
      *
      * @var DatabaseConnection
      */
-    protected $dbConnection = null;
+    protected $dbConnection;
     
     /**
      * Table name
@@ -47,7 +47,7 @@ class DeutscherWetterdienstRegionsTask extends AbstractTask
      *
      * @var \stdClass
      */
-    protected $responseClass = null;
+    protected $responseClass;
     
     /**
      * This method is the heart of the scheduler task. It will be fired if the scheduler
@@ -57,10 +57,9 @@ class DeutscherWetterdienstRegionsTask extends AbstractTask
      */
     public function execute()
     {
-        $this->writeToLog('Executed with this settings: ' . json_encode($this), 0);
         $this->dbConnection = $this->getDatabaseConnection();
         $response = @file_get_contents($this::API_URL);
-        if (!($this->checkResponse($response))) {
+        if (!$this->checkResponse($response)) {
             return false;
         }
         $this->responseClass = $this->decodeResponse($response);
@@ -144,12 +143,11 @@ class DeutscherWetterdienstRegionsTask extends AbstractTask
      */
     private function checkResponse($response)
     {
-        if ($response === false) {
+        if (empty($response)) {
             $this->writeToLog(WeatherUtility::translate('message.api_response_null', 'deutscherwetterdienst'), 2);
             return false;
-        } else {
-            return true;
         }
+        return true;
     }
     
     /**

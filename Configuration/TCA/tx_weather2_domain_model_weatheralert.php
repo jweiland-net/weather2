@@ -15,7 +15,7 @@ return array(
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ),
-        'searchFields' => 'hidden,regions,level,type,title,description,instruction,starttime,endtime',
+        'searchFields' => 'regions,level,type,title,description,instruction',
         'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('weather2') . 'Resources/Public/Icons/tx_weather2_domain_model_weatheralert.gif'
     ),
     'interface' => array(
@@ -28,7 +28,6 @@ return array(
         '1' => array('showitem' => ''),
     ),
     'columns' => array(
-        
         'hidden' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
@@ -74,7 +73,6 @@ return array(
             'config' => array(
                 'type' => 'select',
                 'size' => 10,
-                'eval' => 'required',
                 'enableMultiSelectFilterTextfield' => true,
                 'foreign_table' => 'tx_weather2_domain_model_weatheralertregion',
                 'forgein_table_where' => 'ORDER BY name ASC',
@@ -88,6 +86,7 @@ return array(
             'config' => array(
                 'type' => 'select',
                 'items' => array(
+                    array('', ''),
                     array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.0', 0),
                     array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.1', 1),
                     array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.20', 20),
@@ -107,6 +106,7 @@ return array(
             'config' => array(
                 'type' => 'select',
                 'items' => array(
+                    array('', ''),
                     array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.thunderstorm', 0),
                     array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.storm', 1),
                     array('LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.rain', 2),

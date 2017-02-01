@@ -14,7 +14,8 @@ namespace JWeiland\Weather2\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\Query;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
@@ -24,41 +25,23 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 class WeatherAlertRepository extends Repository
 {
     /**
-     * Contains the settings of the current extension
-     *
-     * @var array
-     */
-    protected $settings;
-    
-    /**
-     * @var ConfigurationManagerInterface
-     */
-    protected $configurationManager;
-    
-    /**
-     * Injects a ConfigurationManager
-     *
-     * @param ConfigurationManagerInterface $configurationManager
-     * @return void
-     */
-    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager)
-    {
-        $this->configurationManager = $configurationManager;
-        $this->settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
-    }
-    
-    /**
      * Returns current alerts filtered by user selection
      *
-     * @return QueryResultInterface|array
+     * @param string $regions
+     * @return QueryResultInterface
      */
-    public function findCurrentSelection()
+    public function findByRegions($regions)
     {
-        $regions = explode(',', $this->settings['regions']);
+        $regions = GeneralUtility::trimExplode(',', $regions);
+        /** @var Query $query */
         $query = $this->createQuery();
+        $constraints = array();
+        foreach ($regions as $region) {
+            $constraints[] = $query->contains('regions', (int)$region);
+        }
         $query->matching(
             $query->logicalAnd(
-                $query->contains('regions', $regions),
+                $query->logicalOr($constraints),
                 $query->lessThan('starttime', $GLOBALS['EXEC_TIME']),
                 $query->greaterThanOrEqual('endtime', $GLOBALS['EXEC_TIME'])
             )

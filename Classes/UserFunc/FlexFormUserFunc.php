@@ -30,7 +30,13 @@ class FlexFormUserFunc
     public function getSelection(&$fConfig) {
         $dbConnection = $this->getDatabaseConnection();
 
-        $result = $dbConnection->exec_SELECTgetRows('name', 'tx_weather2_domain_model_currentweather', '1', 'name', 'name');
+        $result = $dbConnection->exec_SELECTgetRows(
+            'name',
+            'tx_weather2_domain_model_currentweather',
+            '1',
+            'name',
+            'name'
+        );
 
         // add empty to enable using latest entry in db
         array_push($result, array('name' => ''));

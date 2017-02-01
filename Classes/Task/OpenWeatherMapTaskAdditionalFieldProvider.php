@@ -37,7 +37,12 @@ class OpenWeatherMapTaskAdditionalFieldProvider implements AdditionalFieldProvid
      *
      * @var array
      */
-    protected $requiredFields = array('name', 'city', 'country', 'apiKey');
+    protected $requiredFields = array(
+        'name',
+        'city',
+        'country',
+        'apiKey'
+    );
     
     /**
      * Fields to insert from task if empty

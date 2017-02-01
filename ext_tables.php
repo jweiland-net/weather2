@@ -18,12 +18,10 @@ if (!defined('TYPO3_MODE')) {
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'weather2');
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_weather2_domain_model_currentweather', 'EXT:weather2/Resources/Private/Language/locallang_csh_tx_weather2_domain_model_currentweather.xlf');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_weather2_domain_model_currentweather');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_weather2_domain_model_weatheralert');
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_weather2_domain_model_weatheralertregion');
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler (
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::registerAjaxHandler(
     'Weather2Dwd::renderRegions',
     'JWeiland\\Weather2\\Ajax\\DeutscherWetterdienstRegionSearch->renderRegions'
 );

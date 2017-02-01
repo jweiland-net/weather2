@@ -14,6 +14,7 @@ namespace JWeiland\Weather2\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use JWeiland\Weather2\Domain\Repository\CurrentWeatherRepository;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
@@ -25,21 +26,20 @@ class CurrentWeatherController extends ActionController
      * currentWeatherRepository
      *
      * @var \JWeiland\Weather2\Domain\Repository\CurrentWeatherRepository
-     * @inject
      */
-    protected $currentWeatherRepository = null;
-
+    protected $currentWeatherRepository;
+    
     /**
-     * action list displays a list of CurrentWeather models
+     * inject currentWeatherRepository
      *
+     * @param CurrentWeatherRepository $currentWeatherRepository
      * @return void
      */
-    public function listAction()
+    public function injectCurrentWeatherRepository(CurrentWeatherRepository $currentWeatherRepository)
     {
-        $currentWeathers = $this->currentWeatherRepository->findAll();
-        $this->view->assign('currentWeathers', $currentWeathers);
+        $this->currentWeatherRepository = $currentWeatherRepository;
     }
-    
+
     /**
      * action show displays the newest CurrentWeather model
      *
@@ -47,7 +47,7 @@ class CurrentWeatherController extends ActionController
      */
     public function showAction()
     {
-        $currentWeather = $this->currentWeatherRepository->findCurrent();
+        $currentWeather = $this->currentWeatherRepository->findBySelection($this->settings['selection']);
         $this->view->assign('currentWeather', $currentWeather);
     }
 }

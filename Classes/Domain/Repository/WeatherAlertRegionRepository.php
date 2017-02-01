@@ -26,7 +26,7 @@ class WeatherAlertRegionRepository extends Repository
      * Finds objects by properties name and district
      *
      * @param string $name
-     * @return QueryResultInterface|array
+     * @return QueryResultInterface
      */
     public function findByName($name)
     {

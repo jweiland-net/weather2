@@ -8,14 +8,13 @@ return array(
         'cruser_id' => 'cruser_id',
         'dividers2tabs' => true,
         'rootLevel' => -1,
-        
         'delete' => 'deleted',
         'enablecolumns' => array(
             'disabled' => 'hidden',
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ),
-        'searchFields' => 'name,measure_timestamp,temperature_c,pressure_hpa,humidity_percentage,min_temp_c,max_temp_c,wind_speed_m_p_s,wind_direction_deg,pop_percentage,rain_volume,snow_volume,clouds_percentage,icon,serialized_array,',
+        'searchFields' => 'name,icon',
         'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('weather2') . 'Resources/Public/Icons/tx_weather2_domain_model_currentweather.gif'
     ),
     'interface' => array(
@@ -28,7 +27,6 @@ return array(
         '1' => array('showitem' => ''),
     ),
     'columns' => array(
-        
         'hidden' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
@@ -68,7 +66,6 @@ return array(
                 ),
             ),
         ),
-        
         'name' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_currentweather.name',

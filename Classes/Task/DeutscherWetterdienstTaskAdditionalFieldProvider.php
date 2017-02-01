@@ -52,7 +52,9 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider implements AdditionalFiel
      *
      * @var array
      */
-    protected $requiredFields = array('dwd_regionSelection');
+    protected $requiredFields = array(
+        'dwd_regionSelection'
+    );
     
     /**
      * Fields to insert from task if empty
@@ -147,9 +149,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
      */
     protected function initialize()
     {
-        /** @var ObjectManager $objectManager */
         $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        /** @var WeatherAlertRegionRepository $repository */
         $this->weatherAlertRepository = $this->objectManager->get('JWeiland\\Weather2\\Domain\\Repository\\WeatherAlertRegionRepository');
         $extRelPath = ExtensionManagementUtility::extRelPath('weather2');
         /** @var PageRenderer $pageRenderer */
@@ -168,8 +168,8 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
         $pageRenderer->loadRequireJsModule(
             'TYPO3/CMS/Backend/FormEngine',
             'function(FormEngine) {
-            FormEngine.setBrowserUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_element_browser')) . ');
-        }'
+                FormEngine.setBrowserUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_element_browser')) . ');
+             }'
         );
         if (version_compare(TYPO3_version, '6.2.99', '<=')) {
             // include jquery autocomplete used since TYPO3 7.3
@@ -188,17 +188,13 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
     }
     
     /**
-     * Checks if regions are available in the databas
+     * Checks if regions are available in the database
      *
      * @return bool true if yes else false
      */
     protected function areRegionsAvailable()
     {
-        if ($this->weatherAlertRepository->countAll() > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->weatherAlertRepository->countAll() > 0;
     }
     
     /**
@@ -215,7 +211,8 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
                 /** @var WeatherAlertRegion $region */
                 $region = $this->weatherAlertRepository->findByUid($regionUid);
                 if ($region instanceof WeatherAlertRegion) {
-                    $label = $region->getName() . ($region->getDistrict() ? ' (' . $region->getDistrict() . ')' : '');
+                    $district = $region->getDistrict() ? ' (' . $region->getDistrict() . ')' : '';
+                    $label = $region->getName() . $district;
                     $ulItems .= '<li class="list-group-item" id="dwd_regionItem_' . $region->getUid() . '">' .
                         '<a href="#" class="badge dwd_removeItem">' .
                         WeatherUtility::translate('removeItem', 'deutscherwetterdienstJs') . '</a>' .
@@ -225,7 +222,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
                 }
             }
         }
-                
+        
         return '<ul class="list-group" id="dwd_selected_regions_ul">' . $ulItems . '</ul>';
     }
     
@@ -236,15 +233,16 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
      * @param SchedulerModuleController $schedulerModule
      * @return bool
      */
-    public function validateAdditionalFields(
-        array &$submittedData,
-        SchedulerModuleController $schedulerModule
-    ) {
+    public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule)
+    {
         $errorExists = false;
         
         if ($submittedData['dwd_recordStoragePage']) {
-            $submittedData['dwd_recordStoragePage'] = preg_replace('/[^0-9]/', '',
-                $submittedData['dwd_recordStoragePage']);
+            $submittedData['dwd_recordStoragePage'] = preg_replace(
+                '/[^0-9]/',
+                '',
+                $submittedData['dwd_recordStoragePage']
+            );
         } else {
             $submittedData['dwd_recordStoragePage'] = 0;
         }
@@ -269,12 +267,8 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
                 $submittedData[$fieldName] = $value;
             }
         }
-        
-        if ($errorExists) {
-            return false;
-        } else {
-            return true;
-        }
+
+        return !$errorExists;
     }
     
     /**

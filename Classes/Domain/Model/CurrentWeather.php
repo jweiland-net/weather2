@@ -33,7 +33,7 @@ class CurrentWeather extends AbstractEntity
      *
      * @var \DateTime
      */
-    protected $measureTimestamp = null;
+    protected $measureTimestamp;
     
     /**
      * temperatureC

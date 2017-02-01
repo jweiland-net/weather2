@@ -21,7 +21,8 @@
 										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.measureUnits.imperial</numIndex>
 										<numIndex index="1">Imperial</numIndex>
 									</numIndex>
-									<numIndex index="2" type="array"><numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.measureUnits.isou</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.measureUnits.isou</numIndex>
 										<numIndex index="1">Isou</numIndex>
 									</numIndex>
 								</items>

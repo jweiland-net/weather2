@@ -36,13 +36,13 @@ class ConvertMetricToISoUViewHelper extends AbstractViewHelper
      * Returns converted WeatherModel
      *
      * @param \JWeiland\Weather2\Domain\Model\CurrentWeather $weatherModel
-     * @return mixed
+     * @return string
      */
     public function render(CurrentWeather $weatherModel)
     {
         $convertedModel = clone $weatherModel;
         /** @var $converter WeatherConverterService */
-        $converter = GeneralUtility::makeInstance('JWeiland\Weather2\Service\WeatherConverterService');
+        $converter = GeneralUtility::makeInstance('JWeiland\\Weather2\\Service\\WeatherConverterService');
         $templateVariableContainer = $this->renderingContext->getTemplateVariableContainer();
         // Without this making changes in partials get annoying
         // TODO: Now you are left with two arrays of witch one is redundant

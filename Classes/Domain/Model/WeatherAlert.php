@@ -91,7 +91,7 @@ class WeatherAlert extends AbstractEntity
      */
     public function getRegions()
     {
-        return (string)$this->regions;
+        return $this->regions;
     }
     
     /**
@@ -101,7 +101,7 @@ class WeatherAlert extends AbstractEntity
      */
     public function setRegions($regions)
     {
-        $this->regions = $regions;
+        $this->regions = (string)$regions;
     }
     
     /**
@@ -111,7 +111,7 @@ class WeatherAlert extends AbstractEntity
      */
     public function getLevel()
     {
-        return (int)$this->level;
+        return $this->level;
     }
     
     /**
@@ -121,7 +121,7 @@ class WeatherAlert extends AbstractEntity
      */
     public function setLevel($level)
     {
-        $this->level = $level;
+        $this->level = (int)$level;
     }
     
     /**
@@ -131,7 +131,7 @@ class WeatherAlert extends AbstractEntity
      */
     public function getType()
     {
-        return (int)$this->type;
+        return $this->type;
     }
     
     /**
@@ -141,7 +141,7 @@ class WeatherAlert extends AbstractEntity
      */
     public function setType($type)
     {
-        $this->type = $type;
+        $this->type = (int)$type;
     }
     
     /**
@@ -151,7 +151,7 @@ class WeatherAlert extends AbstractEntity
      */
     public function getTitle()
     {
-        return (string)$this->title;
+        return $this->title;
     }
     
     /**
@@ -161,7 +161,7 @@ class WeatherAlert extends AbstractEntity
      */
     public function setTitle($title)
     {
-        $this->title = $title;
+        $this->title = (string)$title;
     }
     
     /**
@@ -171,7 +171,7 @@ class WeatherAlert extends AbstractEntity
      */
     public function getDescription()
     {
-        return (string)$this->description;
+        return $this->description;
     }
     
     /**
@@ -181,7 +181,7 @@ class WeatherAlert extends AbstractEntity
      */
     public function setDescription($description)
     {
-        $this->description = $description;
+        $this->description = (string)$description;
     }
     
     /**
@@ -191,7 +191,7 @@ class WeatherAlert extends AbstractEntity
      */
     public function getInstruction()
     {
-        return (string)$this->instruction;
+        return $this->instruction;
     }
     
     /**
@@ -201,7 +201,7 @@ class WeatherAlert extends AbstractEntity
      */
     public function setInstruction($instruction)
     {
-        $this->instruction = $instruction;
+        $this->instruction = (string)$instruction;
     }
     
     /**

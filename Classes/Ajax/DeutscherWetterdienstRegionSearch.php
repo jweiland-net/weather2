@@ -25,7 +25,8 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
  *
  * @package JWeiland\Weather2\Ajax
  */
-class DeutscherWetterdienstRegionSearch {
+class DeutscherWetterdienstRegionSearch
+{
     /**
      * Renders regions ....
      *
@@ -39,22 +40,22 @@ class DeutscherWetterdienstRegionSearch {
         $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
         /** @var WeatherAlertRegionRepository $repository */
         $repository = $objectManager->get('JWeiland\\Weather2\\Domain\\Repository\\WeatherAlertRegionRepository');
-        /** @var string $term */
         $term = GeneralUtility::_GET('query');
         
         $regions = $repository->findByName($term);
-        $results = array();
+        $suggestions = array();
         
         /** @var WeatherAlertRegion $region */
         foreach ($regions as $region) {
-            $label = $region->getName() . ($region->getDistrict() ? ' (' . $region->getDistrict() . ')' : '');
-            $results[] = array(
+            $district = $region->getDistrict() ? ' (' . $region->getDistrict() . ')' : '';
+            $label = $region->getName() . $district;
+            $suggestions[] = array(
                 'data' => $region->getUid(),
                 'value' => $label,
             );
         }
         
-        $ajaxObj->addContent('suggestions', $results);
+        $ajaxObj->addContent('suggestions', $suggestions);
         $ajaxObj->setContentFormat('json');
     }
 }

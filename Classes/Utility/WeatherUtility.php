@@ -26,7 +26,7 @@ class WeatherUtility
      *
      * @param string $name
      * @param string $task openweatherapi or deutscherwetterdienst or deutscherwetterdienstJs
-     * @return NULL|string
+     * @return null|string
      */
     public static function translate($name, $task)
     {

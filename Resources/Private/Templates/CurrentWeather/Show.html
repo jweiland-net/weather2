@@ -4,7 +4,7 @@
 	<f:if condition="{currentWeather}">
 		<f:then>
 			<f:flashMessages />
-			<f:render partial="{settings.measureUnits}" arguments="{currentWeather:currentWeather}" />
+			<f:render partial="CurrentWeather/{settings.measureUnits}" arguments="{currentWeather:currentWeather}" />
 		</f:then>
 		<f:else>
 			<span><f:translate key="tx_jwopenweather.error.noRecord" /></span>

@@ -14,6 +14,7 @@ namespace JWeiland\Weather2\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use JWeiland\Weather2\Domain\Repository\WeatherAlertRepository;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
@@ -25,9 +26,19 @@ class WeatherAlertController extends ActionController
      * currentWeatherRepository
      *
      * @var \JWeiland\Weather2\Domain\Repository\WeatherAlertRepository
-     * @inject
      */
     protected $weatherAlertRepository = null;
+    
+    /**
+     * inject weatherAlertRepository
+     *
+     * @param WeatherAlertRepository $weatherAlertRepository
+     * @return void
+     */
+    public function injectWeatherAlertRepository(WeatherAlertRepository $weatherAlertRepository)
+    {
+        $this->weatherAlertRepository = $weatherAlertRepository;
+    }
     
     /**
      * action show displays the newest CurrentWeather model
@@ -36,7 +47,7 @@ class WeatherAlertController extends ActionController
      */
     public function showAction()
     {
-        $alerts = $this->weatherAlertRepository->findCurrentSelection();
+        $alerts = $this->weatherAlertRepository->findByRegions($this->settings['regions']);
         $this->view->assign('weatherAlerts', $alerts);
     }
 }
