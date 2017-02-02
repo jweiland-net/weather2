@@ -8,12 +8,10 @@
 .. _start:
 
 =============================================================
-Open Weather
+weather2
 =============================================================
 
 .. only:: html
-
-  :!!! Documentation will be updated soon !!!:
 
 	:Classification:
 		weather2
@@ -25,13 +23,13 @@ Open Weather
 		en
 
 	:Description:
-		Extension to display weather data from openweathermap.org or create a mapping for your own API
+		Extension to display weather data and weather alerts using various Weather APIs. Default APIs: OpenWeatherMap and Deutscher Wetterdienst
 
 	:Keywords:
-		comma,separated,list,of,keywords
+		weather2,weather,report,alarm,dwd,openweather
 
 	:Copyright:
-		2016
+		2017
 
 	:Author:
 		Markus Kugler, Pascal Rinker
@@ -52,8 +50,7 @@ Open Weather
 	**Table of Contents**
 
 .. toctree::
-	:maxdepth: 3
-	:titlesonly:
+	 :maxdepth: 3
 
 	Introduction/Index
 	User/Index

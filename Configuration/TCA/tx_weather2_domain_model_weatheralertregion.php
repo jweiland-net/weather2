@@ -37,7 +37,7 @@ return array(
         ),
         'name' => array(
             'exclude' => 1,
-            'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_weatheralert.region_name',
+            'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_weatheralertregion.name',
             'config' => array(
                 'type' => 'input',
                 'size' => 30,
