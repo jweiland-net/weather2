@@ -38,8 +38,8 @@ Change timezone
 Go into your TYPO3-Install tool and change the timezone under *All configuration* -> *System* -> *phpTimeZone*.
 This will change the timezone
 
-Current Weather
-***************
+Current Weather (Weather Report)
+********************************
 
 Installation
 ------------
@@ -70,29 +70,31 @@ Installation
 
 Get regions from Deutscher Wetterdienst
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    #. Go to the scheduler module.
-    #. Add a new task and select 'Get regions from Deutscher Wetterdienst'.
-    #. Set this task as single because you have to execute this only once.
-    #. Save and exit
-    #. Execute the task
-    #. If the execution was successful you will see all the region records in your root page.
-    #. Done
+    1. Go to the scheduler module.
+    2. Add a new task and select 'Get regions from Deutscher Wetterdienst'.
+    3. Set this task as single because you have to execute this only once.
+    4. Save and exit
+    5. Execute the task
+    6. If the execution was successful you will see all the region records in your root page.
+
+    .. figure:: ../Images/WeatherAlert/WeatherAlertRegionList.jpeg
+       :alt: List view that shows alert records
+
+    7. Done
 
 Take a look into `Get Weather Alerts from Deutscher Wetterdienst`_
 
-.. figure:: ../Images/WeatherAlert/WeatherAlertRegionList.jpeg
-   :alt: List view that shows alert records
-
 Create regions manually
 ^^^^^^^^^^^^^^^^^^^^^^^
-    #. Go into the page or list module.
-    #. Select your root page (or a page/folder you want) on the page tree.
-    #. Click on 'Create new record' and select 'Weather Alert Region'.
-    #. Now you can enter the City name and additionally the district of your city.
-    #. Done
+    1. Go into the page or list module.
+    2. Select your root page (or a page/folder you want) on the page tree.
+    3. Click on 'Create new record' and select 'Weather Alert Region'.
 
-.. figure:: ../Images/WeatherAlert/WeatherAlertRegionNewRecord.jpeg
-   :alt: Create new Weather Alert Region record
+    .. figure:: ../Images/WeatherAlert/WeatherAlertRegionNewRecord.jpeg
+       :alt: Create new Weather Alert Region record
+
+    4. Now you can enter the City name and additionally the district of your city.
+    5. Done
 
 Take a look into `Get Weather Alerts from Deutscher Wetterdienst`_
 
@@ -100,31 +102,28 @@ Take a look into `Get Weather Alerts from Deutscher Wetterdienst`_
 
 Get Weather Alerts from Deutscher Wetterdienst
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    #. Go to the scheduler module.
-    #. Add a new task and select 'Get weather alerts from Deutscher Wetterdienst'.
-    #. You should set recurring as type and e.g. 3600 as frequency to get each hour the latest alerts.
-    #. Now you can search for your regions. Please make sure you added the regions or got them from Deutscher Wetterdienst. Don´t know? Take a look into `Get regions from Deutscher Wetterdienst`_ and/or `Create regions manually`_.
-    #. You can add multiple cities to your selection.
-    #. If you have a record stroage page you can select it additionally. This can be useful for `Multi plugin use`_. Otherwise the records will be saved on root page.
-    #. Normally we don´t need to keep old Alerts. Old alerts can be removed from the scheduler automatically after checking 'Remove old alerts' and setting a time e.g. 24 (hours).
-    #. Now you´re done and ready to execute the scheduler.
+    1. Go to the scheduler module.
+    2. Add a new task and select 'Get weather alerts from Deutscher Wetterdienst'.
+    3. You should set recurring as type and e.g. 3600 as frequency to get each hour the latest alerts.
+    4. Now you can search for your regions. Please make sure you added the regions or got them from Deutscher Wetterdienst. Don´t know? Take a look into `Get regions from Deutscher Wetterdienst`_ and/or `Create regions manually`_.
+    5. You can add multiple cities to your selection.
 
-Read how to `Setup the frontend plugin`_ to get a output on your website.
+    .. figure:: ../Images/WeatherAlert/WeatherAlertSchedulerRegions.jpeg
+       :alt: Weather Alert Region selection
 
-.. figure:: ../Images/WeatherAlert/WeatherAlertSchedulerRegions.jpeg
-   :alt: Weather Alert Region selection
+    6. If you have a record stroage page you can select it additionally. This can be useful for `Multi plugin use`_. Otherwise the records will be saved on root page.
 
-.. figure:: ../Images/WeatherAlert/WeatherAlertSchedulerStoragePage.jpeg
-   :alt: Remove old Weather Alerts
+    .. figure:: ../Images/WeatherAlert/WeatherAlertSchedulerStoragePage.jpeg
+       :alt: Remove old Weather Alerts
 
-.. figure:: ../Images/WeatherAlert/WeatherAlertSchedulerRemoveOldAlerts.jpeg
-   :alt: Remove old Weather Alerts
+    7. Typically we don´t need to keep old Alerts. Old alerts can be removed from the scheduler automatically after checking 'Remove old alerts' and setting a time e.g. 24 (hours).
 
-.. _setup-weatheralerts-plugin:
+    .. figure:: ../Images/WeatherAlert/WeatherAlertSchedulerRemoveOldAlerts.jpeg
+       :alt: Remove old Weather Alerts
 
-Setup the frontend plugin
-^^^^^^^^^^^^^^^^^^^^^^^^^
-coming soon!
+    8. Now you´re done and ready to execute the scheduler.
+
+Read the :ref:`user manual <user-manual>` to get an output on your website.
 
 .. toctree::
    :maxdepth: 2

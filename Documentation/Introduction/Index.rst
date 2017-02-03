@@ -51,3 +51,6 @@ Display more information
 ^^^^^^^^^^^^^^^^^^^^^^^^
 .. figure:: ../Images/WeatherAlert/FrontendViewExpanded.jpeg
   :alt: Expanded frontend view
+
+.. toctree::
+   :maxdepth: 2

@@ -16,6 +16,9 @@ The developer part of this documentation
 
 .. _developer-api:
 
+Current Weather (Weather Report)
+********************************
+
 How to add a custom api provider
 --------------------------------
 
@@ -69,3 +72,34 @@ Execute the query with your array:
   $this->dbConnection = $this->getDatabaseConnection();
   $this->dbConnection->exec_INSERTquery($this->dbExtTable, $yourMappingArray);
 
+Weather Alerts
+**************
+
+How to add a custom api provider
+--------------------------------
+
+You can add your own providers to get weather alerts. The recommended way is to do create an own scheduler task.
+You can take a look into 'JWeiland\Weather2\Task\DeutscherWetterdienstTask' and
+'JWeiland\Weather2\Task\DeutscherWetterdienstTaskAdditionalFieldProvider' use them as an example. The important
+part is the database mapping. To use the frontend plugin without additional changes you have to use the same
+database structure as in the DeutscherWetterdienstTask.
+
+Structure of the mapping array
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. code-block:: php
+
+  $mappingArray = array(
+      'pid' => $this->recordStoragePage,
+      'regions' => (int)$regionUid,
+      'level' => 0,
+      'type' => 0,
+      'title' => '',
+      'description' => '',
+      'instruction' => '',
+      'response_timestamp' => $this->responseTimestamp,
+      'starttime' => 0,
+      'endtime' => 0,
+  );
+
+.. toctree::
+   :maxdepth: 2
