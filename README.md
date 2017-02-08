@@ -1,37 +1,22 @@
 # TYPO3 Weather Extension #
+Display weather data and weather alerts using various Weather APIs. Default APIs: OpenWeatherMap and Deutscher Wetterdienst
 
-**Documentation will be updated soon!**
+Read the Extension Manual: https://docs.typo3.org/typo3cms/extensions/weather2/
 
-The weather extension is designed to display data received from http://openweathermap.org
-However it is also possible to use any other weather API by creating your own scheduler that maps the API response to the database structure of the extension.
+weather2 on TYPO3 TER: https://typo3.org/extensions/repository/view/weather2
 
-## How do I get set up? ##
+#### Requirements ####
+- TYPO3 CMS 6.2.x - 7.6.x
+- PHP 5.3.7 - 7.9.99
+- TYPO3 Extension static_info_tables (>=6.3.0)
 
-1. Create a new http://openweathermap.org account 
-1. Download the extension from the TYPO3 extension repository.
-1. Create a new scheduler with the **Call openweathermap.org api** selected
-1. Configure the scheduler by filling out the required fields
-1. Create a new content element with the weather extension plugin selected
-1. Select the desired measure units to display
-1. Add extension template file to your template
-1. Enjoy! ;)
+### Installation ###
 
-## Configuration ##
-### Storage Page ###
-1. Create a storage page
-1. Refer to it in the scheduler task
-1. Also refer to it in the plugin
+#### Installation using composer ####
+Use `composer require jweiland/weather2` in your Composer based TYPO3 installation root.
 
-### Multi plugin use ###
-You can configure your scheduler task to save data to a specific storage page that you can later use in the plugin to access data.
-There is also an option to display only specific rows. Please use the field "name" to do this. In the plugin you can configure which "name" to use. To select the latest entry use the empty field.
-
-### Change timezone ###
-Go into your TYPO3-Install tool and change the timezone. Currently this will change the timezone for every plugin and your whole TYPO3-Installation. May be changed in the future
-
-### Add own API-Provider ###
-To add your own api weather service please use the template files provided in /Classes/Task/. The only you need to do is to map your values for our database. Please use our mapping array as guidance. Please note that values must be converted into the metric system for the extension to work properly. We recommend using our /Classes/Service/WeatherConverterService for this task.
-
+#### Installation using Extension Manager ####
+Just search for `weather2` and click on install.
 
 ### Who do I talk to? ###
 

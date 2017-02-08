@@ -25,9 +25,3 @@ if (!defined('TYPO3_MODE')) {
     'Weather2Dwd::renderRegions',
     'JWeiland\\Weather2\\Ajax\\DeutscherWetterdienstRegionSearch->renderRegions'
 );
-
-$modifiedExtensionKey = strtolower(\TYPO3\CMS\Core\Utility\GeneralUtility::underscoredToUpperCamelCase($_EXTKEY));
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$modifiedExtensionKey . '_currentweather'] = 'pi_flexform';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($modifiedExtensionKey . '_currentweather', 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/flexform_currentweather.xml');
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$modifiedExtensionKey . '_weatheralert'] = 'pi_flexform';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($modifiedExtensionKey . '_weatheralert', 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/flexform_weatheralert.xml');
