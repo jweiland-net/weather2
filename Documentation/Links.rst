@@ -18,4 +18,4 @@ Links
 	https://forge.typo3.org/projects/extension-weather2/issues
 
 :Git Repository:
-	https://github.com/jweiland/weather2
+	https://github.com/jweiland-net/weather2
