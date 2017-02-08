@@ -211,8 +211,8 @@ class DeutscherWetterdienstTask extends AbstractTask
         $identicalAlerts = $this->dbConnection->exec_SELECTgetSingleRow(
             'uid',
             $this->dbExtTable,
-            'starttime = ' . (int)$start / 1000 . ' AND endtime = "' .
-            (int)$end / 1000 . '" AND regions = "' . (int)$regionUid .
+            'starttime = ' . (int)((float)$start / 1000) . ' AND endtime = "' .
+            (int)((float)$end / 1000) . '" AND regions = "' . (int)$regionUid .
             '" AND level = "' . (int)$level . '" AND type = "' . (int)$type . '" AND pid = "'
             . (int)$this->recordStoragePage . '"'
         );
@@ -362,11 +362,11 @@ class DeutscherWetterdienstTask extends AbstractTask
         }
         
         if (isset($alertClass->start)) {
-            $mappingArray['starttime'] = (int)$alertClass->start / 1000;
+            $mappingArray['starttime'] = (int)((float)$alertClass->start / 1000);
         }
         
         if (isset($alertClass->end)) {
-            $mappingArray['endtime'] = (int)$alertClass->end / 1000;
+            $mappingArray['endtime'] = (int)((float)$alertClass->end / 1000);
         }
         
         return $mappingArray;
@@ -379,7 +379,7 @@ class DeutscherWetterdienstTask extends AbstractTask
      */
     protected function removeOldAlertsFromDb()
     {
-        $minimalTimestamp = time() + ((int)$this->removeOldAlertsHours * 3600);
+        $minimalTimestamp = time() + (int)((int)$this->removeOldAlertsHours * 3600);
         $this->dbConnection->exec_DELETEquery($this->dbExtTable, 'endtime <= ' . $minimalTimestamp);
     }
 }
