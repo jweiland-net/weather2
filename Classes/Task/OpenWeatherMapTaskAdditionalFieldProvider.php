@@ -350,13 +350,4 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
 
         return implode('', $options);
     }
-
-    /**
-     * Returns the BackendUserAuthentication
-     *
-     * @return BackendUserAuthentication
-     */
-    private function getBackendUser() {
-        return $GLOBALS['BE_USER'];
-    }
 }
