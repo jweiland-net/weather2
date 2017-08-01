@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-05-04T14:55:13Z"
+				product-name="weather2">
+		<header/>
+		<body>
+			<trans-unit id="regions">
+				<source>Save selected regions</source>
+        <target>Ausgewählte Regionen aktualisieren</target>
+			</trans-unit>
+			<trans-unit id="selectedRegions">
+				<source>Selected regions</source>
+        <target>Ausgewählte Regionen</target>
+			</trans-unit>
+			<trans-unit id="removeOldAlerts">
+				<source>Remove old alerts</source>
+        <target>Alte Unwettermeldungen entfernen</target>
+			</trans-unit>
+			<trans-unit id="removeOldAlertsHours">
+				<source>Remove old alerts after X hours</source>
+        <target>Entferne Meldungen die älter als X Stunden sind</target>
+			</trans-unit>
+			<trans-unit id="placeholder.recordStoragePage">
+				<source>click on the button and select a page</source>
+        <target>klicke auf den Button und wähle eine Seite aus</target>
+			</trans-unit>
+			<trans-unit id="recordStoragePage">
+				<source>Record storage page (optional)</source>
+        <target>Speicherort des Datensatzes (Optional)</target>
+      </trans-unit>
+			<trans-unit id="buttons.recordStoragePage">
+				<source>Select</source>
+        <target>Auswählen</target>
+      </trans-unit>
+			<trans-unit id="message.api_response_null">
+				<source>API request failed. The server could not get a response from Deutscher Wetterdienst.</source>
+        <target>Die Anfrage schlug fehl. Der Server konnte keine Antwort von "Deutscher Wetterdienst" bekommen!</target>
+			</trans-unit>
+			<trans-unit id="message.noRegionsFound">
+				<source>No regions found in your TYPO3 installation. You can create your own at root path or
+					via the scheduler task 'Get regions from Deutscher Wetterdienst'. Take a look into the
+					documentation for more information.
+				</source>
+        <target>In deiner TYPO3 Installation wurden keine Regionen gefunden. Du kannst eigene auf der Root-Ebene
+        erstellen oder über den Scheduler-Task 'Get regions from Deutscher Wetterdienst' automatisch anlegen lassen.
+        Schaue dir die Dokumentation für weitere Informationen an.
+        </target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

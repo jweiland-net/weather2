@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-05-04T14:55:13Z"
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-05-04T14:55:13Z"
 				product-name="weather2">
 		<header/>
 		<body>
@@ -62,8 +62,7 @@
 			</trans-unit>
 			<trans-unit id="message.mail_configuration.notice">
 				<source>You can change the mail configuration via the TYPO3 Install Tool > All configuration > Mail.</source>
-				<target>Die Mail-Konfiguration kann im TYPO3 Install Tool unter dem Punkt All configuration > Mail bearbeitet
-					werden.
+				<target>Die Mail-Konfiguration kann im TYPO3 Install Tool unter dem Punkt All configuration > Mail bearbeitet werden.
 				</target>
 			</trans-unit>
 			<trans-unit id="message.api_code_200">
