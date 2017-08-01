@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
@@ -39,14 +40,14 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider implements AdditionalFiel
      * @var WeatherAlertRegionRepository
      */
     protected $weatherAlertRepository;
-    
+
     /**
      * Object manager
      *
      * @var ObjectManager
      */
     protected $objectManager;
-    
+
     /**
      * This fields can not be empty!
      *
@@ -55,7 +56,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider implements AdditionalFiel
     protected $requiredFields = array(
         'dwd_regionSelection'
     );
-    
+
     /**
      * Fields to insert from task if empty
      *
@@ -67,7 +68,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider implements AdditionalFiel
         'dwd_removeOldAlertsHours',
         'dwd_recordStoragePage',
     );
-    
+
     /**
      * Gets the additional fields
      *
@@ -88,9 +89,9 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider implements AdditionalFiel
                 $taskInfo[$fieldID] = $task->$propertyName;
             }
         }
-        
+
         $additionalFields = array();
-        
+
         $fieldID = 'dwd_selectedRegions';
         if ($this->areRegionsAvailable()) {
             $fieldCode = '<input type="text" class="form-control ui-autocomplete-input" name="dwd_region_search" id="dwd_region_search" ' .
@@ -113,35 +114,33 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider implements AdditionalFiel
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_deutscherwetterdienst.xlf:regions'
         );
-        
+
         $fieldID = 'dwd_recordStoragePage';
         $fieldCode = '<div class="input-group"><input type="text" class="form-control" name="tx_scheduler[' . $fieldID . ']" id="' . $fieldID . '" value="' . $taskInfo[$fieldID] . '"
-size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStoragePage', 'openweatherapi') . ' --->"/><span class="input-group-btn"><a href="#" class="btn btn-default" onclick="TYPO3.FormEngine.openPopupWindow(\'db\',\'tx_scheduler[dwd_recordStoragePage]|||pages|\'); return false;">
-<span class="t3js-icon icon icon-size-small icon-state-default icon-actions-insert-record" data-identifier="actions-insert-record">
-<span class="icon-markup"><span title="Browse for records" class="t3-icon t3-icon-actions t3-icon-actions-insert t3-icon-insert-record">&nbsp;</span></span>
-	</span> ' . WeatherUtility::translate('buttons.recordStoragePage', 'deutscherwetterdienst') . '</a></span></div>';
+size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStoragePage', 'openweatherapi') . ' --->"/><span class="input-group-btn"><a href="#" class="btn btn-default" onclick="TYPO3.FormEngine.openPopupWindow(\'db\',\'tx_scheduler[dwd_recordStoragePage]|||pages|\'); return false;">' .
+            WeatherUtility::translate('buttons.recordStoragePage', 'deutscherwetterdienst') . '</a></span></div>';
         $additionalFields[$fieldID] = array(
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_deutscherwetterdienst.xlf:recordStoragePage'
         );
-        
+
         $fieldID = 'dwd_removeOldAlerts';
         $fieldCode = '<input type="checkbox" class="checkbox" name="tx_scheduler[' . $fieldID . ']" id="' . $fieldID . '" value="enable" size="60" ' . ($taskInfo[$fieldID] ? 'checked' : '') . '></input>';
         $additionalFields[$fieldID] = array(
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_deutscherwetterdienst.xlf:removeOldAlerts'
         );
-        
+
         $fieldID = 'dwd_removeOldAlertsHours';
         $fieldCode = '<input type="text" class="form-control" name="tx_scheduler[' . $fieldID . ']" id="' . $fieldID . '" value="' . $taskInfo[$fieldID] . '" size="30" placeholder="24"/>';
         $additionalFields[$fieldID] = array(
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_deutscherwetterdienst.xlf:removeOldAlertsHours'
         );
-        
+
         return $additionalFields;
     }
-    
+
     /**
      * Initialize class
      *
@@ -151,7 +150,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
     {
         $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
         $this->weatherAlertRepository = $this->objectManager->get('JWeiland\\Weather2\\Domain\\Repository\\WeatherAlertRegionRepository');
-        $extRelPath = ExtensionManagementUtility::extRelPath('weather2');
+        $extRelPath = PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::extPath('weather2'));
         /** @var PageRenderer $pageRenderer */
         $pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
         $pageRenderer->loadJquery();
@@ -159,16 +158,22 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
         $pageRenderer->addInlineLanguageLabelFile(ExtensionManagementUtility::extPath('weather2') .
             'Resources/Private/Language/locallang_scheduler_javascript_deutscherwetterdienst.xlf');
         $pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js');
-        $pageRenderer->addCssFile($extRelPath . 'Resources/Public/Css/jquery-ui.min.css');
         $pageRenderer->addCssFile($extRelPath . 'Resources/Public/Css/dwdScheduler.css');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule');
+        $popupSettings = [
+            'PopupWindow' => [
+                'width' => '800px',
+                'height' => '550px'
+            ]
+        ];
+        $pageRenderer->addInlineSettingArray('Popup', $popupSettings);
         $pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', BackendUtility::getModuleUrl('record_edit'));
         $pageRenderer->addInlineSetting('FormEngine', 'formName', 'tx_scheduler_form');
         $pageRenderer->addInlineSetting('FormEngine', 'backPath', '');
         $pageRenderer->loadRequireJsModule(
             'TYPO3/CMS/Backend/FormEngine',
             'function(FormEngine) {
-                FormEngine.setBrowserUrl(' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_element_browser')) . ');
+                FormEngine.browserUrl = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_element_browser')) . ';
              }'
         );
         if (version_compare(TYPO3_version, '6.2.99', '<=')) {
@@ -182,11 +187,11 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
             $pageRenderer->addCssFile($extRelPath . 'Resources/Public/Css/scheduler_6-2fallback.css');
         }
         $pageRenderer->addJsFile(
-            ExtensionManagementUtility::extRelPath('backend') .
+            PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::extPath('backend')) .
             'Resources/Public/JavaScript/jsfunc.tbe_editor.js'
         );
     }
-    
+
     /**
      * Checks if regions are available in the database
      *
@@ -196,7 +201,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
     {
         return $this->weatherAlertRepository->countAll() > 0;
     }
-    
+
     /**
      * Returns HTML code for selected regions
      *
@@ -222,10 +227,10 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
                 }
             }
         }
-        
+
         return '<ul class="list-group" id="dwd_selected_regions_ul">' . $ulItems . '</ul>';
     }
-    
+
     /**
      * self describing
      *
@@ -236,7 +241,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
     public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule)
     {
         $errorExists = false;
-        
+
         if ($submittedData['dwd_recordStoragePage']) {
             $submittedData['dwd_recordStoragePage'] = preg_replace(
                 '/[^0-9]/',
@@ -252,14 +257,14 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
         if ($submittedData['dwd_removeOldAlerts'] && !$submittedData['dwd_removeOldAlertsHours']) {
             $submittedData['dwd_removeOldAlertsHours'] = 24;
         }
-        
+
         foreach ($submittedData as $fieldName => $field) {
             if (is_string($submittedData[$fieldName])) {
                 $value = trim($submittedData[$fieldName]);
             } else {
                 $value = $submittedData[$fieldName];
             }
-            
+
             if (in_array($fieldName, $this->requiredFields) && empty($value)) {
                 $errorExists = true;
                 $schedulerModule->addMessage('Field: ' . $fieldName . ' can not be empty', FlashMessage::ERROR);
@@ -270,7 +275,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
 
         return !$errorExists;
     }
-    
+
     /**
      * Saves the submitted data from additional fields
      *
