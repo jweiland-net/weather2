@@ -14,361 +14,751 @@ namespace JWeiland\Weather2\Tests\Unit\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use JWeiland\Weather2\Domain\Model\CurrentWeather;
+
 /**
- * Test case for class \JWeiland\Weather2\Domain\Model\CurrentWeather.
+ * Test case for JWeiland\Weather2\Domain\Model\CurrentWeatherTest
  *
- * @copyright Copyright belongs to the respective authors
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
- * @author Markus Kugler <projects@jweiland.net>
- * @author Pascal Rinker <projects@jweiland.net>
+ * @package JWeiland\Weather2\Tests\Unit\Domain\Model
  */
 class CurrentWeatherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
 {
-	/**
-	 * @var \JWeiland\Weather2\Domain\Model\CurrentWeather
-	 */
-	protected $subject = null;
+    /**
+     * @var \JWeiland\Weather2\Domain\Model\CurrentWeather
+     */
+    protected $subject = null;
 
-	public function setUp()
-	{
-		$this->subject = new \JWeiland\Weather2\Domain\Model\CurrentWeather();
-	}
+    public function setUp()
+    {
+        $this->subject = new CurrentWeather();
+    }
 
-	public function tearDown()
-	{
-		unset($this->subject);
-	}
+    /**
+     * @test
+     */
+    public function getNameInitiallyReturnsEmptyString()
+    {
+        $this->assertSame(
+            '',
+            $this->subject->getName()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getNameReturnsInitialValueForString()
-	{
-		$this->assertSame(
-			'',
-			$this->subject->getName()
-		);
-	}
+    /**
+     * @test
+     */
+    public function setNameSetsName()
+    {
+        $this->subject->setName('foo bar');
 
-	/**
-	 * @test
-	 */
-	public function setNameForStringSetsName()
-	{
-		$this->subject->setName('Conceived at T3CON10');
+        $this->assertSame(
+            'foo bar',
+            $this->subject->getName()
+        );
+    }
 
-		$this->assertAttributeEquals(
-			'Conceived at T3CON10',
-			'name',
-			$this->subject
-		);
-	}
+    /**
+     * @test
+     */
+    public function setNameWithIntegerResultsInString()
+    {
+        $this->subject->setName(123);
+        $this->assertSame('123', $this->subject->getName());
+    }
 
-	/**
-	 * @test
-	 */
-	public function getMeasureTimestampReturnsInitialValueForInt()
-	{	}
+    /**
+     * @test
+     */
+    public function setNameWithBooleanResultsInString()
+    {
+        $this->subject->setName(TRUE);
+        $this->assertSame('1', $this->subject->getName());
+    }
 
-	/**
-	 * @test
-	 */
-	public function setMeasureTimestampForIntSetsMeasureTimestamp()
-	{	}
+    /**
+     * @test
+     */
+    public function getMeasureTimestampInitiallyReturnsNull()
+    {
+        $this->assertNull(
+            $this->subject->getMeasureTimestamp()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getTemperatureCReturnsInitialValueForFloat()
-	{
-		$this->assertSame(
-			0.0,
-			$this->subject->getTemperatureC()
-		);
-	}
+    /**
+     * @test
+     */
+    public function setMeasureTimestampSetsMeasureTimestamp()
+    {
+        $date = new \DateTime();
+        $this->subject->setMeasureTimestamp($date);
 
-	/**
-	 * @test
-	 */
-	public function setTemperatureCForFloatSetsTemperatureC()
-	{
-		$this->subject->setTemperatureC(3.14159265);
+        $this->assertSame(
+            $date,
+            $this->subject->getMeasureTimestamp()
+        );
+    }
 
-		$this->assertAttributeEquals(
-			3.14159265,
-			'temperatureC',
-			$this->subject,
-			'',
-			0.000000001
-		);
-	}
+    /**
+     * @return array
+     */
+    public function dataProviderForSetMeasureTimestamp()
+    {
+        $arguments = array();
+        $arguments['set MeasureTimestamp with Null'] = array(null);
+        $arguments['set MeasureTimestamp with Integer'] = array(1234567890);
+        $arguments['set MeasureTimestamp with Integer as String'] = array('1234567890');
+        $arguments['set MeasureTimestamp with String'] = array('Hi all together');
+        return $arguments;
+    }
 
-	/**
-	 * @test
-	 */
-	public function getPressureHpaReturnsInitialValueForFloat()
-	{
-		$this->assertSame(
-			0.0,
-			$this->subject->getPressureHpa()
-		);
-	}
+    /**
+     * @test
+     *
+     * @dataProvider dataProviderForSetMeasureTimestamp
+     * @expectedException \TypeError
+     */
+    public function setMeasureTimestampWithInvalidValuesResultsInException($argument)
+    {
+        $this->subject->setMeasureTimestamp($argument);
+    }
 
-	/**
-	 * @test
-	 */
-	public function setPressureHpaForFloatSetsPressureHpa()
-	{
-		$this->subject->setPressureHpa(3.14159265);
+    /**
+     * @test
+     */
+    public function getTemperatureCInitiallyReturnsZero()
+    {
+        $this->assertSame(
+            0,
+            $this->subject->getTemperatureC()
+        );
+    }
 
-		$this->assertAttributeEquals(
-			3.14159265,
-			'pressureHpa',
-			$this->subject,
-			'',
-			0.000000001
-		);
-	}
+    /**
+     * @test
+     */
+    public function setTemperatureCSetsTemperatureC()
+    {
+        $this->subject->setTemperatureC(123456);
 
-	/**
-	 * @test
-	 */
-	public function getHumidityPercentageReturnsInitialValueForFloat()
-	{
-		$this->assertSame(
-			0.0,
-			$this->subject->getHumidityPercentage()
-		);
-	}
+        $this->assertSame(
+            123456,
+            $this->subject->getTemperatureC()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setHumidityPercentageForFloatSetsHumidityPercentage()
-	{
-		$this->subject->setHumidityPercentage(3.14159265);
+    /**
+     * @test
+     */
+    public function setTemperatureCWithStringResultsInInteger()
+    {
+        $this->subject->setTemperatureC('123Test');
 
-		$this->assertAttributeEquals(
-			3.14159265,
-			'humidityPercentage',
-			$this->subject,
-			'',
-			0.000000001
-		);
-	}
+        $this->assertSame(
+            123,
+            $this->subject->getTemperatureC()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getMinTempCReturnsInitialValueForFloat()
-	{
-		$this->assertSame(
-			0.0,
-			$this->subject->getMinTempC()
-		);
-	}
+    /**
+     * @test
+     */
+    public function setTemperatureCWithBooleanResultsInInteger()
+    {
+        $this->subject->setTemperatureC(true);
 
-	/**
-	 * @test
-	 */
-	public function setMinTempCForFloatSetsMinTempC()
-	{
-		$this->subject->setMinTempC(3.14159265);
+        $this->assertSame(
+            1,
+            $this->subject->getTemperatureC()
+        );
+    }
 
-		$this->assertAttributeEquals(
-			3.14159265,
-			'minTempC',
-			$this->subject,
-			'',
-			0.000000001
-		);
-	}
+    /**
+     * @test
+     */
+    public function getPressureHpaInitiallyReturnsZero()
+    {
+        $this->assertSame(
+            0,
+            $this->subject->getPressureHpa()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getMaxTempCReturnsInitialValueForFloat()
-	{
-		$this->assertSame(
-			0.0,
-			$this->subject->getMaxTempC()
-		);
-	}
+    /**
+     * @test
+     */
+    public function setPressureHpaSetsPressureHpa()
+    {
+        $this->subject->setPressureHpa(123456);
 
-	/**
-	 * @test
-	 */
-	public function setMaxTempCForFloatSetsMaxTempC()
-	{
-		$this->subject->setMaxTempC(3.14159265);
+        $this->assertSame(
+            123456,
+            $this->subject->getPressureHpa()
+        );
+    }
 
-		$this->assertAttributeEquals(
-			3.14159265,
-			'maxTempC',
-			$this->subject,
-			'',
-			0.000000001
-		);
-	}
+    /**
+     * @test
+     */
+    public function setPressureHpaWithStringResultsInInteger()
+    {
+        $this->subject->setPressureHpa('123Test');
 
-	/**
-	 * @test
-	 */
-	public function getWindSpeedMPSReturnsInitialValueForFloat()
-	{
-		$this->assertSame(
-			0.0,
-			$this->subject->getWindSpeedMPS()
-		);
-	}
+        $this->assertSame(
+            123,
+            $this->subject->getPressureHpa()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setWindSpeedMPSForFloatSetsWindSpeedMPS()
-	{
-		$this->subject->setWindSpeedMPS(3.14159265);
+    /**
+     * @test
+     */
+    public function setPressureHpaWithBooleanResultsInInteger()
+    {
+        $this->subject->setPressureHpa(true);
 
-		$this->assertAttributeEquals(
-			3.14159265,
-			'windSpeedMPS',
-			$this->subject,
-			'',
-			0.000000001
-		);
-	}
+        $this->assertSame(
+            1,
+            $this->subject->getPressureHpa()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getWindDirectionDegReturnsInitialValueForFloat()
-	{
-		$this->assertSame(
-			0.0,
-			$this->subject->getWindDirectionDeg()
-		);
-	}
+    /**
+     * @test
+     */
+    public function getHumidityPercentageInitiallyReturnsZero()
+    {
+        $this->assertSame(
+            0,
+            $this->subject->getHumidityPercentage()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setWindDirectionDegForFloatSetsWindDirectionDeg()
-	{
-		$this->subject->setWindDirectionDeg(3.14159265);
+    /**
+     * @test
+     */
+    public function setHumidityPercentageSetsHumidityPercentage()
+    {
+        $this->subject->setHumidityPercentage(123456);
 
-		$this->assertAttributeEquals(
-			3.14159265,
-			'windDirectionDeg',
-			$this->subject,
-			'',
-			0.000000001
-		);
-	}
+        $this->assertSame(
+            123456,
+            $this->subject->getHumidityPercentage()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getPopPercentageReturnsInitialValueForFloat()
-	{
-		$this->assertSame(
-			0.0,
-			$this->subject->getPopPercentage()
-		);
-	}
+    /**
+     * @test
+     */
+    public function setHumidityPercentageWithStringResultsInInteger()
+    {
+        $this->subject->setHumidityPercentage('123Test');
 
-	/**
-	 * @test
-	 */
-	public function setPopPercentageForFloatSetsPopPercentage()
-	{
-		$this->subject->setPopPercentage(3.14159265);
+        $this->assertSame(
+            123,
+            $this->subject->getHumidityPercentage()
+        );
+    }
 
-		$this->assertAttributeEquals(
-			3.14159265,
-			'popPercentage',
-			$this->subject,
-			'',
-			0.000000001
-		);
-	}
+    /**
+     * @test
+     */
+    public function setHumidityPercentageWithBooleanResultsInInteger()
+    {
+        $this->subject->setHumidityPercentage(true);
 
-	/**
-	 * @test
-	 */
-	public function getSnowVolumeReturnsInitialValueForFloat()
-	{
-		$this->assertSame(
-			0.0,
-			$this->subject->getSnowVolume()
-		);
-	}
+        $this->assertSame(
+            1,
+            $this->subject->getHumidityPercentage()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setSnowVolumeForFloatSetsSnowVolume()
-	{
-		$this->subject->setSnowVolume(3.14159265);
+    /**
+     * @test
+     */
+    public function getMinTempCInitiallyReturnsZero()
+    {
+        $this->assertSame(
+            0,
+            $this->subject->getMinTempC()
+        );
+    }
 
-		$this->assertAttributeEquals(
-			3.14159265,
-			'snowVolume',
-			$this->subject,
-			'',
-			0.000000001
-		);
-	}
+    /**
+     * @test
+     */
+    public function setMinTempCSetsMinTempC()
+    {
+        $this->subject->setMinTempC(123456);
 
-	/**
-	 * @test
-	 */
-	public function getCloudsPercentageReturnsInitialValueForFloat()
-	{
-		$this->assertSame(
-			0.0,
-			$this->subject->getCloudsPercentage()
-		);
-	}
+        $this->assertSame(
+            123456,
+            $this->subject->getMinTempC()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function setCloudsPercentageForFloatSetsCloudsPercentage()
-	{
-		$this->subject->setCloudsPercentage(3.14159265);
+    /**
+     * @test
+     */
+    public function setMinTempCWithStringResultsInInteger()
+    {
+        $this->subject->setMinTempC('123Test');
 
-		$this->assertAttributeEquals(
-			3.14159265,
-			'cloudsPercentage',
-			$this->subject,
-			'',
-			0.000000001
-		);
-	}
+        $this->assertSame(
+            123,
+            $this->subject->getMinTempC()
+        );
+    }
 
-	/**
-	 * @test
-	 */
-	public function getSerializedArrayReturnsInitialValueForString()
-	{
-		$this->assertSame(
-			'',
-			$this->subject->getSerializedArray()
-		);
-	}
+    /**
+     * @test
+     */
+    public function setMinTempCWithBooleanResultsInInteger()
+    {
+        $this->subject->setMinTempC(true);
 
-	/**
-	 * @test
-	 */
-	public function setSerializedArrayForStringSetsSerializedArray()
-	{
-		$this->subject->setSerializedArray('Conceived at T3CON10');
+        $this->assertSame(
+            1,
+            $this->subject->getMinTempC()
+        );
+    }
 
-		$this->assertAttributeEquals(
-			'Conceived at T3CON10',
-			'serializedArray',
-			$this->subject
-		);
-	}
+    /**
+     * @test
+     */
+    public function getMaxTempCInitiallyReturnsZero()
+    {
+        $this->assertSame(
+            0,
+            $this->subject->getMaxTempC()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setMaxTempCSetsMaxTempC()
+    {
+        $this->subject->setMaxTempC(123456);
+
+        $this->assertSame(
+            123456,
+            $this->subject->getMaxTempC()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setMaxTempCWithStringResultsInInteger()
+    {
+        $this->subject->setMaxTempC('123Test');
+
+        $this->assertSame(
+            123,
+            $this->subject->getMaxTempC()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setMaxTempCWithBooleanResultsInInteger()
+    {
+        $this->subject->setMaxTempC(true);
+
+        $this->assertSame(
+            1,
+            $this->subject->getMaxTempC()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getWindSpeedMPSInitiallyReturnsZero()
+    {
+        $this->assertSame(
+            0,
+            $this->subject->getWindSpeedMPS()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setWindSpeedMPSSetsWindSpeedMPS()
+    {
+        $this->subject->setWindSpeedMPS(123456);
+
+        $this->assertSame(
+            123456,
+            $this->subject->getWindSpeedMPS()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setWindSpeedMPSWithStringResultsInInteger()
+    {
+        $this->subject->setWindSpeedMPS('123Test');
+
+        $this->assertSame(
+            123,
+            $this->subject->getWindSpeedMPS()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setWindSpeedMPSWithBooleanResultsInInteger()
+    {
+        $this->subject->setWindSpeedMPS(true);
+
+        $this->assertSame(
+            1,
+            $this->subject->getWindSpeedMPS()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getWindDirectionDegInitiallyReturnsZero()
+    {
+        $this->assertSame(
+            0,
+            $this->subject->getWindDirectionDeg()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setWindDirectionDegSetsWindDirectionDeg()
+    {
+        $this->subject->setWindDirectionDeg(123456);
+
+        $this->assertSame(
+            123456,
+            $this->subject->getWindDirectionDeg()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setWindDirectionDegWithStringResultsInInteger()
+    {
+        $this->subject->setWindDirectionDeg('123Test');
+
+        $this->assertSame(
+            123,
+            $this->subject->getWindDirectionDeg()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setWindDirectionDegWithBooleanResultsInInteger()
+    {
+        $this->subject->setWindDirectionDeg(true);
+
+        $this->assertSame(
+            1,
+            $this->subject->getWindDirectionDeg()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getPopPercentageInitiallyReturnsZero()
+    {
+        $this->assertSame(
+            0,
+            $this->subject->getPopPercentage()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setPopPercentageSetsPopPercentage()
+    {
+        $this->subject->setPopPercentage(123456);
+
+        $this->assertSame(
+            123456,
+            $this->subject->getPopPercentage()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setPopPercentageWithStringResultsInInteger()
+    {
+        $this->subject->setPopPercentage('123Test');
+
+        $this->assertSame(
+            123,
+            $this->subject->getPopPercentage()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setPopPercentageWithBooleanResultsInInteger()
+    {
+        $this->subject->setPopPercentage(true);
+
+        $this->assertSame(
+            1,
+            $this->subject->getPopPercentage()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getSnowVolumeInitiallyReturnsZero()
+    {
+        $this->assertSame(
+            0,
+            $this->subject->getSnowVolume()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setSnowVolumeSetsSnowVolume()
+    {
+        $this->subject->setSnowVolume(123456);
+
+        $this->assertSame(
+            123456,
+            $this->subject->getSnowVolume()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setSnowVolumeWithStringResultsInInteger()
+    {
+        $this->subject->setSnowVolume('123Test');
+
+        $this->assertSame(
+            123,
+            $this->subject->getSnowVolume()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setSnowVolumeWithBooleanResultsInInteger()
+    {
+        $this->subject->setSnowVolume(true);
+
+        $this->assertSame(
+            1,
+            $this->subject->getSnowVolume()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getRainVolumeInitiallyReturnsZero()
+    {
+        $this->assertSame(
+            0,
+            $this->subject->getRainVolume()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setRainVolumeSetsRainVolume()
+    {
+        $this->subject->setRainVolume(123456);
+
+        $this->assertSame(
+            123456,
+            $this->subject->getRainVolume()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setRainVolumeWithStringResultsInInteger()
+    {
+        $this->subject->setRainVolume('123Test');
+
+        $this->assertSame(
+            123,
+            $this->subject->getRainVolume()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setRainVolumeWithBooleanResultsInInteger()
+    {
+        $this->subject->setRainVolume(true);
+
+        $this->assertSame(
+            1,
+            $this->subject->getRainVolume()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function getCloudsPercentageInitiallyReturnsZero()
+    {
+        $this->assertSame(
+            0,
+            $this->subject->getCloudsPercentage()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setCloudsPercentageSetsCloudsPercentage()
+    {
+        $this->subject->setCloudsPercentage(123456);
+
+        $this->assertSame(
+            123456,
+            $this->subject->getCloudsPercentage()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setCloudsPercentageWithStringResultsInInteger()
+    {
+        $this->subject->setCloudsPercentage('123Test');
+
+        $this->assertSame(
+            123,
+            $this->subject->getCloudsPercentage()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setCloudsPercentageWithBooleanResultsInInteger()
+    {
+        $this->subject->setCloudsPercentage(true);
+
+        $this->assertSame(
+            1,
+            $this->subject->getCloudsPercentage()
+        );
+    }
+
+    /**
+     * @todo should we check if passed string can be unserialized inside getter method otherwise throw exception?
+     * ($serializedArray)
+     */
+
+    /**
+     * @test
+     */
+    public function getSerializedArrayInitiallyReturnsEmptyString()
+    {
+        $this->assertSame(
+            '',
+            $this->subject->getSerializedArray()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setSerializedArraySetsSerializedArray()
+    {
+        $this->subject->setSerializedArray('foo bar');
+
+        $this->assertSame(
+            'foo bar',
+            $this->subject->getSerializedArray()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setSerializedArrayWithIntegerResultsInString()
+    {
+        $this->subject->setSerializedArray(123);
+        $this->assertSame('123', $this->subject->getSerializedArray());
+    }
+
+    /**
+     * @test
+     */
+    public function setSerializedArrayWithBooleanResultsInString()
+    {
+        $this->subject->setSerializedArray(TRUE);
+        $this->assertSame('1', $this->subject->getSerializedArray());
+    }
+
+    /**
+     * @test
+     */
+    public function getIconInitiallyReturnsEmptyString()
+    {
+        $this->assertSame(
+            '',
+            $this->subject->getIcon()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setIconSetsIcon()
+    {
+        $this->subject->setIcon('foo bar');
+
+        $this->assertSame(
+            'foo bar',
+            $this->subject->getIcon()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function setIconWithIntegerResultsInString()
+    {
+        $this->subject->setIcon(123);
+        $this->assertSame('123', $this->subject->getIcon());
+    }
+
+    /**
+     * @test
+     */
+    public function setIconWithBooleanResultsInString()
+    {
+        $this->subject->setIcon(TRUE);
+        $this->assertSame('1', $this->subject->getIcon());
+    }
 }

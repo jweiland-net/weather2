@@ -29,7 +29,7 @@ class WeatherAlert extends AbstractEntity
      * @var string
      */
     protected $regions = '';
-    
+
     /**
      * Level of alert
      * There is a detailed description in the documentation for this
@@ -38,7 +38,7 @@ class WeatherAlert extends AbstractEntity
      * @var int
      */
     protected $level = 0;
-    
+
     /**
      * Type of alert
      * There is a detailed description in the documentation for this
@@ -47,21 +47,21 @@ class WeatherAlert extends AbstractEntity
      * @var int
      */
     protected $type = 0;
-    
+
     /**
      * Alert title
      *
      * @var string
      */
     protected $title = '';
-    
+
     /**
      * Alert description
      *
      * @var string
      */
     protected $description = '';
-    
+
     /**
      * Alert Instruction
      * e.g. Stay at home, close your windows, etc.
@@ -69,21 +69,21 @@ class WeatherAlert extends AbstractEntity
      * @var string
      */
     protected $instruction = '';
-    
+
     /**
      * Start time of the alert
      *
      * @var \DateTime
      */
     protected $starttime;
-    
+
     /**
      * End time of the alert
      *
      * @var \DateTime
      */
     protected $endtime;
-    
+
     /**
      * Returns Regions
      *
@@ -93,7 +93,7 @@ class WeatherAlert extends AbstractEntity
     {
         return $this->regions;
     }
-    
+
     /**
      * Sets Regions
      *
@@ -103,7 +103,7 @@ class WeatherAlert extends AbstractEntity
     {
         $this->regions = (string)$regions;
     }
-    
+
     /**
      * Returns Level
      *
@@ -113,7 +113,7 @@ class WeatherAlert extends AbstractEntity
     {
         return $this->level;
     }
-    
+
     /**
      * Sets Level
      *
@@ -123,7 +123,7 @@ class WeatherAlert extends AbstractEntity
     {
         $this->level = (int)$level;
     }
-    
+
     /**
      * Returns Type
      *
@@ -133,7 +133,7 @@ class WeatherAlert extends AbstractEntity
     {
         return $this->type;
     }
-    
+
     /**
      * Sets Type
      *
@@ -143,7 +143,7 @@ class WeatherAlert extends AbstractEntity
     {
         $this->type = (int)$type;
     }
-    
+
     /**
      * Returns Title
      *
@@ -153,7 +153,7 @@ class WeatherAlert extends AbstractEntity
     {
         return $this->title;
     }
-    
+
     /**
      * Sets Title
      *
@@ -163,7 +163,7 @@ class WeatherAlert extends AbstractEntity
     {
         $this->title = (string)$title;
     }
-    
+
     /**
      * Returns Description
      *
@@ -173,7 +173,7 @@ class WeatherAlert extends AbstractEntity
     {
         return $this->description;
     }
-    
+
     /**
      * Sets Description
      *
@@ -183,7 +183,7 @@ class WeatherAlert extends AbstractEntity
     {
         $this->description = (string)$description;
     }
-    
+
     /**
      * Returns Instruction
      *
@@ -193,7 +193,7 @@ class WeatherAlert extends AbstractEntity
     {
         return $this->instruction;
     }
-    
+
     /**
      * Sets Instruction
      *
@@ -203,7 +203,7 @@ class WeatherAlert extends AbstractEntity
     {
         $this->instruction = (string)$instruction;
     }
-    
+
     /**
      * Returns Starttime
      *
@@ -213,17 +213,17 @@ class WeatherAlert extends AbstractEntity
     {
         return $this->starttime;
     }
-    
+
     /**
      * Sets Starttime
      *
      * @param \DateTime $starttime
      */
-    public function setStarttime($starttime)
+    public function setStarttime(\DateTime $starttime)
     {
         $this->starttime = $starttime;
     }
-    
+
     /**
      * Returns Endtime
      *
@@ -233,13 +233,13 @@ class WeatherAlert extends AbstractEntity
     {
         return $this->endtime;
     }
-    
+
     /**
      * Sets Endtime
      *
      * @param \DateTime $endtime
      */
-    public function setEndtime($endtime)
+    public function setEndtime(\DateTime $endtime)
     {
         $this->endtime = $endtime;
     }
