@@ -127,8 +127,9 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:record_storage_page'
         );
 
+        // todo: Add second task to import regions with id from OpenWeatherMap-Servers like DeutschWetterDienstTask
         $fieldID = 'city';
-        $fieldCode = '<input type="text" class="form-control" name="tx_scheduler[city]" id="' . $fieldID . '" value="' . $taskInfo['city'] . '" size="30" placeholder="e.g. Berlin-Mitte"/>';
+        $fieldCode = '<input type="text" class="form-control" name="tx_scheduler[city]" id="' . $fieldID . '" value="' . $taskInfo['city'] . '" size="30" placeholder="e.g. Berlin Mitte"/>';
         $additionalFields[$fieldID] = array(
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:city'
@@ -257,6 +258,10 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
             $schedulerModule->addMessage(WeatherUtility::translate('message.api_response_401', 'openweatherapi'),
                 FlashMessage::ERROR);
             return false;
+        } elseif (strpos($http_response_header[0], '404')) {
+            $schedulerModule->addMessage(WeatherUtility::translate('message.api_code_404', 'openweatherapi'),
+                FlashMessage::ERROR);
+            return false;
         } elseif ($response == false) {
             $schedulerModule->addMessage(WeatherUtility::translate('message.api_response_null', 'openweatherapi'),
                 FlashMessage::ERROR);
@@ -341,10 +346,11 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         foreach ($countries as $country) {
             $options[] = sprintf(
                 '<option%s value="%s">%s (%s)</option>',
-                $selected == $country->getIsoCodeA3() ? ' selected' : '',
-                $country->getIsoCodeA3(),
+                // check 2 and 3 digit country code for compatibility reasons
+                $selected === $country->getIsoCodeA2() || $selected === $country->getIsoCodeA3() ? ' selected' : '',
+                $country->getIsoCodeA2(),
                 $country->getNameLocalized(),
-                $country->getIsoCodeA3()
+                $country->getIsoCodeA2()
             );
         }
 
