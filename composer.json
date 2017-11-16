@@ -2,7 +2,7 @@
     "name": "jweiland/weather2",
     "type": "typo3-cms-extension",
     "description": "Display weather data and weather alerts using various Weather APIs. Default APIs: OpenWeatherMap and Deutscher Wetterdienst",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "license": "GPL-2.0+",
     "keywords": ["typo3", "TYPO3 CMS", "weather2", "weather report", "weather alert"],
     "homepage": "http://www.jweiland.net",
