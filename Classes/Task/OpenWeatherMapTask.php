@@ -14,13 +14,15 @@ namespace JWeiland\Weather2\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Log\Logger;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MailUtility;
-use TYPO3\CMS\Scheduler\Task\AbstractTask;
+use JWeiland\Weather2\Domain\Model\CurrentWeather;
+use JWeiland\Weather2\Utility\WeatherUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Mail\MailMessage;
-use JWeiland\Weather2\Utility\WeatherUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MailUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * OpenWeatherMapTask Class for Scheduler
@@ -33,98 +35,98 @@ class OpenWeatherMapTask extends AbstractTask
      * @var string
      */
     protected $url = '';
-    
+
     /**
      * The TYPO3 database connection
      *
      * @var DatabaseConnection
      */
     protected $dbConnection;
-    
+
     /**
      * Table name
      *
      * @var string
      */
     protected $dbExtTable = 'tx_weather2_domain_model_currentweather';
-    
+
     /**
      * Execution time
      *
      * @var string
      */
     protected $execTime = '';
-    
+
     /**
      * JSON response of openweathermap api
      *
      * @var \stdClass
      */
     protected $responseClass;
-    
+
     /**
      * City
      *
      * @var string $city
      */
     public $city = '';
-    
+
     /**
      * Api key
      *
      * @var string $apiKey
      */
     public $apiKey = '';
-    
+
     /**
      * Country
      *
      * @var string $country
      */
     public $country = '';
-    
+
     /**
      * Record storage page
      *
      * @var int $recordStoragePage
      */
     public $recordStoragePage = 0;
-    
+
     /**
      * Name of current record
      *
      * @var string $name
      */
     public $name = '';
-    
+
     /**
      * Error notification on or off?
      *
      * @var bool $errorNotification
      */
     public $errorNotification = false;
-    
+
     /**
      * E-Mail address of sender
      *
      * @var string $emailSender
      */
     public $emailSender = '';
-    
+
     /**
      * Name of sender
      *
      * @var string $emailSenderName
      */
     public $emailSenderName = '';
-    
+
     /**
      * E-Mail of receiver
      *
      * @var string $emailReceiver
      */
     public $emailReceiver = '';
-    
+
     /**
      * This method is the heart of the scheduler task. It will be fired if the scheduler
      * gets executed
@@ -158,10 +160,16 @@ class OpenWeatherMapTask extends AbstractTask
         }
         $this->responseClass = json_decode($response);
         $this->writeToLog(sprintf('Response class: %s', json_encode($this->responseClass)));
-        $this->dbConnection->exec_INSERTquery($this->dbExtTable, $this->mapArrayForDatabase($this->responseClass));
+        /** @var ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        /** @var PersistenceManager $persistenceManager */
+        $persistenceManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+
+        $persistenceManager->add($this->getCurrentWeatherInstanceForResponseClass($this->responseClass));
+        $persistenceManager->persistAll();
         return true;
     }
-    
+
     /**
      * Returns the TYPO3 database connection from globals
      *
@@ -171,7 +179,7 @@ class OpenWeatherMapTask extends AbstractTask
     {
         return $GLOBALS['TYPO3_DB'];
     }
-    
+
     /**
      * This method is designed to return some additional information about the task,
      * that may help to set it apart from other tasks from the same class
@@ -184,7 +192,7 @@ class OpenWeatherMapTask extends AbstractTask
     {
         return parent::getAdditionalInformation();
     }
-    
+
     /**
      * Checks the JSON response
      *
@@ -208,10 +216,10 @@ class OpenWeatherMapTask extends AbstractTask
             );
             return false;
         }
-        
+
         /** @var \stdClass $responseClass */
         $responseClass = json_decode($response);
-        
+
         switch ($responseClass->cod) {
             case '200':
                 return true;
@@ -236,7 +244,7 @@ class OpenWeatherMapTask extends AbstractTask
                 return false;
         }
     }
-    
+
     /**
      * Writes a string into the TYPO3 syslog
      *
@@ -251,105 +259,63 @@ class OpenWeatherMapTask extends AbstractTask
     {
         $GLOBALS['BE_USER']->simplelog(($indent == true ? "\t" : '') . (string)$message, 'weather2', (int)$errorLevel);
     }
-    
+
     /**
-     * Returns mapped array
-     * This function must be adjusted for different APIs
-     *   $mappingArray = array(
-     *      'pid' => 0
-     *      'name' => $this->name,
-     *      'temperature_c' => 0,
-     *      'pressure_hpa' => 0,
-     *      'humidity_percentage' => 0,
-     *      'min_temp_c' => 0,
-     *      'max_temp_c' => 0,
-     *      'wind_speed_m_p_s' => 0,
-     *      'wind_direction_deg' => 0,
-     *      'rain_volume' => 0,
-     *      'snow_volume' => 0,
-     *      'clouds_percentage' => 0,
-     *      'serialized_array' => '',
-     *      'measure_timestamp' => 0,
-     *      'icon' => '',
-     *   );
+     * Returns filled CurrentWeather instance
      *
      * @param \stdClass $responseClass
-     * @return array mapped array
+     * @return CurrentWeather
      */
-    private function mapArrayForDatabase($responseClass)
+    private function getCurrentWeatherInstanceForResponseClass($responseClass)
     {
-        // initialize all items with a default value
-        $mappingArray = array(
-            'pid' => $this->recordStoragePage,
-            'name' => $this->name,
-            'temperature_c' => 0,
-            'pressure_hpa' => 0,
-            'humidity_percentage' => 0,
-            'min_temp_c' => 0,
-            'max_temp_c' => 0,
-            'wind_speed_m_p_s' => 0,
-            'wind_direction_deg' => 0,
-            'rain_volume' => 0,
-            'snow_volume' => 0,
-            'clouds_percentage' => 0,
-            'serialized_array' => '',
-            'measure_timestamp' => 0,
-            'icon' => '',
-        );
-        
+        $currentWeather = new CurrentWeather();
+        $currentWeather->setPid($this->recordStoragePage);
+        $currentWeather->setName($this->name);
+
         if (isset($responseClass->main->temp)) {
-            $mappingArray['temperature_c'] = (int)$responseClass->main->temp;
+            $currentWeather->setTemperatureC($responseClass->main->temp);
         }
-        
         if (isset($responseClass->main->pressure)) {
-            $mappingArray['pressure_hpa'] = (int)$responseClass->main->pressure;
+            $currentWeather->setPressureHpa($responseClass->main->pressure);
         }
-        
         if (isset($responseClass->main->humidity)) {
-            $mappingArray['humidity_percentage'] = (int)$responseClass->main->humidity;
+            $currentWeather->setHumidityPercentage($responseClass->main->humidity);
         }
-        
         if (isset($responseClass->main->temp_min)) {
-            $mappingArray['min_temp_c'] = (int)$responseClass->main->temp_min;
+            $currentWeather->setMinTempC($responseClass->main->temp_min);
         }
-        
         if (isset($responseClass->main->temp_max)) {
-            $mappingArray['max_temp_c'] = (int)$responseClass->main->temp_max;
+            $currentWeather->setMaxTempC($responseClass->main->temp_max);
         }
-        
         if (isset($responseClass->wind->speed)) {
-            $mappingArray['wind_speed_m_p_s'] = (int)$responseClass->wind->speed;
+            $currentWeather->setWindSpeedMPS($responseClass->wind->speed);
         }
-        
         if (isset($responseClass->wind->deg)) {
-            $mappingArray['wind_direction_deg'] = (int)$responseClass->wind->deg;
+            $currentWeather->setWindDirectionDeg($responseClass->wind->deg);
         }
-        
         if (isset($responseClass->rain)) {
             $rain = (array)$responseClass->rain;
-            $mappingArray['rain_volume'] = (int)array_shift($rain);
+            $currentWeather->setRainVolume(array_shift($rain));
         }
-        
         if (isset($responseClass->snow)) {
             $snow = (array)$responseClass->snow;
-            $mappingArray['snow_volume'] = (int)array_shift($snow);
+            $currentWeather->setSnowVolume(array_shift($snow));
         }
-        
         if (isset($responseClass->clouds->all)) {
-            $mappingArray['clouds_percentage'] = (int)$responseClass->clouds->all;
+            $currentWeather->setCloudsPercentage($responseClass->clouds->all);
         }
-        
         if (isset($responseClass->dt)) {
-            $mappingArray['measure_timestamp'] = (int)$responseClass->dt;
+            $measureTimestamp = new \DateTime();
+            $measureTimestamp->setTimestamp($responseClass->dt);
+            $currentWeather->setMeasureTimestamp($measureTimestamp);
         }
-        
         if (isset($responseClass->weather[0]->icon)) {
-            $mappingArray['icon'] = (string)$responseClass->weather[0]->icon;
+            $currentWeather->setIcon($responseClass->weather[0]->icon);
         }
-        
-        return $mappingArray;
+
+        return $currentWeather;
     }
-    
+
     /**
      * Sends a mail with $subject and $body to in task selected mail receiver.
      *
@@ -362,7 +328,7 @@ class OpenWeatherMapTask extends AbstractTask
         if (!$this->errorNotification) {
             return false;
         } // only continue if notifications are enabled
-        
+
         /** @var MailMessage $mail */
         $mail = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
         $from = null;
@@ -380,7 +346,7 @@ class OpenWeatherMapTask extends AbstractTask
         if ($this->emailSenderName) {
             $fromName = $this->emailSenderName;
         }
-        
+
         if ($fromAddress && $fromName && $this->emailReceiver) {
             $from = array($fromAddress => $fromName);
         } else {
@@ -391,10 +357,10 @@ class OpenWeatherMapTask extends AbstractTask
             );
             return false;
         }
-        
+
         $mail->setSubject($subject)->setFrom($from)->setTo(array((string)$this->emailReceiver))->setBody($body);
         $mail->send();
-        
+
         if ($mail->isSent()) {
             $this->writeToLog('Notice: Notification mail sent!');
             return true;
