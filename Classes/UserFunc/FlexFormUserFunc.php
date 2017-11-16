@@ -14,6 +14,7 @@ namespace JWeiland\Weather2\UserFunc;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 
 /**
@@ -33,7 +34,8 @@ class FlexFormUserFunc
         $result = $dbConnection->exec_SELECTgetRows(
             'name',
             'tx_weather2_domain_model_currentweather',
-            '1',
+            'tx_weather2_domain_model_currentweather.deleted = 0'
+            . BackendUtility::BEenableFields('tx_weather2_domain_model_currentweather'),
             'name',
             'name'
         );
