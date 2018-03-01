@@ -81,12 +81,12 @@ class OpenWeatherMapTaskAdditionalFieldProvider implements AdditionalFieldProvid
         $pageRenderer->loadJquery();
         $pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Weather2/OpenWeatherMapTaskModule');
-        $popupSettings = [
-            'PopupWindow' => [
+        $popupSettings = array(
+            'PopupWindow' => array(
                 'width' => '800px',
                 'height' => '550px'
-            ]
-        ];
+            )
+        );
         $pageRenderer->addInlineSettingArray('Popup', $popupSettings);
         $pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', BackendUtility::getModuleUrl('record_edit'));
         $pageRenderer->addInlineSetting('FormEngine', 'formName', 'tx_scheduler_form');
