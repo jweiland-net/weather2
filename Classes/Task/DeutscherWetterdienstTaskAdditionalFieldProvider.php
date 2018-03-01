@@ -160,12 +160,12 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
         $pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js');
         $pageRenderer->addCssFile($extRelPath . 'Resources/Public/Css/dwdScheduler.css');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule');
-        $popupSettings = [
-            'PopupWindow' => [
+        $popupSettings = array(
+            'PopupWindow' => array(
                 'width' => '800px',
                 'height' => '550px'
-            ]
-        ];
+            )
+        );
         $pageRenderer->addInlineSettingArray('Popup', $popupSettings);
         $pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', BackendUtility::getModuleUrl('record_edit'));
         $pageRenderer->addInlineSetting('FormEngine', 'formName', 'tx_scheduler_form');
