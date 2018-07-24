@@ -64,6 +64,12 @@
 			<trans-unit id="message.api_response_401">
 				<source>Got Error 401 while API request. Please check your API-Key.</source>
 			</trans-unit>
+			<trans-unit id="removeOldRecords">
+				<source>Remove old Records?</source>
+			</trans-unit>
+			<trans-unit id="removeOldRecordsHours">
+				<source>Remove old Records after X Hours</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
