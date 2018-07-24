@@ -128,6 +128,20 @@ class OpenWeatherMapTask extends AbstractTask
     public $emailReceiver = '';
 
     /**
+     * If true old records will be removed after $removeOldRecordsHours
+     *
+     * @var bool
+     */
+    public $removeOldRecords = false;
+
+    /**
+     * If $removeOldRecords is true alerts will be removed after its value
+     *
+     * @var int
+     */
+    public $removeOldRecordsHours = 0;
+
+    /**
      * This method is the heart of the scheduler task. It will be fired if the scheduler
      * gets executed
      *
@@ -150,6 +164,11 @@ class OpenWeatherMapTask extends AbstractTask
             false
         );
         $this->dbConnection = $this->getDatabaseConnection();
+
+        if ($this->removeOldRecords) {
+            $this->removeOldRecordsFromDb();
+        }
+
         $this->url = sprintf(
             'http://api.openweathermap.org/data/2.5/weather?q=%s,%s&units=%s&APPID=%s',
             urlencode($this->city), urlencode($this->country), 'metric', $this->apiKey
@@ -368,5 +387,11 @@ class OpenWeatherMapTask extends AbstractTask
             $this->writeToLog('Notice: Notification mail not sent because of an error!');
             return false;
         }
+    }
+
+    protected function removeOldRecordsFromDb()
+    {
+        $minimalTimestamp = time() - (int)$this->removeOldRecordsHours * 3600;
+        $this->dbConnection->exec_DELETEquery($this->dbExtTable, 'crdate <= ' . $minimalTimestamp);
     }
 }

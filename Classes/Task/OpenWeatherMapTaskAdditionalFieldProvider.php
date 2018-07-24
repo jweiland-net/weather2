@@ -60,7 +60,9 @@ class OpenWeatherMapTaskAdditionalFieldProvider implements AdditionalFieldProvid
         'emailSenderName',
         'emailSender',
         'emailReceiver',
-        'recordStoragePage'
+        'recordStoragePage',
+        'removeOldRecords',
+        'removeOldRecordsHours'
     );
 
     /**
@@ -184,6 +186,20 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:email_receiver'
         );
 
+        $fieldID = 'removeOldRecords';
+        $fieldCode = '<input type="checkbox" class="checkbox" name="tx_scheduler[' . $fieldID . ']" id="' . $fieldID . '" value="enable" size="60" ' . ($taskInfo[$fieldID] ? 'checked' : '') . '></input>';
+        $additionalFields[$fieldID] = array(
+            'code' => $fieldCode,
+            'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:removeOldRecords'
+        );
+
+        $fieldID = 'removeOldRecordsHours';
+        $fieldCode = '<input type="text" class="form-control" name="tx_scheduler[' . $fieldID . ']" id="' . $fieldID . '" value="' . $taskInfo[$fieldID] . '" size="30" placeholder="24"/>';
+        $additionalFields[$fieldID] = array(
+            'code' => $fieldCode,
+            'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:removeOldRecordsHours'
+        );
+
         return $additionalFields;
     }
 
@@ -204,6 +220,13 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
             $submittedData['recordStoragePage'] = preg_replace('/[^0-9]/', '', $submittedData['recordStoragePage']);
         } else {
             $submittedData['recordStoragePage'] = 0;
+        }
+
+        if ($submittedData['removeOldRecordsHours']) {
+            $submittedData['removeOldRecordsHours'] = (int)$submittedData['removeOldRecordsHours'];
+        }
+        if ($submittedData['removeOldRecords'] && !isset($submittedData['removeOldRecordsHours'])) {
+            $submittedData['removeOldRecordsHours'] = 24;
         }
 
         foreach ($submittedData as $fieldName => $field) {
@@ -305,6 +328,8 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         $task->emailSenderName = $submittedData['emailSenderName'];
         $task->emailSender = $submittedData['emailSender'];
         $task->emailReceiver = $submittedData['emailReceiver'];
+        $task->removeOldRecords = $submittedData['removeOldRecords'];
+        $task->removeOldRecordsHours = $submittedData['removeOldRecordsHours'];
     }
 
     /**
