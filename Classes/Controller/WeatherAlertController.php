@@ -28,7 +28,7 @@ class WeatherAlertController extends ActionController
      * @var \JWeiland\Weather2\Domain\Repository\WeatherAlertRepository
      */
     protected $weatherAlertRepository = null;
-    
+
     /**
      * inject weatherAlertRepository
      *
@@ -39,7 +39,7 @@ class WeatherAlertController extends ActionController
     {
         $this->weatherAlertRepository = $weatherAlertRepository;
     }
-    
+
     /**
      * action show displays the newest CurrentWeather model
      *
@@ -47,7 +47,13 @@ class WeatherAlertController extends ActionController
      */
     public function showAction()
     {
-        $alerts = $this->weatherAlertRepository->findByRegions($this->settings['regions']);
-        $this->view->assign('weatherAlerts', $alerts);
+        $this->view->assign(
+            'weatherAlerts',
+            $this->weatherAlertRepository->findByRegions(
+                $this->settings['regions'],
+                $this->settings['warningTypes'],
+                $this->settings['warningLevels']
+            )
+        );
     }
 }

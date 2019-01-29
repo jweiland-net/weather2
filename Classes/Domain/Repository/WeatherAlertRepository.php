@@ -28,20 +28,32 @@ class WeatherAlertRepository extends Repository
      * Returns current alerts filtered by user selection
      *
      * @param string $regions
+     * @param string $warningTypes
+     * @param string $warningLevels
      * @return QueryResultInterface
      */
-    public function findByRegions($regions)
+    public function findByRegions($regions, $warningTypes, $warningLevels)
     {
-        $regions = GeneralUtility::trimExplode(',', $regions);
         /** @var Query $query */
         $query = $this->createQuery();
-        $constraints = array();
-        foreach ($regions as $region) {
-            $constraints[] = $query->contains('regions', (int)$region);
+        $regionConstraints = array();
+        foreach (GeneralUtility::trimExplode(',', $regions) as $region) {
+            $regionConstraints[] = $query->contains('regions', (int)$region);
+        }
+        $equalConstraintFields = array(
+            'type' => GeneralUtility::trimExplode(',', $warningTypes),
+            'level' => GeneralUtility::trimExplode(',', $warningLevels)
+        );
+        $warningConstraints = array();
+        foreach ($equalConstraintFields as $field => $values) {
+            foreach ($values as $value) {
+                $warningConstraints[] = $query->equals($field, $value);
+            }
         }
         $query->matching(
             $query->logicalAnd(
-                $query->logicalOr($constraints),
+                $query->logicalOr($warningConstraints),
+                $query->logicalOr($regionConstraints),
                 $query->lessThan('starttime', $GLOBALS['EXEC_TIME']),
                 $query->greaterThanOrEqual('endtime', $GLOBALS['EXEC_TIME'])
             )
