@@ -44,15 +44,16 @@ class WeatherAlertRepository extends Repository
             'type' => GeneralUtility::trimExplode(',', $warningTypes),
             'level' => GeneralUtility::trimExplode(',', $warningLevels)
         );
-        $warningConstraints = array();
+        $warningConstraints = array('type' => array(), 'level' => array());
         foreach ($equalConstraintFields as $field => $values) {
             foreach ($values as $value) {
-                $warningConstraints[] = $query->equals($field, $value);
+                $warningConstraints[$field][] = $query->equals($field, $value);
             }
         }
         $query->matching(
             $query->logicalAnd(
-                $query->logicalOr($warningConstraints),
+                $query->logicalOr($warningConstraints['type']),
+                $query->logicalOr($warningConstraints['level']),
                 $query->logicalOr($regionConstraints),
                 $query->lessThan('starttime', $GLOBALS['EXEC_TIME']),
                 $query->greaterThanOrEqual('endtime', $GLOBALS['EXEC_TIME'])
