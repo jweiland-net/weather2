@@ -29,6 +29,3 @@ record storage page.
 
 .. figure:: ../Images/WeatherAlert/PluginConfiguration.jpeg
    :alt: Backend plugin content element
-
-.. toctree::
-   :maxdepth: 2

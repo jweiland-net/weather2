@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace JWeiland\Weather2\ViewHelpers;
 
 /*
@@ -17,7 +18,7 @@ namespace JWeiland\Weather2\ViewHelpers;
 use JWeiland\Weather2\Domain\Model\CurrentWeather;
 use JWeiland\Weather2\Service\WeatherConverterService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ConvertMetricToImperialViewHelper
@@ -35,27 +36,24 @@ class ConvertMetricToImperialViewHelper extends AbstractViewHelper
     /**
      * Returns converted WeatherModel
      *
-     * @param \JWeiland\Weather2\Domain\Model\CurrentWeather $weatherModel
+     * @param CurrentWeather $weatherModel
      * @return string
      */
-    public function render(CurrentWeather $weatherModel)
+    public function render(CurrentWeather $weatherModel): string
     {
         $convertedModel = clone $weatherModel;
         /** @var $converter WeatherConverterService */
-        $converter = GeneralUtility::makeInstance('JWeiland\\Weather2\\Service\\WeatherConverterService');
-        $templateVariableContainer = $this->renderingContext->getTemplateVariableContainer();
-        // Without this making changes in partials get annoying
-        // TODO: Now you are left with two arrays of witch one is redundant
+        $converter = GeneralUtility::makeInstance(WeatherConverterService::class);
 
         // Set Values Here
-        $convertedModel->setTemperatureC($converter->convertCelsiusToFahrenheit($weatherModel->getTemperatureC()));
-        $convertedModel->setMinTempC($converter->convertCelsiusToFahrenheit($weatherModel->getMinTempC()));
-        $convertedModel->setMaxTempC($converter->convertCelsiusToFahrenheit($weatherModel->getMaxTempC()));
-        $convertedModel->setWindSpeedMPS($converter->convertMetersToMiles($weatherModel->getWindSpeedMPS()));
+        $convertedModel->setTemperatureC((int)$converter->convertCelsiusToFahrenheit($weatherModel->getTemperatureC()));
+        $convertedModel->setMinTempC((int)$converter->convertCelsiusToFahrenheit($weatherModel->getMinTempC()));
+        $convertedModel->setMaxTempC((int)$converter->convertCelsiusToFahrenheit($weatherModel->getMaxTempC()));
+        $convertedModel->setWindSpeedMPS((int)$converter->convertMetersToMiles($weatherModel->getWindSpeedMPS()));
 
-        $templateVariableContainer->add($this->arguments['as'], $convertedModel);
+        $this->templateVariableContainer->add($this->arguments['as'], $convertedModel);
         $content = $this->renderChildren();
-        $templateVariableContainer->remove($this->arguments['as']);
+        $this->templateVariableContainer->remove($this->arguments['as']);
 
         return $content;
     }

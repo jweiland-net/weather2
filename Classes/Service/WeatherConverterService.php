@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace JWeiland\Weather2\Service;
 
 /*
@@ -20,56 +21,46 @@ namespace JWeiland\Weather2\Service;
 class WeatherConverterService
 {
     /**
-     * Converts value from fahrenheit to celsius
-     *
      * @param float $value
      * @return float
      */
-    public function convertFahrenheitToCelsius($value)
+    public function convertFahrenheitToCelsius(float $value): float
     {
         return $value * 5 / 9 - 32;
     }
-    
+
     /**
-     * Converts value from kelvin to celsius
-     *
      * @param float $value
      * @return float
      */
-    public function convertKelvinToCelsius($value)
+    public function convertKelvinToCelsius(float $value): float
     {
         return $value - 273.15;
     }
-    
+
     /**
-     * Converts value from celsius to fahrenheit
-     *
      * @param float $value
      * @return float
      */
-    public function convertCelsiusToFahrenheit($value)
+    public function convertCelsiusToFahrenheit(float $value): float
     {
         return $value * 9 / 5 + 32;
     }
-    
+
     /**
-     * Converts value from celsius to kelvin
-     *
      * @param float $value
      * @return float
      */
-    public function convertCelsiusToKelvin($value)
+    public function convertCelsiusToKelvin(float $value): float
     {
         return $value + 273.15;
     }
-    
+
     /**
-     * Converts value from meters to miles
-     *
      * @param float $value
      * @return string
      */
-    public function convertMetersToMiles($value)
+    public function convertMetersToMiles(float $value): string
     {
         return number_format($value * 2.236936, 2, '.', '');
     }

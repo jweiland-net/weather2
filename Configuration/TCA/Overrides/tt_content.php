@@ -1,8 +1,15 @@
 <?php
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    'JWeiland.weather2',
+    'Currentweather',
+    'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:plugin.currentweather.title'
+);
 
-if (!defined('TYPO3_MODE')) {
-    die('Access denied.');
-}
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    'JWeiland.weather2',
+    'Weatheralert',
+    'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:plugin.weatheralert.title'
+);
 
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['weather2_currentweather'] = 'pi_flexform';
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(

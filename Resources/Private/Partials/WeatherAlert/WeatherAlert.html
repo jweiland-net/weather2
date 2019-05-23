@@ -1,6 +1,7 @@
 <div class="weather2-item  weather2-alert alert-level-{weatherAlert.level}" id="weather2-alert{weatherAlert.uid}">
 	<div class="primary">
 		<div class="weather-data">
+			<f:if condition="{weatherAlert.isPreLiminaryInformation}"><f:translate key="tx_weather2_domain_model_weatheralert.preliminary_information" /></f:if>
 			<h3>{weatherAlert.title}</h3>
 			<p><a href="#" class="showMore" toggle-label="{f:translate(key: 'tx_weather2.utility.showLess')}"><f:translate key="tx_weather2.utility.showMore" /></a></p>
 		</div>
@@ -10,7 +11,11 @@
 		<f:if condition="{weatherAlert.instruction}">
 			<li>{weatherAlert.instruction}</li>
 		</f:if>
-		<li><f:translate key="tx_weather2_domain_model_weatheralert.starttime" />: <f:format.date format="d.m.Y - H:i">{weatherAlert.starttime}</f:format.date></li>
-		<li><f:translate key="tx_weather2_domain_model_weatheralert.endtime" />: <f:format.date format="d.m.Y - H:i">{weatherAlert.endtime}</f:format.date></li>
+		<f:if condition="{weatherAlert.startDate}">
+			<li><f:translate key="tx_weather2_domain_model_weatheralert.start_date" />: <f:format.date format="d.m.Y - H:i">{weatherAlert.startDate}</f:format.date></li>
+		</f:if>
+		<f:if condition="{weatherAlert.endDate}">
+			<li><f:translate key="tx_weather2_domain_model_weatheralert.end_date" />: <f:format.date format="d.m.Y - H:i">{weatherAlert.endDate}</f:format.date></li>
+		</f:if>
 	</ul>
 </div>

@@ -338,11 +338,11 @@ class WeatherAlertTest extends UnitTestCase
      */
     public function dataProviderForSetStarttime()
     {
-        $arguments = array();
-        $arguments['set Starttime with Null'] = array(null);
-        $arguments['set Starttime with Integer'] = array(1234567890);
-        $arguments['set Starttime with Integer as String'] = array('1234567890');
-        $arguments['set Starttime with String'] = array('Hi all together');
+        $arguments = [];
+        $arguments['set Starttime with Null'] = [null];
+        $arguments['set Starttime with Integer'] = [1234567890];
+        $arguments['set Starttime with Integer as String'] = ['1234567890'];
+        $arguments['set Starttime with String'] = ['Hi all together'];
         return $arguments;
     }
 
@@ -386,11 +386,11 @@ class WeatherAlertTest extends UnitTestCase
      */
     public function dataProviderForSetEndtime()
     {
-        $arguments = array();
-        $arguments['set Endtime with Null'] = array(null);
-        $arguments['set Endtime with Integer'] = array(1234567890);
-        $arguments['set Endtime with Integer as String'] = array('1234567890');
-        $arguments['set Endtime with String'] = array('Hi all together');
+        $arguments = [];
+        $arguments['set Endtime with Null'] = [null];
+        $arguments['set Endtime with Integer'] = [1234567890];
+        $arguments['set Endtime with Integer as String'] = ['1234567890'];
+        $arguments['set Endtime with String'] = ['Hi all together'];
         return $arguments;
     }
 

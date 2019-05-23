@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace JWeiland\Weather2\Domain\Repository;
 
 /*
@@ -14,26 +15,29 @@ namespace JWeiland\Weather2\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use JWeiland\Weather2\Domain\Model\DwdWarnCell;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
- * The repository for WeatherAlertRegion
+ * DWD warn cell repository
  */
-class WeatherAlertRegionRepository extends Repository
+class DwdWarnCellRepository extends Repository
 {
     /**
      * Finds objects by properties name and district
      *
      * @param string $name
-     * @return QueryResultInterface
+     * @return DwdWarnCell[]
      */
-    public function findByName($name)
+    public function findByName(string $name): array
     {
         $query = $this->createQuery();
         $query->matching(
-            $query->like('name', '%' . trim($name) . '%', false)
+            $query->logicalOr(
+                $query->like('name', '%' . trim($name) . '%'),
+                $query->equals('warn_cell_id', $name)
+            )
         );
-        return $query->execute();
+        return $query->execute()->toArray();
     }
 }

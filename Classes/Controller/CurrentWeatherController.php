@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace JWeiland\Weather2\Controller;
 
 /*
@@ -23,27 +24,18 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 class CurrentWeatherController extends ActionController
 {
     /**
-     * currentWeatherRepository
-     *
-     * @var \JWeiland\Weather2\Domain\Repository\CurrentWeatherRepository
+     * @var CurrentWeatherRepository
      */
     protected $currentWeatherRepository;
-    
-    /**
-     * inject currentWeatherRepository
-     *
-     * @param CurrentWeatherRepository $currentWeatherRepository
-     * @return void
-     */
-    public function injectCurrentWeatherRepository(CurrentWeatherRepository $currentWeatherRepository)
+
+    public function __construct(CurrentWeatherRepository $currentWeatherRepository)
     {
+        parent::__construct();
         $this->currentWeatherRepository = $currentWeatherRepository;
     }
 
     /**
      * action show displays the newest CurrentWeather model
-     *
-     * @return void
      */
     public function showAction()
     {

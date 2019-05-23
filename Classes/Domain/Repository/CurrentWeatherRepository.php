@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace JWeiland\Weather2\Domain\Repository;
 
 /*
@@ -27,23 +28,17 @@ class CurrentWeatherRepository extends Repository
      * Returns the latest weather
      *
      * @param string $selection
-     * @return \JWeiland\Weather2\Domain\Model\CurrentWeather
+     * @return CurrentWeather|null
      */
-    public function findBySelection($selection)
+    public function findBySelection(string $selection)
     {
         $query = $this->createQuery();
-        // Only select rows where name == selection
-        if ($selection !== '') {
-            $query->matching($query->equals('name', trim($selection)));
-        }
-        
+        $query->matching($query->equals('name', trim($selection)));
         // Order desc to get the latest weather
-        $query->setOrderings(array(
+        $query->setOrderings([
             'uid' => QueryInterface::ORDER_DESCENDING
-        ));
-        
-        /** @var CurrentWeather $currentWeather */
-        $currentWeather = $query->execute()->getFirst();
-        return $currentWeather;
+        ]);
+
+        return $query->execute()->getFirst();
     }
 }

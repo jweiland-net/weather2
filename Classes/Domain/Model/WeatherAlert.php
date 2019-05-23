@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace JWeiland\Weather2\Domain\Model;
 
 /*
@@ -22,13 +23,9 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 class WeatherAlert extends AbstractEntity
 {
     /**
-     * Regions affected to this alert
-     * e.g. 0 (single)
-     * e.g. 0,2,7,3 (multiple)
-     *
-     * @var string
+     * @var \JWeiland\Weather2\Domain\Model\DwdWarnCell
      */
-    protected $regions = '';
+    protected $dwdWarnCell;
 
     /**
      * Level of alert
@@ -71,117 +68,121 @@ class WeatherAlert extends AbstractEntity
     protected $instruction = '';
 
     /**
-     * Start time of the alert
+     * TYPO3 starttime
      *
      * @var \DateTime
      */
     protected $starttime;
 
     /**
-     * End time of the alert
+     * TYPO3 endtime
      *
      * @var \DateTime
      */
     protected $endtime;
 
     /**
-     * Returns Regions
+     * Start date of the weather alert!
      *
-     * @return string
+     * @var \DateTime
      */
-    public function getRegions()
+    protected $startDate;
+
+    /**
+     * End date of the weather alert!
+     *
+     * @var \DateTime
+     */
+    protected $endDate;
+
+    /**
+     * @var string
+     */
+    protected $comparisonHash = '';
+
+    /**
+     * @var bool
+     */
+    protected $preliminaryInformation = false;
+
+    /**
+     * @return DwdWarnCell
+     */
+    public function getDwdWarnCell(): DwdWarnCell
     {
-        return $this->regions;
+        return $this->dwdWarnCell;
     }
 
     /**
-     * Sets Regions
-     *
-     * @param string $regions
+     * @param DwdWarnCell $dwdWarnCell
      */
-    public function setRegions($regions)
+    public function setDwdWarnCell(DwdWarnCell $dwdWarnCell)
     {
-        $this->regions = (string)$regions;
+        $this->dwdWarnCell = $dwdWarnCell;
     }
 
     /**
-     * Returns Level
-     *
      * @return int
      */
-    public function getLevel()
+    public function getLevel(): int
     {
         return $this->level;
     }
 
     /**
-     * Sets Level
-     *
      * @param int $level
      */
-    public function setLevel($level)
+    public function setLevel(int $level)
     {
-        $this->level = (int)$level;
+        $this->level = $level;
     }
 
     /**
-     * Returns Type
-     *
      * @return int
      */
-    public function getType()
+    public function getType(): int
     {
         return $this->type;
     }
 
     /**
-     * Sets Type
-     *
      * @param int $type
      */
-    public function setType($type)
+    public function setType(int $type)
     {
-        $this->type = (int)$type;
+        $this->type = $type;
     }
 
     /**
-     * Returns Title
-     *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
     /**
-     * Sets Title
-     *
      * @param string $title
      */
-    public function setTitle($title)
+    public function setTitle(string $title)
     {
-        $this->title = (string)$title;
+        $this->title = $title;
     }
 
     /**
-     * Returns Description
-     *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
     /**
-     * Sets Description
-     *
      * @param string $description
      */
-    public function setDescription($description)
+    public function setDescription(string $description)
     {
-        $this->description = (string)$description;
+        $this->description = $description;
     }
 
     /**
@@ -189,25 +190,21 @@ class WeatherAlert extends AbstractEntity
      *
      * @return string
      */
-    public function getInstruction()
+    public function getInstruction(): string
     {
         return $this->instruction;
     }
 
     /**
-     * Sets Instruction
-     *
      * @param string $instruction
      */
-    public function setInstruction($instruction)
+    public function setInstruction(string $instruction)
     {
-        $this->instruction = (string)$instruction;
+        $this->instruction = $instruction;
     }
 
     /**
-     * Returns Starttime
-     *
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getStarttime()
     {
@@ -215,8 +212,6 @@ class WeatherAlert extends AbstractEntity
     }
 
     /**
-     * Sets Starttime
-     *
      * @param \DateTime $starttime
      */
     public function setStarttime(\DateTime $starttime)
@@ -225,9 +220,7 @@ class WeatherAlert extends AbstractEntity
     }
 
     /**
-     * Returns Endtime
-     *
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getEndtime()
     {
@@ -235,12 +228,85 @@ class WeatherAlert extends AbstractEntity
     }
 
     /**
-     * Sets Endtime
-     *
      * @param \DateTime $endtime
      */
     public function setEndtime(\DateTime $endtime)
     {
         $this->endtime = $endtime;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getStartDate()
+    {
+        return $this->startDate;
+    }
+
+    /**
+     * @param \DateTime $startDate
+     */
+    public function setStartDate(\DateTime $startDate)
+    {
+        $this->startDate = $startDate;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getEndDate()
+    {
+        return $this->endDate;
+    }
+
+    /**
+     * @param \DateTime $endDate
+     */
+    public function setEndDate(\DateTime $endDate)
+    {
+        $this->endDate = $endDate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComparisonHash(): string
+    {
+        return $this->comparisonHash;
+    }
+
+    /**
+     * @param string $comparisonHash
+     */
+    public function setComparisonHash(string $comparisonHash)
+    {
+        $this->comparisonHash = $comparisonHash;
+    }
+
+    /**
+     * Fluid getter:
+     * {weatherAlert.isPreliminaryInformation}
+     *
+     * @return bool
+     */
+    public function getIsPreliminaryInformation(): bool
+    {
+        return $this->isPreliminaryInformation();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPreliminaryInformation(): bool
+    {
+        return $this->preliminaryInformation;
+    }
+
+    /**
+     * @param bool $preliminaryInformation
+     */
+    public function setPreliminaryInformation(bool $preliminaryInformation)
+    {
+        $this->preliminaryInformation = $preliminaryInformation;
     }
 }

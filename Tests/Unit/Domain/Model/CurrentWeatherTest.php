@@ -104,11 +104,11 @@ class CurrentWeatherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
      */
     public function dataProviderForSetMeasureTimestamp()
     {
-        $arguments = array();
-        $arguments['set MeasureTimestamp with Null'] = array(null);
-        $arguments['set MeasureTimestamp with Integer'] = array(1234567890);
-        $arguments['set MeasureTimestamp with Integer as String'] = array('1234567890');
-        $arguments['set MeasureTimestamp with String'] = array('Hi all together');
+        $arguments = [];
+        $arguments['set MeasureTimestamp with Null'] = [null];
+        $arguments['set MeasureTimestamp with Integer'] = [1234567890];
+        $arguments['set MeasureTimestamp with Integer as String'] = ['1234567890'];
+        $arguments['set MeasureTimestamp with String'] = ['Hi all together'];
         return $arguments;
     }
 

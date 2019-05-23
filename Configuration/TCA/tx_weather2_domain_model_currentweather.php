@@ -1,6 +1,6 @@
 <?php
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'title' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_currentweather',
         'label' => 'name',
         'tstamp' => 'tstamp',
@@ -9,197 +9,185 @@ return array(
         'dividers2tabs' => true,
         'rootLevel' => -1,
         'delete' => 'deleted',
-        'enablecolumns' => array(
+        'enablecolumns' => [
             'disabled' => 'hidden',
             'starttime' => 'starttime',
             'endtime' => 'endtime',
-        ),
+        ],
         'searchFields' => 'name,icon',
-        'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('weather2') . 'Resources/Public/Icons/tx_weather2_domain_model_currentweather.gif'
-    ),
-    'interface' => array(
-        'showRecordFieldList' => 'hidden, name, measure_timestamp, temperature_c, pressure_hpa, humidity_percentage, min_temp_c, max_temp_c, wind_speed_m_p_s, wind_direction_deg, pop_percentage, rain_volume, snow_volume, clouds_percentage, icon, serialized_array',
-    ),
-    'types' => array(
-        '1' => array('showitem' => 'hidden;;1, name, measure_timestamp, temperature_c, pressure_hpa, humidity_percentage, min_temp_c, max_temp_c, wind_speed_m_p_s, wind_direction_deg, pop_percentage, rain_volume, snow_volume, clouds_percentage, icon, serialized_array, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'),
-    ),
-    'palettes' => array(
-        '1' => array('showitem' => ''),
-    ),
-    'columns' => array(
-        'hidden' => array(
+        'iconfile' => 'EXT:weather2/Resources/Public/Icons/tx_weather2_domain_model_currentweather.gif'
+    ],
+    'interface' => [
+        'showRecordFieldList' => 'name, measure_timestamp, temperature_c, pressure_hpa, humidity_percentage, min_temp_c, max_temp_c, wind_speed_m_p_s, wind_direction_deg, pop_percentage, rain_volume, snow_volume, clouds_percentage, icon, serialized_array',
+    ],
+    'types' => [
+        '1' => ['showitem' => 'name, measure_timestamp, temperature_c, pressure_hpa, humidity_percentage, min_temp_c, max_temp_c, wind_speed_m_p_s, wind_direction_deg, pop_percentage, rain_volume, snow_volume, clouds_percentage, icon, serialized_array, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'],
+    ],
+    'columns' => [
+        'starttime' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
-            'config' => array(
-                'type' => 'check',
-            ),
-        ),
-        'starttime' => array(
-            'exclude' => 1,
-            'l10n_mode' => 'mergeIfNotBlank',
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.starttime',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
+                'renderType' => 'inputDateTime',
                 'size' => 13,
-                'max' => 20,
                 'eval' => 'datetime',
                 'checkbox' => 0,
                 'default' => 0,
-                'range' => array(
+                'range' => [
                     'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
-                ),
-            ),
-        ),
-        'endtime' => array(
+                ],
+            ],
+        ],
+        'endtime' => [
             'exclude' => 1,
-            'l10n_mode' => 'mergeIfNotBlank',
             'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.endtime',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
+                'renderType' => 'inputDateTime',
                 'size' => 13,
-                'max' => 20,
                 'eval' => 'datetime',
                 'checkbox' => 0,
                 'default' => 0,
-                'range' => array(
+                'range' => [
                     'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
-                ),
-            ),
-        ),
-        'name' => array(
+                ],
+            ],
+        ],
+        'name' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_currentweather.name',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'trim'
-            ),
-        ),
-        'measure_timestamp' => array(
+            ],
+        ],
+        'measure_timestamp' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_currentweather.measure_timestamp',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 4,
                 'eval' => 'int'
-            )
-        ),
-        'temperature_c' => array(
+            ]
+        ],
+        'temperature_c' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_currentweather.temperature_c',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'double2'
-            )
-        ),
-        'pressure_hpa' => array(
+            ]
+        ],
+        'pressure_hpa' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_currentweather.pressure_hpa',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'double2'
-            )
-        ),
-        'humidity_percentage' => array(
+            ]
+        ],
+        'humidity_percentage' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_currentweather.humidity_percentage',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'double2'
-            )
-        ),
-        'min_temp_c' => array(
+            ]
+        ],
+        'min_temp_c' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_currentweather.min_temp_c',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'double2'
-            )
-        ),
-        'max_temp_c' => array(
+            ]
+        ],
+        'max_temp_c' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_currentweather.max_temp_c',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'double2'
-            )
-        ),
-        'wind_speed_m_p_s' => array(
+            ]
+        ],
+        'wind_speed_m_p_s' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_currentweather.wind_speed_m_p_s',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'double2'
-            )
-        ),
-        'wind_direction_deg' => array(
+            ]
+        ],
+        'wind_direction_deg' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_currentweather.wind_direction_deg',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'double2'
-            )
-        ),
-        'pop_percentage' => array(
+            ]
+        ],
+        'pop_percentage' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_currentweather.pop_percentage',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'double2'
-            )
-        ),
-        'snow_volume' => array(
+            ]
+        ],
+        'snow_volume' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_currentweather.snow_volume',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'double2'
-            )
-        ),
-        'rain_volume' => array(
+            ]
+        ],
+        'rain_volume' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_currentweather.rain_volume',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'double2'
-            )
-        ),
-        'clouds_percentage' => array(
+            ]
+        ],
+        'clouds_percentage' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_currentweather.clouds_percentage',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'double2'
-            )
-        ),
-        'serialized_array' => array(
+            ]
+        ],
+        'serialized_array' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_currentweather.serialized_array',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'trim'
-            ),
-        ),
-        'icon' => array(
+            ],
+        ],
+        'icon' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_currentweather.icon',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'trim'
-            ),
-        )
-    ),
-);
+            ],
+        ]
+    ],
+];

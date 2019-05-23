@@ -17,7 +17,7 @@ namespace JWeiland\Weather2\ViewHelpers;
 use JWeiland\Weather2\Domain\Model\CurrentWeather;
 use JWeiland\Weather2\Service\WeatherConverterService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ConvertMetricToISoUViewHelper
@@ -35,26 +35,23 @@ class ConvertMetricToISoUViewHelper extends AbstractViewHelper
     /**
      * Returns converted WeatherModel
      *
-     * @param \JWeiland\Weather2\Domain\Model\CurrentWeather $weatherModel
+     * @param CurrentWeather $weatherModel
      * @return string
      */
-    public function render(CurrentWeather $weatherModel)
+    public function render(CurrentWeather $weatherModel): string
     {
         $convertedModel = clone $weatherModel;
         /** @var $converter WeatherConverterService */
-        $converter = GeneralUtility::makeInstance('JWeiland\\Weather2\\Service\\WeatherConverterService');
-        $templateVariableContainer = $this->renderingContext->getTemplateVariableContainer();
-        // Without this making changes in partials get annoying
-        // TODO: Now you are left with two arrays of witch one is redundant
+        $converter = GeneralUtility::makeInstance(WeatherConverterService::class);
 
         // Set Values Here
-        $convertedModel->setTemperatureC($converter->convertCelsiusToKelvin($weatherModel->getTemperatureC()));
-        $convertedModel->setMinTempC($converter->convertCelsiusToKelvin($weatherModel->getMinTempC()));
-        $convertedModel->setMaxTempC($converter->convertCelsiusToKelvin($weatherModel->getMaxTempC()));
+        $convertedModel->setTemperatureC((int)$converter->convertCelsiusToKelvin($weatherModel->getTemperatureC()));
+        $convertedModel->setMinTempC((int)$converter->convertCelsiusToKelvin($weatherModel->getMinTempC()));
+        $convertedModel->setMaxTempC((int)$converter->convertCelsiusToKelvin($weatherModel->getMaxTempC()));
 
-        $templateVariableContainer->add($this->arguments['as'], $convertedModel);
+        $this->templateVariableContainer->add($this->arguments['as'], $convertedModel);
         $content = $this->renderChildren();
-        $templateVariableContainer->remove($this->arguments['as']);
+        $this->templateVariableContainer->remove($this->arguments['as']);
 
         return $content;
     }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace JWeiland\Weather2\Utility;
 
 /*
@@ -28,7 +29,7 @@ class WeatherUtility
      * @param string $task openweatherapi or deutscherwetterdienst or deutscherwetterdienstJs
      * @return null|string
      */
-    public static function translate($name, $task)
+    public static function translate(string $name, string $task)
     {
         switch ($task) {
             case 'openweatherapi':
@@ -43,7 +44,7 @@ class WeatherUtility
                     ''
                 );
                 break;
-            
+
             case 'deutscherwetterdienstJs':
                 $text = LocalizationUtility::translate(
                     'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_javascript_deutscherwetterdienst.xlf:' . trim($name),
@@ -53,7 +54,7 @@ class WeatherUtility
             default:
                 return '';
         }
-        
+
         return $text;
     }
 }

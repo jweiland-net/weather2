@@ -8,9 +8,9 @@
  * "version" and "dependencies" must not be touched!
  ***************************************************************/
 
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
     'title' => 'Weather',
-    'description' => 'Display weather data and weather alerts using various Weather APIs. Default APIs: OpenWeatherMap and Deutscher Wetterdienst',
+    'description' => 'Display weather reports and weather alerts using various Weather APIs. Default APIs: OpenWeatherMap and Deutscher Wetterdienst',
     'category' => 'plugin',
     'author' => 'Markus Kugler, Pascal Rinker',
     'author_email' => 'projects@jweiland.net',
@@ -20,13 +20,13 @@ $EM_CONF[$_EXTKEY] = array(
     'uploadfolder' => '0',
     'createDirs' => '',
     'clearCacheOnLoad' => 0,
-    'version' => '1.2.6',
-    'constraints' => array(
-        'depends' => array(
-            'typo3' => '6.2.0-8.99.99',
-            'static_info_tables' => '6.3.0'
-        ),
-        'conflicts' => array(),
-        'suggests' => array(),
-    ),
-);
+    'version' => '2.0.0',
+    'constraints' => [
+        'depends' => [
+            'typo3' => '8.7.0-9.5.99',
+            'static_info_tables' => '6.4.0'
+        ],
+        'conflicts' => [],
+        'suggests' => [],
+    ],
+];

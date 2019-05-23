@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace JWeiland\Weather2\Controller;
 
 /*
@@ -23,17 +24,12 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 class WeatherAlertController extends ActionController
 {
     /**
-     * currentWeatherRepository
-     *
-     * @var \JWeiland\Weather2\Domain\Repository\WeatherAlertRepository
+     * @var WeatherAlertRepository
      */
-    protected $weatherAlertRepository = null;
+    protected $weatherAlertRepository;
 
     /**
-     * inject weatherAlertRepository
-     *
      * @param WeatherAlertRepository $weatherAlertRepository
-     * @return void
      */
     public function injectWeatherAlertRepository(WeatherAlertRepository $weatherAlertRepository)
     {
@@ -42,17 +38,16 @@ class WeatherAlertController extends ActionController
 
     /**
      * action show displays the newest CurrentWeather model
-     *
-     * @return void
      */
     public function showAction()
     {
         $this->view->assign(
             'weatherAlerts',
-            $this->weatherAlertRepository->findByRegions(
-                $this->settings['regions'],
-                $this->settings['warningTypes'],
-                $this->settings['warningLevels']
+            $this->weatherAlertRepository->findByUserSelection(
+                (string)$this->settings['warnCells'],
+                (string)$this->settings['warningTypes'],
+                (string)$this->settings['warningLevels'],
+                (bool)$this->settings['showPreliminaryInformation']
             )
         );
     }

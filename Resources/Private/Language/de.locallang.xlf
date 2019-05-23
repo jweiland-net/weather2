@@ -108,14 +108,20 @@
 			<trans-unit id="tx_weather2.utility.showLess">
 				<target>Weniger Details</target>
 			</trans-unit>
-			<trans-unit id="tx_weather2_domain_model_weatheralert.starttime">
+			<trans-unit id="tx_weather2_domain_model_weatheralert.start_date">
+				<source>Start date</source>
 				<target>Gültig von</target>
 			</trans-unit>
-			<trans-unit id="tx_weather2_domain_model_weatheralert.endtime">
+			<trans-unit id="tx_weather2_domain_model_weatheralert.end_date">
+				<source>End date</source>
 				<target>Gültig bis</target>
 			</trans-unit>
 			<trans-unit id="from">
 				<target>aus</target>
+			</trans-unit>
+			<trans-unit id="displayAll">
+				<source>Display all</source>
+				<target>Alle anzeigen</target>
 			</trans-unit>
 		</body>
 	</file>

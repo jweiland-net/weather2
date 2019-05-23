@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace JWeiland\Weather2\Domain\Model;
 
 /*
@@ -22,263 +23,199 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 class CurrentWeather extends AbstractEntity
 {
     /**
-     * name
-     *
      * @var string
      */
     protected $name = '';
-    
+
     /**
-     * measureTimestamp
-     *
      * @var \DateTime
      */
     protected $measureTimestamp;
-    
+
     /**
-     * temperatureC
-     *
-     * @var int
+     * @var float
      */
-    protected $temperatureC = 0;
-    
+    protected $temperatureC = 0.0;
+
     /**
-     * pressureHpa
-     *
      * @var int
      */
     protected $pressureHpa = 0;
-    
+
     /**
-     * humidityPercentage
-     *
      * @var int
      */
     protected $humidityPercentage = 0;
-    
+
     /**
-     * minTempC
-     *
-     * @var int
+     * @var float
      */
-    protected $minTempC = 0;
-    
+    protected $minTempC = 0.0;
+
     /**
-     * maxTempC
-     *
-     * @var int
+     * @var float
      */
-    protected $maxTempC = 0;
-    
+    protected $maxTempC = 0.0;
+
     /**
-     * windSpeedMPS
-     *
-     * @var int
+     * @var float
      */
-    protected $windSpeedMPS = 0;
-    
+    protected $windSpeedMPS = 0.0;
+
     /**
-     * windDirectionDeg
-     *
      * @var int
      */
     protected $windDirectionDeg = 0;
-    
+
     /**
-     * popPercentage
-     *
      * @var int
      */
     protected $popPercentage = 0;
-    
+
     /**
-     * snowVolume
-     *
      * @var int
      */
     protected $snowVolume = 0;
 
     /**
-     * rainVolume
-     *
      * @var int
      */
     protected $rainVolume = 0;
 
     /**
-     * cloudsPercentage
-     *
      * @var int
      */
     protected $cloudsPercentage = 0;
-    
+
     /**
-     * serializedArray
-     *
      * @var string
      */
     protected $serializedArray = '';
 
     /**
-     * icon
-     *
      * @var string
      */
     protected $icon = '';
 
     /**
-     * Returns the serializedArray
-     *
      * @return string $serializedArray
      */
-    public function getSerializedArray()
+    public function getSerializedArray(): string
     {
         return $this->serializedArray;
     }
-    
+
     /**
-     * Sets the serializedArray
-     *
      * @param string $serializedArray
-     * @return void
      */
-    public function setSerializedArray($serializedArray)
+    public function setSerializedArray(string $serializedArray)
     {
-        $this->serializedArray = (string)$serializedArray;
+        $this->serializedArray = $serializedArray;
     }
-    
+
     /**
-     * Returns the temperatureC
-     *
-     * @return int temperatureC
+     * @return float temperatureC
      */
-    public function getTemperatureC()
+    public function getTemperatureC(): float
     {
         return $this->temperatureC;
     }
-    
+
     /**
-     * Sets the temperatureC
-     *
-     * @param int $temperatureC
-     * @return void
+     * @param float $temperatureC
      */
-    public function setTemperatureC($temperatureC)
+    public function setTemperatureC(float $temperatureC)
     {
-        $this->temperatureC = (int)$temperatureC;
+        $this->temperatureC = $temperatureC;
     }
-    
+
     /**
-     * Returns the pressureHpa
-     *
      * @return int pressureHpa
      */
-    public function getPressureHpa()
+    public function getPressureHpa(): int
     {
         return $this->pressureHpa;
     }
-    
+
     /**
      * Sets the pressureHpa
      *
      * @param int $pressureHpa
-     * @return void
      */
-    public function setPressureHpa($pressureHpa)
+    public function setPressureHpa(int $pressureHpa)
     {
-        $this->pressureHpa = (int)$pressureHpa;
+        $this->pressureHpa = $pressureHpa;
     }
-    
+
     /**
-     * Returns the humidityPercentage
-     *
      * @return int humidityPercentage
      */
-    public function getHumidityPercentage()
+    public function getHumidityPercentage(): int
     {
         return $this->humidityPercentage;
     }
-    
+
     /**
-     * Sets the humidityPercentage
-     *
      * @param int $humidityPercentage
-     * @return void
      */
-    public function setHumidityPercentage($humidityPercentage)
+    public function setHumidityPercentage(int $humidityPercentage)
     {
-        $this->humidityPercentage = (int)$humidityPercentage;
+        $this->humidityPercentage = $humidityPercentage;
     }
-    
+
     /**
-     * Returns the minTempC
-     *
-     * @return int minTempC
+     * @return float minTempC
      */
-    public function getMinTempC()
+    public function getMinTempC(): float
     {
         return $this->minTempC;
     }
-    
+
     /**
-     * Sets the minTempC
-     *
-     * @param int $minTempC
+     * @param float $minTempC
      * @return void
      */
-    public function setMinTempC($minTempC)
+    public function setMinTempC(float $minTempC)
     {
-        $this->minTempC = (int)$minTempC;
+        $this->minTempC = $minTempC;
     }
-    
+
     /**
-     * Returns the maxTempC
-     *
-     * @return int maxTempC
+     * @return float maxTempC
      */
-    public function getMaxTempC()
+    public function getMaxTempC(): float
     {
         return $this->maxTempC;
     }
-    
+
     /**
-     * Sets the maxTempC
-     *
-     * @param int $maxTempC
-     * @return void
+     * @param float $maxTempC
      */
-    public function setMaxTempC($maxTempC)
+    public function setMaxTempC(float $maxTempC)
     {
-        $this->maxTempC = (int)$maxTempC;
+        $this->maxTempC = $maxTempC;
     }
-    
+
     /**
-     * Returns the windSpeedMPS
-     *
-     * @return int windSpeedMPS
+     * @return float windSpeedMPS
      */
-    public function getWindSpeedMPS()
+    public function getWindSpeedMPS(): float
     {
         return $this->windSpeedMPS;
     }
-    
+
     /**
-     * Sets the windSpeedMPS
-     *
-     * @param int $windSpeedMPS
-     * @return void
+     * @param float $windSpeedMPS
      */
-    public function setWindSpeedMPS($windSpeedMPS)
+    public function setWindSpeedMPS(float $windSpeedMPS)
     {
-        $this->windSpeedMPS = (int)$windSpeedMPS;
+        $this->windSpeedMPS = $windSpeedMPS;
     }
-    
+
     /**
-     * Returns the windDirectionDeg
-     *
      * @return int windDirectionDeg
      */
-    public function getWindDirectionDeg()
+    public function getWindDirectionDeg(): int
     {
         return $this->windDirectionDeg;
     }
@@ -287,144 +224,112 @@ class CurrentWeather extends AbstractEntity
      * Returns wind direction as section so that a label
      * can be assigned
      *
-     * @return int
+     * @return float
      */
-    public function getWindDirSection()
+    protected function getWindDirSection(): float
     {
         return floor(fmod((($this->windDirectionDeg + 22.5) / 45), 8));
     }
-    
+
     /**
-     * Sets the windDirectionDeg
-     *
      * @param int $windDirectionDeg
      * @return void
      */
-    public function setWindDirectionDeg($windDirectionDeg)
+    public function setWindDirectionDeg(int $windDirectionDeg)
     {
-        $this->windDirectionDeg = (int)$windDirectionDeg;
-    }
-    
-    /**
-     * Returns the popPercentage
-     *
-     * @return int popPercentage
-     */
-    public function getPopPercentage()
-    {
-        return $this->popPercentage;
-    }
-    
-    /**
-     * Sets the popPercentage
-     *
-     * @param int $popPercentage
-     * @return void
-     */
-    public function setPopPercentage($popPercentage)
-    {
-        $this->popPercentage = (int)$popPercentage;
-    }
-    
-    /**
-     * Returns the snowVolume
-     *
-     * @return int snowVolume
-     */
-    public function getSnowVolume()
-    {
-        return $this->snowVolume;
-    }
-    
-    /**
-     * Sets the snowVolume
-     *
-     * @param int $snowVolume
-     * @return void
-     */
-    public function setSnowVolume($snowVolume)
-    {
-        $this->snowVolume = (int)$snowVolume;
+        $this->windDirectionDeg = $windDirectionDeg;
     }
 
     /**
-     * Returns the rainVolume
-     *
+     * @return int popPercentage
+     */
+    public function getPopPercentage(): int
+    {
+        return $this->popPercentage;
+    }
+
+    /**
+     * @param int $popPercentage
+     */
+    public function setPopPercentage(int $popPercentage)
+    {
+        $this->popPercentage = $popPercentage;
+    }
+
+    /**
+     * @return int snowVolume
+     */
+    public function getSnowVolume(): int
+    {
+        return $this->snowVolume;
+    }
+
+    /**
+     * @param int $snowVolume
+     */
+    public function setSnowVolume(int $snowVolume)
+    {
+        $this->snowVolume = $snowVolume;
+    }
+
+    /**
      * @return int rainVolume
      */
-    public function getRainVolume()
+    public function getRainVolume(): int
     {
         return $this->rainVolume;
     }
 
     /**
-     * Sets the rainVolume
-     *
      * @param int $rainVolume
-     * @return void
      */
-    public function setRainVolume($rainVolume)
+    public function setRainVolume(int $rainVolume)
     {
-        $this->rainVolume = (int)$rainVolume;
+        $this->rainVolume = $rainVolume;
     }
-    
+
     /**
-     * Returns the cloudsPercentage
-     *
      * @return int cloudsPercentage
      */
-    public function getCloudsPercentage()
+    public function getCloudsPercentage(): int
     {
         return $this->cloudsPercentage;
     }
-    
+
     /**
-     * Sets the cloudsPercentage
-     *
      * @param int $cloudsPercentage
-     * @return void
      */
-    public function setCloudsPercentage($cloudsPercentage)
+    public function setCloudsPercentage(int $cloudsPercentage)
     {
-        $this->cloudsPercentage = (int)$cloudsPercentage;
+        $this->cloudsPercentage = $cloudsPercentage;
     }
-    
+
     /**
-     * Returns the name
-     *
      * @return string $name
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
-    
+
     /**
-     * Sets the name
-     *
      * @param string $name
-     * @return void
      */
-    public function setName($name)
+    public function setName(string $name)
     {
-        $this->name = (string)$name;
+        $this->name = $name;
     }
-    
+
     /**
-     * Returns the measureTimestamp
-     *
      * @return \DateTime measureTimestamp
      */
-    public function getMeasureTimestamp()
+    public function getMeasureTimestamp(): \DateTime
     {
         return $this->measureTimestamp;
     }
 
     /**
-     * Sets the measureTimestamp
-     *
      * @param \DateTime $measureTimestamp
-     * @return void
      */
     public function setMeasureTimestamp(\DateTime $measureTimestamp)
     {
@@ -432,23 +337,18 @@ class CurrentWeather extends AbstractEntity
     }
 
     /**
-     * Returns the icon
-     *
      * @return string icon
      */
-    public function getIcon()
+    public function getIcon(): string
     {
         return $this->icon;
     }
 
     /**
-     * Sets the icon
-     *
      * @param string $icon
-     * @return void
      */
-    public function setIcon($icon)
+    public function setIcon(string $icon)
     {
-        $this->icon = (string)$icon;
+        $this->icon = $icon;
     }
 }

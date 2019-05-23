@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace JWeiland\Weather2\Task;
 
 /*
@@ -17,7 +18,8 @@ namespace JWeiland\Weather2\Task;
 use JWeiland\Weather2\Utility\WeatherUtility;
 use SJBR\StaticInfoTables\Domain\Model\Country;
 use SJBR\StaticInfoTables\Domain\Repository\CountryRepository;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -33,25 +35,24 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  */
 class OpenWeatherMapTaskAdditionalFieldProvider implements AdditionalFieldProviderInterface
 {
-
     /**
      * This fields can not be empty!
      *
      * @var array
      */
-    protected $requiredFields = array(
+    protected $requiredFields = [
         'name',
         'city',
         'country',
         'apiKey'
-    );
+    ];
 
     /**
      * Fields to insert from task if empty
      *
      * @var array
      */
-    protected $insertFields = array(
+    protected $insertFields = [
         'name',
         'city',
         'country',
@@ -60,14 +61,10 @@ class OpenWeatherMapTaskAdditionalFieldProvider implements AdditionalFieldProvid
         'emailSenderName',
         'emailSender',
         'emailReceiver',
-        'recordStoragePage',
-        'removeOldRecords',
-        'removeOldRecordsHours'
-    );
+        'recordStoragePage'
+    ];
 
     /**
-     * Gets the additional fields
-     *
      * @param array $taskInfo
      * @param OpenWeatherMapTask $task
      * @param SchedulerModuleController $schedulerModule
@@ -77,26 +74,26 @@ class OpenWeatherMapTaskAdditionalFieldProvider implements AdditionalFieldProvid
         array &$taskInfo,
         $task,
         SchedulerModuleController $schedulerModule
-    ) {
-        /** @var PageRenderer $pageRenderer */
-        $pageRenderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
-        $pageRenderer->loadJquery();
+    ): array
+    {
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Weather2/OpenWeatherMapTaskModule');
-        $popupSettings = array(
-            'PopupWindow' => array(
+        $popupSettings = [
+            'PopupWindow' => [
                 'width' => '800px',
                 'height' => '550px'
-            )
-        );
+            ]
+        ];
         $pageRenderer->addInlineSettingArray('Popup', $popupSettings);
-        $pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', BackendUtility::getModuleUrl('record_edit'));
+        $pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_edit'));
         $pageRenderer->addInlineSetting('FormEngine', 'formName', 'tx_scheduler_form');
         $pageRenderer->addInlineSetting('FormEngine', 'backPath', '');
         $pageRenderer->loadRequireJsModule(
             'TYPO3/CMS/Backend/FormEngine',
             'function(FormEngine) {
-                FormEngine.browserUrl = ' . GeneralUtility::quoteJSvalue(BackendUtility::getModuleUrl('wizard_element_browser')) . ';
+                FormEngine.browserUrl = ' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('wizard_element_browser')) . ';
              }'
         );
         $pageRenderer->addJsFile(
@@ -110,102 +107,86 @@ class OpenWeatherMapTaskAdditionalFieldProvider implements AdditionalFieldProvid
             }
         }
 
-        $additionalFields = array();
+        $additionalFields = [];
 
         $fieldID = 'name';
         $fieldCode = '<input type="text" class="form-control" name="tx_scheduler[name]" id="' . $fieldID . '" value="' . $taskInfo['name'] . '" size="30" placeholder="e.g. Berlin"/>';
-        $additionalFields[$fieldID] = array(
+        $additionalFields[$fieldID] = [
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:name'
-        );
+        ];
 
         $fieldID = 'recordStoragePage';
         $fieldCode = '<div class="input-group"><input type="text" class="form-control" name="tx_scheduler[recordStoragePage]" id="' . $fieldID . '" value="' . $taskInfo['recordStoragePage'] . '"
 size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage_page', 'openweatherapi') . ' --->"/><span class="input-group-btn"><a href="#" class="btn btn-default" onclick="TYPO3.FormEngine.openPopupWindow(\'db\',\'tx_scheduler[recordStoragePage]|||pages|\'); return false;">' .
             WeatherUtility::translate('buttons.record_storage_page', 'openweatherapi') . '</a></span></div>';
 
-        $additionalFields[$fieldID] = array(
+        $additionalFields[$fieldID] = [
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:record_storage_page'
-        );
+        ];
 
         // todo: Add second task to import regions with id from OpenWeatherMap-Servers like DeutschWetterDienstTask
         $fieldID = 'city';
         $fieldCode = '<input type="text" class="form-control" name="tx_scheduler[city]" id="' . $fieldID . '" value="' . $taskInfo['city'] . '" size="30" placeholder="e.g. Berlin Mitte"/>';
-        $additionalFields[$fieldID] = array(
+        $additionalFields[$fieldID] = [
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:city'
-        );
+        ];
 
         $fieldID = 'country';
         $fieldCode = '<select name="tx_scheduler[country]" class="form-control">' . $this->getCountryCodesOptionsHtml($taskInfo['country']) . '</select>';
-        $additionalFields[$fieldID] = array(
+        $additionalFields[$fieldID] = [
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:country'
-        );
+        ];
 
         $fieldID = 'apiKey';
         $fieldCode = '<input type="text" class="form-control" name="tx_scheduler[apiKey]" id="' . $fieldID . '" value="' . $taskInfo['apiKey'] . '" size="120" />';
-        $additionalFields[$fieldID] = array(
+        $additionalFields[$fieldID] = [
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:api_key'
-        );
+        ];
 
         $fieldID = 'errorNotification';
         $fieldCode = '<input type="checkbox" class="checkbox" name="tx_scheduler[errorNotification]" id="' . $fieldID . '" value="enable" size="60" ' . ($taskInfo['errorNotification'] ? 'checked' : '') . '></input>';
-        $additionalFields[$fieldID] = array(
+        $additionalFields[$fieldID] = [
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:error_notification'
-        );
+        ];
 
         $fieldID = 'mailConfig';
         $fieldCode = $this->checkMailConfiguration();
-        $additionalFields[$fieldID] = array(
+        $additionalFields[$fieldID] = [
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:mail_config'
-        );
+        ];
 
         $fieldID = 'emailSenderName';
         $fieldCode = '<input type="text" class="form-control" name="tx_scheduler[emailSenderName]" id="' . $fieldID . '" value="' . $taskInfo['emailSenderName'] . '" size="60"' . ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'] ? 'placeholder="' . WeatherUtility::translate('placeholder.emailSendername', 'openweatherapi') . $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'] . '"' : '') . '/>';
-        $additionalFields[$fieldID] = array(
+        $additionalFields[$fieldID] = [
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:email_sendername'
-        );
+        ];
 
         $fieldID = 'emailSender';
         $fieldCode = '<input type="email" class="form-control" name="tx_scheduler[emailSender]" id="' . $fieldID . '" value="' . $taskInfo['emailSender'] . '" size="60"' . ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] ? 'placeholder="' . WeatherUtility::translate('placeholder.emailSender', 'openweatherapi') . $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] . '"' : '') . '/>';
-        $additionalFields[$fieldID] = array(
+        $additionalFields[$fieldID] = [
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:email_sender'
-        );
+        ];
 
         $fieldID = 'emailReceiver';
         $fieldCode = '<input type="email" class="form-control" name="tx_scheduler[emailReceiver]" id="' . $fieldID . '" value="' . $taskInfo['emailReceiver'] . '" size="60" />';
-        $additionalFields[$fieldID] = array(
+        $additionalFields[$fieldID] = [
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:email_receiver'
-        );
-
-        $fieldID = 'removeOldRecords';
-        $fieldCode = '<input type="checkbox" class="checkbox" name="tx_scheduler[' . $fieldID . ']" id="' . $fieldID . '" value="enable" size="60" ' . ($taskInfo[$fieldID] ? 'checked' : '') . '></input>';
-        $additionalFields[$fieldID] = array(
-            'code' => $fieldCode,
-            'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:removeOldRecords'
-        );
-
-        $fieldID = 'removeOldRecordsHours';
-        $fieldCode = '<input type="text" class="form-control" name="tx_scheduler[' . $fieldID . ']" id="' . $fieldID . '" value="' . $taskInfo[$fieldID] . '" size="30" placeholder="24"/>';
-        $additionalFields[$fieldID] = array(
-            'code' => $fieldCode,
-            'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:removeOldRecordsHours'
-        );
+        ];
 
         return $additionalFields;
     }
 
     /**
-     * self describing
-     *
      * @param array $submittedData
      * @param SchedulerModuleController $schedulerModule
      * @return bool
@@ -213,20 +194,14 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
     public function validateAdditionalFields(
         array &$submittedData,
         SchedulerModuleController $schedulerModule
-    ) {
+    ): bool
+    {
         $isValid = true;
 
         if ($submittedData['recordStoragePage']) {
             $submittedData['recordStoragePage'] = preg_replace('/[^0-9]/', '', $submittedData['recordStoragePage']);
         } else {
             $submittedData['recordStoragePage'] = 0;
-        }
-
-        if ($submittedData['removeOldRecordsHours']) {
-            $submittedData['removeOldRecordsHours'] = (int)$submittedData['removeOldRecordsHours'];
-        }
-        if ($submittedData['removeOldRecords'] && !isset($submittedData['removeOldRecordsHours'])) {
-            $submittedData['removeOldRecordsHours'] = 24;
         }
 
         foreach ($submittedData as $fieldName => $field) {
@@ -236,7 +211,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
                 $value = $submittedData[$fieldName];
             }
 
-            if (in_array($fieldName, $this->requiredFields) && empty($value)) {
+            if (empty($value) && in_array($fieldName, $this->requiredFields, true)) {
                 $isValid = false;
                 $schedulerModule->addMessage('Field: ' . $fieldName . ' can not be empty', FlashMessage::ERROR);
             } else {
@@ -272,27 +247,28 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         $country,
         $apiKey,
         SchedulerModuleController $schedulerModule
-    ) {
+    ): bool
+    {
         $url = sprintf('http://api.openweathermap.org/data/2.5/weather?q=%s,%s&units=%s&APPID=%s', urlencode($city),
             urlencode($country), 'metric', $apiKey);
 
-        $response = @file_get_contents($url);
-        if (strpos($http_response_header[0], '401')) {
+        $response = GeneralUtility::makeInstance(RequestFactory::class)->request($url);
+        if ($response->getStatusCode() === 401) {
             $schedulerModule->addMessage(WeatherUtility::translate('message.api_response_401', 'openweatherapi'),
                 FlashMessage::ERROR);
             return false;
-        } elseif (strpos($http_response_header[0], '404')) {
+        } elseif ($response->getStatusCode() === 404) {
             $schedulerModule->addMessage(WeatherUtility::translate('message.api_code_404', 'openweatherapi'),
                 FlashMessage::ERROR);
             return false;
-        } elseif ($response == false) {
+        } elseif ($response->getStatusCode() !== 200) {
             $schedulerModule->addMessage(WeatherUtility::translate('message.api_response_null', 'openweatherapi'),
                 FlashMessage::ERROR);
             return false;
         }
 
         /** @var \stdClass $responseClass */
-        $responseClass = json_decode($response);
+        $responseClass = json_decode((string)$response->getBody());
 
         switch ($responseClass->cod) {
             case '200':
@@ -311,8 +287,6 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
     }
 
     /**
-     * Saves the submitted data from additional fields
-     *
      * @param array $submittedData
      * @param AbstractTask $task
      */
@@ -328,16 +302,12 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         $task->emailSenderName = $submittedData['emailSenderName'];
         $task->emailSender = $submittedData['emailSender'];
         $task->emailReceiver = $submittedData['emailReceiver'];
-        $task->removeOldRecords = $submittedData['removeOldRecords'];
-        $task->removeOldRecordsHours = $submittedData['removeOldRecordsHours'];
     }
 
     /**
-     * Checks the TYPO3 mail configuration
-     *
      * @return string
      */
-    private function checkMailConfiguration()
+    private function checkMailConfiguration(): string
     {
         $text = '';
         $mailConfiguration = $GLOBALS['TYPO3_CONF_VARS']['MAIL'];
@@ -355,19 +325,18 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
      * Returns an array with country codes and corresponding names
      *
      * @param string $selected selected item
-     *
      * @return string
      */
-    private function getCountryCodesOptionsHtml($selected = '')
+    private function getCountryCodesOptionsHtml($selected = ''): string
     {
         /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         /** @var CountryRepository $countryRepository */
-        $countryRepository = $objectManager->get('SJBR\\StaticInfoTables\\Domain\\Repository\\CountryRepository');
+        $countryRepository = $objectManager->get(CountryRepository::class);
         /** @var Country[] $countries */
         $countries = $countryRepository->findAll();
 
-        $options = array();
+        $options = [];
         foreach ($countries as $country) {
             $options[] = sprintf(
                 '<option%s value="%s">%s (%s)</option>',

@@ -7,37 +7,15 @@ define('TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule', ['jquery', 'jquery/
     $('#dwd_recordStoragePage').change(function () {
       $(this).val($(this).val().replace(/[^0-9]/g, ''));
     });
-    
-    var autoRemoveFields = ['dwd_removeOldAlertsHours_row'];
-    
-    function toggleAutoRemoveFields() {
-      if ($('#dwd_removeOldAlerts').is(':checked')) {
-        setDisplayAttributeOfElements('', autoRemoveFields);
-      } else {
-        setDisplayAttributeOfElements('none', autoRemoveFields);
-      }
-    }
 
-    /**
-     * Sets the display property for each element in array elements
-     *
-     * @param display display property value from css (e.g. block or none)
-     * @param elements array of all elements ['first_element', 'second_element']
-     */
-    function setDisplayAttributeOfElements(display, elements) {
-      $(elements).each(function (index, value) {
-        $('#' + value).css('display', display);
-      });
-    }
-    
-    $('#dwd_region_search').autocomplete({
-      serviceUrl: TYPO3.settings.ajaxUrls['Weather2Dwd::renderRegions'],
+    $('#dwd_warn_cell_search').autocomplete({
+      serviceUrl: TYPO3.settings.ajaxUrls['weather2_dwd_warn-cell-search'],
       dataType: 'json',
       minChars: 3,
       onSelect: function (suggestion) {
-        if (!$('#dwd_regionItem_' + suggestion.data).length) {
-          $('#dwd_selected_regions_ul').append('<li class="list-group-item" id="dwd_regionItem_' + suggestion.data + '"><a href="#" class="badge dwd_removeItem">' + TYPO3.lang.removeItem + '</a>' + suggestion.value + '</div><input type="hidden" name="tx_scheduler[dwd_selectedRegions][]" value="' + suggestion.data + '" /></li>');
-          $('#dwd_regionItem_' + suggestion.data + ' .dwd_removeItem').click(function () {
+        if (!$('#dwd_warnCellItem_' + suggestion.data).length) {
+          $('#dwd_selected_warn_cells_ul').append('<li class="list-group-item" id="dwd_warnCellItem_' + suggestion.data + '"><a href="#" class="badge dwd_removeItem">' + TYPO3.lang.removeItem + '</a>' + suggestion.value + '</div><input type="hidden" name="tx_scheduler[dwd_selectedWarnCells][]" value="' + suggestion.data + '" /></li>');
+          $('#dwd_warnCellItem_' + suggestion.data + ' .dwd_removeItem').click(function () {
               $(this).parent('li').remove();
             });
         }
@@ -48,13 +26,7 @@ define('TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule', ['jquery', 'jquery/
         return false;
       }
     });
-    
-    $('#dwd_removeOldAlerts').click(function () {
-      toggleAutoRemoveFields();
-    });
-    
-    toggleAutoRemoveFields();
-    
+
     $('.dwd_removeItem').click(function () {
       $(this).parent('li').remove();
     });

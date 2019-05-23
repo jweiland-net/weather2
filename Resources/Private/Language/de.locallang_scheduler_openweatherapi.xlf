@@ -85,14 +85,6 @@
 				<source>Got Error 401 while API request. Please check your API-Key.</source>
 				<target>Die Anfrage gab Fehlercode 401 zurück. Bitte API-Key überprüfen.</target>
 			</trans-unit>
-			<trans-unit id="removeOldRecords">
-				<source>Remove old Records?</source>
-				<target>Alte Wetter Meldungen entfernen?</target>
-			</trans-unit>
-			<trans-unit id="removeOldRecordsHours">
-				<source>Remove old Records after X Hours</source>
-				<target>Entferne Meldungen die älter als X Stunden sind</target>
-			</trans-unit>
 		</body>
 	</file>
 </xliff>

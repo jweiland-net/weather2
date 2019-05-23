@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace JWeiland\Weather2\UserFunc;
 
 /*
@@ -14,8 +15,8 @@ namespace JWeiland\Weather2\UserFunc;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * FlexFormUserFunc
@@ -26,35 +27,16 @@ class FlexFormUserFunc
      * Only display results if name equals in plugin specified name
      *
      * @param array $fConfig
-     * @return void
      */
-    public function getSelection(&$fConfig) {
-        $dbConnection = $this->getDatabaseConnection();
-
-        $result = $dbConnection->exec_SELECTgetRows(
-            'name',
-            'tx_weather2_domain_model_currentweather',
-            'tx_weather2_domain_model_currentweather.deleted = 0'
-            . BackendUtility::BEenableFields('tx_weather2_domain_model_currentweather'),
-            'name',
-            'name'
+    public function getSelection(&$fConfig)
+    {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable(
+            'tx_weather2_domain_model_currentweather'
         );
-
-        // add empty to enable using latest entry in db
-        array_push($result, array('name' => ''));
+        $result = $connection->select(['name'], 'tx_weather2_domain_model_currentweather')->fetchAll();
 
         foreach ($result as $data) {
-            array_unshift($fConfig['items'], array($data['name'], $data['name']));
+            array_unshift($fConfig['items'], [$data['name'], $data['name']]);
         }
-    }
-
-    /**
-     * Get the DatabaseConnection from globals
-     *
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

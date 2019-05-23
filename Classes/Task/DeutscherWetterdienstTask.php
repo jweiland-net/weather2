@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace JWeiland\Weather2\Task;
 
 /*
@@ -14,58 +15,37 @@ namespace JWeiland\Weather2\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use JWeiland\Weather2\Domain\Model\DwdWarnCell;
 use JWeiland\Weather2\Domain\Model\WeatherAlert;
-use JWeiland\Weather2\Domain\Model\WeatherAlertRegion;
-use JWeiland\Weather2\Domain\Repository\WeatherAlertRegionRepository;
+use JWeiland\Weather2\Domain\Repository\DwdWarnCellRepository;
 use JWeiland\Weather2\Utility\WeatherUtility;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
-use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * DeutscherWetterdienstTask Class for Scheduler
  */
 class DeutscherWetterdienstTask extends AbstractTask
 {
-    /**
-     * Source for alerts
-     */
-    const API_URL = 'http://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json';
+    const API_URL = 'https://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json';
 
     /**
-     * Weather alert repository
-     *
-     * @var WeatherAlertRegionRepository
-     */
-    protected $weatherAlertRepository;
-
-    /**
-     * Object manager
-     *
      * @var ObjectManager
      */
     protected $objectManager;
 
     /**
-     * The TYPO3 database connection
-     *
-     * @var DatabaseConnection
-     */
-    protected $dbConnection;
-
-    /**
-     * Table name
-     *
      * @var string
      */
     protected $dbExtTable = 'tx_weather2_domain_model_weatheralert';
 
     /**
-     * Execution time
-     *
      * @var string
      */
     protected $execTime = '';
@@ -73,68 +53,58 @@ class DeutscherWetterdienstTask extends AbstractTask
     /**
      * JSON response from dwd api
      *
-     * @var \stdClass
+     * @var array
      */
-    protected $responseClass;
+    protected $decodedResponse = [];
 
     /**
-     * Timestamp from dwd response
-     *
-     * @var int
-     */
-    protected $responseTimestamp = 0;
-
-    /**
-     * Regions to be saved
+     * Fetch only these warn cells
      *
      * @var array
      */
-    public $selectedRegions = array();
+    public $selectedWarnCells = [];
 
     /**
-     * Record storage page
-     *
      * @var int
      */
     public $recordStoragePage = 0;
 
     /**
-     * If true old alerts will be removed after $removeOldItemsAfterHours
-     *
-     * @var bool
+     * @var array
      */
-    public $removeOldAlerts = false;
+    protected $keepRecords = [];
 
     /**
-     * If $removeOldItems is true alerts will be removed after its value
-     *
-     * @var int
+     * @var PersistenceManager
      */
-    public $removeOldAlertsHours = 0;
+    protected $persistenceManager;
 
     /**
-     * This method is the heart of the scheduler task. It will be fired if the scheduler
-     * gets executed
-     *
+     * @var array
+     */
+    protected $warnCellRecords = [];
+
+    /**
+     * @var DwdWarnCellRepository
+     */
+    protected $dwdWarnCellRepository;
+
+    /**
      * @return bool
      */
-    public function execute()
+    public function execute(): bool
     {
-        $this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        $this->weatherAlertRepository = $this->objectManager->get('JWeiland\\Weather2\\Domain\\Repository\\WeatherAlertRegionRepository');
-        $this->dbConnection = $this->getDatabaseConnection();
-        $response = @file_get_contents($this::API_URL);
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->dwdWarnCellRepository = $this->objectManager->get(DwdWarnCellRepository::class);
+        $response = GeneralUtility::makeInstance(RequestFactory::class)->request(self::API_URL);
         if (!$this->checkResponse($response)) {
             return false;
         }
         try {
-            $this->responseClass = $this->decodeResponse($response);
+            $this->decodedResponse = $this->decodeResponse($response);
         } catch (\Exception $e) {
-            $this->writeToLog($e->getMessage(), 2);
+            $this->logger->log(LogLevel::ERROR, $e->getMessage());
             return false;
-        }
-        if ($this->removeOldAlerts) {
-            $this->removeOldAlertsFromDb();
         }
         $this->handleResponse();
         return true;
@@ -145,16 +115,16 @@ class DeutscherWetterdienstTask extends AbstractTask
      * You cannot use json_decode for that only, because dwd adds JavaScript code into
      * the json file...
      *
-     * @param string $response
-     * @return \stdClass
-     * @throws \Exception
+     * @param ResponseInterface $response
+     * @return array
+     * @throws \UnexpectedValueException
      */
-    protected function decodeResponse($response)
+    protected function decodeResponse(ResponseInterface $response): array
     {
         $pattern = '/^warnWetter\.loadWarnings\(|\);$/';
-        $decodedResponse = json_decode(preg_replace($pattern, '', $response));
-        if (empty($decodedResponse)) {
-            throw new \Exception(
+        $decodedResponse = json_decode(preg_replace($pattern, '', (string)$response->getBody()), true);
+        if ($decodedResponse === null) {
+            throw new \UnexpectedValueException(
                 'Response can not be decoded because it is an invalid string',
                 1485944083
             );
@@ -164,38 +134,35 @@ class DeutscherWetterdienstTask extends AbstractTask
 
     /**
      * Checks the responseClass for alerts in selected regions
-     *
-     * @return void
      */
     protected function handleResponse()
     {
-        $this->responseTimestamp = (int)$this->responseClass->time;
-        if ($this->responseClass->warnings instanceof \stdClass) {
-            foreach ((array)$this->responseClass->warnings as $alertArray) {
-                if (is_array($alertArray)) {
-                    /** @var \stdClass $alertClass */
-                    foreach ($alertArray as $alertClass) {
-                        $regionUid = $this->getUidOfRegionName($alertClass->regionName);
-                        if ($regionUid !== false) {
-                            if (!$this->isIdenticalAlertExisting(
-                                $alertClass->start,
-                                $alertClass->end,
-                                $regionUid,
-                                $alertClass->level,
-                                $alertClass->type
-                            )
-                            ) {
-                                /** @var PersistenceManager $persistenceManager */
-                                $persistenceManager = $this->objectManager->get(
-                                    'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager'
-                                );
-                                $persistenceManager->add($this->getWeatherAlertInstanceForAlertClass(
-                                    $alertClass,
-                                    $regionUid
-                                ));
-                                $persistenceManager->persistAll();
-                            }
-                        }
+        $this->persistenceManager = $this->objectManager->get(PersistenceManager::class);
+        if (array_key_exists('warnings', $this->decodedResponse)) {
+            $this->processDwdItems($this->decodedResponse['warnings'], false);
+        }
+        if (array_key_exists('vorabInformation', $this->decodedResponse)) {
+            $this->processDwdItems($this->decodedResponse['vorabInformation'], true);
+        }
+        $this->removeOldAlertsFromDb();
+        $this->persistenceManager->persistAll();
+    }
+
+    /**
+     * @param array $category
+     * @param bool $isPreliminaryInformation
+     */
+    protected function processDwdItems(array $category, bool $isPreliminaryInformation)
+    {
+        foreach ($this->selectedWarnCells as $warnCellId) {
+            if (array_key_exists($warnCellId, $category) && is_array($category[$warnCellId])) {
+                foreach ($category[$warnCellId] as $alert) {
+                    if ($alertUid = $this->getUidOfAlert($alert)) {
+                        // alert does already exist as record
+                        $this->keepRecords[] = $alertUid;
+                    } else {
+                        // create a new alert record
+                        $this->persistenceManager->add($this->getWeatherAlertInstanceForAlert($alert, $warnCellId, $isPreliminaryInformation));
                     }
                 }
             }
@@ -203,111 +170,57 @@ class DeutscherWetterdienstTask extends AbstractTask
     }
 
     /**
-     * Returns true if identical alert already exists
-     * otherwise false
-     *
-     * @param int $start
-     * @param int $end
-     * @param int $regionUid
-     * @param int $level
-     * @param int $type
-     * @return bool
-     */
-    protected function isIdenticalAlertExisting($start, $end, $regionUid, $level, $type)
-    {
-        $identicalAlerts = $this->dbConnection->exec_SELECTgetSingleRow(
-            'uid',
-            $this->dbExtTable,
-            'starttime = ' . (int)((float)$start / 1000) . ' AND endtime = "' .
-            (int)((float)$end / 1000) . '" AND regions = "' . (int)$regionUid .
-            '" AND level = "' . (int)$level . '" AND type = "' . (int)$type . '" AND pid = "'
-            . (int)$this->recordStoragePage . '"'
-        );
-        if ($identicalAlerts !== false) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Returns the uid of the region if $regionName is
-     * in $this->regionSelection otherwise returns false
-     *
-     * @param string $regionName
-     * @return int|bool
-     */
-    protected function getUidOfRegionName($regionName)
-    {
-        foreach ($this->selectedRegions as $regionUid) {
-            /** @var WeatherAlertRegion $region */
-            $region = $this->weatherAlertRepository->findByUid($regionUid);
-            if ($region instanceof WeatherAlertRegion) {
-                if (strpos(trim($regionName), $region->getName()) !== false) {
-                    return (int)$region->getUid();
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Returns the TYPO3 database connection from globals
-     *
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
-
-    /**
-     * This method is designed to return some additional information about the task,
-     * that may help to set it apart from other tasks from the same class
-     * This additional information is used - for example - in the Scheduler's BE module
-     * This method should be implemented in most task classes
-     *
+     * @param array $alert
      * @return string
      */
-    public function getAdditionalInformation()
+    protected function getComparisonHashForAlert(array $alert): string
     {
-        return parent::getAdditionalInformation();
+        return md5(serialize($alert));
     }
 
     /**
-     * Checks the JSON response
+     * Either returns the uid of a record that equals $alert
+     * OR returns zero if there is no record for that $alert
      *
-     * @param string $response
+     * @param array $alert
+     * @return int uid or zero
+     */
+    protected function getUidOfAlert(array $alert): int
+    {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->dbExtTable);
+        $identicalAlert = $connection
+            ->select(
+                ['uid'],
+                $this->dbExtTable,
+                [
+                    'comparison_hash' => $this->getComparisonHashForAlert($alert),
+                    'pid' => $this->recordStoragePage
+                ]
+            )
+            ->fetch();
+        return $identicalAlert['uid'] ?? 0;
+    }
+
+    /**
+     * @param ResponseInterface $response
      * @return bool Returns true if response is valid or false in case of an error
      */
-    private function checkResponse($response)
+    protected function checkResponse(ResponseInterface $response): bool
     {
-        if (empty($response)) {
-            $this->writeToLog(WeatherUtility::translate('message.api_response_null', 'deutscherwetterdienst'), 2);
+        if ($response->getStatusCode() !== 200 || (string)$response->getBody() === '') {
+            $this->logger->log(
+                LogLevel::ERROR,
+                WeatherUtility::translate('message.api_response_null', 'deutscherwetterdienst')
+            );
             return false;
         }
         return true;
     }
 
     /**
-     * Writes a string into the TYPO3 syslog
-     *
-     * @param string $message Message that will be written into the log
-     * @param int $errorLevel error level of log entry (look into BackendUserAuthentication > simplelog comment
-     * to get more details about errorLevels)
-     * @return void
-     */
-    protected function writeToLog($message, $errorLevel = 0)
-    {
-        $this->getBackendUserAuthentication()->simplelog(trim($message), 'weather2', (int)$errorLevel);
-    }
-
-    /**
-     * Returns the BackendUserAuthentication
-     *
      * @return BackendUserAuthentication
      */
-    protected function getBackendUserAuthentication()
+    protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
@@ -315,53 +228,68 @@ class DeutscherWetterdienstTask extends AbstractTask
     /**
      * Returns filled WeatherAlert instance
      *
-     * @param \stdClass $alertClass
-     * @param int $regionUid
+     * @param array $alert
+     * @param string $warnCellId
+     * @param bool $isPreliminaryInformation
      * @return WeatherAlert
      */
-    private function getWeatherAlertInstanceForAlertClass($alertClass, $regionUid)
+    protected function getWeatherAlertInstanceForAlert(array $alert, string $warnCellId, bool $isPreliminaryInformation): WeatherAlert
     {
         $weatherAlert = new WeatherAlert();
         $weatherAlert->setPid($this->recordStoragePage);
-        $weatherAlert->setRegions((int)$regionUid);
+        $weatherAlert->setDwdWarnCell($this->getDwdWarnCell($warnCellId));
+        $weatherAlert->setComparisonHash($this->getComparisonHashForAlert($alert));
+        $weatherAlert->setPreliminaryInformation($isPreliminaryInformation);
 
-        if (isset($alertClass->level)) {
-            $weatherAlert->setLevel($alertClass->level);
+        if (isset($alert['level'])) {
+            $weatherAlert->setLevel($alert['level']);
         }
-        if (isset($alertClass->type)) {
-            $weatherAlert->setType($alertClass->type);
+        if (isset($alert['type'])) {
+            $weatherAlert->setType($alert['type']);
         }
-        if (isset($alertClass->headline)) {
-            $weatherAlert->setTitle($alertClass->headline);
+        if (isset($alert['headline'])) {
+            $weatherAlert->setTitle($alert['headline']);
         }
-        if (isset($alertClass->description)) {
-            $weatherAlert->setDescription($alertClass->description);
+        if (isset($alert['description'])) {
+            $weatherAlert->setDescription($alert['description']);
         }
-        if (isset($alertClass->instruction)) {
-            $weatherAlert->setInstruction($alertClass->instruction);
+        if (isset($alert['instruction'])) {
+            $weatherAlert->setInstruction($alert['instruction']);
         }
-        if (isset($alertClass->start)) {
+        if (isset($alert['start'])) {
             $startTime = new \DateTime();
-            $startTime->setTimestamp((int)((float)$alertClass->start / 1000));
-            $weatherAlert->setStarttime($startTime);
+            $startTime->setTimestamp((int)$alert['start'] / 1000);
+            $weatherAlert->setStartDate($startTime);
         }
-        if (isset($alertClass->end)) {
+        if (isset($alert['end'])) {
             $endTime = new \DateTime();
-            $endTime->setTimestamp((int)((float)$alertClass->end / 1000));
-            $weatherAlert->setEndtime($endTime);
+            $endTime->setTimestamp((int)$alert['end'] / 1000);
+            $weatherAlert->setEndDate($endTime);
         }
 
         return $weatherAlert;
     }
 
     /**
-     * Removes old alerts from db and uses $this->removeOldAlertsHours as time indicator
-     *
-     * @return void
+     * @param string $warnCellId
+     * @return DwdWarnCell
      */
+    protected function getDwdWarnCell(string $warnCellId): DwdWarnCell
+    {
+        if (!array_key_exists($warnCellId, $this->warnCellRecords)) {
+            $this->warnCellRecords[$warnCellId] = $this->dwdWarnCellRepository->findOneByWarnCellId($warnCellId);
+        }
+        return $this->warnCellRecords[$warnCellId];
+    }
+
     protected function removeOldAlertsFromDb()
     {
-        $minimalTimestamp = time() + (int)((int)$this->removeOldAlertsHours * 3600);
-        $this->dbConnection->exec_DELETEquery($this->dbExtTable, 'endtime <= ' . $minimalTimestamp);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->dbExtTable);
+        $queryBuilder
+            ->delete($this->dbExtTable);
+        if ($this->keepRecords) {
+            $queryBuilder->where($queryBuilder->expr()->notIn('uid', $this->keepRecords));
+        }
+        $queryBuilder->execute();
     }
 }

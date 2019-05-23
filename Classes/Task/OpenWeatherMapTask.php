@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace JWeiland\Weather2\Task;
 
 /*
@@ -16,13 +17,15 @@ namespace JWeiland\Weather2\Task;
 
 use JWeiland\Weather2\Domain\Model\CurrentWeather;
 use JWeiland\Weather2\Utility\WeatherUtility;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
-use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * OpenWeatherMapTask Class for Scheduler
@@ -37,25 +40,11 @@ class OpenWeatherMapTask extends AbstractTask
     protected $url = '';
 
     /**
-     * The TYPO3 database connection
-     *
-     * @var DatabaseConnection
-     */
-    protected $dbConnection;
-
-    /**
      * Table name
      *
      * @var string
      */
     protected $dbExtTable = 'tx_weather2_domain_model_currentweather';
-
-    /**
-     * Execution time
-     *
-     * @var string
-     */
-    protected $execTime = '';
 
     /**
      * JSON response of openweathermap api
@@ -128,18 +117,9 @@ class OpenWeatherMapTask extends AbstractTask
     public $emailReceiver = '';
 
     /**
-     * If true old records will be removed after $removeOldRecordsHours
-     *
-     * @var bool
+     * @var LoggerInterface
      */
-    public $removeOldRecords = false;
-
-    /**
-     * If $removeOldRecords is true alerts will be removed after its value
-     *
-     * @var int
-     */
-    public $removeOldRecordsHours = 0;
+    protected $logger;
 
     /**
      * This method is the heart of the scheduler task. It will be fired if the scheduler
@@ -147,42 +127,33 @@ class OpenWeatherMapTask extends AbstractTask
      *
      * @return bool
      */
-    public function execute()
+    public function execute(): bool
     {
-        $this->execTime = $GLOBALS['EXEC_TIME'];
-        $logEntry = array();
+        $logEntry = [];
         $logEntry[] = '**************** [%s] ****************';
         $logEntry[] = 'Scheduler: "JWeiland\\weather2\\Task\\OpenWeatherMapTask"';
         $logEntry[] = 'Scheduler settings: %s';
         $logEntry[] = 'Date format: "m.d.Y - H:i:s"';
-        $this->writeToLog(
-            sprintf(
-                implode("\n", $logEntry),
-                date('m.d.Y - H:i:s', $this->execTime),
-                json_encode($this)
-            ),
-            false
-        );
-        $this->dbConnection = $this->getDatabaseConnection();
+        $this->logger->info(sprintf(
+            implode("\n", $logEntry),
+            date('m.d.Y - H:i:s', $GLOBALS['EXEC_TIME']),
+            json_encode($this)
+        ));
 
-        if ($this->removeOldRecords) {
-            $this->removeOldRecordsFromDb();
-        }
+        $this->removeOldRecordsFromDb();
 
         $this->url = sprintf(
             'http://api.openweathermap.org/data/2.5/weather?q=%s,%s&units=%s&APPID=%s',
             urlencode($this->city), urlencode($this->country), 'metric', $this->apiKey
         );
-        $response = @file_get_contents($this->url);
+        $response = GeneralUtility::makeInstance(RequestFactory::class)->request($this->url);
         if (!($this->checkResponseCode($response))) {
             return false;
         }
-        $this->responseClass = json_decode($response);
-        $this->writeToLog(sprintf('Response class: %s', json_encode($this->responseClass)));
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        /** @var PersistenceManager $persistenceManager */
-        $persistenceManager = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+        $this->responseClass = json_decode((string)$response->getBody());
+        $this->logger->info(sprintf('Response class: %s', json_encode($this->responseClass)));
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $persistenceManager = $objectManager->get(PersistenceManager::class);
 
         $persistenceManager->add($this->getCurrentWeatherInstanceForResponseClass($this->responseClass));
         $persistenceManager->persistAll();
@@ -190,93 +161,56 @@ class OpenWeatherMapTask extends AbstractTask
     }
 
     /**
-     * Returns the TYPO3 database connection from globals
-     *
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
-
-    /**
-     * This method is designed to return some additional information about the task,
-     * that may help to set it apart from other tasks from the same class
-     * This additional information is used - for example - in the Scheduler's BE module
-     * This method should be implemented in most task classes
-     *
-     * @return string
-     */
-    public function getAdditionalInformation()
-    {
-        return parent::getAdditionalInformation();
-    }
-
-    /**
      * Checks the JSON response
      *
-     * @param string $response
+     * @param ResponseInterface $response
      * @return bool Returns true if given data is valid or false in case of an error
      */
-    private function checkResponseCode($response)
+    private function checkResponseCode(ResponseInterface $response): bool
     {
-        if ($response === false) {
-            $this->writeToLog('Error: ' . WeatherUtility::translate('message.api_response_null', 'openweatherapi'));
-            $this->sendMail(
-                'Error while requesting weather data',
-                WeatherUtility::translate('message.api_response_null', 'openweatherapi')
-            );
-            return false;
-        } elseif (strpos($http_response_header[0], '401')) {
-            $this->writeToLog('Error: ' . WeatherUtility::translate('message.api_response_401', 'openweatherapi'));
+        if ($response->getStatusCode() === 401) {
+            $this->logger->error(WeatherUtility::translate('message.api_response_401', 'openweatherapi'));
             $this->sendMail(
                 'Error while requesting weather data',
                 WeatherUtility::translate('message.api_response_401', 'openweatherapi')
             );
             return false;
         }
+        if ($response->getStatusCode() !== 200) {
+            $this->logger->error(WeatherUtility::translate('message.api_response_null', 'openweatherapi'));
+            $this->sendMail(
+                'Error while requesting weather data',
+                WeatherUtility::translate('message.api_response_null', 'openweatherapi')
+            );
+            return false;
+        }
 
         /** @var \stdClass $responseClass */
-        $responseClass = json_decode($response);
+        $responseClass = json_decode((string)$response->getBody());
 
         switch ($responseClass->cod) {
             case '200':
                 return true;
             case '404':
-                $this->writeToLog('Error: ' . WeatherUtility::translate('messages.api_code_404', 'openweatherapi'));
+                $this->logger->error(WeatherUtility::translate('messages.api_code_404', 'openweatherapi'));
                 $this->sendMail(
                     'Error while requesting weather data',
                     WeatherUtility::translate('messages.api_code_404', 'openweatherapi')
                 );
                 return false;
             default:
-                $this->writeToLog(
-                    'Error: ' . sprintf(
+                $this->logger->error(
+                    sprintf(
                         WeatherUtility::translate('messages.api_code_none', 'openweatherapi'),
-                        json_encode($responseClass)
+                        (string)$response->getBody()
                     )
                 );
                 $this->sendMail(
                     'Error while requesting weather data',
-                    sprintf(WeatherUtility::translate('messages.api_code_none', 'openweatherapi'), json_encode($responseClass))
+                    sprintf(WeatherUtility::translate('messages.api_code_none', 'openweatherapi'), (string)$response->getBody())
                 );
                 return false;
         }
-    }
-
-    /**
-     * Writes a string into the TYPO3 syslog
-     *
-     * @param string $message Message that will be written into the log
-     * @param bool $indent If true, the message will indented
-     * @param int $errorLevel error level of log entry (look into BackendUserAuthentication > simplelog comment
-     * to get more details about errorLevels)
-     *
-     * @return void
-     */
-    protected function writeToLog($message, $indent = true, $errorLevel = 0)
-    {
-        $GLOBALS['BE_USER']->simplelog(($indent == true ? "\t" : '') . (string)$message, 'weather2', (int)$errorLevel);
     }
 
     /**
@@ -285,7 +219,7 @@ class OpenWeatherMapTask extends AbstractTask
      * @param \stdClass $responseClass
      * @return CurrentWeather
      */
-    private function getCurrentWeatherInstanceForResponseClass($responseClass)
+    private function getCurrentWeatherInstanceForResponseClass($responseClass): CurrentWeather
     {
         $currentWeather = new CurrentWeather();
         $currentWeather->setPid($this->recordStoragePage);
@@ -342,14 +276,14 @@ class OpenWeatherMapTask extends AbstractTask
      * @param string $body
      * @return bool
      */
-    private function sendMail($subject, $body)
+    private function sendMail(string $subject, string $body): bool
     {
         if (!$this->errorNotification) {
             return false;
         } // only continue if notifications are enabled
 
         /** @var MailMessage $mail */
-        $mail = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+        $mail = GeneralUtility::makeInstance(MailMessage::class);
         $from = null;
         $fromAddress = '';
         $fromName = '';
@@ -367,31 +301,35 @@ class OpenWeatherMapTask extends AbstractTask
         }
 
         if ($fromAddress && $fromName && $this->emailReceiver) {
-            $from = array($fromAddress => $fromName);
+            $from = [$fromAddress => $fromName];
         } else {
-            $this->writeToLog(
-                'Error: ' . ($this->emailReceiver == false ? 'E-Mail receiver address is missing ' : '') .
-                ($fromAddress == '' ? 'E-Mail sender address ' : '') .
-                ($fromName == '' ? 'E-Mail sender name is missing' : '')
+            $this->logger->error(
+                ($this->emailReceiver === false ? 'E-Mail receiver address is missing ' : '') .
+                ($fromAddress === '' ? 'E-Mail sender address ' : '') .
+                ($fromName === '' ? 'E-Mail sender name is missing' : '')
             );
             return false;
         }
 
-        $mail->setSubject($subject)->setFrom($from)->setTo(array((string)$this->emailReceiver))->setBody($body);
+        $mail->setSubject($subject)->setFrom($from)->setTo([(string)$this->emailReceiver])->setBody($body);
         $mail->send();
 
         if ($mail->isSent()) {
-            $this->writeToLog('Notice: Notification mail sent!');
+            $this->logger->notice('Notification mail sent!');
             return true;
         } else {
-            $this->writeToLog('Notice: Notification mail not sent because of an error!');
+            $this->logger->error('Notification mail not sent because of an error!');
             return false;
         }
     }
 
     protected function removeOldRecordsFromDb()
     {
-        $minimalTimestamp = time() - (int)$this->removeOldRecordsHours * 3600;
-        $this->dbConnection->exec_DELETEquery($this->dbExtTable, 'crdate <= ' . $minimalTimestamp);
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('tx_weather2_domain_model_currentweather');
+        $connection->delete(
+            'tx_weather2_domain_model_currentweather',
+            ['pid' => $this->recordStoragePage, 'name' => $this->name]
+        );
     }
 }

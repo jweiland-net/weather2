@@ -49,11 +49,14 @@
 			<trans-unit id="tx_weather2_domain_model_currentweather.icon">
 				<source>Icon</source>
 			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.rain_volume">
+				<source>Rain volume</source>
+			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_weatheralert">
 				<source>Weather Alert</source>
 			</trans-unit>
-			<trans-unit id="tx_weather2_domain_model_weatheralert.regions">
-				<source>Affected regions</source>
+			<trans-unit id="tx_weather2_domain_model_weatheralert.dwd_warn_cell">
+				<source>DWD warn cell</source>
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_weatheralert.level">
 				<source>Alert level</source>
@@ -70,14 +73,29 @@
 			<trans-unit id="tx_weather2_domain_model_weatheralert.instruction">
 				<source>Instruction</source>
 			</trans-unit>
-			<trans-unit id="tx_weather2_domain_model_weatheralertregion">
-				<source>Weather Alert Region</source>
+			<trans-unit id="tx_weather2_domain_model_dwdwarncell">
+				<source>DWD warn cell</source>
 			</trans-unit>
-			<trans-unit id="tx_weather2_domain_model_weatheralertregion.district">
-				<source>District</source>
+			<trans-unit id="tx_weather2_domain_model_dwdwarncell.warn_cell_id">
+				<source>Warn cell id</source>
 			</trans-unit>
-			<trans-unit id="tx_weather2_domain_model_weatheralertregion.name">
-				<source>City name</source>
+			<trans-unit id="tx_weather2_domain_model_dwdwarncell.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_dwdwarncell.short_name">
+				<source>Short name</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_dwdwarncell.sign">
+				<source>Sign</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_weatheralert.start_date">
+				<source>Start date of the alert</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_weatheralert.end_date">
+				<source>End date of the alert</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_weatheralert.preliminary_information">
+				<source>Preliminary information</source>
 			</trans-unit>
 			<trans-unit id="plugin.currentweather.title">
 				<source>Current Weather</source>

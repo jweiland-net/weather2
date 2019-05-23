@@ -93,8 +93,13 @@
 			<trans-unit id="tx_weather2.warningLevels.5">
 				<target>5 (Amtliche Warnung vor extremem Unwetter)</target>
 			</trans-unit>
-			<trans-unit id="tx_weather2.selectedRegions">
-				<target>Zeige Warnungen für ausgewählte Regionen an</target>
+			<trans-unit id="tx_weather2.selectedWarnCells">
+				<source>Display warnings for selected cities</source>
+				<target>Gebe Warnungen für ausgewählte Städte aus</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.showPreliminaryInformation">
+				<source>Show preliminary information</source>
+				<target>Zeige auch Vorabinformationen an</target>
 			</trans-unit>
 		</body>
 	</file>

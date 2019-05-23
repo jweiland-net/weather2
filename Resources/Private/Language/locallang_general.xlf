@@ -88,8 +88,11 @@
 			<trans-unit id="tx_weather2.warningLevels.5">
 				<source>5 (Official warning of extreme weather)</source>
 			</trans-unit>
-			<trans-unit id="tx_weather2.selectedRegions">
-				<source>Display warnings for selected regions</source>
+			<trans-unit id="tx_weather2.selectedWarnCells">
+				<source>Display warnings for selected cities</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.showPreliminaryInformation">
+				<source>Show preliminary information</source>
 			</trans-unit>
 		</body>
 	</file>

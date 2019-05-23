@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace JWeiland\Weather2\Domain\Repository;
 
 /*
@@ -27,38 +28,48 @@ class WeatherAlertRepository extends Repository
     /**
      * Returns current alerts filtered by user selection
      *
-     * @param string $regions
+     * @param string $warnCellIds
      * @param string $warningTypes
      * @param string $warningLevels
+     * @param bool $showPreliminaryInformation
      * @return QueryResultInterface
      */
-    public function findByRegions($regions, $warningTypes, $warningLevels)
+    public function findByUserSelection(
+        string $warnCellIds,
+        string $warningTypes,
+        string $warningLevels,
+        bool $showPreliminaryInformation
+    ): QueryResultInterface
     {
         /** @var Query $query */
         $query = $this->createQuery();
-        $regionConstraints = array();
-        foreach (GeneralUtility::trimExplode(',', $regions) as $region) {
-            $regionConstraints[] = $query->contains('regions', (int)$region);
+        $warnCellConstraints = [];
+        foreach (GeneralUtility::trimExplode(',', $warnCellIds) as $warnCellId) {
+            $warnCellConstraints[] = $query->equals('dwd_warn_cell', $warnCellId);
         }
-        $equalConstraintFields = array(
+        $equalConstraintFields = [
             'type' => GeneralUtility::trimExplode(',', $warningTypes),
             'level' => GeneralUtility::trimExplode(',', $warningLevels)
-        );
-        $warningConstraints = array('type' => array(), 'level' => array());
+        ];
+        $warningConstraints = ['type' => [], 'level' => []];
         foreach ($equalConstraintFields as $field => $values) {
             foreach ($values as $value) {
                 $warningConstraints[$field][] = $query->equals($field, $value);
             }
         }
-        $query->matching(
-            $query->logicalAnd(
-                $query->logicalOr($warningConstraints['type']),
-                $query->logicalOr($warningConstraints['level']),
-                $query->logicalOr($regionConstraints),
-                $query->lessThan('starttime', $GLOBALS['EXEC_TIME']),
-                $query->greaterThanOrEqual('endtime', $GLOBALS['EXEC_TIME'])
-            )
+
+        $andConstraints = [];
+        $andConstraints[] = $query->logicalOr($warningConstraints['type']);
+        $andConstraints[] = $query->logicalOr($warningConstraints['level']);
+        $andConstraints[] = $query->logicalOr($warnCellConstraints);
+        $andConstraints[] = $query->logicalOr(
+            $query->greaterThanOrEqual('end_date', $GLOBALS['EXEC_TIME']),
+            $query->equals('end_date', 0)
         );
+        if ($showPreliminaryInformation === false) {
+            $andConstraints[] = $query->equals('preliminary_information', 0);
+        }
+        $query->matching($query->logicalAnd($andConstraints));
         return $query->execute();
     }
 }
