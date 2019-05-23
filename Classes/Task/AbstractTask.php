@@ -50,9 +50,4 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
             $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
         }
     }
-
-    /**
-     * @return bool
-     */
-    abstract public function execute(): bool;
 }
