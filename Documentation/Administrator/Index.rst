@@ -77,6 +77,7 @@ Get warn cells from Deutscher Wetterdienst
     6. If the execution was successful you will see all the region records in your root page.
 
     .. figure:: ../Images/WeatherAlert/DwdWarnCellRecordList.jpg
+       :width: 350px
        :alt: List of warn cell records
 
     7. Done
@@ -85,10 +86,10 @@ Take a look into `Get Weather Alerts from Deutscher Wetterdienst`_
 
 Create warn cells manually
 ^^^^^^^^^^^^^^^^^^^^^^^
-    1. Download the `warn cell ids csv <https://www.dwd.de/DE/leistungen/gds/help/warnungen/cap_warncellids_csv.csv?__blob=publicationFile&v=1>` from DWD and search for your city/location.
+    1. Download the `warn cell ids csv <https://www.dwd.de/DE/leistungen/gds/help/warnungen/cap_warncellids_csv.csv?__blob=publicationFile&v=1>`_ from DWD and search for your city/location.
     2. Go into the page or list module.
     3. Select your root page (the one with the TYPO3 logo) on the page tree.
-    4. Click on :code:`Create new record` and select :code:`Weather Alert Region`.
+    4. Click on :code:`Create new record` and select :code:`DWD warn cell`.
 
     .. figure:: ../Images/WeatherAlert/DwdWarnCellNewRecord.jpg
        :width: 350px
