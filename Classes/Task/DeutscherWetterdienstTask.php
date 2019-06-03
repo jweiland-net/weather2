@@ -258,12 +258,12 @@ class DeutscherWetterdienstTask extends AbstractTask
         }
         if (isset($alert['start'])) {
             $startTime = new \DateTime();
-            $startTime->setTimestamp((int)$alert['start'] / 1000);
+            $startTime->setTimestamp((int)substr((string)$alert['start'], 0, -3));
             $weatherAlert->setStartDate($startTime);
         }
         if (isset($alert['end'])) {
             $endTime = new \DateTime();
-            $endTime->setTimestamp((int)$alert['end'] / 1000);
+            $endTime->setTimestamp((int)substr((string)$alert['end'], 0, -3));
             $weatherAlert->setEndDate($endTime);
         }
 
