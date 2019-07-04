@@ -226,7 +226,7 @@ class CurrentWeather extends AbstractEntity
      *
      * @return float
      */
-    protected function getWindDirSection(): float
+    public function getWindDirSection(): float
     {
         return floor(fmod((($this->windDirectionDeg + 22.5) / 45), 8));
     }
