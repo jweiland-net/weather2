@@ -24,6 +24,13 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][JWeiland\Weather
     'description' => 'Calls the Deutscher Wetterdienst api and saves warn cells into database. Required before using DeutscherWetterdienstTask!'
 ];
 
+// Remove weather2 scheduler tasks because of TYPO3 security changes
+if (version_compare(TYPO3_branch, '9.4', '>=')) {
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['weather2RemoveTasks'] = \JWeiland\Weather2\Upgrade\RemoveOldWeatherTasks94Upgrade::class;
+} else {
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['weather2RemoveTasks'] = \JWeiland\Weather2\Upgrade\RemoveOldWeatherTasks87Upgrade::class;
+}
+
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'JWeiland.weather2',
     'Currentweather',
