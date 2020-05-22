@@ -117,11 +117,6 @@ class OpenWeatherMapTask extends AbstractTask
     public $emailReceiver = '';
 
     /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
      * This method is the heart of the scheduler task. It will be fired if the scheduler
      * gets executed
      *
@@ -134,7 +129,7 @@ class OpenWeatherMapTask extends AbstractTask
         $logEntry[] = 'Scheduler: "JWeiland\\weather2\\Task\\OpenWeatherMapTask"';
         $logEntry[] = 'Scheduler settings: %s';
         $logEntry[] = 'Date format: "m.d.Y - H:i:s"';
-        $this->logger->info(sprintf(
+        $this->getLogger()->info(sprintf(
             implode("\n", $logEntry),
             date('m.d.Y - H:i:s', $GLOBALS['EXEC_TIME']),
             json_encode($this)
@@ -151,7 +146,7 @@ class OpenWeatherMapTask extends AbstractTask
             return false;
         }
         $this->responseClass = json_decode((string)$response->getBody());
-        $this->logger->info(sprintf('Response class: %s', json_encode($this->responseClass)));
+        $this->getLogger()->info(sprintf('Response class: %s', json_encode($this->responseClass)));
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $persistenceManager = $objectManager->get(PersistenceManager::class);
 
@@ -169,7 +164,7 @@ class OpenWeatherMapTask extends AbstractTask
     private function checkResponseCode(ResponseInterface $response): bool
     {
         if ($response->getStatusCode() === 401) {
-            $this->logger->error(WeatherUtility::translate('message.api_response_401', 'openweatherapi'));
+            $this->getLogger()->error(WeatherUtility::translate('message.api_response_401', 'openweatherapi'));
             $this->sendMail(
                 'Error while requesting weather data',
                 WeatherUtility::translate('message.api_response_401', 'openweatherapi')
@@ -177,7 +172,7 @@ class OpenWeatherMapTask extends AbstractTask
             return false;
         }
         if ($response->getStatusCode() !== 200) {
-            $this->logger->error(WeatherUtility::translate('message.api_response_null', 'openweatherapi'));
+            $this->getLogger()->error(WeatherUtility::translate('message.api_response_null', 'openweatherapi'));
             $this->sendMail(
                 'Error while requesting weather data',
                 WeatherUtility::translate('message.api_response_null', 'openweatherapi')
@@ -192,14 +187,14 @@ class OpenWeatherMapTask extends AbstractTask
             case '200':
                 return true;
             case '404':
-                $this->logger->error(WeatherUtility::translate('messages.api_code_404', 'openweatherapi'));
+                $this->getLogger()->error(WeatherUtility::translate('messages.api_code_404', 'openweatherapi'));
                 $this->sendMail(
                     'Error while requesting weather data',
                     WeatherUtility::translate('messages.api_code_404', 'openweatherapi')
                 );
                 return false;
             default:
-                $this->logger->error(
+                $this->getLogger()->error(
                     sprintf(
                         WeatherUtility::translate('messages.api_code_none', 'openweatherapi'),
                         (string)$response->getBody()
@@ -303,7 +298,7 @@ class OpenWeatherMapTask extends AbstractTask
         if ($fromAddress && $fromName && $this->emailReceiver) {
             $from = [$fromAddress => $fromName];
         } else {
-            $this->logger->error(
+            $this->getLogger()->error(
                 ($this->emailReceiver === false ? 'E-Mail receiver address is missing ' : '') .
                 ($fromAddress === '' ? 'E-Mail sender address ' : '') .
                 ($fromName === '' ? 'E-Mail sender name is missing' : '')
@@ -315,12 +310,11 @@ class OpenWeatherMapTask extends AbstractTask
         $mail->send();
 
         if ($mail->isSent()) {
-            $this->logger->notice('Notification mail sent!');
+            $this->getLogger()->notice('Notification mail sent!');
             return true;
-        } else {
-            $this->logger->error('Notification mail not sent because of an error!');
-            return false;
         }
+        $this->getLogger()->error('Notification mail not sent because of an error!');
+        return false;
     }
 
     protected function removeOldRecordsFromDb()

@@ -16,8 +16,6 @@ namespace JWeiland\Weather2\Task;
  */
 
 use Psr\Log\LoggerInterface;
-use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abstract task class that adds TYPO3 8 compatibility
@@ -25,29 +23,18 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 {
     /**
-     * @var LoggerInterface
+     * SF: getLogger was removed with TYPO3 9.5.
+     * @ToDo: Please remove that method and use $this->logger instead when removing TYPO3 8.7 compatibility
+     *
+     * @return LoggerInterface
      */
-    protected $logger;
-
-    public function __construct()
+    protected function getLogger(): LoggerInterface
     {
-        parent::__construct();
-        $this->initializeLogger();
-    }
-
-    public function __wakeup()
-    {
-        if (method_exists(\TYPO3\CMS\Scheduler\Task\AbstractTask::class, '__wakeup')) {
-            parent::__wakeup();
+        if (method_exists(\TYPO3\CMS\Scheduler\Task\AbstractTask::class, 'getLogger')) {
+            // Fallback for TYPO3 8.7
+            return parent::getLogger();
         }
-        $this->initializeLogger();
-    }
 
-    protected function initializeLogger()
-    {
-        // $this->logger has been added with TYPO3 9
-        if ($this->logger === null) {
-            $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-        }
+        return $this->logger;
     }
 }

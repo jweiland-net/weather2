@@ -103,7 +103,7 @@ class DeutscherWetterdienstTask extends AbstractTask
         try {
             $this->decodedResponse = $this->decodeResponse($response);
         } catch (\Exception $e) {
-            $this->logger->log(LogLevel::ERROR, $e->getMessage());
+            $this->getLogger()->log(LogLevel::ERROR, $e->getMessage());
             return false;
         }
         $this->handleResponse();
@@ -208,7 +208,7 @@ class DeutscherWetterdienstTask extends AbstractTask
     protected function checkResponse(ResponseInterface $response): bool
     {
         if ($response->getStatusCode() !== 200 || (string)$response->getBody() === '') {
-            $this->logger->log(
+            $this->getLogger()->log(
                 LogLevel::ERROR,
                 WeatherUtility::translate('message.api_response_null', 'deutscherwetterdienst')
             );
