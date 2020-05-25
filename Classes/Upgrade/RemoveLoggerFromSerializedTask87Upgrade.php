@@ -20,14 +20,13 @@ use TYPO3\CMS\Install\Updates\AbstractUpdate;
 
 /**
  * With TYPO3 8.7.33 the logger-property in our Scheduler Task can not be unserialized anymore for security reasons.
- * Without unserialization it is not possible for us to update the tasks, so currenty the only option
- * is to delete our tasks.
+ * This UpgradeWizard fetches all weather2 tasks, unserializes the Task without the Logger, set it to NULL and
+ * serializes it back to DB.
  */
-
-class RemoveOldWeatherTasks87Upgrade extends AbstractUpdate
+class RemoveLoggerFromSerializedTask87Upgrade extends AbstractUpdate
 {
     /**
-     * @var RemoveOldWeatherTasksUpgrade
+     * @var RemoveLoggerFromSerializedTaskUpgrade
      */
     protected $removeTasksUpgrade;
 
@@ -36,10 +35,10 @@ class RemoveOldWeatherTasks87Upgrade extends AbstractUpdate
         int $versionAsInt,
         string $userInput = null,
         UpgradeWizard $parentObject = null,
-        RemoveOldWeatherTasksUpgrade $removeTasksUpgrade = null
+        RemoveLoggerFromSerializedTaskUpgrade $removeTasksUpgrade = null
     ) {
         if ($removeTasksUpgrade === null) {
-            $removeTasksUpgrade = GeneralUtility::makeInstance(RemoveOldWeatherTasksUpgrade::class);
+            $removeTasksUpgrade = GeneralUtility::makeInstance(RemoveLoggerFromSerializedTaskUpgrade::class);
         }
         $this->removeTasksUpgrade = $removeTasksUpgrade;
     }
