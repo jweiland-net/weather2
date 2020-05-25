@@ -127,6 +127,14 @@ Get Weather Alerts from Deutscher Wetterdienst
 
 Read the :ref:`user manual <user-manual>` to get an output on your website.
 
+Update from 2.x to 2.0.4
+************************
+
+Because of a security patch of TYPO3 all of our weather2 scheduler tasks can not be unserialized anymore. For
+you it is not possible anymore to delete, modify or start any task as you can not open scheduler module. Further
+no task will be executed anymore by Cronjob.
+Please visit Upgrade module of TYPO3 and execute our UpgradeWizard to update our tasks in DB.
+
 Update from 1.x to 2.x
 ***********************
 
