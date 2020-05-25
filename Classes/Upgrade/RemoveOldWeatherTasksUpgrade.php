@@ -14,8 +14,14 @@ namespace JWeiland\Weather2\Upgrade;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use JWeiland\Weather2\Task\AbstractTask;
+use JWeiland\Weather2\Task\DeutscherWetterdienstTask;
+use JWeiland\Weather2\Task\DeutscherWetterdienstWarnCellTask;
+use JWeiland\Weather2\Task\OpenWeatherMapTask;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Scheduler\Execution;
 
 /**
  * With TYPO3 8.7.33 the logger-property in our Scheduler Task can not be unserialized anymore for security reasons.
@@ -63,8 +69,7 @@ class RemoveOldWeatherTasksUpgrade
      */
     public function updateNecessary(): bool
     {
-        $records = $this->getWeather2SchedulerTasks();
-        return (bool)count($records);
+        return !empty($this->getWeather2SchedulerTasks());
     }
 
     /**
@@ -76,16 +81,31 @@ class RemoveOldWeatherTasksUpgrade
     {
         $records = $this->getWeather2SchedulerTasks();
         foreach ($records as $record) {
-            $connection = $this->getConnectionPool()->getConnectionForTable('tx_scheduler_task');
-            $connection->delete(
-                'tx_scheduler_task',
+            // Re-Build Task, but without logger-property
+            $task = unserialize(
+                $record['serialized_task_object'],
                 [
-                    'uid' => $record['uid']
-                ],
-                [
-                    'uid' => \PDO::PARAM_INT
+                    'allowed_classes' => [
+                        Execution::class,
+                        DeutscherWetterdienstTask::class,
+                        DeutscherWetterdienstWarnCellTask::class,
+                        OpenWeatherMapTask::class
+                    ]
                 ]
             );
+            if ($task instanceof AbstractTask) {
+                $task->resetLogger();
+                $connection = $this->getConnectionPool()->getConnectionForTable('tx_scheduler_task');
+                $connection->update(
+                    'tx_scheduler_task',
+                    [
+                        'serialized_task_object' => serialize($task)
+                    ],
+                    [
+                        'uid' => (int)$record['uid']
+                    ]
+                );
+            }
         }
 
         return true;
@@ -100,37 +120,37 @@ class RemoveOldWeatherTasksUpgrade
     {
         $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tx_scheduler_task');
         $queryBuilder->getRestrictions()->removeAll();
-        $records = $queryBuilder
+        $statement = $queryBuilder
             ->select('uid', 'serialized_task_object')
             ->from('tx_scheduler_task')
             ->where(
                 $queryBuilder->expr()->orX(
                     $queryBuilder->expr()->like(
                         'serialized_task_object',
-                        $queryBuilder->createNamedParameter('OpenWeatherMapTask', \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter('%OpenWeatherMapTask%', \PDO::PARAM_STR)
                     ),
                     $queryBuilder->expr()->like(
                         'serialized_task_object',
-                        $queryBuilder->createNamedParameter('DeutscherWetterdienstTask', \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter('%DeutscherWetterdienstTask%', \PDO::PARAM_STR)
                     ),
                     $queryBuilder->expr()->like(
                         'serialized_task_object',
-                        $queryBuilder->createNamedParameter('DeutscherWetterdienstWarnCellTask', \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter('%DeutscherWetterdienstWarnCellTask%', \PDO::PARAM_STR)
                     )
                 ),
                 $queryBuilder->expr()->like(
                     'serialized_task_object',
-                    $queryBuilder->createNamedParameter('"*logger"', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('%logger"%', \PDO::PARAM_STR)
                 )
             )
-            ->execute()
-            ->fetchAll();
+            ->execute();
 
-        if ($records === false) {
-            $records = [];
+        $tasks = [];
+        while ($task = $statement->fetch()) {
+            $tasks[] = $task;
         }
 
-        return $records;
+        return $tasks;
     }
 
     protected function getConnectionPool(): ConnectionPool
