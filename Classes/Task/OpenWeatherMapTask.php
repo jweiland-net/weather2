@@ -129,7 +129,7 @@ class OpenWeatherMapTask extends AbstractTask
         $logEntry[] = 'Scheduler: "JWeiland\\weather2\\Task\\OpenWeatherMapTask"';
         $logEntry[] = 'Scheduler settings: %s';
         $logEntry[] = 'Date format: "m.d.Y - H:i:s"';
-        $this->getLogger()->info(sprintf(
+        $this->logger->info(sprintf(
             implode("\n", $logEntry),
             date('m.d.Y - H:i:s', $GLOBALS['EXEC_TIME']),
             json_encode($this)
@@ -146,7 +146,7 @@ class OpenWeatherMapTask extends AbstractTask
             return false;
         }
         $this->responseClass = json_decode((string)$response->getBody());
-        $this->getLogger()->info(sprintf('Response class: %s', json_encode($this->responseClass)));
+        $this->logger->info(sprintf('Response class: %s', json_encode($this->responseClass)));
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $persistenceManager = $objectManager->get(PersistenceManager::class);
 
@@ -164,7 +164,7 @@ class OpenWeatherMapTask extends AbstractTask
     private function checkResponseCode(ResponseInterface $response): bool
     {
         if ($response->getStatusCode() === 401) {
-            $this->getLogger()->error(WeatherUtility::translate('message.api_response_401', 'openweatherapi'));
+            $this->logger->error(WeatherUtility::translate('message.api_response_401', 'openweatherapi'));
             $this->sendMail(
                 'Error while requesting weather data',
                 WeatherUtility::translate('message.api_response_401', 'openweatherapi')
@@ -172,7 +172,7 @@ class OpenWeatherMapTask extends AbstractTask
             return false;
         }
         if ($response->getStatusCode() !== 200) {
-            $this->getLogger()->error(WeatherUtility::translate('message.api_response_null', 'openweatherapi'));
+            $this->logger->error(WeatherUtility::translate('message.api_response_null', 'openweatherapi'));
             $this->sendMail(
                 'Error while requesting weather data',
                 WeatherUtility::translate('message.api_response_null', 'openweatherapi')
@@ -187,14 +187,14 @@ class OpenWeatherMapTask extends AbstractTask
             case '200':
                 return true;
             case '404':
-                $this->getLogger()->error(WeatherUtility::translate('messages.api_code_404', 'openweatherapi'));
+                $this->logger->error(WeatherUtility::translate('messages.api_code_404', 'openweatherapi'));
                 $this->sendMail(
                     'Error while requesting weather data',
                     WeatherUtility::translate('messages.api_code_404', 'openweatherapi')
                 );
                 return false;
             default:
-                $this->getLogger()->error(
+                $this->logger->error(
                     sprintf(
                         WeatherUtility::translate('messages.api_code_none', 'openweatherapi'),
                         (string)$response->getBody()
@@ -298,7 +298,7 @@ class OpenWeatherMapTask extends AbstractTask
         if ($fromAddress && $fromName && $this->emailReceiver) {
             $from = [$fromAddress => $fromName];
         } else {
-            $this->getLogger()->error(
+            $this->logger->error(
                 ($this->emailReceiver === false ? 'E-Mail receiver address is missing ' : '') .
                 ($fromAddress === '' ? 'E-Mail sender address ' : '') .
                 ($fromName === '' ? 'E-Mail sender name is missing' : '')
@@ -310,10 +310,10 @@ class OpenWeatherMapTask extends AbstractTask
         $mail->send();
 
         if ($mail->isSent()) {
-            $this->getLogger()->notice('Notification mail sent!');
+            $this->logger->notice('Notification mail sent!');
             return true;
         }
-        $this->getLogger()->error('Notification mail not sent because of an error!');
+        $this->logger->error('Notification mail not sent because of an error!');
         return false;
     }
 
