@@ -16,6 +16,8 @@ namespace JWeiland\Weather2\Task;
  */
 
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Abstract task class that adds TYPO3 8 compatibility
@@ -23,18 +25,39 @@ use Psr\Log\LoggerInterface;
 abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
 {
     /**
-     * SF: getLogger was removed with TYPO3 9.5.
-     * @ToDo: Please remove that method and use $this->logger instead when removing TYPO3 8.7 compatibility
-     *
-     * @return LoggerInterface
+     * @var LoggerInterface
      */
-    protected function getLogger(): LoggerInterface
-    {
-        if (method_exists(\TYPO3\CMS\Scheduler\Task\AbstractTask::class, 'getLogger')) {
-            // Fallback for TYPO3 8.7
-            return parent::getLogger();
-        }
+    protected $logger;
 
-        return $this->logger;
+    /**
+     * Will be called from UpgradeWizard to set Logger back to NULL before serializing it into DB
+     */
+    public function resetLogger()
+    {
+        $this->logger = null;
+    }
+
+    /**
+     * @ToDo: SF: Remove this method when TYPO3 8.7 compatibility was thrown away
+     *
+     * Sets the internal reference to the singleton instance of the Scheduler
+     */
+    public function setScheduler()
+    {
+        $this->scheduler = GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Scheduler::class);
+        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+    }
+
+    /**
+     * @ToDo: SF: Remove this method when TYPO3 8.7 compatibility was thrown away
+     *
+     * Unsets the internal reference to the singleton instance of the Scheduler
+     * This is done before a task is serialized, so that the scheduler instance
+     * is not saved to the database too
+     */
+    public function unsetScheduler()
+    {
+        $this->scheduler = null;
+        $this->logger = null;
     }
 }
