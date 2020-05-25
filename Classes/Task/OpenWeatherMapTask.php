@@ -117,11 +117,6 @@ class OpenWeatherMapTask extends AbstractTask
     public $emailReceiver = '';
 
     /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
      * This method is the heart of the scheduler task. It will be fired if the scheduler
      * gets executed
      *
@@ -317,10 +312,9 @@ class OpenWeatherMapTask extends AbstractTask
         if ($mail->isSent()) {
             $this->logger->notice('Notification mail sent!');
             return true;
-        } else {
-            $this->logger->error('Notification mail not sent because of an error!');
-            return false;
         }
+        $this->logger->error('Notification mail not sent because of an error!');
+        return false;
     }
 
     protected function removeOldRecordsFromDb()

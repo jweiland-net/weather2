@@ -226,12 +226,11 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
 
     /**
      * @param array $submittedData
-     * @param AbstractTask $task
+     * @param AbstractTask|DeutscherWetterdienstTask $task
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {
-        /** @var DeutscherWetterdienstTask $task */
-        $task->selectedWarnCells = $submittedData['dwd_selectedWarnCells'];
-        $task->recordStoragePage = $submittedData['dwd_recordStoragePage'];
+        $task->selectedWarnCells = $submittedData['dwd_selectedWarnCells'] ?: [];
+        $task->recordStoragePage = (int)$submittedData['dwd_recordStoragePage'];
     }
 }

@@ -29,25 +29,35 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
      */
     protected $logger;
 
-    public function __construct()
+    /**
+     * Will be called from UpgradeWizard to set Logger back to NULL before serializing it into DB
+     */
+    public function resetLogger()
     {
-        parent::__construct();
-        $this->initializeLogger();
+        $this->logger = null;
     }
 
-    public function __wakeup()
+    /**
+     * @ToDo: SF: Remove this method when TYPO3 8.7 compatibility was thrown away
+     *
+     * Sets the internal reference to the singleton instance of the Scheduler
+     */
+    public function setScheduler()
     {
-        if (method_exists(\TYPO3\CMS\Scheduler\Task\AbstractTask::class, '__wakeup')) {
-            parent::__wakeup();
-        }
-        $this->initializeLogger();
+        $this->scheduler = GeneralUtility::makeInstance(\TYPO3\CMS\Scheduler\Scheduler::class);
+        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
     }
 
-    protected function initializeLogger()
+    /**
+     * @ToDo: SF: Remove this method when TYPO3 8.7 compatibility was thrown away
+     *
+     * Unsets the internal reference to the singleton instance of the Scheduler
+     * This is done before a task is serialized, so that the scheduler instance
+     * is not saved to the database too
+     */
+    public function unsetScheduler()
     {
-        // $this->logger has been added with TYPO3 9
-        if ($this->logger === null) {
-            $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-        }
+        $this->scheduler = null;
+        $this->logger = null;
     }
 }
