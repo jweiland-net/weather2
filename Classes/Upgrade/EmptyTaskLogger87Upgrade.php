@@ -23,10 +23,10 @@ use TYPO3\CMS\Install\Updates\AbstractUpdate;
  * This UpgradeWizard fetches all weather2 tasks, unserializes the Task without the Logger, set it to NULL and
  * serializes it back to DB.
  */
-class RemoveLoggerFromSerializedTask87Upgrade extends AbstractUpdate
+class EmptyTaskLogger87Upgrade extends AbstractUpdate
 {
     /**
-     * @var RemoveLoggerFromSerializedTaskUpgrade
+     * @var EmptyTaskLoggerUpgrade
      */
     protected $removeTasksUpgrade;
 
@@ -35,10 +35,10 @@ class RemoveLoggerFromSerializedTask87Upgrade extends AbstractUpdate
         int $versionAsInt,
         string $userInput = null,
         UpgradeWizard $parentObject = null,
-        RemoveLoggerFromSerializedTaskUpgrade $removeTasksUpgrade = null
+        EmptyTaskLoggerUpgrade $removeTasksUpgrade = null
     ) {
         if ($removeTasksUpgrade === null) {
-            $removeTasksUpgrade = GeneralUtility::makeInstance(RemoveLoggerFromSerializedTaskUpgrade::class);
+            $removeTasksUpgrade = GeneralUtility::makeInstance(EmptyTaskLoggerUpgrade::class);
         }
         $this->removeTasksUpgrade = $removeTasksUpgrade;
     }

@@ -26,9 +26,9 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][JWeiland\Weather
 
 // Set logger to NULL in Weather2 Tasks before serializing it to DB
 if (version_compare(TYPO3_branch, '9.4', '>=')) {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['weather2RemoveTasks'] = \JWeiland\Weather2\Upgrade\RemoveLoggerFromSerializedTask94Upgrade::class;
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['weather2EmptyTaskLogger'] = \JWeiland\Weather2\Upgrade\EmptyTaskLogger94Upgrade::class;
 } else {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['weather2RemoveTasks'] = \JWeiland\Weather2\Upgrade\RemoveLoggerFromSerializedTask87Upgrade::class;
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['weather2EmptyTaskLogger'] = \JWeiland\Weather2\Upgrade\EmptyTaskLogger87Upgrade::class;
 }
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(

@@ -28,7 +28,7 @@ use TYPO3\CMS\Scheduler\Execution;
  * This UpgradeWizard fetches all weather2 tasks, unserializes the Task without the Logger, set it to NULL and
  * serializes it back to DB.
  */
-class RemoveLoggerFromSerializedTaskUpgrade
+class EmptyTaskLoggerUpgrade
 {
     /**
      * Return the identifier for this wizard
@@ -38,7 +38,7 @@ class RemoveLoggerFromSerializedTaskUpgrade
      */
     public function getIdentifier(): string
     {
-        return 'weather2RemoveTasks';
+        return 'weather2EmptyTaskLogger';
     }
 
     /**
@@ -48,7 +48,7 @@ class RemoveLoggerFromSerializedTaskUpgrade
      */
     public function getTitle(): string
     {
-        return '[weather2] Remove weather2 scheduler tasks';
+        return '[weather2] Empty Logger of weather2 scheduler tasks';
     }
 
     /**
@@ -58,8 +58,8 @@ class RemoveLoggerFromSerializedTaskUpgrade
      */
     public function getDescription(): string
     {
-        return 'For TYPO3 security reasons all tasks of weather2 have to be removed from DB. Please check, if ' .
-            'you still have your API Key available and you know the previously configured StoragePage';
+        return 'For TYPO3 security reasons the logger of our scheduler tasks has to be empty. ' .
+            'This Wizards searches for all of our tasks and sets the Logger to null.';
     }
 
     /**
