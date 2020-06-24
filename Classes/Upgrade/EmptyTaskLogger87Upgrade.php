@@ -16,6 +16,7 @@ namespace JWeiland\Weather2\Upgrade;
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Controller\Action\Tool\UpgradeWizard;
+use TYPO3\CMS\Install\Report\InstallStatusReport;
 use TYPO3\CMS\Install\Updates\AbstractUpdate;
 
 /**
@@ -30,11 +31,20 @@ class EmptyTaskLogger87Upgrade extends AbstractUpdate
      */
     protected $removeTasksUpgrade;
 
+    /**
+     * EmptyTaskLogger87Upgrade constructor.
+     *
+     * @param string $identifier
+     * @param int $versionAsInt
+     * @param string|null $userInput
+     * @param UpgradeWizard|InstallStatusReport|object|null $parentObject
+     * @param EmptyTaskLoggerUpgrade|null $removeTasksUpgrade
+     */
     public function __construct(
         string $identifier,
         int $versionAsInt,
         string $userInput = null,
-        UpgradeWizard $parentObject = null,
+        $parentObject = null,
         EmptyTaskLoggerUpgrade $removeTasksUpgrade = null
     ) {
         if ($removeTasksUpgrade === null) {
