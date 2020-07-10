@@ -6,7 +6,7 @@ Read the Extension Manual: https://docs.typo3.org/typo3cms/extensions/weather2/
 weather2 on TYPO3 TER: https://typo3.org/extensions/repository/view/weather2
 
 #### Requirements ####
-- TYPO3 CMS 8.7.x - 9.5.x
+- TYPO3 CMS 9.5.17 - 10.4.*
 - TYPO3 Extension static_info_tables (>=6.4.0)
 
 ### Installation ###

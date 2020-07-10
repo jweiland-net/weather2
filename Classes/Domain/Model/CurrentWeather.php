@@ -1,19 +1,15 @@
 <?php
+
 declare(strict_types=1);
-namespace JWeiland\Weather2\Domain\Model;
 
 /*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the package jweiland/weather2.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace JWeiland\Weather2\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
@@ -108,7 +104,7 @@ class CurrentWeather extends AbstractEntity
     /**
      * @param string $serializedArray
      */
-    public function setSerializedArray(string $serializedArray)
+    public function setSerializedArray(string $serializedArray): void
     {
         $this->serializedArray = $serializedArray;
     }
@@ -124,7 +120,7 @@ class CurrentWeather extends AbstractEntity
     /**
      * @param float $temperatureC
      */
-    public function setTemperatureC(float $temperatureC)
+    public function setTemperatureC(float $temperatureC): void
     {
         $this->temperatureC = $temperatureC;
     }
@@ -142,7 +138,7 @@ class CurrentWeather extends AbstractEntity
      *
      * @param int $pressureHpa
      */
-    public function setPressureHpa(int $pressureHpa)
+    public function setPressureHpa(int $pressureHpa): void
     {
         $this->pressureHpa = $pressureHpa;
     }
@@ -158,7 +154,7 @@ class CurrentWeather extends AbstractEntity
     /**
      * @param int $humidityPercentage
      */
-    public function setHumidityPercentage(int $humidityPercentage)
+    public function setHumidityPercentage(int $humidityPercentage): void
     {
         $this->humidityPercentage = $humidityPercentage;
     }
@@ -173,9 +169,8 @@ class CurrentWeather extends AbstractEntity
 
     /**
      * @param float $minTempC
-     * @return void
      */
-    public function setMinTempC(float $minTempC)
+    public function setMinTempC(float $minTempC): void
     {
         $this->minTempC = $minTempC;
     }
@@ -191,7 +186,7 @@ class CurrentWeather extends AbstractEntity
     /**
      * @param float $maxTempC
      */
-    public function setMaxTempC(float $maxTempC)
+    public function setMaxTempC(float $maxTempC): void
     {
         $this->maxTempC = $maxTempC;
     }
@@ -207,7 +202,7 @@ class CurrentWeather extends AbstractEntity
     /**
      * @param float $windSpeedMPS
      */
-    public function setWindSpeedMPS(float $windSpeedMPS)
+    public function setWindSpeedMPS(float $windSpeedMPS): void
     {
         $this->windSpeedMPS = $windSpeedMPS;
     }
@@ -233,9 +228,8 @@ class CurrentWeather extends AbstractEntity
 
     /**
      * @param int $windDirectionDeg
-     * @return void
      */
-    public function setWindDirectionDeg(int $windDirectionDeg)
+    public function setWindDirectionDeg(int $windDirectionDeg): void
     {
         $this->windDirectionDeg = $windDirectionDeg;
     }
@@ -251,7 +245,7 @@ class CurrentWeather extends AbstractEntity
     /**
      * @param int $popPercentage
      */
-    public function setPopPercentage(int $popPercentage)
+    public function setPopPercentage(int $popPercentage): void
     {
         $this->popPercentage = $popPercentage;
     }
@@ -267,7 +261,7 @@ class CurrentWeather extends AbstractEntity
     /**
      * @param int $snowVolume
      */
-    public function setSnowVolume(int $snowVolume)
+    public function setSnowVolume(int $snowVolume): void
     {
         $this->snowVolume = $snowVolume;
     }
@@ -283,7 +277,7 @@ class CurrentWeather extends AbstractEntity
     /**
      * @param int $rainVolume
      */
-    public function setRainVolume(int $rainVolume)
+    public function setRainVolume(int $rainVolume): void
     {
         $this->rainVolume = $rainVolume;
     }
@@ -299,7 +293,7 @@ class CurrentWeather extends AbstractEntity
     /**
      * @param int $cloudsPercentage
      */
-    public function setCloudsPercentage(int $cloudsPercentage)
+    public function setCloudsPercentage(int $cloudsPercentage): void
     {
         $this->cloudsPercentage = $cloudsPercentage;
     }
@@ -315,7 +309,7 @@ class CurrentWeather extends AbstractEntity
     /**
      * @param string $name
      */
-    public function setName(string $name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -331,7 +325,7 @@ class CurrentWeather extends AbstractEntity
     /**
      * @param \DateTime $measureTimestamp
      */
-    public function setMeasureTimestamp(\DateTime $measureTimestamp)
+    public function setMeasureTimestamp(\DateTime $measureTimestamp): void
     {
         $this->measureTimestamp = $measureTimestamp;
     }
@@ -347,7 +341,7 @@ class CurrentWeather extends AbstractEntity
     /**
      * @param string $icon
      */
-    public function setIcon(string $icon)
+    public function setIcon(string $icon): void
     {
         $this->icon = $icon;
     }

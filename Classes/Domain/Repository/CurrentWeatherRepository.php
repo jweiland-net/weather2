@@ -1,19 +1,15 @@
 <?php
+
 declare(strict_types=1);
-namespace JWeiland\Weather2\Domain\Repository;
 
 /*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the package jweiland/weather2.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace JWeiland\Weather2\Domain\Repository;
 
 use JWeiland\Weather2\Domain\Model\CurrentWeather;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
@@ -30,7 +26,7 @@ class CurrentWeatherRepository extends Repository
      * @param string $selection
      * @return CurrentWeather|null
      */
-    public function findBySelection(string $selection)
+    public function findBySelection(string $selection): ?CurrentWeather
     {
         $query = $this->createQuery();
         $query->matching($query->equals('name', trim($selection)));

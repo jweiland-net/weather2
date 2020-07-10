@@ -9,8 +9,8 @@
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'Weather',
-    'description' => 'Display weather reports and weather alerts using various Weather APIs. Default APIs: OpenWeatherMap and Deutscher Wetterdienst',
+    'title' => 'Weather Forecasts and Alerts',
+    'description' => 'Display weather forecasts and weather alerts using various Weather APIs. Default APIs: OpenWeatherMap and Deutscher Wetterdienst',
     'category' => 'plugin',
     'author' => 'Markus Kugler, Pascal Rinker',
     'author_email' => 'projects@jweiland.net',
@@ -20,11 +20,11 @@ $EM_CONF[$_EXTKEY] = [
     'uploadfolder' => '0',
     'createDirs' => '',
     'clearCacheOnLoad' => 0,
-    'version' => '2.0.6',
+    'version' => '3.0.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '8.7.0-9.5.99',
-            'static_info_tables' => '6.4.0'
+            'typo3' => '9.5.17-10.4.99',
+            'static_info_tables' => '6.6.0'
         ],
         'conflicts' => [],
         'suggests' => [],

@@ -12,6 +12,7 @@
 							<label>LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes</label>
 							<config>
 								<type>select</type>
+								<renderType>selectMultipleSideBySide</renderType>
 								<items type="array">
 									<numIndex index="0" type="array">
 										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.thunderstorm</numIndex>
@@ -78,6 +79,7 @@
 							<label>LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels</label>
 							<config>
 								<type>select</type>
+								<renderType>selectMultipleSideBySide</renderType>
 								<items type="array">
 									<numIndex index="0" type="array">
 										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.0</numIndex>

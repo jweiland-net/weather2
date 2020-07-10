@@ -1,19 +1,15 @@
 <?php
+
 declare(strict_types=1);
-namespace JWeiland\Weather2\Domain\Model;
 
 /*
- * This file is part of the  project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the package jweiland/weather2.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace JWeiland\Weather2\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
@@ -53,7 +49,7 @@ class DwdWarnCell extends AbstractEntity
     /**
      * @param string $warnCellId
      */
-    public function setWarnCellId(string $warnCellId)
+    public function setWarnCellId(string $warnCellId): void
     {
         $this->warnCellId = $warnCellId;
     }
@@ -69,7 +65,7 @@ class DwdWarnCell extends AbstractEntity
     /**
      * @param string $name
      */
-    public function setName(string $name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -85,7 +81,7 @@ class DwdWarnCell extends AbstractEntity
     /**
      * @param string $shortName
      */
-    public function setShortName(string $shortName)
+    public function setShortName(string $shortName): void
     {
         $this->shortName = $shortName;
     }
@@ -101,7 +97,7 @@ class DwdWarnCell extends AbstractEntity
     /**
      * @param string $sign
      */
-    public function setSign(string $sign)
+    public function setSign(string $sign): void
     {
         $this->sign = $sign;
     }

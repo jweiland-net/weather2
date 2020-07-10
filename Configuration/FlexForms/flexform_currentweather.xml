@@ -12,6 +12,8 @@
 							<label>LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.measureUnits.label</label>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<eval>required</eval>
 								<items type="array">
 									<numIndex index="0" type="array">
 										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.measureUnits.metric</numIndex>
@@ -34,6 +36,8 @@
 							<label>LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.name</label>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<eval>required</eval>
 								<itemsProcFunc>JWeiland\Weather2\UserFunc\FlexFormUserFunc->getSelection</itemsProcFunc>
 							</config>
 						</TCEforms>

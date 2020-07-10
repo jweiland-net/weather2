@@ -1,19 +1,15 @@
 <?php
+
 declare(strict_types=1);
-namespace JWeiland\Weather2\Controller;
 
 /*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the package jweiland/weather2.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace JWeiland\Weather2\Controller;
 
 use JWeiland\Weather2\Domain\Repository\CurrentWeatherRepository;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -30,14 +26,16 @@ class CurrentWeatherController extends ActionController
 
     public function __construct(CurrentWeatherRepository $currentWeatherRepository)
     {
-        parent::__construct();
+        if (is_callable('parent::__construct')) {
+            parent::__construct();
+        }
         $this->currentWeatherRepository = $currentWeatherRepository;
     }
 
     /**
      * action show displays the newest CurrentWeather model
      */
-    public function showAction()
+    public function showAction(): void
     {
         $currentWeather = $this->currentWeatherRepository->findBySelection($this->settings['selection']);
         $this->view->assign('currentWeather', $currentWeather);

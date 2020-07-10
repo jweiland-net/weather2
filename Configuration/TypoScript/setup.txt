@@ -3,7 +3,7 @@ page.includeCSS {
 }
 
 page.includeJSFooterlibs {
-  tx_weather2jQuery = //code.jquery.com/jquery-3.0.0.min.js
+  tx_weather2jQuery = https://code.jquery.com/jquery-3.0.0.min.js
   tx_weather2jQuery.external = 1
 
   tx_weatherJs = EXT:weather2/Resources/Public/JavaScript/default.js

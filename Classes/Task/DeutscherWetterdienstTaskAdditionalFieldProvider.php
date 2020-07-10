@@ -1,19 +1,15 @@
 <?php
+
 declare(strict_types=1);
-namespace JWeiland\Weather2\Task;
 
 /*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the package jweiland/weather2.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace JWeiland\Weather2\Task;
 
 use JWeiland\Weather2\Domain\Model\DwdWarnCell;
 use JWeiland\Weather2\Domain\Repository\DwdWarnCellRepository;
@@ -26,14 +22,14 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
+use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * Additional fields for DeutscherWetterdienst scheduler task
  */
-class DeutscherWetterdienstTaskAdditionalFieldProvider implements AdditionalFieldProviderInterface
+class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
 {
     /**
      * @var DwdWarnCellRepository
@@ -71,8 +67,10 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider implements AdditionalFiel
      * @return array
      */
     public function getAdditionalFields(
-        array &$taskInfo, $task, SchedulerModuleController $schedulerModule): array
-    {
+        array &$taskInfo,
+        $task,
+        SchedulerModuleController $schedulerModule
+    ): array {
         $this->initialize();
         foreach ($this->insertFields as $fieldID) {
             if (empty($taskInfo[$fieldID])) {
@@ -216,7 +214,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
 
             if (empty($value) && in_array($fieldName, $this->requiredFields, true)) {
                 $isValid = false;
-                $schedulerModule->addMessage('Field: ' . $fieldName . ' must not be empty', FlashMessage::ERROR);
+                $this->addMessage('Field: ' . $fieldName . ' must not be empty', FlashMessage::ERROR);
             } else {
                 $submittedData[$fieldName] = $value;
             }

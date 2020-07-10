@@ -29,7 +29,7 @@ weather2
 		weather2,weather,report,alarm,dwd,openweather
 
 	:Copyright:
-		2019
+		2020
 
 	:Author:
 		Markus Kugler, Pascal Rinker

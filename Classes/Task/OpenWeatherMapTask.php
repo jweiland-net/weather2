@@ -1,24 +1,19 @@
 <?php
+
 declare(strict_types=1);
-namespace JWeiland\Weather2\Task;
 
 /*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the package jweiland/weather2.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace JWeiland\Weather2\Task;
 
 use JWeiland\Weather2\Domain\Model\CurrentWeather;
 use JWeiland\Weather2\Utility\WeatherUtility;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Mail\MailMessage;
@@ -26,6 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * OpenWeatherMapTask Class for Scheduler
@@ -139,9 +135,22 @@ class OpenWeatherMapTask extends AbstractTask
 
         $this->url = sprintf(
             'http://api.openweathermap.org/data/2.5/weather?q=%s,%s&units=%s&APPID=%s',
-            urlencode($this->city), urlencode($this->country), 'metric', $this->apiKey
+            urlencode($this->city),
+            urlencode($this->country),
+            'metric',
+            $this->apiKey
         );
-        $response = GeneralUtility::makeInstance(RequestFactory::class)->request($this->url);
+       try {
+           $response = GeneralUtility::makeInstance(RequestFactory::class)->request($this->url);
+       } catch (\Throwable $exception) {
+           $errorMessage = 'Exception while fetching data from API: ' . $exception->getMessage();
+           $this->logger->error($errorMessage);
+           $this->sendMail(
+               'Error while requesting weather data',
+               $errorMessage
+           );
+           return false;
+       }
         if (!($this->checkResponseCode($response))) {
             return false;
         }
@@ -217,7 +226,7 @@ class OpenWeatherMapTask extends AbstractTask
     private function getCurrentWeatherInstanceForResponseClass($responseClass): CurrentWeather
     {
         $currentWeather = new CurrentWeather();
-        $currentWeather->setPid($this->recordStoragePage);
+        $currentWeather->setPid((int)$this->recordStoragePage);
         $currentWeather->setName($this->name);
 
         if (isset($responseClass->main->temp)) {
@@ -306,7 +315,14 @@ class OpenWeatherMapTask extends AbstractTask
             return false;
         }
 
-        $mail->setSubject($subject)->setFrom($from)->setTo([(string)$this->emailReceiver])->setBody($body);
+        $mail->setSubject($subject)->setFrom($from)->setTo([(string)$this->emailReceiver]);
+        if (method_exists($mail, 'addPart')) {
+            // TYPO3 < 10 (Swift_Message)
+            $mail->setBody($body);
+        } else {
+            // TYPO3 >= 10 (Symfony Mail)
+            $mail->text($body);
+        }
         $mail->send();
 
         if ($mail->isSent()) {
@@ -317,7 +333,7 @@ class OpenWeatherMapTask extends AbstractTask
         return false;
     }
 
-    protected function removeOldRecordsFromDb()
+    protected function removeOldRecordsFromDb(): void
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('tx_weather2_domain_model_currentweather');

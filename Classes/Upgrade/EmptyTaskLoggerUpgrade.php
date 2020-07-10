@@ -1,34 +1,31 @@
 <?php
-declare(strict_types = 1);
-namespace JWeiland\Weather2\Upgrade;
+
+declare(strict_types=1);
 
 /*
- * This file is part of the weather2 project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the package jweiland/weather2.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
 
-use JWeiland\Weather2\Task\AbstractTask;
+namespace JWeiland\Weather2\Upgrade;
+
 use JWeiland\Weather2\Task\DeutscherWetterdienstTask;
 use JWeiland\Weather2\Task\DeutscherWetterdienstWarnCellTask;
 use JWeiland\Weather2\Task\OpenWeatherMapTask;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 use TYPO3\CMS\Scheduler\Execution;
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * With TYPO3 8.7.33 the logger-property in our Scheduler Task can not be unserialized anymore for security reasons.
  * This UpgradeWizard fetches all weather2 tasks, unserializes the Task without the Logger, set it to NULL and
  * serializes it back to DB.
  */
-class EmptyTaskLoggerUpgrade
+class EmptyTaskLoggerUpgrade implements UpgradeWizardInterface
 {
     /**
      * Return the identifier for this wizard
@@ -151,6 +148,16 @@ class EmptyTaskLoggerUpgrade
         }
 
         return $tasks;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getPrerequisites(): array
+    {
+        return [
+            DatabaseUpdatedPrerequisite::class
+        ];
     }
 
     protected function getConnectionPool(): ConnectionPool

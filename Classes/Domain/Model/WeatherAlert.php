@@ -1,19 +1,15 @@
 <?php
+
 declare(strict_types=1);
-namespace JWeiland\Weather2\Domain\Model;
 
 /*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the package jweiland/weather2.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace JWeiland\Weather2\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
@@ -116,7 +112,7 @@ class WeatherAlert extends AbstractEntity
     /**
      * @param DwdWarnCell $dwdWarnCell
      */
-    public function setDwdWarnCell(DwdWarnCell $dwdWarnCell)
+    public function setDwdWarnCell(DwdWarnCell $dwdWarnCell): void
     {
         $this->dwdWarnCell = $dwdWarnCell;
     }
@@ -132,7 +128,7 @@ class WeatherAlert extends AbstractEntity
     /**
      * @param int $level
      */
-    public function setLevel(int $level)
+    public function setLevel(int $level): void
     {
         $this->level = $level;
     }
@@ -148,7 +144,7 @@ class WeatherAlert extends AbstractEntity
     /**
      * @param int $type
      */
-    public function setType(int $type)
+    public function setType(int $type): void
     {
         $this->type = $type;
     }
@@ -164,7 +160,7 @@ class WeatherAlert extends AbstractEntity
     /**
      * @param string $title
      */
-    public function setTitle(string $title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
@@ -180,7 +176,7 @@ class WeatherAlert extends AbstractEntity
     /**
      * @param string $description
      */
-    public function setDescription(string $description)
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
@@ -198,7 +194,7 @@ class WeatherAlert extends AbstractEntity
     /**
      * @param string $instruction
      */
-    public function setInstruction(string $instruction)
+    public function setInstruction(string $instruction): void
     {
         $this->instruction = $instruction;
     }
@@ -206,7 +202,7 @@ class WeatherAlert extends AbstractEntity
     /**
      * @return \DateTime|null
      */
-    public function getStarttime()
+    public function getStarttime(): ?\DateTime
     {
         return $this->starttime;
     }
@@ -214,7 +210,7 @@ class WeatherAlert extends AbstractEntity
     /**
      * @param \DateTime $starttime
      */
-    public function setStarttime(\DateTime $starttime)
+    public function setStarttime(\DateTime $starttime): void
     {
         $this->starttime = $starttime;
     }
@@ -222,7 +218,7 @@ class WeatherAlert extends AbstractEntity
     /**
      * @return \DateTime|null
      */
-    public function getEndtime()
+    public function getEndtime(): ?\DateTime
     {
         return $this->endtime;
     }
@@ -230,7 +226,7 @@ class WeatherAlert extends AbstractEntity
     /**
      * @param \DateTime $endtime
      */
-    public function setEndtime(\DateTime $endtime)
+    public function setEndtime(\DateTime $endtime): void
     {
         $this->endtime = $endtime;
     }
@@ -238,7 +234,7 @@ class WeatherAlert extends AbstractEntity
     /**
      * @return \DateTime|null
      */
-    public function getStartDate()
+    public function getStartDate(): ?\DateTime
     {
         return $this->startDate;
     }
@@ -246,7 +242,7 @@ class WeatherAlert extends AbstractEntity
     /**
      * @param \DateTime $startDate
      */
-    public function setStartDate(\DateTime $startDate)
+    public function setStartDate(\DateTime $startDate): void
     {
         $this->startDate = $startDate;
     }
@@ -254,7 +250,7 @@ class WeatherAlert extends AbstractEntity
     /**
      * @return \DateTime|null
      */
-    public function getEndDate()
+    public function getEndDate(): ?\DateTime
     {
         return $this->endDate;
     }
@@ -262,7 +258,7 @@ class WeatherAlert extends AbstractEntity
     /**
      * @param \DateTime $endDate
      */
-    public function setEndDate(\DateTime $endDate)
+    public function setEndDate(\DateTime $endDate): void
     {
         $this->endDate = $endDate;
     }
@@ -278,7 +274,7 @@ class WeatherAlert extends AbstractEntity
     /**
      * @param string $comparisonHash
      */
-    public function setComparisonHash(string $comparisonHash)
+    public function setComparisonHash(string $comparisonHash): void
     {
         $this->comparisonHash = $comparisonHash;
     }
@@ -305,7 +301,7 @@ class WeatherAlert extends AbstractEntity
     /**
      * @param bool $preliminaryInformation
      */
-    public function setPreliminaryInformation(bool $preliminaryInformation)
+    public function setPreliminaryInformation(bool $preliminaryInformation): void
     {
         $this->preliminaryInformation = $preliminaryInformation;
     }

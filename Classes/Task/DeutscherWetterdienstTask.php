@@ -1,19 +1,15 @@
 <?php
+
 declare(strict_types=1);
-namespace JWeiland\Weather2\Task;
 
 /*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the package jweiland/weather2.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace JWeiland\Weather2\Task;
 
 use JWeiland\Weather2\Domain\Model\DwdWarnCell;
 use JWeiland\Weather2\Domain\Model\WeatherAlert;
@@ -27,6 +23,7 @@ use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * DeutscherWetterdienstTask Class for Scheduler
@@ -135,7 +132,7 @@ class DeutscherWetterdienstTask extends AbstractTask
     /**
      * Checks the responseClass for alerts in selected regions
      */
-    protected function handleResponse()
+    protected function handleResponse(): void
     {
         $this->persistenceManager = $this->objectManager->get(PersistenceManager::class);
         if (array_key_exists('warnings', $this->decodedResponse)) {
@@ -152,7 +149,7 @@ class DeutscherWetterdienstTask extends AbstractTask
      * @param array $category
      * @param bool $isPreliminaryInformation
      */
-    protected function processDwdItems(array $category, bool $isPreliminaryInformation)
+    protected function processDwdItems(array $category, bool $isPreliminaryInformation): void
     {
         foreach ($this->selectedWarnCells as $warnCellId) {
             if (array_key_exists($warnCellId, $category) && is_array($category[$warnCellId])) {
@@ -236,7 +233,7 @@ class DeutscherWetterdienstTask extends AbstractTask
     protected function getWeatherAlertInstanceForAlert(array $alert, string $warnCellId, bool $isPreliminaryInformation): WeatherAlert
     {
         $weatherAlert = new WeatherAlert();
-        $weatherAlert->setPid($this->recordStoragePage);
+        $weatherAlert->setPid((int)$this->recordStoragePage);
         $weatherAlert->setDwdWarnCell($this->getDwdWarnCell($warnCellId));
         $weatherAlert->setComparisonHash($this->getComparisonHashForAlert($alert));
         $weatherAlert->setPreliminaryInformation($isPreliminaryInformation);
@@ -282,7 +279,7 @@ class DeutscherWetterdienstTask extends AbstractTask
         return $this->warnCellRecords[$warnCellId];
     }
 
-    protected function removeOldAlertsFromDb()
+    protected function removeOldAlertsFromDb(): void
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->dbExtTable);
         $queryBuilder
