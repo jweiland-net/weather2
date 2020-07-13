@@ -140,17 +140,17 @@ class OpenWeatherMapTask extends AbstractTask
             'metric',
             $this->apiKey
         );
-       try {
-           $response = GeneralUtility::makeInstance(RequestFactory::class)->request($this->url);
-       } catch (\Throwable $exception) {
-           $errorMessage = 'Exception while fetching data from API: ' . $exception->getMessage();
-           $this->logger->error($errorMessage);
-           $this->sendMail(
-               'Error while requesting weather data',
-               $errorMessage
-           );
-           return false;
-       }
+        try {
+            $response = GeneralUtility::makeInstance(RequestFactory::class)->request($this->url);
+        } catch (\Throwable $exception) {
+            $errorMessage = 'Exception while fetching data from API: ' . $exception->getMessage();
+            $this->logger->error($errorMessage);
+            $this->sendMail(
+                'Error while requesting weather data',
+                $errorMessage
+            );
+            return false;
+        }
         if (!($this->checkResponseCode($response))) {
             return false;
         }

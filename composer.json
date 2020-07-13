@@ -1,37 +1,59 @@
 {
-    "name": "jweiland/weather2",
-    "type": "typo3-cms-extension",
-    "description": "Display weather data and weather alerts using various Weather APIs. Default APIs: OpenWeatherMap and Deutscher Wetterdienst",
-    "license": "GPL-2.0-or-later",
-    "keywords": ["typo3", "TYPO3 CMS", "weather2", "weather report", "weather alert"],
-    "homepage": "http://www.jweiland.net",
-    "authors": [
-      {
-        "name": "Markus Kugler",
-        "email": "projects@jweiland.net",
-        "role": "Developer"
-      },
-      {
-        "name": "Pascal Rinker",
-        "email": "projects@jweiland.net",
-        "role": "Developer"
-      }
-    ],
-    "support": {
-      "email": "projects@jweiland.net",
-      "issues": "https://github.com/jweiland-net/weather2/issues",
-      "source": "https://github.com/jweiland-net/weather2"
-    },
-    "require": {
-      "typo3/cms-core": "^9.5.17 || ^10.4.2",
-      "sjbr/static-info-tables": ">=6.6.0"
-    },
-    "require-dev": {
-        "roave/security-advisories": "dev-master"
-    },
-    "autoload": {
-        "psr-4": {
-            "JWeiland\\Weather2\\": "Classes"
-        }
-    }
+	"name": "jweiland/weather2",
+	"type": "typo3-cms-extension",
+	"description": "Display weather data and weather alerts using various Weather APIs. Default APIs: OpenWeatherMap and Deutscher Wetterdienst",
+	"license": "GPL-2.0-or-later",
+	"keywords": [
+		"typo3",
+		"TYPO3 CMS",
+		"weather2",
+		"weather report",
+		"weather alert"
+	],
+	"homepage": "http://www.jweiland.net",
+	"authors": [
+		{
+			"name": "Markus Kugler",
+			"email": "projects@jweiland.net",
+			"role": "Developer"
+		},
+		{
+			"name": "Pascal Rinker",
+			"email": "projects@jweiland.net",
+			"role": "Developer"
+		}
+	],
+	"support": {
+		"email": "projects@jweiland.net",
+		"issues": "https://github.com/jweiland-net/weather2/issues",
+		"source": "https://github.com/jweiland-net/weather2"
+	},
+	"require": {
+		"typo3/cms-core": "^9.5.17 || ^10.4.2",
+		"sjbr/static-info-tables": ">=6.6.0"
+	},
+	"require-dev": {
+		"friendsofphp/php-cs-fixer": "^2.14",
+		"nimut/testing-framework": "^5.1"
+	},
+	"autoload": {
+		"psr-4": {
+			"JWeiland\\Weather2\\": "Classes"
+		}
+	},
+	"config": {
+		"vendor-dir": ".build/vendor"
+	},
+	"extra": {
+		"typo3/cms": {
+			"app-dir": ".build",
+			"web-dir": ".build/public"
+		}
+	},
+	"scripts": {
+		"php:fix": ".build/vendor/bin/php-cs-fixer --config=Build/.php_cs.php fix Classes Tests",
+		"ci:php:lint": "find *.php Classes Configuration Tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l",
+		"ci:php:fixer": ".build/vendor/bin/php-cs-fixer --config=Build/.php_cs.php fix --dry-run -v --show-progress=dots --diff-format=udiff Classes Tests",
+		"ci:tests:unit": ".build/vendor/bin/phpunit -c .build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit"
+	}
 }

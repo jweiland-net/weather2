@@ -315,9 +315,9 @@ class CurrentWeather extends AbstractEntity
     }
 
     /**
-     * @return \DateTime measureTimestamp
+     * @return \DateTime|null measureTimestamp
      */
-    public function getMeasureTimestamp(): \DateTime
+    public function getMeasureTimestamp(): ?\DateTime
     {
         return $this->measureTimestamp;
     }

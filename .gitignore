@@ -23,3 +23,7 @@ nbproject
 # Ignore composer stuff
 bin/*
 vendor/*
+
+.build
+composer.lock
+.php_cs.cache

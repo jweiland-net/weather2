@@ -1,18 +1,18 @@
 <?php
-namespace JWeiland\Weather2\Tests\Unit\Controller;
 
 /*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the package jweiland/weather2.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace JWeiland\Weather2\Tests\Unit\Controller;
+
+use JWeiland\Weather2\Controller\CurrentWeatherController;
+use JWeiland\Weather2\Domain\Repository\CurrentWeatherRepository;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
+use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
  * Test case for class JWeiland\Weather2\Controller\CurrentWeatherController.
@@ -20,21 +20,25 @@ namespace JWeiland\Weather2\Tests\Unit\Controller;
  * @author Markus Kugler <projects@jweiland.net>
  * @author Pascal Rinker <projects@jweiland.net>
  */
-class CurrentWeatherControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
+class CurrentWeatherControllerTest extends UnitTestCase
 {
-
     /**
      * @var \JWeiland\Weather2\Controller\CurrentWeatherController
      */
-    protected $subject = null;
+    protected $subject;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $this->subject = $this->getMock('JWeiland\\weather2\\Controller\\CurrentWeatherController',
-            ['redirect', 'forward', 'addFlashMessage'], [], '', false);
+        $this->subject = $this->getAccessibleMock(
+            CurrentWeatherController::class,
+            ['redirect', 'forward', 'addFlashMessage'],
+            [],
+            '',
+            false
+        );
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->subject);
     }
@@ -42,94 +46,30 @@ class CurrentWeatherControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase
     /**
      * @test
      */
-    public function listActionFetchesAllCurrentWeathersFromRepositoryAndAssignsThemToView()
+    public function showActionCallsRepositoryFindBySelectionWithSettingAsArgument()
     {
+        $currentWeather = new \JWeiland\Weather2\Domain\Model\CurrentWeather();
 
-        $allCurrentWeathers = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', [], [], '',
-            false);
-
-        $currentWeatherRepository = $this->getMock('JWeiland\\weather2\\Domain\\Repository\\CurrentWeatherRepository',
-            ['findAll'], [], '', false);
-        $currentWeatherRepository->expects($this->once())->method('findAll')->will($this->returnValue($allCurrentWeathers));
+        $currentWeatherRepository = $this->getAccessibleMock(
+            CurrentWeatherRepository::class,
+            ['findBySelection'],
+            [],
+            '',
+            false
+        );
         $this->inject($this->subject, 'currentWeatherRepository', $currentWeatherRepository);
 
-        $view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-        $view->expects($this->once())->method('assign')->with('currentWeathers', $allCurrentWeathers);
+        $view = $this->getAccessibleMock(
+            TemplateView::class,
+            ['assign'],
+            [],
+            '',
+            false
+        );
         $this->inject($this->subject, 'view', $view);
 
-        $this->subject->listAction();
-    }
-
-    /**
-     * @test
-     */
-    public function showActionAssignsTheGivenCurrentWeatherToView()
-    {
-        $currentWeather = new \JWeiland\Weather2\Domain\Model\CurrentWeather();
-
-        $view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-        $this->inject($this->subject, 'view', $view);
-        $view->expects($this->once())->method('assign')->with('currentWeather', $currentWeather);
-
-        $this->subject->showAction($currentWeather);
-    }
-
-    /**
-     * @test
-     */
-    public function createActionAddsTheGivenCurrentWeatherToCurrentWeatherRepository()
-    {
-        $currentWeather = new \JWeiland\Weather2\Domain\Model\CurrentWeather();
-
-        $currentWeatherRepository = $this->getMock('JWeiland\\weather2\\Domain\\Repository\\CurrentWeatherRepository',
-            ['add'], [], '', false);
-        $currentWeatherRepository->expects($this->once())->method('add')->with($currentWeather);
-        $this->inject($this->subject, 'currentWeatherRepository', $currentWeatherRepository);
-
-        $this->subject->createAction($currentWeather);
-    }
-
-    /**
-     * @test
-     */
-    public function editActionAssignsTheGivenCurrentWeatherToView()
-    {
-        $currentWeather = new \JWeiland\Weather2\Domain\Model\CurrentWeather();
-
-        $view = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\View\\ViewInterface');
-        $this->inject($this->subject, 'view', $view);
-        $view->expects($this->once())->method('assign')->with('currentWeather', $currentWeather);
-
-        $this->subject->editAction($currentWeather);
-    }
-
-    /**
-     * @test
-     */
-    public function updateActionUpdatesTheGivenCurrentWeatherInCurrentWeatherRepository()
-    {
-        $currentWeather = new \JWeiland\Weather2\Domain\Model\CurrentWeather();
-
-        $currentWeatherRepository = $this->getMock('JWeiland\\weather2\\Domain\\Repository\\CurrentWeatherRepository',
-            ['update'], [], '', false);
-        $currentWeatherRepository->expects($this->once())->method('update')->with($currentWeather);
-        $this->inject($this->subject, 'currentWeatherRepository', $currentWeatherRepository);
-
-        $this->subject->updateAction($currentWeather);
-    }
-
-    /**
-     * @test
-     */
-    public function deleteActionRemovesTheGivenCurrentWeatherFromCurrentWeatherRepository()
-    {
-        $currentWeather = new \JWeiland\Weather2\Domain\Model\CurrentWeather();
-
-        $currentWeatherRepository = $this->getMock('JWeiland\\weather2\\Domain\\Repository\\CurrentWeatherRepository',
-            ['remove'], [], '', false);
-        $currentWeatherRepository->expects($this->once())->method('remove')->with($currentWeather);
-        $this->inject($this->subject, 'currentWeatherRepository', $currentWeatherRepository);
-
-        $this->subject->deleteAction($currentWeather);
+        $this->subject->_set('settings', ['selection' => 'testSelection']);
+        $currentWeatherRepository->expects(self::once())->method('findBySelection')->with('testSelection');
+        $this->subject->showAction();
     }
 }

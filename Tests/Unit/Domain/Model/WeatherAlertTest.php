@@ -1,4 +1,12 @@
 <?php
+
+/*
+ * This file is part of the package jweiland/weather2.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace JWeiland\Weather2\Tests\Unit\Domain\Model;
 
 /*
@@ -15,12 +23,10 @@ namespace JWeiland\Weather2\Tests\Unit\Domain\Model;
 */
 
 use JWeiland\Weather2\Domain\Model\WeatherAlert;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /**
  * Test case for JWeiland\Weather2\Domain\Model\WeatherAlert
- *
- * @package JWeiland\Weather2\Tests\Unit\Domain\Model
  */
 class WeatherAlertTest extends UnitTestCase
 {
@@ -33,62 +39,20 @@ class WeatherAlertTest extends UnitTestCase
 
     /**
      * Setup
-     *
-     * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->subject = new WeatherAlert();
     }
 
-    /**
-     * @test
-     */
-    public function getRegionsInitiallyReturnsEmptyString()
-    {
-        $this->assertSame(
-            '',
-            $this->subject->getRegions()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function setRegionsSetsRegions()
-    {
-        $this->subject->setRegions('foo bar');
-
-        $this->assertSame(
-            'foo bar',
-            $this->subject->getRegions()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function setRegionsWithIntegerResultsInString()
-    {
-        $this->subject->setRegions(123);
-        $this->assertSame('123', $this->subject->getRegions());
-    }
-
-    /**
-     * @test
-     */
-    public function setRegionsWithBooleanResultsInString()
-    {
-        $this->subject->setRegions(TRUE);
-        $this->assertSame('1', $this->subject->getRegions());
-    }
+    // TODO: Add tests for dwd warn cell
 
     /**
      * @test
      */
     public function getLevelInitiallyReturnsZero()
     {
-        $this->assertSame(
+        self::assertSame(
             0,
             $this->subject->getLevel()
         );
@@ -101,34 +65,8 @@ class WeatherAlertTest extends UnitTestCase
     {
         $this->subject->setLevel(123456);
 
-        $this->assertSame(
+        self::assertSame(
             123456,
-            $this->subject->getLevel()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function setLevelWithStringResultsInInteger()
-    {
-        $this->subject->setLevel('123Test');
-
-        $this->assertSame(
-            123,
-            $this->subject->getLevel()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function setLevelWithBooleanResultsInInteger()
-    {
-        $this->subject->setLevel(true);
-
-        $this->assertSame(
-            1,
             $this->subject->getLevel()
         );
     }
@@ -138,7 +76,7 @@ class WeatherAlertTest extends UnitTestCase
      */
     public function getTypeInitiallyReturnsZero()
     {
-        $this->assertSame(
+        self::assertSame(
             0,
             $this->subject->getType()
         );
@@ -151,34 +89,8 @@ class WeatherAlertTest extends UnitTestCase
     {
         $this->subject->setType(123456);
 
-        $this->assertSame(
+        self::assertSame(
             123456,
-            $this->subject->getType()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function setTypeWithStringResultsInInteger()
-    {
-        $this->subject->setType('123Test');
-
-        $this->assertSame(
-            123,
-            $this->subject->getType()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function setTypeWithBooleanResultsInInteger()
-    {
-        $this->subject->setType(true);
-
-        $this->assertSame(
-            1,
             $this->subject->getType()
         );
     }
@@ -188,7 +100,7 @@ class WeatherAlertTest extends UnitTestCase
      */
     public function getTitleInitiallyReturnsEmptyString()
     {
-        $this->assertSame(
+        self::assertSame(
             '',
             $this->subject->getTitle()
         );
@@ -201,38 +113,9 @@ class WeatherAlertTest extends UnitTestCase
     {
         $this->subject->setTitle('foo bar');
 
-        $this->assertSame(
+        self::assertSame(
             'foo bar',
             $this->subject->getTitle()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function setTitleWithIntegerResultsInString()
-    {
-        $this->subject->setTitle(123);
-        $this->assertSame('123', $this->subject->getTitle());
-    }
-
-    /**
-     * @test
-     */
-    public function setTitleWithBooleanResultsInString()
-    {
-        $this->subject->setTitle(TRUE);
-        $this->assertSame('1', $this->subject->getTitle());
-    }
-
-    /**
-     * @test
-     */
-    public function getDescriptionInitiallyReturnsEmptyString()
-    {
-        $this->assertSame(
-            '',
-            $this->subject->getDescription()
         );
     }
 
@@ -243,7 +126,7 @@ class WeatherAlertTest extends UnitTestCase
     {
         $this->subject->setDescription('foo bar');
 
-        $this->assertSame(
+        self::assertSame(
             'foo bar',
             $this->subject->getDescription()
         );
@@ -252,27 +135,9 @@ class WeatherAlertTest extends UnitTestCase
     /**
      * @test
      */
-    public function setDescriptionWithIntegerResultsInString()
-    {
-        $this->subject->setDescription(123);
-        $this->assertSame('123', $this->subject->getDescription());
-    }
-
-    /**
-     * @test
-     */
-    public function setDescriptionWithBooleanResultsInString()
-    {
-        $this->subject->setDescription(TRUE);
-        $this->assertSame('1', $this->subject->getDescription());
-    }
-
-    /**
-     * @test
-     */
     public function getInstructionInitiallyReturnsEmptyString()
     {
-        $this->assertSame(
+        self::assertSame(
             '',
             $this->subject->getInstruction()
         );
@@ -285,7 +150,7 @@ class WeatherAlertTest extends UnitTestCase
     {
         $this->subject->setInstruction('foo bar');
 
-        $this->assertSame(
+        self::assertSame(
             'foo bar',
             $this->subject->getInstruction()
         );
@@ -294,27 +159,9 @@ class WeatherAlertTest extends UnitTestCase
     /**
      * @test
      */
-    public function setInstructionWithIntegerResultsInString()
-    {
-        $this->subject->setInstruction(123);
-        $this->assertSame('123', $this->subject->getInstruction());
-    }
-
-    /**
-     * @test
-     */
-    public function setInstructionWithBooleanResultsInString()
-    {
-        $this->subject->setInstruction(TRUE);
-        $this->assertSame('1', $this->subject->getInstruction());
-    }
-
-    /**
-     * @test
-     */
     public function getStarttimeInitiallyReturnsNull()
     {
-        $this->assertNull(
+        self::assertNull(
             $this->subject->getStarttime()
         );
     }
@@ -327,7 +174,7 @@ class WeatherAlertTest extends UnitTestCase
         $date = new \DateTime();
         $this->subject->setStarttime($date);
 
-        $this->assertSame(
+        self::assertSame(
             $date,
             $this->subject->getStarttime()
         );
@@ -348,12 +195,11 @@ class WeatherAlertTest extends UnitTestCase
 
     /**
      * @test
-     *
      * @dataProvider dataProviderForSetStarttime
-     * @expectedException \TypeError
      */
     public function setStarttimeWithInvalidValuesResultsInException($argument)
     {
+        $this->expectException(\TypeError::class);
         $this->subject->setStarttime($argument);
     }
 
@@ -362,7 +208,7 @@ class WeatherAlertTest extends UnitTestCase
      */
     public function getEndtimeInitiallyReturnsNull()
     {
-        $this->assertNull(
+        self::assertNull(
             $this->subject->getEndtime()
         );
     }
@@ -375,7 +221,7 @@ class WeatherAlertTest extends UnitTestCase
         $date = new \DateTime();
         $this->subject->setEndtime($date);
 
-        $this->assertSame(
+        self::assertSame(
             $date,
             $this->subject->getEndtime()
         );
@@ -396,12 +242,11 @@ class WeatherAlertTest extends UnitTestCase
 
     /**
      * @test
-     *
      * @dataProvider dataProviderForSetEndtime
-     * @expectedException \TypeError
      */
     public function setEndtimeWithInvalidValuesResultsInException($argument)
     {
+        $this->expectException(\TypeError::class);
         $this->subject->setEndtime($argument);
     }
 }
