@@ -30,8 +30,6 @@ Storage Page
 Multi plugin use
 ^^^^^^^^^^^^^^^^
 You can configure your scheduler task to save data to a specific storage page that you can later use in the plugin to access data.
-There is also an option to display only specific rows. Please use the field "name" to do this.
-In the plugin you can configure which "name" to use. To select the latest entry use the empty field.
 
 Change timezone
 ^^^^^^^^^^^^^^^
@@ -70,7 +68,7 @@ Installation
 Get warn cells from Deutscher Wetterdienst
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     1. Go to the scheduler module.
-    2. Add a new task and select :code:`Get regions from Deutscher Wetterdienst`.
+    2. Add a new task and select :code:`Get warn cells from Deutscher Wetterdienst`.
     3. Set this task as single because you have to execute this only once.
     4. Save and exit
     5. Execute the task
@@ -117,7 +115,7 @@ Get Weather Alerts from Deutscher Wetterdienst
        :width: 350px
        :alt: List of selected cities (warn cell records)
 
-    6. If you have a record stroage page you can select it additionally. This can be useful for `Multi plugin use`_. Otherwise the records will be saved on root page.
+    6. If you have a record storage page you can select it additionally. This can be useful for `Multi plugin use`_. Otherwise the records will be saved on root page.
 
     .. figure:: ../Images/WeatherAlert/WeatherAlertSchedulerStoragePage.jpeg
        :width: 350px
