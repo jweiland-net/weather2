@@ -91,7 +91,7 @@ class EmptyTaskLoggerUpgrade implements UpgradeWizardInterface
                 ]
             );
             if ($task instanceof AbstractTask) {
-                $task->resetLogger();
+                $task->unsetScheduler();
                 $connection = $this->getConnectionPool()->getConnectionForTable('tx_scheduler_task');
                 $connection->update(
                     'tx_scheduler_task',
