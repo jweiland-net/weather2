@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Service\CacheService;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
@@ -65,6 +66,11 @@ class DeutscherWetterdienstTask extends AbstractTask
      * @var int
      */
     public $recordStoragePage = 0;
+
+    /**
+     * @var string
+     */
+    public $clearCache = '';
 
     /**
      * @var array
@@ -143,6 +149,11 @@ class DeutscherWetterdienstTask extends AbstractTask
         }
         $this->removeOldAlertsFromDb();
         $this->persistenceManager->persistAll();
+
+        if (!empty($this->clearCache)) {
+            $cacheService = GeneralUtility::makeInstance(CacheService::class);
+            $cacheService->clearPageCache(GeneralUtility::intExplode(',', $this->clearCache));
+        }
     }
 
     /**
