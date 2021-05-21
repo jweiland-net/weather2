@@ -57,7 +57,8 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
      */
     protected $insertFields = [
         'dwd_selectedWarnCells',
-        'dwd_recordStoragePage'
+        'dwd_recordStoragePage',
+        'dwd_clearCache'
     ];
 
     /**
@@ -111,6 +112,13 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
         $additionalFields[$fieldID] = [
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_deutscherwetterdienst.xlf:recordStoragePage'
+        ];
+
+        $fieldID = 'dwd_clearCache';
+        $fieldCode = '<input type="text" class="form-control" name="tx_scheduler[' . $fieldID . ']" id="' . $fieldID . '" value="' . $taskInfo[$fieldID] . '" size="120" />';
+        $additionalFields[$fieldID] = [
+            'code' => $fieldCode,
+            'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_deutscherwetterdienst.xlf:clear_cache'
         ];
 
         return $additionalFields;
@@ -230,5 +238,6 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
     {
         $task->selectedWarnCells = $submittedData['dwd_selectedWarnCells'] ?: [];
         $task->recordStoragePage = (int)$submittedData['dwd_recordStoragePage'];
+        $task->clearCache = $submittedData['dwd_clearCache'] ?? '';
     }
 }
