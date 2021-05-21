@@ -25,7 +25,7 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  */
 class DeutscherWetterdienstWarnCellTask extends AbstractTask
 {
-    const API_URL = 'https://www.dwd.de/DE/leistungen/gds/help/warnungen/cap_warncellids_csv.csv?__blob=publicationFile&v=1';
+    const API_URL = 'https://www.dwd.de/DE/leistungen/opendata/help/warnungen/cap_warncellids_csv.csv?__blob=publicationFile&v=3';
 
     /**
      * @var string
