@@ -69,7 +69,7 @@ CREATE TABLE tx_weather2_domain_model_weatheralert (
 );
 
 #
-# Table structure for table 'tx_weather2_domain_model_weatheralertregion'
+# Table structure for table 'tx_weather2_domain_model_dwdwarncell'
 #
 CREATE TABLE tx_weather2_domain_model_dwdwarncell (
 
