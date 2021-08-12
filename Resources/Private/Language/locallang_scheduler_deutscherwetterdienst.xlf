@@ -16,6 +16,9 @@
 			<trans-unit id="recordStoragePage">
 				<source>Record storage page (optional)</source>
 			</trans-unit>
+			<trans-unit id="clear_cache">
+				<source>Clear cache for pages (comma separated list with IDs)</source>
+			</trans-unit>
 			<trans-unit id="buttons.recordStoragePage">
 				<source>Select</source>
 			</trans-unit>

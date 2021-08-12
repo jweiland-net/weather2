@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Service\CacheService;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
@@ -62,6 +63,13 @@ class OpenWeatherMapTask extends AbstractTask
      * @var string $apiKey
      */
     public $apiKey = '';
+
+    /**
+     * Clear cache
+     *
+     * @var string $clearCache
+     */
+    public $clearCache = '';
 
     /**
      * Country
@@ -161,6 +169,12 @@ class OpenWeatherMapTask extends AbstractTask
 
         $persistenceManager->add($this->getCurrentWeatherInstanceForResponseClass($this->responseClass));
         $persistenceManager->persistAll();
+
+        if (!empty($this->clearCache)) {
+            $cacheService = GeneralUtility::makeInstance(CacheService::class);
+            $cacheService->clearPageCache(GeneralUtility::intExplode(',', $this->clearCache));
+        }
+
         return true;
     }
 

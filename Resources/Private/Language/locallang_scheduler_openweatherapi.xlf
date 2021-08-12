@@ -16,6 +16,9 @@
 			<trans-unit id="api_key">
 				<source>API-Key</source>
 			</trans-unit>
+			<trans-unit id="clear_cache">
+				<source>Clear cache for pages (comma separated list with IDs)</source>
+			</trans-unit>
 			<trans-unit id="mail_config">
 				<source>TYPO3 Mail configuration</source>
 			</trans-unit>
