@@ -283,6 +283,9 @@ class OpenWeatherMapTask extends AbstractTask
         if (isset($responseClass->weather[0]->icon)) {
             $currentWeather->setIcon($responseClass->weather[0]->icon);
         }
+        if (isset($responseClass->weather[0]->id)) {
+            $currentWeather->setConditionCode($responseClass->weather[0]->id);
+        }
 
         return $currentWeather;
     }

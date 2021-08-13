@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-05-04T14:55:13Z"
+				product-name="weather2">
+		<header/>
+		<!-- Source: https://openweathermap.org/weather-conditions -->
+		<body>
+			<trans-unit id="200">
+				<source>thunderstorm with light rain</source>
+			</trans-unit>
+			<trans-unit id="201">
+				<source>thunderstorm with rain</source>
+			</trans-unit>
+			<trans-unit id="202">
+				<source>thunderstorm with heavy rain</source>
+			</trans-unit>
+			<trans-unit id="210">
+				<source>light thunderstorm</source>
+			</trans-unit>
+			<trans-unit id="211">
+				<source>thunderstorm</source>
+			</trans-unit>
+			<trans-unit id="212">
+				<source>heavy thunderstorm</source>
+			</trans-unit>
+			<trans-unit id="221">
+				<source>ragged thunderstorm</source>
+			</trans-unit>
+			<trans-unit id="230">
+				<source>thunderstorm with light drizzle</source>
+			</trans-unit>
+			<trans-unit id="231">
+				<source>thunderstorm with drizzle</source>
+			</trans-unit>
+			<trans-unit id="232">
+				<source>thunderstorm with heavy drizzle</source>
+			</trans-unit>
+
+			<trans-unit id="300">
+				<source>light intensity drizzle</source>
+			</trans-unit>
+			<trans-unit id="301">
+				<source>drizzle</source>
+			</trans-unit>
+			<trans-unit id="302">
+				<source>heavy intensity drizzle</source>
+			</trans-unit>
+			<trans-unit id="310">
+				<source>light intensity drizzle rain</source>
+			</trans-unit>
+			<trans-unit id="311">
+				<source>drizzle rain</source>
+			</trans-unit>
+			<trans-unit id="312">
+				<source>heavy intensity drizzle rain</source>
+			</trans-unit>
+			<trans-unit id="313">
+				<source>shower rain and drizzle</source>
+			</trans-unit>
+			<trans-unit id="314">
+				<source>heavy shower rain and drizzle</source>
+			</trans-unit>
+			<trans-unit id="321">
+				<source>shower drizzle</source>
+			</trans-unit>
+
+			<trans-unit id="500">
+				<source>light rain</source>
+			</trans-unit>
+			<trans-unit id="501">
+				<source>moderate rain</source>
+			</trans-unit>
+			<trans-unit id="502">
+				<source>heavy intensity rain</source>
+			</trans-unit>
+			<trans-unit id="503">
+				<source>very heavy rain</source>
+			</trans-unit>
+			<trans-unit id="504">
+				<source>extreme rain</source>
+			</trans-unit>
+			<trans-unit id="511">
+				<source>freezing rain</source>
+			</trans-unit>
+			<trans-unit id="520">
+				<source>light intensity shower rain</source>
+			</trans-unit>
+			<trans-unit id="521">
+				<source>shower rain</source>
+			</trans-unit>
+			<trans-unit id="522">
+				<source>heavy intensity shower rain</source>
+			</trans-unit>
+			<trans-unit id="531">
+				<source>ragged shower rain</source>
+			</trans-unit>
+
+			<trans-unit id="600">
+				<source>light snow</source>
+			</trans-unit>
+			<trans-unit id="601">
+				<source>snow</source>
+			</trans-unit>
+			<trans-unit id="602">
+				<source>heavy snow</source>
+			</trans-unit>
+			<trans-unit id="611">
+				<source>sleet</source>
+			</trans-unit>
+			<trans-unit id="612">
+				<source>light shower sleet</source>
+			</trans-unit>
+			<trans-unit id="613">
+				<source>shower sleet</source>
+			</trans-unit>
+			<trans-unit id="615">
+				<source>light rain and snow</source>
+			</trans-unit>
+			<trans-unit id="616">
+				<source>rain and snow</source>
+			</trans-unit>
+			<trans-unit id="620">
+				<source>light shower rain</source>
+			</trans-unit>
+			<trans-unit id="621">
+				<source>shower snow</source>
+			</trans-unit>
+			<trans-unit id="622">
+				<source>heavy shower snow</source>
+			</trans-unit>
+
+			<trans-unit id="701">
+				<source>mist</source>
+			</trans-unit>
+			<trans-unit id="711">
+				<source>smoke</source>
+			</trans-unit>
+			<trans-unit id="721">
+				<source>haze</source>
+			</trans-unit>
+			<trans-unit id="731">
+				<source>sand/dust whirls</source>
+			</trans-unit>
+			<trans-unit id="741">
+				<source>fog</source>
+			</trans-unit>
+			<trans-unit id="751">
+				<source>sand</source>
+			</trans-unit>
+			<trans-unit id="761">
+				<source>dust</source>
+			</trans-unit>
+			<trans-unit id="771">
+				<source>squalls</source>
+			</trans-unit>
+			<trans-unit id="781">
+				<source>tornado</source>
+			</trans-unit>
+
+			<trans-unit id="800">
+				<source>clear sky</source>
+			</trans-unit>
+
+			<trans-unit id="801">
+				<source>few clouds: 11-25%</source>
+			</trans-unit>
+			<trans-unit id="802">
+				<source>scattered clouds: 25-50%</source>
+			</trans-unit>
+			<trans-unit id="803">
+				<source>broken clouds: 51-84%</source>
+			</trans-unit>
+			<trans-unit id="804">
+				<source>overcast clouds: 85-100%</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -10,6 +10,9 @@
 			<trans-unit id="plugin.weatheralert.title">
 				<target>Unwetterwarnungen</target>
 			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.condition_code">
+				<target>Condition code um das Wetter beschreiben zu können</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

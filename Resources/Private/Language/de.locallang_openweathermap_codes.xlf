@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-05-04T14:55:13Z"
+				product-name="weather2">
+		<header/>
+		<!-- Source: https://openweathermap.org/weather-conditions -->
+		<body>
+			<trans-unit id="200">
+				<target>Gewitter mit leichtem Regenfall</target>
+			</trans-unit>
+			<trans-unit id="201">
+				<target>Gewitter mit Regenfall</target>
+			</trans-unit>
+			<trans-unit id="202">
+				<target>Gewitter mit Starkregen</target>
+			</trans-unit>
+			<trans-unit id="210">
+				<target>Leichtes Gewitter</target>
+			</trans-unit>
+			<trans-unit id="211">
+				<target>Gewitter</target>
+			</trans-unit>
+			<trans-unit id="212">
+				<target>Starkes Gewitter</target>
+			</trans-unit>
+			<trans-unit id="221">
+				<target>Phasenweise Gewitter</target>
+			</trans-unit>
+			<trans-unit id="230">
+				<target>Gewitter mit leichtem Nieselregen</target>
+			</trans-unit>
+			<trans-unit id="231">
+				<target>Gewitter mit Nieselregen</target>
+			</trans-unit>
+			<trans-unit id="232">
+				<target>Gewitter mit starkem Nieselregen</target>
+			</trans-unit>
+
+			<trans-unit id="300">
+				<target>Leichter Nieselregen</target>
+			</trans-unit>
+			<trans-unit id="301">
+				<target>Nieselregen</target>
+			</trans-unit>
+			<trans-unit id="302">
+				<target>Intensiver Nieselregen</target>
+			</trans-unit>
+			<trans-unit id="310">
+				<target>Leichter Nieselregen und Regen</target>
+			</trans-unit>
+			<trans-unit id="311">
+				<target>Nieselregen und Regen</target>
+			</trans-unit>
+			<trans-unit id="312">
+				<target>Intensiver Nieselregen und Regen</target>
+			</trans-unit>
+			<trans-unit id="313">
+				<target>Regenschauer und Nieselregen</target>
+			</trans-unit>
+			<trans-unit id="314">
+				<target>Starker Regenschauer und Nieselregen</target>
+			</trans-unit>
+			<trans-unit id="321">
+				<target>Nieselregenschauer</target>
+			</trans-unit>
+
+			<trans-unit id="500">
+				<target>Leichter Regen</target>
+			</trans-unit>
+			<trans-unit id="501">
+				<target>Mäßiger Regen</target>
+			</trans-unit>
+			<trans-unit id="502">
+				<target>Starker Regen</target>
+			</trans-unit>
+			<trans-unit id="503">
+				<target>Starkregen</target>
+			</trans-unit>
+			<trans-unit id="504">
+				<target>Extremer Regen</target>
+			</trans-unit>
+			<trans-unit id="511">
+				<target>Gefrierender Regen</target>
+			</trans-unit>
+			<trans-unit id="520">
+				<target>Leichter Regenschauer und Regen</target>
+			</trans-unit>
+			<trans-unit id="521">
+				<target>Regenschauer</target>
+			</trans-unit>
+			<trans-unit id="522">
+				<target>Starker Regenschauer und Regen</target>
+			</trans-unit>
+			<trans-unit id="531">
+				<target>Phasenweiser Regenschauer und Regen</target>
+			</trans-unit>
+
+			<trans-unit id="600">
+				<target>Leichter Schneefall</target>
+			</trans-unit>
+			<trans-unit id="601">
+				<target>Schneefall</target>
+			</trans-unit>
+			<trans-unit id="602">
+				<target>Starker Schneefall</target>
+			</trans-unit>
+			<trans-unit id="611">
+				<target>Schneeregen</target>
+			</trans-unit>
+			<trans-unit id="612">
+				<target>Leichter Graupelschauer</target>
+			</trans-unit>
+			<trans-unit id="613">
+				<target>Graupelschauer</target>
+			</trans-unit>
+			<trans-unit id="615">
+				<target>Leichter Regen und Schnee</target>
+			</trans-unit>
+			<trans-unit id="616">
+				<target>Regen und Schnee</target>
+			</trans-unit>
+			<trans-unit id="620">
+				<target>Leichter Schneeregen</target>
+			</trans-unit>
+			<trans-unit id="621">
+				<target>Schneeregen</target>
+			</trans-unit>
+			<trans-unit id="622">
+				<target>Starker Schneeregen</target>
+			</trans-unit>
+
+			<trans-unit id="701">
+				<target>Feiner Nebel/Dunst</target>
+			</trans-unit>
+			<trans-unit id="711">
+				<target>Rauch</target>
+			</trans-unit>
+			<trans-unit id="721">
+				<target>Dunst</target>
+			</trans-unit>
+			<trans-unit id="731">
+				<target>Sand/Staubwirbel</target>
+			</trans-unit>
+			<trans-unit id="741">
+				<target>Nebel</target>
+			</trans-unit>
+			<trans-unit id="751">
+				<target>Sand</target>
+			</trans-unit>
+			<trans-unit id="761">
+				<target>Staub</target>
+			</trans-unit>
+			<trans-unit id="762">
+				<target>Vulkanasche</target>
+			</trans-unit>
+			<trans-unit id="771">
+				<source>Wind-/Sturmböen</source>
+			</trans-unit>
+			<trans-unit id="781">
+				<target>Tornado</target>
+			</trans-unit>
+
+			<trans-unit id="800">
+				<target>Klarer Himmel</target>
+			</trans-unit>
+
+			<trans-unit id="801">
+				<target>Wenige Schleierwolken: 11-25%</target>
+			</trans-unit>
+			<trans-unit id="802">
+				<target>Aufgelockerte Bewölkung: 25-50%</target>
+			</trans-unit>
+			<trans-unit id="803">
+				<target>Bewölkt mit Aufhellungen: 51-84%</target>
+			</trans-unit>
+			<trans-unit id="804">
+				<target>Bewölkt: 85-100%</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
