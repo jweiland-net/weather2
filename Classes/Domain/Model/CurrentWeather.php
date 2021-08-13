@@ -94,6 +94,11 @@ class CurrentWeather extends AbstractEntity
     protected $icon = '';
 
     /**
+     * @var int
+     */
+    protected $conditionCode = 0;
+
+    /**
      * @return string $serializedArray
      */
     public function getSerializedArray(): string
@@ -344,5 +349,21 @@ class CurrentWeather extends AbstractEntity
     public function setIcon(string $icon): void
     {
         $this->icon = $icon;
+    }
+
+    /**
+     * @return int
+     */
+    public function getConditionCode(): int
+    {
+        return $this->conditionCode;
+    }
+
+    /**
+     * @param int $conditionCode
+     */
+    public function setConditionCode(int $conditionCode): void
+    {
+        $this->conditionCode = $conditionCode;
     }
 }

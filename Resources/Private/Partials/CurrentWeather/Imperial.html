@@ -2,9 +2,10 @@
 
 <weather:ConvertMetricToImperial weatherModel="{currentWeather}" as="convertedData">
 	<div class="weather2-item weather2-report" id="weather2-weather{currentWeather.uid}">
+		<f:variable name="weatherCondition"><f:translate key="LLL:EXT:weather2/Resources/Private/Language/locallang_openweathermap_codes.xlf:{currentWeather.conditionCode}" /></f:variable>
 		<div class="primary">
 			<div class="weather-icon">
-				<f:image src="{settings.iconsPath}{currentWeather.icon}.png" alt="icon"/>
+				<f:image src="{settings.iconsPath}{currentWeather.icon}.png" alt="{weatherCondition}" title="{weatherCondition}"/>
 			</div>
 			<div class="weather-data">
 				<h3>{convertedData.temperatureC} °F</h3>
@@ -14,6 +15,7 @@
 			</div>
 		</div>
 		<ul class="secondaryProperties">
+			<li>{weatherCondition}</li>
 			<li><f:translate key="tx_weather2_domain_model_currentweather.rain_volume" />: {convertedData.rainVolume} mm</li>
 			<f:if condition="{currentWeather.snowVolume}"><li><f:translate key="tx_weather2_domain_model_currentweather.snow_volume" />: {convertedData.snowVolume} mm</li></f:if>
 			<li><f:translate key="tx_weather2_domain_model_currentweather.clouds_percentage" />: {convertedData.cloudsPercentage} %</li>

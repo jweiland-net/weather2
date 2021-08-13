@@ -52,6 +52,9 @@
 			<trans-unit id="tx_weather2_domain_model_currentweather.rain_volume">
 				<source>Rain volume</source>
 			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.condition_code">
+				<source>Condition code to get weather description</source>
+			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_weatheralert">
 				<source>Weather Alert</source>
 			</trans-unit>

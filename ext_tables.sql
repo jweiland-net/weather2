@@ -21,6 +21,7 @@ CREATE TABLE tx_weather2_domain_model_currentweather (
 	clouds_percentage int(11) unsigned DEFAULT '0' NOT NULL,
 	serialized_array varchar(255) DEFAULT '' NOT NULL,
 	icon varchar(30) DEFAULT '' NOT NULL,
+	condition_code int(11) unsigned DEFAULT '0' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,
