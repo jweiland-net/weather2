@@ -32,7 +32,7 @@ weather2
 		2020
 
 	:Author:
-		Markus Kugler, Pascal Rinker
+		Markus Kugler, Stefan Froemken
 
 	:Email:
 		projects@jweiland.net

@@ -19,7 +19,7 @@ conf.py:
   - - Index
     - weather2.tex
     - Open Weather
-    - Markus Kugler, Pascal Rinker
+    - Markus Kugler, Stefan Froemken
     - manual
   latex_elements:
     papersize: a4paper

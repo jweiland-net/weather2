@@ -16,9 +16,6 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
  * Test case for class JWeiland\Weather2\Controller\CurrentWeatherController.
- *
- * @author Markus Kugler <projects@jweiland.net>
- * @author Pascal Rinker <projects@jweiland.net>
  */
 class CurrentWeatherControllerTest extends UnitTestCase
 {
