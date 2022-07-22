@@ -56,7 +56,11 @@ class DeutscherWetterdienstWarnCellTask extends AbstractTask
         $data = [];
         $i = 0;
         foreach ($rawRows as $rawRow) {
-            [$warnCellId, $name, $shortName, $sign] = str_getcsv($rawRow, ';');
+            if ($rawRow === '') {
+                continue;
+            }
+
+            [$warnCellId, $name, $nuts, $shortName, $sign] = str_getcsv($rawRow, ';');
             // check if a record for this id already exists
             if ($connection->count('uid', 'tx_weather2_domain_model_dwdwarncell', ['warn_cell_id' => $warnCellId]) === 0) {
                 $data['tx_weather2_domain_model_dwdwarncell']['NEW' . $i++] = [

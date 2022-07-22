@@ -63,7 +63,7 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
 
     /**
      * @param array $taskInfo
-     * @param OpenWeatherMapTask $task
+     * @param OpenWeatherMapTask|null $task
      * @param SchedulerModuleController $schedulerModule
      * @return array
      */
@@ -99,7 +99,11 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
 
         foreach ($this->insertFields as $fieldID) {
             if (empty($taskInfo[$fieldID])) {
-                $taskInfo[$fieldID] = $task->$fieldID;
+                if ($task instanceof OpenWeatherMapTask) {
+                    $taskInfo[$fieldID] = $task->$fieldID;
+                } else {
+                    $taskInfo[$fieldID] = '';
+                }
             }
         }
 
@@ -314,16 +318,16 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
     public function saveAdditionalFields(array $submittedData, AbstractTask $task): void
     {
         /** @var OpenWeatherMapTask $task */
-        $task->name = $submittedData['name'];
-        $task->city = $submittedData['city'];
-        $task->recordStoragePage = $submittedData['recordStoragePage'];
-        $task->country = $submittedData['country'];
-        $task->apiKey = $submittedData['apiKey'];
-        $task->clearCache = $submittedData['clearCache'];
-        $task->errorNotification = $submittedData['errorNotification'];
-        $task->emailSenderName = $submittedData['emailSenderName'];
-        $task->emailSender = $submittedData['emailSender'];
-        $task->emailReceiver = $submittedData['emailReceiver'];
+        $task->name = $submittedData['name'] ?? '';
+        $task->city = $submittedData['city'] ?? '';
+        $task->recordStoragePage = $submittedData['recordStoragePage'] ?? 0;
+        $task->country = $submittedData['country'] ?? '';
+        $task->apiKey = $submittedData['apiKey'] ?? '';
+        $task->clearCache = $submittedData['clearCache'] ?? 0;
+        $task->errorNotification = $submittedData['errorNotification'] ?? '';
+        $task->emailSenderName = $submittedData['emailSenderName'] ?? '';
+        $task->emailSender = $submittedData['emailSender'] ?? '';
+        $task->emailReceiver = $submittedData['emailReceiver'] ?? '';
     }
 
     /**

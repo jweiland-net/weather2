@@ -76,7 +76,11 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
         foreach ($this->insertFields as $fieldID) {
             if (empty($taskInfo[$fieldID])) {
                 $propertyName = str_replace('dwd_', '', $fieldID);
-                $taskInfo[$fieldID] = $task->$propertyName;
+                if ($task instanceof DeutscherWetterdienstTask) {
+                    $taskInfo[$fieldID] = $task->$propertyName;
+                } else {
+                    $taskInfo[$fieldID] = '';
+                }
             }
         }
 
