@@ -18,9 +18,6 @@ return [
         'searchFields' => 'dwd_warn_cell,level,type,title,description,instruction',
         'iconfile' => 'EXT:weather2/Resources/Public/Icons/tx_weather2_domain_model_weatheralert.gif'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'dwd_warn_cell, level, type, title, description, instruction, preliminary_information, start_date, end_date',
-    ],
     'types' => [
         '1' => ['showitem' => 'dwd_warn_cell, level, type, title, description, instruction, preliminary_information, start_date, end_date,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access, starttime, endtime'],
     ],

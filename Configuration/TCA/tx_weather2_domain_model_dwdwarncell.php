@@ -15,9 +15,6 @@ return [
         'searchFields' => 'name,warn_cell_id,sign',
         'iconfile' => 'EXT:weather2/Resources/Public/Icons/tx_weather2_domain_model_dwdwarncell.gif'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'hidden, warn_cell_id, name, short_name, sign',
-    ],
     'types' => [
         '1' => ['showitem' => 'hidden, warn_cell_id, name, short_name, sign'],
     ],
