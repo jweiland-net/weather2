@@ -18,11 +18,13 @@ class Tca
 {
     /**
      * label_userFunc for tx_weather2_domain_model_dwdwarncell
-     *
-     * @param array $parameters
      */
     public function getDwdWarnCellTitle(array &$parameters): void
     {
-        $parameters['title'] = sprintf('%s (%s)', $parameters['row']['name'], $parameters['row']['warn_cell_id']);
+        $parameters['title'] = sprintf(
+            '%s (%s)',
+            $parameters['row']['name'] ?? '',
+            $parameters['row']['warn_cell_id'] ?? ''
+        );
     }
 }
