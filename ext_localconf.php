@@ -28,19 +28,17 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][JWeiland\Weather
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['weather2EmptyTaskLogger'] = \JWeiland\Weather2\Upgrade\EmptyTaskLoggerUpgrade::class;
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'JWeiland.weather2',
+    'Weather2',
     'Currentweather',
     [
-        'CurrentWeather' => 'show',
-
+        \JWeiland\Weather2\Controller\CurrentWeatherController::class => 'show',
     ]
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'JWeiland.weather2',
+    'Weather2',
     'Weatheralert',
     [
-        'WeatherAlert' => 'show',
-
+        \JWeiland\Weather2\Controller\WeatherAlertController::class => 'show',
     ]
 );
