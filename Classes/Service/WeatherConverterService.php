@@ -16,28 +16,33 @@ namespace JWeiland\Weather2\Service;
  */
 class WeatherConverterService
 {
-    public function convertFahrenheitToCelsius(float $value): float
+    public function convertFahrenheitToCelsius(float $fahrenheit): float
     {
-        return $value * 5 / 9 - 32;
+        return round(($fahrenheit - 32) * 5 / 9, 4);
     }
 
-    public function convertKelvinToCelsius(float $value): float
+    public function convertKelvinToCelsius(float $kelvin): float
     {
-        return $value - 273.15;
+        return round($kelvin - 273.15, 4);
     }
 
-    public function convertCelsiusToFahrenheit(float $value): float
+    public function convertCelsiusToFahrenheit(float $celsius): float
     {
-        return $value * 9 / 5 + 32;
+        return round(($celsius * 9 / 5) + 32, 4);
     }
 
-    public function convertCelsiusToKelvin(float $value): float
+    public function convertCelsiusToKelvin(float $celsius): float
     {
-        return $value + 273.15;
+        return round($celsius + 273.15, 4);
     }
 
-    public function convertMetersToMiles(float $value): string
+    public function convertMetersToMiles(float $meters): string
     {
-        return number_format($value * 2.236936, 2, '.', '');
+        return number_format(
+            round($meters * 0.000621, 4),
+            2,
+            '.',
+            ''
+        );
     }
 }
