@@ -33,6 +33,7 @@
 		"sjbr/static-info-tables": ">=6.6.0"
 	},
 	"require-dev": {
+		"roave/security-advisories": "dev-latest",
 		"friendsofphp/php-cs-fixer": "^2.14",
 		"nimut/testing-framework": "^5.1"
 	},
@@ -42,7 +43,11 @@
 		}
 	},
 	"config": {
-		"vendor-dir": ".build/vendor"
+		"vendor-dir": ".build/vendor",
+		"allow-plugins": {
+			"typo3/class-alias-loader": true,
+			"typo3/cms-composer-installers": true
+		}
 	},
 	"extra": {
 		"typo3/cms": {
