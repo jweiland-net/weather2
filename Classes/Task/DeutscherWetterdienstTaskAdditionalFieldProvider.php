@@ -15,13 +15,11 @@ use JWeiland\Weather2\Domain\Model\DwdWarnCell;
 use JWeiland\Weather2\Domain\Repository\DwdWarnCellRepository;
 use JWeiland\Weather2\Utility\WeatherUtility;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
@@ -37,9 +35,14 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
     protected $dwdWarnCellRepository;
 
     /**
-     * @var ObjectManager
+     * @var UriBuilder
      */
-    protected $objectManager;
+    protected $uriBuilder;
+
+    /**
+     * @var PageRenderer
+     */
+    protected $pageRenderer;
 
     /**
      * This fields can not be empty!
@@ -60,6 +63,16 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
         'dwd_recordStoragePage',
         'dwd_clearCache'
     ];
+
+    public function __construct(
+        DwdWarnCellRepository $dwdWarnCellRepository,
+        UriBuilder $uriBuilder,
+        PageRenderer $pageRenderer
+    ) {
+        $this->dwdWarnCellRepository = $dwdWarnCellRepository;
+        $this->uriBuilder = $uriBuilder;
+        $this->pageRenderer = $pageRenderer;
+    }
 
     /**
      * @param array $taskInfo
@@ -91,18 +104,13 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
             $fieldCode = '<input type="text" class="form-control ui-autocomplete-input" name="dwd_warn_cell_search" id="dwd_warn_cell_search" ' .
                 'placeholder="e.g. Pforzheim" size="30" /><br />' . $this->getHtmlForSelectedRegions($taskInfo);
         } else {
-            /** @var FlashMessageService $flashMessageService */
-            $flashMessageService = $this->objectManager->get(FlashMessageService::class);
-            $messageQueue = $flashMessageService->getMessageQueueByIdentifier();
-            /** @var FlashMessage $flashMessage */
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
                 WeatherUtility::translate('message.noDwdWarnCellsFound', 'deutscherwetterdienst'),
                 '',
-                FlashMessage::WARNING
+                AbstractMessage::WARNING
             );
-            $messageQueue->addMessage($flashMessage);
-            $fieldCode = $messageQueue->renderFlashMessages();
+            $fieldCode = $this->addFlashMessage($flashMessage, true);
         }
         $additionalFields[$fieldID] = [
             'code' => $fieldCode,
@@ -128,55 +136,39 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
         return $additionalFields;
     }
 
-    protected function initialize()
+    protected function initialize(): void
     {
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->dwdWarnCellRepository = $this->objectManager->get(DwdWarnCellRepository::class);
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $extRelPath = PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::extPath('weather2'));
-        /** @var PageRenderer $pageRenderer */
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadRequireJs();
-        $pageRenderer->addInlineLanguageLabelFile(
+        $this->pageRenderer->loadRequireJs();
+        $this->pageRenderer->addInlineLanguageLabelFile(
             'EXT:weather2/Resources/Private/Language/locallang_scheduler_javascript_deutscherwetterdienst.xlf'
         );
-        $pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js');
-        $pageRenderer->addCssFile($extRelPath . 'Resources/Public/Css/dwdScheduler.css');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule');
+        $this->pageRenderer->addCssFile('EXT:weather2/Resources/Public/Css/dwdScheduler.css');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineValidation');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule');
         $popupSettings = [
             'PopupWindow' => [
                 'width' => '800px',
                 'height' => '550px'
             ]
         ];
-        $pageRenderer->addInlineSettingArray('Popup', $popupSettings);
-        $pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_edit'));
-        $pageRenderer->addInlineSetting('FormEngine', 'formName', 'tx_scheduler_form');
-        $pageRenderer->addInlineSetting('FormEngine', 'backPath', '');
-        $pageRenderer->loadRequireJsModule(
+        $this->pageRenderer->addInlineSettingArray('Popup', $popupSettings);
+        $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
+        $this->pageRenderer->addInlineSetting('FormEngine', 'formName', 'tx_scheduler_form');
+        $this->pageRenderer->addInlineSetting('FormEngine', 'backPath', '');
+        $this->pageRenderer->loadRequireJsModule(
             'TYPO3/CMS/Backend/FormEngine',
             'function(FormEngine) {
-                FormEngine.browserUrl = ' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('wizard_element_browser')) . ';
+                FormEngine.browserUrl = ' . GeneralUtility::quoteJSvalue((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser')) . ';
              }'
         );
-        $pageRenderer->addJsFile(
-            PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::extPath('backend')) .
-            'Resources/Public/JavaScript/jsfunc.tbe_editor.js'
-        );
+        $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
     }
 
-    /**
-     * @return bool true if yes else false
-     */
     protected function areRegionsAvailable(): bool
     {
         return $this->dwdWarnCellRepository->countAll() > 0;
     }
 
-    /**
-     * @param array $taskInfo
-     * @return string
-     */
     public function getHtmlForSelectedRegions(array $taskInfo): string
     {
         $ulItems = '';
@@ -198,18 +190,13 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
         return '<ul class="list-group" id="dwd_selected_warn_cells_ul">' . $ulItems . '</ul>';
     }
 
-    /**
-     * @param array $submittedData
-     * @param SchedulerModuleController $schedulerModule
-     * @return bool
-     */
     public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule): bool
     {
         $isValid = true;
 
         if ($submittedData['dwd_recordStoragePage']) {
             $submittedData['dwd_recordStoragePage'] = preg_replace(
-                '/[^0-9]/',
+                '/\D/',
                 '',
                 $submittedData['dwd_recordStoragePage']
             );
@@ -218,11 +205,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
         }
 
         foreach ($submittedData as $fieldName => $field) {
-            if (is_string($submittedData[$fieldName])) {
-                $value = trim($submittedData[$fieldName]);
-            } else {
-                $value = $submittedData[$fieldName];
-            }
+            $value = is_string($field) ? trim($field) : $field;
 
             if (empty($value) && in_array($fieldName, $this->requiredFields, true)) {
                 $isValid = false;
@@ -235,13 +218,29 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
     }
 
     /**
-     * @param array $submittedData
      * @param AbstractTask|DeutscherWetterdienstTask $task
      */
-    public function saveAdditionalFields(array $submittedData, AbstractTask $task)
+    public function saveAdditionalFields(array $submittedData, AbstractTask $task): void
     {
         $task->selectedWarnCells = $submittedData['dwd_selectedWarnCells'] ?: [];
         $task->recordStoragePage = (int)$submittedData['dwd_recordStoragePage'];
         $task->clearCache = $submittedData['dwd_clearCache'] ?? '';
+    }
+
+    protected function addFlashMessage(FlashMessage $flashMessage, bool $returnRenderedFlashMessage = false): string
+    {
+        $messageQueue = $this->getFlashMessageService()->getMessageQueueByIdentifier();
+        $messageQueue->addMessage($flashMessage);
+
+        if ($returnRenderedFlashMessage) {
+            return $messageQueue->renderFlashMessages();
+        }
+
+        return '';
+    }
+
+    protected function getFlashMessageService(): FlashMessageService
+    {
+        return GeneralUtility::makeInstance(FlashMessageService::class);
     }
 }
