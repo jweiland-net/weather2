@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/weather2.
  *
@@ -15,16 +17,16 @@ use Nimut\TestingFramework\TestCase\UnitTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
- * Test case for class JWeiland\Weather2\Controller\CurrentWeatherController.
+ * Test case.
  */
 class CurrentWeatherControllerTest extends UnitTestCase
 {
     /**
-     * @var \JWeiland\Weather2\Controller\CurrentWeatherController
+     * @var CurrentWeatherController
      */
     protected $subject;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->subject = $this->getAccessibleMock(
             CurrentWeatherController::class,
@@ -35,7 +37,7 @@ class CurrentWeatherControllerTest extends UnitTestCase
         );
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         unset($this->subject);
     }
@@ -43,7 +45,7 @@ class CurrentWeatherControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function showActionCallsRepositoryFindBySelectionWithSettingAsArgument()
+    public function showActionCallsRepositoryFindBySelectionWithSettingAsArgument(): void
     {
         $currentWeather = new \JWeiland\Weather2\Domain\Model\CurrentWeather();
 

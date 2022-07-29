@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/weather2.
  *
@@ -9,33 +11,20 @@
 
 namespace JWeiland\Weather2\Tests\Unit\Domain\Model;
 
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-
 use JWeiland\Weather2\Domain\Model\CurrentWeather;
 use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /**
- * Test case for JWeiland\Weather2\Domain\Model\CurrentWeatherTest
+ * Test case.
  */
 class CurrentWeatherTest extends UnitTestCase
 {
     /**
-     * @var \JWeiland\Weather2\Domain\Model\CurrentWeather
+     * @var CurrentWeather
      */
     protected $subject;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->subject = new CurrentWeather();
     }
@@ -43,7 +32,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function getNameInitiallyReturnsEmptyString()
+    public function getNameInitiallyReturnsEmptyString(): void
     {
         self::assertSame(
             '',
@@ -54,7 +43,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function setNameSetsName()
+    public function setNameSetsName(): void
     {
         $this->subject->setName('foo bar');
 
@@ -67,25 +56,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function setNameWithIntegerResultsInString()
-    {
-        $this->subject->setName(123);
-        self::assertSame('123', $this->subject->getName());
-    }
-
-    /**
-     * @test
-     */
-    public function setNameWithBooleanResultsInString()
-    {
-        $this->subject->setName(true);
-        self::assertSame('1', $this->subject->getName());
-    }
-
-    /**
-     * @test
-     */
-    public function getMeasureTimestampInitiallyReturnsNull()
+    public function getMeasureTimestampInitiallyReturnsNull(): void
     {
         self::assertNull(
             $this->subject->getMeasureTimestamp()
@@ -95,7 +66,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function setMeasureTimestampSetsMeasureTimestamp()
+    public function setMeasureTimestampSetsMeasureTimestamp(): void
     {
         $date = new \DateTime();
         $this->subject->setMeasureTimestamp($date);
@@ -106,10 +77,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function dataProviderForSetMeasureTimestamp()
+    public function dataProviderForSetMeasureTimestamp(): array
     {
         $arguments = [];
         $arguments['set MeasureTimestamp with Null'] = [null];
@@ -123,17 +91,17 @@ class CurrentWeatherTest extends UnitTestCase
      * @test
      *
      * @dataProvider dataProviderForSetMeasureTimestamp
-     * @expectedException \TypeError
      */
-    public function setMeasureTimestampWithInvalidValuesResultsInException($argument)
+    public function setMeasureTimestampWithInvalidValuesResultsInException($argument): void
     {
+        $this->expectException(\TypeError::class);
         $this->subject->setMeasureTimestamp($argument);
     }
 
     /**
      * @test
      */
-    public function getTemperatureCInitiallyReturnsZero()
+    public function getTemperatureCInitiallyReturnsZero(): void
     {
         self::assertSame(
             0.0,
@@ -144,7 +112,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function setTemperatureCSetsTemperatureC()
+    public function setTemperatureCSetsTemperatureC(): void
     {
         $this->subject->setTemperatureC(123456.0);
 
@@ -157,7 +125,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPressureHpaInitiallyReturnsZero()
+    public function getPressureHpaInitiallyReturnsZero(): void
     {
         self::assertSame(
             0,
@@ -168,7 +136,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function setPressureHpaSetsPressureHpa()
+    public function setPressureHpaSetsPressureHpa(): void
     {
         $this->subject->setPressureHpa(123456);
 
@@ -181,7 +149,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHumidityPercentageInitiallyReturnsZero()
+    public function getHumidityPercentageInitiallyReturnsZero(): void
     {
         self::assertSame(
             0,
@@ -192,7 +160,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function setHumidityPercentageSetsHumidityPercentage()
+    public function setHumidityPercentageSetsHumidityPercentage(): void
     {
         $this->subject->setHumidityPercentage(123456);
 
@@ -205,7 +173,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function getMinTempCInitiallyReturnsZero()
+    public function getMinTempCInitiallyReturnsZero(): void
     {
         self::assertSame(
             0.0,
@@ -216,7 +184,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function setMinTempCSetsMinTempC()
+    public function setMinTempCSetsMinTempC(): void
     {
         $this->subject->setMinTempC(123456.0);
 
@@ -229,7 +197,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function getMaxTempCInitiallyReturnsZero()
+    public function getMaxTempCInitiallyReturnsZero(): void
     {
         self::assertSame(
             0.0,
@@ -240,7 +208,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function setMaxTempCSetsMaxTempC()
+    public function setMaxTempCSetsMaxTempC(): void
     {
         $this->subject->setMaxTempC(123456.0);
 
@@ -253,7 +221,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function getWindSpeedMPSInitiallyReturnsZero()
+    public function getWindSpeedMPSInitiallyReturnsZero(): void
     {
         self::assertSame(
             0.0,
@@ -264,7 +232,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function setWindSpeedMPSSetsWindSpeedMPS()
+    public function setWindSpeedMPSSetsWindSpeedMPS(): void
     {
         $this->subject->setWindSpeedMPS(123456.0);
 
@@ -277,7 +245,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function getWindDirectionDegInitiallyReturnsZero()
+    public function getWindDirectionDegInitiallyReturnsZero(): void
     {
         self::assertSame(
             0,
@@ -288,7 +256,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function setWindDirectionDegSetsWindDirectionDeg()
+    public function setWindDirectionDegSetsWindDirectionDeg(): void
     {
         $this->subject->setWindDirectionDeg(123456);
 
@@ -301,7 +269,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPopPercentageInitiallyReturnsZero()
+    public function getPopPercentageInitiallyReturnsZero(): void
     {
         self::assertSame(
             0,
@@ -312,7 +280,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function setPopPercentageSetsPopPercentage()
+    public function setPopPercentageSetsPopPercentage(): void
     {
         $this->subject->setPopPercentage(123456);
 
@@ -325,7 +293,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSnowVolumeInitiallyReturnsZero()
+    public function getSnowVolumeInitiallyReturnsZero(): void
     {
         self::assertSame(
             0,
@@ -336,7 +304,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function setSnowVolumeSetsSnowVolume()
+    public function setSnowVolumeSetsSnowVolume(): void
     {
         $this->subject->setSnowVolume(123456);
 
@@ -349,7 +317,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function getRainVolumeInitiallyReturnsZero()
+    public function getRainVolumeInitiallyReturnsZero(): void
     {
         self::assertSame(
             0,
@@ -360,7 +328,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function setRainVolumeSetsRainVolume()
+    public function setRainVolumeSetsRainVolume(): void
     {
         $this->subject->setRainVolume(123456);
 
@@ -373,7 +341,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function getCloudsPercentageInitiallyReturnsZero()
+    public function getCloudsPercentageInitiallyReturnsZero(): void
     {
         self::assertSame(
             0,
@@ -384,7 +352,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function setCloudsPercentageSetsCloudsPercentage()
+    public function setCloudsPercentageSetsCloudsPercentage(): void
     {
         $this->subject->setCloudsPercentage(123456);
 
@@ -395,14 +363,9 @@ class CurrentWeatherTest extends UnitTestCase
     }
 
     /**
-     * @todo should we check if passed string can be unserialized inside getter method otherwise throw exception?
-     * ($serializedArray)
-     */
-
-    /**
      * @test
      */
-    public function getSerializedArrayInitiallyReturnsEmptyString()
+    public function getSerializedArrayInitiallyReturnsEmptyString(): void
     {
         self::assertSame(
             '',
@@ -413,7 +376,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function setSerializedArraySetsSerializedArray()
+    public function setSerializedArraySetsSerializedArray(): void
     {
         $this->subject->setSerializedArray('foo bar');
 
@@ -426,7 +389,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function getIconInitiallyReturnsEmptyString()
+    public function getIconInitiallyReturnsEmptyString(): void
     {
         self::assertSame(
             '',
@@ -437,7 +400,7 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function setIconSetsIcon()
+    public function setIconSetsIcon(): void
     {
         $this->subject->setIcon('foo bar');
 
