@@ -72,7 +72,7 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
         'typo3conf/ext/static_info_tables',
     ];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -117,7 +117,7 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
         $this->subject->name = 'Filderstadt';
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         unset(
             $this->subject,
