@@ -84,10 +84,8 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
     }
 
     /**
-     * @param array $taskInfo
      * @param OpenWeatherMapTask|null $task
-     * @param SchedulerModuleController $schedulerModule
-     * @return array
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
     public function getAdditionalFields(
         array &$taskInfo,

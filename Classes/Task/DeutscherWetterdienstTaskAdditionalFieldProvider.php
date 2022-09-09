@@ -214,6 +214,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
                 $submittedData[$fieldName] = $value;
             }
         }
+
         return $isValid;
     }
 
