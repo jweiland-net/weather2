@@ -269,30 +269,6 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPopPercentageInitiallyReturnsZero(): void
-    {
-        self::assertSame(
-            0,
-            $this->subject->getPopPercentage()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function setPopPercentageSetsPopPercentage(): void
-    {
-        $this->subject->setPopPercentage(123456);
-
-        self::assertSame(
-            123456,
-            $this->subject->getPopPercentage()
-        );
-    }
-
-    /**
-     * @test
-     */
     public function getSnowVolumeInitiallyReturnsZero(): void
     {
         self::assertSame(
