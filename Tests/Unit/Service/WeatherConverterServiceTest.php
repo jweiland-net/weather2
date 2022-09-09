@@ -9,7 +9,7 @@ declare(strict_types=1);
  * LICENSE file that was distributed with this source code.
  */
 
-namespace JWeiland\Weather2\Tests\Unit\Controller;
+namespace JWeiland\Weather2\Tests\Unit\Service;
 
 use JWeiland\Weather2\Controller\CurrentWeatherController;
 use JWeiland\Weather2\Domain\Repository\CurrentWeatherRepository;

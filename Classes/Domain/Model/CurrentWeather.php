@@ -98,14 +98,24 @@ class CurrentWeather extends AbstractEntity
      */
     protected $conditionCode = 0;
 
-    public function getSerializedArray(): string
+    public function getName(): string
     {
-        return $this->serializedArray;
+        return $this->name;
     }
 
-    public function setSerializedArray(string $serializedArray): void
+    public function setName(string $name): void
     {
-        $this->serializedArray = $serializedArray;
+        $this->name = $name;
+    }
+
+    public function getMeasureTimestamp(): ?\DateTime
+    {
+        return $this->measureTimestamp;
+    }
+
+    public function setMeasureTimestamp(\DateTime $measureTimestamp): void
+    {
+        $this->measureTimestamp = $measureTimestamp;
     }
 
     public function getTemperatureC(): float
@@ -187,16 +197,6 @@ class CurrentWeather extends AbstractEntity
         $this->windDirectionDeg = $windDirectionDeg;
     }
 
-    public function getPopPercentage(): int
-    {
-        return $this->popPercentage;
-    }
-
-    public function setPopPercentage(int $popPercentage): void
-    {
-        $this->popPercentage = $popPercentage;
-    }
-
     public function getSnowVolume(): int
     {
         return $this->snowVolume;
@@ -225,26 +225,6 @@ class CurrentWeather extends AbstractEntity
     public function setCloudsPercentage(int $cloudsPercentage): void
     {
         $this->cloudsPercentage = $cloudsPercentage;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
-
-    public function getMeasureTimestamp(): ?\DateTime
-    {
-        return $this->measureTimestamp;
-    }
-
-    public function setMeasureTimestamp(\DateTime $measureTimestamp): void
-    {
-        $this->measureTimestamp = $measureTimestamp;
     }
 
     public function getIcon(): string

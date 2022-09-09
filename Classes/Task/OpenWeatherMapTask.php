@@ -163,6 +163,7 @@ class OpenWeatherMapTask extends AbstractTask
         if (!($this->checkResponseCode($response))) {
             return false;
         }
+
         $this->responseClass = json_decode((string)$response->getBody());
         $this->logger->info(sprintf('Response class: %s', json_encode($this->responseClass)));
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
@@ -241,7 +242,7 @@ class OpenWeatherMapTask extends AbstractTask
     private function getCurrentWeatherInstanceForResponseClass(\stdClass $responseClass): CurrentWeather
     {
         $currentWeather = new CurrentWeather();
-        $currentWeather->setPid((int)$this->recordStoragePage);
+        $currentWeather->setPid($this->recordStoragePage);
         $currentWeather->setName($this->name);
 
         if (isset($responseClass->main->temp)) {
@@ -267,11 +268,11 @@ class OpenWeatherMapTask extends AbstractTask
         }
         if (isset($responseClass->rain)) {
             $rain = (array)$responseClass->rain;
-            $currentWeather->setRainVolume((int)$rain[0]);
+            $currentWeather->setRainVolume((int)$rain['1h']);
         }
         if (isset($responseClass->snow)) {
             $snow = (array)$responseClass->snow;
-            $currentWeather->setSnowVolume((int)$snow[0]);
+            $currentWeather->setSnowVolume((int)$snow['1h']);
         }
         if (isset($responseClass->clouds->all)) {
             $currentWeather->setCloudsPercentage($responseClass->clouds->all);

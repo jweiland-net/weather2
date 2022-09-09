@@ -365,30 +365,6 @@ class CurrentWeatherTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSerializedArrayInitiallyReturnsEmptyString(): void
-    {
-        self::assertSame(
-            '',
-            $this->subject->getSerializedArray()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function setSerializedArraySetsSerializedArray(): void
-    {
-        $this->subject->setSerializedArray('foo bar');
-
-        self::assertSame(
-            'foo bar',
-            $this->subject->getSerializedArray()
-        );
-    }
-
-    /**
-     * @test
-     */
     public function getIconInitiallyReturnsEmptyString(): void
     {
         self::assertSame(
