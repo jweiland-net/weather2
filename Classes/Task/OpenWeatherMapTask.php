@@ -51,36 +51,28 @@ class OpenWeatherMapTask extends AbstractTask
     protected $responseClass;
 
     /**
-     * City
-     *
      * @var string $city
      */
     public $city = '';
 
     /**
-     * Api key
-     *
      * @var string $apiKey
      */
     public $apiKey = '';
 
     /**
-     * Clear cache
+     * Comma seperated list of page UIDs to clear cache
      *
      * @var string $clearCache
      */
     public $clearCache = '';
 
     /**
-     * Country
-     *
      * @var string $country
      */
     public $country = '';
 
     /**
-     * Record storage page
-     *
      * @var int $recordStoragePage
      */
     public $recordStoragePage = 0;
@@ -268,11 +260,11 @@ class OpenWeatherMapTask extends AbstractTask
         }
         if (isset($responseClass->rain)) {
             $rain = (array)$responseClass->rain;
-            $currentWeather->setRainVolume((int)$rain['1h']);
+            $currentWeather->setRainVolume((float)$rain['1h']);
         }
         if (isset($responseClass->snow)) {
             $snow = (array)$responseClass->snow;
-            $currentWeather->setSnowVolume((int)$snow['1h']);
+            $currentWeather->setSnowVolume((float)$snow['1h']);
         }
         if (isset($responseClass->clouds->all)) {
             $currentWeather->setCloudsPercentage($responseClass->clouds->all);

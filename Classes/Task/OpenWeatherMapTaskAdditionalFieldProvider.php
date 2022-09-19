@@ -308,10 +308,10 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         /** @var OpenWeatherMapTask $task */
         $task->name = $submittedData['name'] ?? '';
         $task->city = $submittedData['city'] ?? '';
-        $task->recordStoragePage = $submittedData['recordStoragePage'] ?? 0;
+        $task->recordStoragePage = (int)($submittedData['recordStoragePage'] ?? 0);
         $task->country = $submittedData['country'] ?? '';
         $task->apiKey = $submittedData['apiKey'] ?? '';
-        $task->clearCache = $submittedData['clearCache'] ?? 0;
+        $task->clearCache = $submittedData['clearCache'] ?? '0';
         $task->errorNotification = $submittedData['errorNotification'] ?? '';
         $task->emailSenderName = $submittedData['emailSenderName'] ?? '';
         $task->emailSender = $submittedData['emailSender'] ?? '';
