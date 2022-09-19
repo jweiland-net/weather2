@@ -272,7 +272,7 @@ class CurrentWeatherTest extends UnitTestCase
     public function getSnowVolumeInitiallyReturnsZero(): void
     {
         self::assertSame(
-            0,
+            0.0,
             $this->subject->getSnowVolume()
         );
     }
@@ -282,10 +282,10 @@ class CurrentWeatherTest extends UnitTestCase
      */
     public function setSnowVolumeSetsSnowVolume(): void
     {
-        $this->subject->setSnowVolume(123456);
+        $this->subject->setSnowVolume(21.45);
 
         self::assertSame(
-            123456,
+            21.45,
             $this->subject->getSnowVolume()
         );
     }
@@ -296,7 +296,7 @@ class CurrentWeatherTest extends UnitTestCase
     public function getRainVolumeInitiallyReturnsZero(): void
     {
         self::assertSame(
-            0,
+            0.0,
             $this->subject->getRainVolume()
         );
     }
@@ -306,10 +306,10 @@ class CurrentWeatherTest extends UnitTestCase
      */
     public function setRainVolumeSetsRainVolume(): void
     {
-        $this->subject->setRainVolume(123456);
+        $this->subject->setRainVolume(21.45);
 
         self::assertSame(
-            123456,
+            21.45,
             $this->subject->getRainVolume()
         );
     }

@@ -64,19 +64,14 @@ class CurrentWeather extends AbstractEntity
     protected $windDirectionDeg = 0;
 
     /**
-     * @var int
+     * @var float
      */
-    protected $popPercentage = 0;
+    protected $snowVolume = 0.0;
 
     /**
-     * @var int
+     * @var float
      */
-    protected $snowVolume = 0;
-
-    /**
-     * @var int
-     */
-    protected $rainVolume = 0;
+    protected $rainVolume = 0.0;
 
     /**
      * @var int
@@ -197,22 +192,22 @@ class CurrentWeather extends AbstractEntity
         $this->windDirectionDeg = $windDirectionDeg;
     }
 
-    public function getSnowVolume(): int
+    public function getSnowVolume(): float
     {
         return $this->snowVolume;
     }
 
-    public function setSnowVolume(int $snowVolume): void
+    public function setSnowVolume(float $snowVolume): void
     {
         $this->snowVolume = $snowVolume;
     }
 
-    public function getRainVolume(): int
+    public function getRainVolume(): float
     {
         return $this->rainVolume;
     }
 
-    public function setRainVolume(int $rainVolume): void
+    public function setRainVolume(float $rainVolume): void
     {
         $this->rainVolume = $rainVolume;
     }
