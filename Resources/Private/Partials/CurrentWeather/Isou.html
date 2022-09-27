@@ -8,7 +8,7 @@
 				<f:image src="{settings.iconsPath}{currentWeather.icon}.png" alt="{weatherCondition}" title="{weatherCondition}"/>
 			</div>
 			<div class="weather-data">
-				<h3>{convertedData.temperatureC} K</h3>
+				<h3>{convertedData.temperatureC -> f:format.number(decimals: '0')} K</h3>
 				<p><f:translate key="tx_weather2_domain_model_currentweather.min_temp_c" />: {convertedData.minTempC} K</p>
 				<p><f:translate key="tx_weather2_domain_model_currentweather.max_temp_c" />: {convertedData.maxTempC} K</p>
 				<p><a href="#" class="showMore" toggle-label="{f:translate(key: 'tx_weather2.utility.showLess')}"><f:translate key="tx_weather2.utility.showMore" /></a></p>
