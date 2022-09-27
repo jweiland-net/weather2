@@ -64,5 +64,4 @@ call_user_func(static function () {
             ['source' => 'EXT:weather2/Resources/Public/Icons/' . $fileName]
         );
     }
-
 });

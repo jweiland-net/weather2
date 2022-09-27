@@ -1,61 +1,56 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
-
-.. include:: Includes.txt
-
-.. _start:
-
-=============================================================
-weather2
-=============================================================
-
-.. only:: html
-
-	:Classification:
-		weather2
-
-	:Version:
-		|release|
-
-	:Language:
-		en
-
-	:Description:
-		Extension to display weather data and weather alerts using various Weather APIs. Default APIs: OpenWeatherMap and Deutscher Wetterdienst
-
-	:Keywords:
-		weather2,weather,report,alarm,dwd,openweather
-
-	:Copyright:
-		2020
-
-	:Author:
-		Markus Kugler, Stefan Froemken
-
-	:Email:
-		projects@jweiland.net
-
-	:License:
-		This document is published under the Open Content License
-		available from http://www.opencontent.org/opl.shtml
-
-	:Rendered:
-		|today|
-
-	The content of this document is related to TYPO3,
-	a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_.
+﻿.. include:: /Includes.rst.txt
 
 
-**Table of Contents**
+=========
+Weather 2
+=========
+
+:Extension key:
+   weather2
+
+:Package name:
+   Weather 2
+
+:Version:
+   |release|
+
+:Language:
+   en
+
+:Author:
+   Stefan Froemken
+
+:License:
+   This document is published under the
+   `Creative Commons BY 4.0 <https://creativecommons.org/licenses/by/4.0/>`__
+   license.
+
+:Rendered:
+   |today|
+
+----
+
+Extension to display weather data and weather alerts using various Weather APIs. Default APIs: OpenWeatherMap and Deutscher Wetterdienst
+
+----
+
+**Table of Contents:**
 
 .. toctree::
-	 :maxdepth: 2
+   :maxdepth: 2
+   :titlesonly:
 
 	Introduction/Index
 	User/Index
-	Administrator/Index
+	AdministratorManual/Index
 	Developer/Index
 	KnownProblems/Index
 	Links
+
+.. Meta Menu
+
+.. toctree::
+   :hidden:
+
+   Sitemap
+   genindex
