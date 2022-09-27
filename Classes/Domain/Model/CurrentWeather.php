@@ -69,14 +69,14 @@ class CurrentWeather extends AbstractEntity
     protected $popPercentage = 0;
 
     /**
-     * @var int
+     * @var float
      */
-    protected $snowVolume = 0;
+    protected $snowVolume = 0.0;
 
     /**
-     * @var int
+     * @var float
      */
-    protected $rainVolume = 0;
+    protected $rainVolume = 0.0;
 
     /**
      * @var int
@@ -256,33 +256,33 @@ class CurrentWeather extends AbstractEntity
     }
 
     /**
-     * @return int snowVolume
+     * @return float snowVolume
      */
-    public function getSnowVolume(): int
+    public function getSnowVolume(): float
     {
         return $this->snowVolume;
     }
 
     /**
-     * @param int $snowVolume
+     * @param float $snowVolume
      */
-    public function setSnowVolume(int $snowVolume): void
+    public function setSnowVolume(float $snowVolume): void
     {
         $this->snowVolume = $snowVolume;
     }
 
     /**
-     * @return int rainVolume
+     * @return float rainVolume
      */
-    public function getRainVolume(): int
+    public function getRainVolume(): float
     {
         return $this->rainVolume;
     }
 
     /**
-     * @param int $rainVolume
+     * @param float $rainVolume
      */
-    public function setRainVolume(int $rainVolume): void
+    public function setRainVolume(float $rainVolume): void
     {
         $this->rainVolume = $rainVolume;
     }
