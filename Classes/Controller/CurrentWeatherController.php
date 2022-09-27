@@ -24,20 +24,21 @@ class CurrentWeatherController extends ActionController
      */
     protected $currentWeatherRepository;
 
-    public function __construct(CurrentWeatherRepository $currentWeatherRepository)
+    public function injectCurrentWeatherRepository(CurrentWeatherRepository $currentWeatherRepository): void
     {
-        if (is_callable('parent::__construct')) {
-            parent::__construct();
-        }
         $this->currentWeatherRepository = $currentWeatherRepository;
     }
 
     /**
-     * action show displays the newest CurrentWeather model
+     * Action to display the newest CurrentWeather model
      */
     public function showAction(): void
     {
-        $currentWeather = $this->currentWeatherRepository->findBySelection($this->settings['selection']);
-        $this->view->assign('currentWeather', $currentWeather);
+        $this->view->assign(
+            'currentWeather',
+            $this->currentWeatherRepository->findBySelection(
+                $this->settings['selection'] ?? ''
+            )
+        );
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the package jweiland/weather2.
  *
@@ -9,48 +11,28 @@
 
 namespace JWeiland\Weather2\Tests\Unit\Domain\Model;
 
-/*
-* This file is part of the TYPO3 CMS project.
-*
-* It is free software; you can redistribute it and/or modify it under
-* the terms of the GNU General Public License, either version 2
-* of the License, or any later version.
-*
-* For the full copyright and license information, please read the
-* LICENSE.txt file that was distributed with this source code.
-*
-* The TYPO3 project - inspiring people to share!
-*/
-
 use JWeiland\Weather2\Domain\Model\WeatherAlert;
 use Nimut\TestingFramework\TestCase\UnitTestCase;
 
 /**
- * Test case for JWeiland\Weather2\Domain\Model\WeatherAlert
+ * Test case.
  */
 class WeatherAlertTest extends UnitTestCase
 {
     /**
-     * Subject
-     *
      * @var WeatherAlert|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $subject;
 
-    /**
-     * Setup
-     */
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->subject = new WeatherAlert();
     }
 
-    // TODO: Add tests for dwd warn cell
-
     /**
      * @test
      */
-    public function getLevelInitiallyReturnsZero()
+    public function getLevelInitiallyReturnsZero(): void
     {
         self::assertSame(
             0,
@@ -61,7 +43,7 @@ class WeatherAlertTest extends UnitTestCase
     /**
      * @test
      */
-    public function setLevelSetsLevel()
+    public function setLevelSetsLevel(): void
     {
         $this->subject->setLevel(123456);
 
@@ -74,7 +56,7 @@ class WeatherAlertTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTypeInitiallyReturnsZero()
+    public function getTypeInitiallyReturnsZero(): void
     {
         self::assertSame(
             0,
@@ -85,7 +67,7 @@ class WeatherAlertTest extends UnitTestCase
     /**
      * @test
      */
-    public function setTypeSetsType()
+    public function setTypeSetsType(): void
     {
         $this->subject->setType(123456);
 
@@ -98,7 +80,7 @@ class WeatherAlertTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTitleInitiallyReturnsEmptyString()
+    public function getTitleInitiallyReturnsEmptyString(): void
     {
         self::assertSame(
             '',
@@ -109,7 +91,7 @@ class WeatherAlertTest extends UnitTestCase
     /**
      * @test
      */
-    public function setTitleSetsTitle()
+    public function setTitleSetsTitle(): void
     {
         $this->subject->setTitle('foo bar');
 
@@ -122,7 +104,7 @@ class WeatherAlertTest extends UnitTestCase
     /**
      * @test
      */
-    public function setDescriptionSetsDescription()
+    public function setDescriptionSetsDescription(): void
     {
         $this->subject->setDescription('foo bar');
 
@@ -135,7 +117,7 @@ class WeatherAlertTest extends UnitTestCase
     /**
      * @test
      */
-    public function getInstructionInitiallyReturnsEmptyString()
+    public function getInstructionInitiallyReturnsEmptyString(): void
     {
         self::assertSame(
             '',
@@ -146,7 +128,7 @@ class WeatherAlertTest extends UnitTestCase
     /**
      * @test
      */
-    public function setInstructionSetsInstruction()
+    public function setInstructionSetsInstruction(): void
     {
         $this->subject->setInstruction('foo bar');
 
@@ -159,7 +141,7 @@ class WeatherAlertTest extends UnitTestCase
     /**
      * @test
      */
-    public function getStarttimeInitiallyReturnsNull()
+    public function getStarttimeInitiallyReturnsNull(): void
     {
         self::assertNull(
             $this->subject->getStarttime()
@@ -169,7 +151,7 @@ class WeatherAlertTest extends UnitTestCase
     /**
      * @test
      */
-    public function setStarttimeSetsStarttime()
+    public function setStarttimeSetsStarttime(): void
     {
         $date = new \DateTime();
         $this->subject->setStarttime($date);
@@ -180,16 +162,14 @@ class WeatherAlertTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function dataProviderForSetStarttime()
+    public function dataProviderForSetStarttime(): array
     {
         $arguments = [];
         $arguments['set Starttime with Null'] = [null];
         $arguments['set Starttime with Integer'] = [1234567890];
         $arguments['set Starttime with Integer as String'] = ['1234567890'];
         $arguments['set Starttime with String'] = ['Hi all together'];
+
         return $arguments;
     }
 
@@ -197,7 +177,7 @@ class WeatherAlertTest extends UnitTestCase
      * @test
      * @dataProvider dataProviderForSetStarttime
      */
-    public function setStarttimeWithInvalidValuesResultsInException($argument)
+    public function setStarttimeWithInvalidValuesResultsInException($argument): void
     {
         $this->expectException(\TypeError::class);
         $this->subject->setStarttime($argument);
@@ -206,7 +186,7 @@ class WeatherAlertTest extends UnitTestCase
     /**
      * @test
      */
-    public function getEndtimeInitiallyReturnsNull()
+    public function getEndtimeInitiallyReturnsNull(): void
     {
         self::assertNull(
             $this->subject->getEndtime()
@@ -216,7 +196,7 @@ class WeatherAlertTest extends UnitTestCase
     /**
      * @test
      */
-    public function setEndtimeSetsEndtime()
+    public function setEndtimeSetsEndtime(): void
     {
         $date = new \DateTime();
         $this->subject->setEndtime($date);
@@ -227,10 +207,7 @@ class WeatherAlertTest extends UnitTestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function dataProviderForSetEndtime()
+    public function dataProviderForSetEndtime(): array
     {
         $arguments = [];
         $arguments['set Endtime with Null'] = [null];
@@ -244,7 +221,7 @@ class WeatherAlertTest extends UnitTestCase
      * @test
      * @dataProvider dataProviderForSetEndtime
      */
-    public function setEndtimeWithInvalidValuesResultsInException($argument)
+    public function setEndtimeWithInvalidValuesResultsInException($argument): void
     {
         $this->expectException(\TypeError::class);
         $this->subject->setEndtime($argument);

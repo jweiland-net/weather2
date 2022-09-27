@@ -1,0 +1,20 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  JWeiland\Weather2\:
+    resource: '../Classes/*'
+
+  # Will be called by GeneralUtility in AjaxRoutes
+  JWeiland\Weather2\Ajax\DeutscherWetterdienstWarnCellSearch:
+    public: true
+
+  # Will be called by GeneralUtility in ScheduleModuleController
+  JWeiland\Weather2\Task\DeutscherWetterdienstTaskAdditionalFieldProvider:
+    public: true
+
+  # Will be called by GeneralUtility in ScheduleModuleController
+  JWeiland\Weather2\Task\OpenWeatherMapTaskAdditionalFieldProvider:
+    public: true

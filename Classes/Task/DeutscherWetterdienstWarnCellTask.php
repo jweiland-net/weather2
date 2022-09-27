@@ -13,10 +13,10 @@ namespace JWeiland\Weather2\Task;
 
 use JWeiland\Weather2\Utility\WeatherUtility;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\RequestFactory;
-use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
@@ -25,12 +25,7 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  */
 class DeutscherWetterdienstWarnCellTask extends AbstractTask
 {
-    const API_URL = 'https://www.dwd.de/DE/leistungen/opendata/help/warnungen/cap_warncellids_csv.csv?__blob=publicationFile&v=3';
-
-    /**
-     * @var string
-     */
-    protected $dbExtTable = 'tx_weather2_domain_model_weatheralertregion';
+    public const API_URL = 'https://www.dwd.de/DE/leistungen/opendata/help/warnungen/cap_warncellids_csv.csv?__blob=publicationFile&v=3';
 
     /**
      * @return bool
@@ -49,6 +44,7 @@ class DeutscherWetterdienstWarnCellTask extends AbstractTask
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionForTable('tx_weather2_domain_model_dwdwarncell');
+
         $rawRows = explode(PHP_EOL, (string)$response->getBody());
         // remove header
         array_shift($rawRows);
@@ -56,7 +52,11 @@ class DeutscherWetterdienstWarnCellTask extends AbstractTask
         $data = [];
         $i = 0;
         foreach ($rawRows as $rawRow) {
-            [$warnCellId, $name, $shortName, $sign] = str_getcsv($rawRow, ';');
+            if ($rawRow === '') {
+                continue;
+            }
+
+            [$warnCellId, $name, $nuts, $shortName, $sign] = str_getcsv($rawRow, ';');
             // check if a record for this id already exists
             if ($connection->count('uid', 'tx_weather2_domain_model_dwdwarncell', ['warn_cell_id' => $warnCellId]) === 0) {
                 $data['tx_weather2_domain_model_dwdwarncell']['NEW' . $i++] = [
@@ -85,8 +85,10 @@ class DeutscherWetterdienstWarnCellTask extends AbstractTask
                 LogLevel::ERROR,
                 WeatherUtility::translate('message.api_response_null', 'deutscherwetterdienst')
             );
+
             return false;
         }
+
         return true;
     }
 }

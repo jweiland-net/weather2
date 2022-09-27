@@ -38,65 +38,41 @@ class DwdWarnCell extends AbstractEntity
      */
     protected $sign = '';
 
-    /**
-     * @return string
-     */
     public function getWarnCellId(): string
     {
         return $this->warnCellId;
     }
 
-    /**
-     * @param string $warnCellId
-     */
     public function setWarnCellId(string $warnCellId): void
     {
         $this->warnCellId = $warnCellId;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
     public function getShortName(): string
     {
         return $this->shortName;
     }
 
-    /**
-     * @param string $shortName
-     */
     public function setShortName(string $shortName): void
     {
         $this->shortName = $shortName;
     }
 
-    /**
-     * @return string
-     */
     public function getSign(): string
     {
         return $this->sign;
     }
 
-    /**
-     * @param string $sign
-     */
     public function setSign(string $sign): void
     {
         $this->sign = $sign;

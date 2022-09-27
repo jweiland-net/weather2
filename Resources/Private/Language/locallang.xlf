@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-05-04T14:55:13Z"
-				product-name="weather2">
+	<file source-language="en" datatype="plaintext" original="messages" date="2022-07-29T16:06:13Z" product-name="weather2">
 		<header/>
 		<body>
 			<trans-unit id="tx_weather2_domain_model_currentweather">
@@ -23,10 +22,10 @@
 				<source>Humidity</source>
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_currentweather.min_temp_c">
-				<source>min</source>
+				<source>Min</source>
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_currentweather.max_temp_c">
-				<source>max</source>
+				<source>Max</source>
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_currentweather.wind_speed_m_p_s">
 				<source>Wind Speed</source>
@@ -76,14 +75,14 @@
 			<trans-unit id="tx_weather2_domain_model_currentweather.wind_readable_direction.7">
 				<source>Northwest</source>
 			</trans-unit>
+			<trans-unit id="tx_weather2.error.noRecord">
+				<source>No weather record found</source>
+			</trans-unit>
 			<trans-unit id="tx_weather2.utility.showMore">
 				<source>Show more</source>
 			</trans-unit>
 			<trans-unit id="tx_weather2.utility.showLess">
 				<source>Show less</source>
-			</trans-unit>
-			<trans-unit id="tx_weather2.error.noRecord">
-				<source>No weather record found</source>
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_weatheralert.start_date">
 				<source>Start date</source>
@@ -93,7 +92,6 @@
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_weatheralert.preliminary_information">
 				<source>Preliminary information</source>
-				<target>Vorabinformation</target>
 			</trans-unit>
 			<trans-unit id="from">
 				<source>from</source>

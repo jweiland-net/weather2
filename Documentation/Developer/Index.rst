@@ -1,12 +1,8 @@
-﻿.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
-
-.. include:: ../Includes.txt
+﻿.. include:: /Includes.rst.txt
 
 .. _developer:
 
+================
 Developer Corner
 ================
 
@@ -17,7 +13,7 @@ The developer part of this documentation
 .. _developer-api:
 
 Add customer providers
-**********************
+======================
 
 Feel free to add custom api providers for weather reports or weather alerts.
 You can add them using your own extension. Write your own task or command and use

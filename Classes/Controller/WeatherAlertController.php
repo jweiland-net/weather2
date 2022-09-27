@@ -24,26 +24,23 @@ class WeatherAlertController extends ActionController
      */
     protected $weatherAlertRepository;
 
-    /**
-     * @param WeatherAlertRepository $weatherAlertRepository
-     */
-    public function injectWeatherAlertRepository(WeatherAlertRepository $weatherAlertRepository)
+    public function injectWeatherAlertRepository(WeatherAlertRepository $weatherAlertRepository): void
     {
         $this->weatherAlertRepository = $weatherAlertRepository;
     }
 
     /**
-     * action show displays the newest CurrentWeather model
+     * Action to display the newest CurrentAlert model
      */
     public function showAction(): void
     {
         $this->view->assign(
             'weatherAlerts',
             $this->weatherAlertRepository->findByUserSelection(
-                (string)$this->settings['warnCells'],
-                (string)$this->settings['warningTypes'],
-                (string)$this->settings['warningLevels'],
-                (bool)$this->settings['showPreliminaryInformation']
+                $this->settings['warnCells'] ?? '',
+                $this->settings['warningTypes'] ?? '',
+                $this->settings['warningLevels'] ?? '',
+                (bool)($this->settings['showPreliminaryInformation'] ?? false)
             )
         );
     }

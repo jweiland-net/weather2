@@ -16,25 +16,27 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
- * The repository for CurrentWeathers
+ * The repository for CurrentWeather
  */
 class CurrentWeatherRepository extends Repository
 {
     /**
      * Returns the latest weather
-     *
-     * @param string $selection
-     * @return CurrentWeather|null
      */
     public function findBySelection(string $selection): ?CurrentWeather
     {
         $query = $this->createQuery();
-        $query->matching($query->equals('name', trim($selection)));
-        // Order desc to get the latest weather
-        $query->setOrderings([
-            'uid' => QueryInterface::ORDER_DESCENDING
-        ]);
+        $query
+            ->matching(
+                $query->equals('name', trim($selection))
+            )
+            ->setOrderings([
+                'uid' => QueryInterface::ORDER_DESCENDING
+            ]);
 
-        return $query->execute()->getFirst();
+        /** @var ?CurrentWeather $currentWeather */
+        $currentWeather = $query->execute()->getFirst();
+
+        return $currentWeather;
     }
 }

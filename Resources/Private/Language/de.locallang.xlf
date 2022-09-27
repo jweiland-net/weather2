@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-05-04T14:55:13Z"
-				product-name="weather2">
+	<file source-language="en" datatype="plaintext" original="messages" date="2022-07-29T16:06:13Z" product-name="weather2">
 		<header/>
 		<body>
 			<trans-unit id="tx_weather2_domain_model_currentweather">
@@ -30,15 +29,15 @@
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_currentweather.min_temp_c">
 				<source>Min</source>
-				<target>min</target>
+				<target>Min</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_currentweather.max_temp_c">
 				<source>Max</source>
-				<target>max</target>
+				<target>Max</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_currentweather.wind_speed_m_p_s">
 				<source>Wind Speed</source>
-				<target>Wind</target>
+				<target>Windgeschwindigkeit</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_currentweather.wind_direction_deg">
 				<source>Meteorological wind direction</source>
@@ -62,9 +61,11 @@
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_currentweather.serialized_array">
 				<source>Serialized Array</source>
+				<source>Serialisiertes Array</source>
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_currentweather.icon">
 				<source>Icon</source>
+				<target>Symbol</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_currentweather.wind_readable_direction.0">
 				<source>North</source>
@@ -103,9 +104,11 @@
 				<target>Keine Wetterdaten gefunden</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.utility.showMore">
+				<source>Show more</source>
 				<target>Mehr Details</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.utility.showLess">
+				<source>Show less</source>
 				<target>Weniger Details</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_weatheralert.start_date">
@@ -116,7 +119,12 @@
 				<source>End date</source>
 				<target>Gültig bis</target>
 			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_weatheralert.preliminary_information">
+				<source>Preliminary information</source>
+				<target>Vorabinformation</target>
+			</trans-unit>
 			<trans-unit id="from">
+				<source>from</source>
 				<target>aus</target>
 			</trans-unit>
 			<trans-unit id="displayAll">

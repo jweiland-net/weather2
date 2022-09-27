@@ -51,36 +51,28 @@ class OpenWeatherMapTask extends AbstractTask
     protected $responseClass;
 
     /**
-     * City
-     *
      * @var string $city
      */
     public $city = '';
 
     /**
-     * Api key
-     *
      * @var string $apiKey
      */
     public $apiKey = '';
 
     /**
-     * Clear cache
+     * Comma seperated list of page UIDs to clear cache
      *
      * @var string $clearCache
      */
     public $clearCache = '';
 
     /**
-     * Country
-     *
      * @var string $country
      */
     public $country = '';
 
     /**
-     * Record storage page
-     *
      * @var int $recordStoragePage
      */
     public $recordStoragePage = 0;
@@ -125,6 +117,7 @@ class OpenWeatherMapTask extends AbstractTask
      * gets executed
      *
      * @return bool
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
      */
     public function execute(): bool
     {
@@ -162,6 +155,7 @@ class OpenWeatherMapTask extends AbstractTask
         if (!($this->checkResponseCode($response))) {
             return false;
         }
+
         $this->responseClass = json_decode((string)$response->getBody());
         $this->logger->info(sprintf('Response class: %s', json_encode($this->responseClass)));
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
@@ -237,10 +231,10 @@ class OpenWeatherMapTask extends AbstractTask
      * @param \stdClass $responseClass
      * @return CurrentWeather
      */
-    private function getCurrentWeatherInstanceForResponseClass($responseClass): CurrentWeather
+    private function getCurrentWeatherInstanceForResponseClass(\stdClass $responseClass): CurrentWeather
     {
         $currentWeather = new CurrentWeather();
-        $currentWeather->setPid((int)$this->recordStoragePage);
+        $currentWeather->setPid($this->recordStoragePage);
         $currentWeather->setName($this->name);
 
         if (isset($responseClass->main->temp)) {
@@ -266,11 +260,11 @@ class OpenWeatherMapTask extends AbstractTask
         }
         if (isset($responseClass->rain)) {
             $rain = (array)$responseClass->rain;
-            $currentWeather->setRainVolume((int)($rain['1h'] ?? 0));
+            $currentWeather->setRainVolume((float)($rain['1h'] ?? 0.0));
         }
         if (isset($responseClass->snow)) {
             $snow = (array)$responseClass->snow;
-            $currentWeather->setSnowVolume((int)($snow['1h'] ?? 0));
+            $currentWeather->setSnowVolume((float)($snow['1h'] ?? 0.0));
         }
         if (isset($responseClass->clouds->all)) {
             $currentWeather->setCloudsPercentage($responseClass->clouds->all);
@@ -292,20 +286,15 @@ class OpenWeatherMapTask extends AbstractTask
 
     /**
      * Sends a mail with $subject and $body to in task selected mail receiver.
-     *
-     * @param string $subject
-     * @param string $body
-     * @return bool
      */
-    private function sendMail(string $subject, string $body): bool
+    private function sendMail(string $subject, string $body): void
     {
+        // only continue if notifications are enabled
         if (!$this->errorNotification) {
-            return false;
-        } // only continue if notifications are enabled
+            return;
+        }
 
-        /** @var MailMessage $mail */
         $mail = GeneralUtility::makeInstance(MailMessage::class);
-        $from = null;
         $fromAddress = '';
         $fromName = '';
         if (MailUtility::getSystemFromAddress()) {
@@ -325,38 +314,38 @@ class OpenWeatherMapTask extends AbstractTask
             $from = [$fromAddress => $fromName];
         } else {
             $this->logger->error(
-                ($this->emailReceiver === false ? 'E-Mail receiver address is missing ' : '') .
+                ($this->emailReceiver === '' ? 'E-Mail receiver address is missing ' : '') .
                 ($fromAddress === '' ? 'E-Mail sender address ' : '') .
                 ($fromName === '' ? 'E-Mail sender name is missing' : '')
             );
-            return false;
+
+            return;
         }
 
-        $mail->setSubject($subject)->setFrom($from)->setTo([(string)$this->emailReceiver]);
-        if (method_exists($mail, 'addPart')) {
-            // TYPO3 < 10 (Swift_Message)
-            $mail->setBody($body);
-        } else {
-            // TYPO3 >= 10 (Symfony Mail)
-            $mail->text($body);
-        }
+        $mail->setSubject($subject)->setFrom($from)->setTo([$this->emailReceiver]);
+        $mail->text($body);
         $mail->send();
 
         if ($mail->isSent()) {
             $this->logger->notice('Notification mail sent!');
-            return true;
+
+            return;
         }
+
         $this->logger->error('Notification mail not sent because of an error!');
-        return false;
     }
 
     protected function removeOldRecordsFromDb(): void
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('tx_weather2_domain_model_currentweather');
+            ->getConnectionForTable($this->dbExtTable);
+
         $connection->delete(
-            'tx_weather2_domain_model_currentweather',
-            ['pid' => $this->recordStoragePage, 'name' => $this->name]
+            $this->dbExtTable,
+            [
+                'pid' => $this->recordStoragePage,
+                'name' => $this->name
+            ]
         );
     }
 }

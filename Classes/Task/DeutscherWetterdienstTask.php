@@ -16,10 +16,10 @@ use JWeiland\Weather2\Domain\Model\WeatherAlert;
 use JWeiland\Weather2\Domain\Repository\DwdWarnCellRepository;
 use JWeiland\Weather2\Utility\WeatherUtility;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\RequestFactory;
-use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -31,7 +31,7 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  */
 class DeutscherWetterdienstTask extends AbstractTask
 {
-    const API_URL = 'https://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json';
+    public const API_URL = 'https://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json';
 
     /**
      * @var ObjectManager
@@ -42,11 +42,6 @@ class DeutscherWetterdienstTask extends AbstractTask
      * @var string
      */
     protected $dbExtTable = 'tx_weather2_domain_model_weatheralert';
-
-    /**
-     * @var string
-     */
-    protected $execTime = '';
 
     /**
      * JSON response from dwd api
@@ -94,6 +89,7 @@ class DeutscherWetterdienstTask extends AbstractTask
 
     /**
      * @return bool
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
      */
     public function execute(): bool
     {
@@ -103,13 +99,16 @@ class DeutscherWetterdienstTask extends AbstractTask
         if (!$this->checkResponse($response)) {
             return false;
         }
+
         try {
             $this->decodedResponse = $this->decodeResponse($response);
         } catch (\Exception $e) {
             $this->logger->log(LogLevel::ERROR, $e->getMessage());
             return false;
         }
+
         $this->handleResponse();
+
         return true;
     }
 
@@ -118,8 +117,6 @@ class DeutscherWetterdienstTask extends AbstractTask
      * You cannot use json_decode for that only, because dwd adds JavaScript code into
      * the json file...
      *
-     * @param ResponseInterface $response
-     * @return array
      * @throws \UnexpectedValueException
      */
     protected function decodeResponse(ResponseInterface $response): array
@@ -156,10 +153,6 @@ class DeutscherWetterdienstTask extends AbstractTask
         }
     }
 
-    /**
-     * @param array $category
-     * @param bool $isPreliminaryInformation
-     */
     protected function processDwdItems(array $category, bool $isPreliminaryInformation): void
     {
         foreach ($this->selectedWarnCells as $warnCellId) {
@@ -177,10 +170,6 @@ class DeutscherWetterdienstTask extends AbstractTask
         }
     }
 
-    /**
-     * @param array $alert
-     * @return string
-     */
     protected function getComparisonHashForAlert(array $alert): string
     {
         return md5(serialize($alert));
@@ -189,9 +178,6 @@ class DeutscherWetterdienstTask extends AbstractTask
     /**
      * Either returns the uid of a record that equals $alert
      * OR returns zero if there is no record for that $alert
-     *
-     * @param array $alert
-     * @return int uid or zero
      */
     protected function getUidOfAlert(array $alert): int
     {
@@ -209,10 +195,6 @@ class DeutscherWetterdienstTask extends AbstractTask
         return $identicalAlert['uid'] ?? 0;
     }
 
-    /**
-     * @param ResponseInterface $response
-     * @return bool Returns true if response is valid or false in case of an error
-     */
     protected function checkResponse(ResponseInterface $response): bool
     {
         if ($response->getStatusCode() !== 200 || (string)$response->getBody() === '') {
@@ -225,9 +207,6 @@ class DeutscherWetterdienstTask extends AbstractTask
         return true;
     }
 
-    /**
-     * @return BackendUserAuthentication
-     */
     protected function getBackendUserAuthentication(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
@@ -235,14 +214,12 @@ class DeutscherWetterdienstTask extends AbstractTask
 
     /**
      * Returns filled WeatherAlert instance
-     *
-     * @param array $alert
-     * @param string $warnCellId
-     * @param bool $isPreliminaryInformation
-     * @return WeatherAlert
      */
-    protected function getWeatherAlertInstanceForAlert(array $alert, string $warnCellId, bool $isPreliminaryInformation): WeatherAlert
-    {
+    protected function getWeatherAlertInstanceForAlert(
+        array $alert,
+        string $warnCellId,
+        bool $isPreliminaryInformation
+    ): WeatherAlert {
         $weatherAlert = new WeatherAlert();
         $weatherAlert->setPid((int)$this->recordStoragePage);
         $weatherAlert->setDwdWarnCell($this->getDwdWarnCell($warnCellId));
@@ -278,10 +255,6 @@ class DeutscherWetterdienstTask extends AbstractTask
         return $weatherAlert;
     }
 
-    /**
-     * @param string $warnCellId
-     * @return DwdWarnCell
-     */
     protected function getDwdWarnCell(string $warnCellId): DwdWarnCell
     {
         if (!array_key_exists($warnCellId, $this->warnCellRecords)) {
@@ -290,6 +263,9 @@ class DeutscherWetterdienstTask extends AbstractTask
         return $this->warnCellRecords[$warnCellId];
     }
 
+    /**
+     * @throws \Doctrine\DBAL\DBALException
+     */
     protected function removeOldAlertsFromDb(): void
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->dbExtTable);

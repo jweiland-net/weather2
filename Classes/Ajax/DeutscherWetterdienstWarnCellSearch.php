@@ -12,9 +12,9 @@ declare(strict_types=1);
 namespace JWeiland\Weather2\Ajax;
 
 use JWeiland\Weather2\Domain\Repository\DwdWarnCellRepository;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Class DeutscherWetterdienstWarnCellSearch
@@ -22,24 +22,35 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 class DeutscherWetterdienstWarnCellSearch
 {
     /**
-     * @return Response
+     * @var DwdWarnCellRepository
      */
-    public function renderWarnCells(): Response
+    public $dwdWarnCellRepository;
+
+    public function __construct(DwdWarnCellRepository $dwdWarnCellRepository)
     {
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $repository = $objectManager->get(DwdWarnCellRepository::class);
-        $term = GeneralUtility::_GET('query');
-        $dwdWarnCells = $repository->findByName($term);
+        $this->dwdWarnCellRepository = $dwdWarnCellRepository;
+    }
+
+    public function renderWarnCells(ServerRequestInterface $request): Response
+    {
+        $dwdWarnCells = $this->dwdWarnCellRepository->findByName(
+            htmlspecialchars(strip_tags($request->getQueryParams()['query'] ?? ''))
+        );
+
         $suggestions = [];
         foreach ($dwdWarnCells as $dwdWarnCell) {
-            $label = sprintf('%s (%s)', $dwdWarnCell->getName(), $dwdWarnCell->getWarnCellId());
             $suggestions[] = [
                 'data' => $dwdWarnCell->getWarnCellId(),
-                'value' => $label,
+                'value' => sprintf(
+                    '%s (%s)',
+                    $dwdWarnCell->getName(),
+                    $dwdWarnCell->getWarnCellId()
+                ),
             ];
         }
-        $response = new Response('php://temp', 200, ['Content-Type' => 'application/json; charset=utf-8']);
-        $response->getBody()->write(json_encode(['suggestions' => $suggestions]));
-        return $response;
+
+        return new JsonResponse(
+            ['suggestions' => $suggestions]
+        );
     }
 }

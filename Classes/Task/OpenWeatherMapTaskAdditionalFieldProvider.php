@@ -16,12 +16,9 @@ use SJBR\StaticInfoTables\Domain\Model\Country;
 use SJBR\StaticInfoTables\Domain\Repository\CountryRepository;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Http\RequestFactory;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
@@ -31,6 +28,21 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  */
 class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
 {
+    /**
+     * @var CountryRepository
+     */
+    protected $countryRepository;
+
+    /**
+     * @var UriBuilder
+     */
+    protected $uriBuilder;
+
+    /**
+     * @var PageRenderer
+     */
+    protected $pageRenderer;
+
     /**
      * This fields can not be empty!
      *
@@ -61,45 +73,52 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
         'recordStoragePage'
     ];
 
+    public function __construct(
+        CountryRepository $countryRepository,
+        UriBuilder $uriBuilder,
+        PageRenderer $pageRenderer
+    ) {
+        $this->countryRepository = $countryRepository;
+        $this->uriBuilder = $uriBuilder;
+        $this->pageRenderer = $pageRenderer;
+    }
+
     /**
-     * @param array $taskInfo
-     * @param OpenWeatherMapTask $task
-     * @param SchedulerModuleController $schedulerModule
-     * @return array
+     * @param OpenWeatherMapTask|null $task
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
     public function getAdditionalFields(
         array &$taskInfo,
         $task,
         SchedulerModuleController $schedulerModule
     ): array {
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->addJsFile('sysext/backend/Resources/Public/JavaScript/jsfunc.evalfield.js');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Weather2/OpenWeatherMapTaskModule');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineValidation');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Weather2/OpenWeatherMapTaskModule');
         $popupSettings = [
             'PopupWindow' => [
                 'width' => '800px',
                 'height' => '550px'
             ]
         ];
-        $pageRenderer->addInlineSettingArray('Popup', $popupSettings);
-        $pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_edit'));
-        $pageRenderer->addInlineSetting('FormEngine', 'formName', 'tx_scheduler_form');
-        $pageRenderer->addInlineSetting('FormEngine', 'backPath', '');
-        $pageRenderer->loadRequireJsModule(
+        $this->pageRenderer->addInlineSettingArray('Popup', $popupSettings);
+        $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
+        $this->pageRenderer->addInlineSetting('FormEngine', 'formName', 'tx_scheduler_form');
+        $this->pageRenderer->addInlineSetting('FormEngine', 'backPath', '');
+        $this->pageRenderer->loadRequireJsModule(
             'TYPO3/CMS/Backend/FormEngine',
             'function(FormEngine) {
-                FormEngine.browserUrl = ' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('wizard_element_browser')) . ';
+                FormEngine.browserUrl = ' . GeneralUtility::quoteJSvalue((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser')) . ';
              }'
         );
-        $pageRenderer->addJsFile(
-            PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::extPath('backend')) .
-            'Resources/Public/JavaScript/jsfunc.tbe_editor.js'
-        );
+        $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
 
         foreach ($this->insertFields as $fieldID) {
             if (empty($taskInfo[$fieldID])) {
-                $taskInfo[$fieldID] = $task->$fieldID;
+                if ($task instanceof OpenWeatherMapTask) {
+                    $taskInfo[$fieldID] = $task->$fieldID;
+                } else {
+                    $taskInfo[$fieldID] = '';
+                }
             }
         }
 
@@ -189,11 +208,6 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         return $additionalFields;
     }
 
-    /**
-     * @param array $submittedData
-     * @param SchedulerModuleController $schedulerModule
-     * @return bool
-     */
     public function validateAdditionalFields(
         array &$submittedData,
         SchedulerModuleController $schedulerModule
@@ -201,21 +215,16 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         $isValid = true;
 
         if ($submittedData['recordStoragePage']) {
-            $submittedData['recordStoragePage'] = preg_replace('/[^0-9]/', '', $submittedData['recordStoragePage']);
+            $submittedData['recordStoragePage'] = preg_replace('/\D/', '', $submittedData['recordStoragePage']);
         } else {
             $submittedData['recordStoragePage'] = 0;
         }
 
         foreach ($submittedData as $fieldName => $field) {
-            if (is_string($submittedData[$fieldName])) {
-                $value = trim($submittedData[$fieldName]);
-            } else {
-                $value = $submittedData[$fieldName];
-            }
-
+            $value = is_string($field) ? trim($field) : $field;
             if (empty($value) && in_array($fieldName, $this->requiredFields, true)) {
                 $isValid = false;
-                $this->addMessage('Field: ' . $fieldName . ' can not be empty', FlashMessage::ERROR);
+                $this->addMessage('Field: ' . $fieldName . ' can not be empty', AbstractMessage::ERROR);
             } else {
                 $submittedData[$fieldName] = $value;
             }
@@ -224,8 +233,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         $isValidResponseCode = $this->isValidResponseCode(
             $submittedData['city'],
             $submittedData['country'],
-            $submittedData['apiKey'],
-            $schedulerModule
+            $submittedData['apiKey']
         );
 
         if (!$isValidResponseCode) {
@@ -235,23 +243,13 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         return $isValid;
     }
 
-    /**
-     * Checks the JSON response
-     *
-     * @param string $city
-     * @param string $country
-     * @param string $apiKey
-     * @param SchedulerModuleController $schedulerModule
-     * @return bool Returns true if given data is valid or false in case of an error
-     */
     private function isValidResponseCode(
-        $city,
-        $country,
-        $apiKey,
-        SchedulerModuleController $schedulerModule
+        string $city,
+        string $country,
+        string $apiKey
     ): bool {
         $url = sprintf(
-            'http://api.openweathermap.org/data/2.5/weather?q=%s,%s&units=%s&APPID=%s',
+            'https://api.openweathermap.org/data/2.5/weather?q=%s,%s&units=%s&APPID=%s',
             urlencode($city),
             urlencode($country),
             'metric',
@@ -262,73 +260,64 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         if ($response->getStatusCode() === 401) {
             $this->addMessage(
                 WeatherUtility::translate('message.api_response_401', 'openweatherapi'),
-                FlashMessage::ERROR
+                AbstractMessage::ERROR
             );
             return false;
         }
         if ($response->getStatusCode() === 404) {
             $this->addMessage(
                 WeatherUtility::translate('message.api_code_404', 'openweatherapi'),
-                FlashMessage::ERROR
+                AbstractMessage::ERROR
             );
             return false;
         }
         if ($response->getStatusCode() !== 200) {
             $this->addMessage(
                 WeatherUtility::translate('message.api_response_null', 'openweatherapi'),
-                FlashMessage::ERROR
+                AbstractMessage::ERROR
             );
             return false;
         }
 
-        /** @var \stdClass $responseClass */
-        $responseClass = json_decode((string)$response->getBody());
-
+        $responseClass = json_decode((string)$response->getBody(), false);
         switch ($responseClass->cod) {
             case '200':
                 $this->addMessage(sprintf(
                     WeatherUtility::translate('message.api_code_200', 'openweatherapi'),
                     $responseClass->name,
                     $responseClass->sys->country
-                ), FlashMessage::INFO);
+                ), AbstractMessage::INFO);
                 return true;
             case '404':
                 $this->addMessage(
                     WeatherUtility::translate('message.api_code_404', 'openweatherapi'),
-                    FlashMessage::ERROR
+                    AbstractMessage::ERROR
                 );
                 return false;
             default:
                 $this->addMessage(sprintf(
                     WeatherUtility::translate('message.api_code_none', 'openweatherapi'),
                     json_encode($responseClass)
-                ), FlashMessage::ERROR);
+                ), AbstractMessage::ERROR);
                 return false;
         }
     }
 
-    /**
-     * @param array $submittedData
-     * @param AbstractTask $task
-     */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task): void
     {
         /** @var OpenWeatherMapTask $task */
-        $task->name = $submittedData['name'];
-        $task->city = $submittedData['city'];
-        $task->recordStoragePage = $submittedData['recordStoragePage'];
-        $task->country = $submittedData['country'];
-        $task->apiKey = $submittedData['apiKey'];
-        $task->clearCache = $submittedData['clearCache'];
-        $task->errorNotification = $submittedData['errorNotification'];
-        $task->emailSenderName = $submittedData['emailSenderName'];
-        $task->emailSender = $submittedData['emailSender'];
-        $task->emailReceiver = $submittedData['emailReceiver'];
+        $task->name = $submittedData['name'] ?? '';
+        $task->city = $submittedData['city'] ?? '';
+        $task->recordStoragePage = (int)($submittedData['recordStoragePage'] ?? 0);
+        $task->country = $submittedData['country'] ?? '';
+        $task->apiKey = $submittedData['apiKey'] ?? '';
+        $task->clearCache = $submittedData['clearCache'] ?? '0';
+        $task->errorNotification = $submittedData['errorNotification'] ?? '';
+        $task->emailSenderName = $submittedData['emailSenderName'] ?? '';
+        $task->emailSender = $submittedData['emailSender'] ?? '';
+        $task->emailReceiver = $submittedData['emailReceiver'] ?? '';
     }
 
-    /**
-     * @return string
-     */
     private function checkMailConfiguration(): string
     {
         $text = '';
@@ -345,18 +334,11 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
 
     /**
      * Returns an array with country codes and corresponding names
-     *
-     * @param string $selected selected item
-     * @return string
      */
-    private function getCountryCodesOptionsHtml($selected = ''): string
+    private function getCountryCodesOptionsHtml(string $selected = ''): string
     {
-        /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        /** @var CountryRepository $countryRepository */
-        $countryRepository = $objectManager->get(CountryRepository::class);
         /** @var Country[] $countries */
-        $countries = $countryRepository->findAll();
+        $countries = $this->countryRepository->findAll();
 
         $options = [];
         foreach ($countries as $country) {
