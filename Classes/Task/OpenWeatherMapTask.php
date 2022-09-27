@@ -260,11 +260,11 @@ class OpenWeatherMapTask extends AbstractTask
         }
         if (isset($responseClass->rain)) {
             $rain = (array)$responseClass->rain;
-            $currentWeather->setRainVolume((float)$rain['1h']);
+            $currentWeather->setRainVolume((float)($rain['1h'] ?? 0.0));
         }
         if (isset($responseClass->snow)) {
             $snow = (array)$responseClass->snow;
-            $currentWeather->setSnowVolume((float)$snow['1h']);
+            $currentWeather->setSnowVolume((float)($snow['1h'] ?? 0.0));
         }
         if (isset($responseClass->clouds->all)) {
             $currentWeather->setCloudsPercentage($responseClass->clouds->all);
