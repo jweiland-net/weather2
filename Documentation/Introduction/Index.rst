@@ -1,7 +1,7 @@
-﻿.. include:: /Includes.rst.txt
+﻿..  include:: /Includes.rst.txt
 
 
-.. _introduction:
+..  _introduction:
 
 ============
 Introduction
@@ -12,7 +12,7 @@ Releases
 
 Currently the source code is available at `Github <https://github.com/jweiland-net/weather2>`_
 
-.. _what-it-does:
+..  _what-it-does:
 
 What does it do?
 ================
@@ -22,7 +22,7 @@ Deutscher Wetterdienst. The extension however is designed to work with every wea
 and map values to the existing database structure. Moreover it is possible to organize records using storage pages and
 a custom identifier for each record.
 
-.. _screenshots:
+..  _screenshots:
 
 Screenshots current weather
 ===========================
@@ -30,14 +30,14 @@ Screenshots current weather
 Displaying basic information
 ----------------------------
 
-.. figure:: ../Images/CurrentWeather/FrontendView.jpeg
-   :alt: Frontend view
+..  figure:: ../Images/CurrentWeather/FrontendView.jpeg
+    :alt: Frontend view
 
 Displaying more information
 ---------------------------
 
-.. figure:: ../Images/CurrentWeather/FrontendViewExpanded.jpeg
-   :alt: Expanded frontend view
+..  figure:: ../Images/CurrentWeather/FrontendViewExpanded.jpeg
+    :alt: Expanded frontend view
 
 Screenshots weather alert
 =========================
@@ -45,11 +45,11 @@ Screenshots weather alert
 Display basic information
 -------------------------
 
-.. figure:: ../Images/WeatherAlert/FrontendView.jpeg
-  :alt: Frontend view
+..  figure:: ../Images/WeatherAlert/FrontendView.jpeg
+    :alt: Frontend view
 
 Display more information
 ------------------------
 
-.. figure:: ../Images/WeatherAlert/FrontendViewExpanded.jpeg
-  :alt: Expanded frontend view
+..  figure:: ../Images/WeatherAlert/FrontendViewExpanded.jpeg
+    :alt: Expanded frontend view

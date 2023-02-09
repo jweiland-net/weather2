@@ -1,20 +1,20 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _links:
+..  _links:
 
 =====
 Links
 =====
 
 :OpenWeatherMap icon meaning and condition codes and descriptions:
-   https://openweathermap.org/weather-conditions
+    https://openweathermap.org/weather-conditions
 
 :TER:
-   https://typo3.org/extensions/repository/view/weather2
+    https://typo3.org/extensions/repository/view/weather2
 
 :Bug Tracker:
-   https://github.com/jweiland-net/weather2/issues
+    https://github.com/jweiland-net/weather2/issues
 
 :Git Repository:
-   https://github.com/jweiland-net/weather2
+    https://github.com/jweiland-net/weather2

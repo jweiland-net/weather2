@@ -1,6 +1,6 @@
-﻿.. include:: /Includes.rst.txt
+﻿..  include:: /Includes.rst.txt
 
-.. _developer:
+..  _developer:
 
 ================
 Developer Corner
@@ -10,7 +10,7 @@ Target group: **Developers**
 
 The developer part of this documentation
 
-.. _developer-api:
+..  _developer-api:
 
 Add customer providers
 ======================
