@@ -38,7 +38,7 @@ How do I get set up?
 #.  Add extension template file to your template
 #.  Enjoy! ;)
 
-..  figure:: ../Images/CurrentWeather/BackendPluginContentElement.gif
+..  figure:: ../../Images/CurrentWeather/BackendPluginContentElement.gif
     :alt: Backend plugin content element
 
     This is how the content element plugin looks like
@@ -46,6 +46,8 @@ How do I get set up?
 
 Weather Alerts
 ==============
+
+..  _get-warn-cells-from-deutscher-wetterdienst:
 
 Get warn cells from Deutscher Wetterdienst
 ------------------------------------------
@@ -57,13 +59,15 @@ Get warn cells from Deutscher Wetterdienst
 #.  Execute the task
 #.  If the execution was successful you will see all the region records in your root page.
 
-    ..  figure:: ../Images/WeatherAlert/DwdWarnCellRecordList.jpg
+    ..  figure:: ../../Images/WeatherAlert/DwdWarnCellRecordList.jpg
         :width: 350px
         :alt: List of warn cell records
 
 #.  Done
 
 Take a look into `Get Weather Alerts from Deutscher Wetterdienst`_
+
+..  _create-warn-cells-manually:
 
 Create warn cells manually
 --------------------------
@@ -73,14 +77,14 @@ Create warn cells manually
 #.  Select your root page (the one with the TYPO3 logo) on the page tree.
 #.  Click on :code:`Create new record` and select :code:`DWD warn cell`.
 
-    ..  figure:: ../Images/WeatherAlert/DwdWarnCellNewRecord.jpg
+    ..  figure:: ../../Images/WeatherAlert/DwdWarnCellNewRecord.jpg
         :width: 350px
         :alt: Create new Weather Alert Region record
 
 #.  Now you can enter the City name and additionally the district of your city.
 #.  Done
 
-    ..  figure:: ../Images/WeatherAlert/DwdWarnCellRecord.jpg
+    ..  figure:: ../../Images/WeatherAlert/DwdWarnCellRecord.jpg
         :alt: Create a DWD warn cell record
 
 Take a look into `Get Weather Alerts from Deutscher Wetterdienst`_
@@ -93,16 +97,16 @@ Get Weather Alerts from Deutscher Wetterdienst
 #.  Go to the scheduler module.
 #.  Add a new task and select :code:`Get weather alerts from Deutscher Wetterdienst`.
 #.  You should set recurring as type and e.g. 3600 as frequency to get each hour the latest alerts.
-#.  Now you can search for your regions. Please make sure you added the warn cell records (cities/locations) or got them from Deutscher Wetterdienst. Don´t know? Take a look into `Get warn cells from Deutscher Wetterdienst`_ and/or `Create warn cells manually`_.
+#.  Now you can search for your regions. Please make sure you added the warn cell records (cities/locations) or got them from Deutscher Wetterdienst. Don´t know? Take a look into :ref:`Get warn cells from Deutscher Wetterdienst<get-warn-cells-from-deutscher-wetterdienst>` and/or :ref:`Create warn cells manually<create-warn-cells-manually>`.
 #.  You can add multiple cities to your selection.
 
-    ..  figure:: ../Images/WeatherAlert/WeatherAlertSchedulerSelectedCities.jpg
+    ..  figure:: ../../Images/WeatherAlert/WeatherAlertSchedulerSelectedCities.jpg
         :width: 350px
         :alt: List of selected cities (warn cell records)
 
 #.  If you have a record storage page you can select it additionally. This can be useful for `Multi plugin use`_. Otherwise the records will be saved on root page.
 
-    ..  figure:: ../Images/WeatherAlert/WeatherAlertSchedulerStoragePage.jpeg
+    ..  figure:: ../../Images/WeatherAlert/WeatherAlertSchedulerStoragePage.jpeg
         :width: 350px
         :alt: Record storage page
 

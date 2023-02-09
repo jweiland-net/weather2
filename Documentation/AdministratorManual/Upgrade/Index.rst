@@ -27,7 +27,7 @@ This chapter is about how to fix those breaking changes.
 #.  Open the scheduler module
 #.  Edit all tasks from type :code:`Call openweathermap.org api`. Directly save them after the click on edit. You don´t need to change any fields inside here.
 #.  Remove all tasks from type :code:`Get regions from Deutscher Wetterdienst`. They should have a red background because they no longer exist.
-#.  Either create a `dwd weather cell record manually <Create warn cells manually_>`_ OR create a task from type `Get warn cell records from Deutscher Wetterdienst` set it as single and execute it one time.
+#.  Either create a `dwd weather cell record manually <create-warn-cells-manually>`_ OR create a task from type `Get warn cell records from Deutscher Wetterdienst` set it as single and execute it one time.
 #.  Edit all tasks from type `Get weather alerts from Deutscher Wetterdienst` and select the cities/locations you want to fetch. Then save those tasks.
 #.  Edit all Plugins from list_type :code:`weather2_weatheralert` (Weather Alerts) and select the cities/locations you want to display. Also check out the new setting :code:`Show preliminary information`.
 #.  Clear frontend caches.
