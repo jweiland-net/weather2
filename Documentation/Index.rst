@@ -1,4 +1,4 @@
-﻿.. include:: /Includes.rst.txt
+﻿..  include:: /Includes.rst.txt
 
 
 =========
@@ -6,27 +6,27 @@ Weather 2
 =========
 
 :Extension key:
-   weather2
+    weather2
 
 :Package name:
-   Weather 2
+    Weather 2
 
 :Version:
-   |release|
+    |release|
 
 :Language:
-   en
+    en
 
 :Author:
-   Stefan Froemken
+    Stefan Froemken
 
 :License:
-   This document is published under the
-   `Creative Commons BY 4.0 <https://creativecommons.org/licenses/by/4.0/>`__
-   license.
+    This document is published under the
+    `Creative Commons BY 4.0 <https://creativecommons.org/licenses/by/4.0/>`__
+    license.
 
 :Rendered:
-   |today|
+    |today|
 
 ----
 
@@ -36,21 +36,21 @@ Extension to display weather data and weather alerts using various Weather APIs.
 
 **Table of Contents:**
 
-.. toctree::
-   :maxdepth: 2
-   :titlesonly:
+..  toctree::
+    :maxdepth: 2
+    :titlesonly:
 
-	Introduction/Index
-	User/Index
-	AdministratorManual/Index
-	Developer/Index
-	KnownProblems/Index
-	Links
+	 Introduction/Index
+	 User/Index
+	 AdministratorManual/Index
+	 Developer/Index
+	 KnownProblems/Index
+	 Links
 
-.. Meta Menu
+..  Meta Menu
 
-.. toctree::
-   :hidden:
+..  toctree::
+    :hidden:
 
-   Sitemap
-   genindex
+    Sitemap
+    genindex
