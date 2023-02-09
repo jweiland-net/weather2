@@ -9,7 +9,7 @@ Weather 2
     weather2
 
 :Package name:
-    Weather 2
+    jweiland/weather2
 
 :Version:
     |release|
@@ -40,12 +40,12 @@ Extension to display weather data and weather alerts using various Weather APIs.
     :maxdepth: 2
     :titlesonly:
 
-	 Introduction/Index
-	 User/Index
-	 AdministratorManual/Index
-	 Developer/Index
-	 KnownProblems/Index
-	 Links
+    Introduction/Index
+    User/Index
+    AdministratorManual/Index
+    Developer/Index
+    KnownProblems/Index
+    Links
 
 ..  Meta Menu
 
