@@ -47,8 +47,6 @@ class CurrentWeatherControllerTest extends UnitTestCase
      */
     public function showActionCallsRepositoryFindBySelectionWithSettingAsArgument(): void
     {
-        $currentWeather = new \JWeiland\Weather2\Domain\Model\CurrentWeather();
-
         $currentWeatherRepository = $this->getAccessibleMock(
             CurrentWeatherRepository::class,
             ['findBySelection'],

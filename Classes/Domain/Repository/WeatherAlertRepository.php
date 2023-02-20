@@ -40,7 +40,7 @@ class WeatherAlertRepository extends Repository
 
             $equalConstraintFields = [
                 'type' => GeneralUtility::trimExplode(',', $warningTypes),
-                'level' => GeneralUtility::trimExplode(',', $warningLevels)
+                'level' => GeneralUtility::trimExplode(',', $warningLevels),
             ];
 
             $warningConstraints = ['type' => [], 'level' => []];

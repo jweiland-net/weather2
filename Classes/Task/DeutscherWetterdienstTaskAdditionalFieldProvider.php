@@ -50,7 +50,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
      * @var array
      */
     protected $requiredFields = [
-        'dwd_regionSelection'
+        'dwd_regionSelection',
     ];
 
     /**
@@ -61,7 +61,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
     protected $insertFields = [
         'dwd_selectedWarnCells',
         'dwd_recordStoragePage',
-        'dwd_clearCache'
+        'dwd_clearCache',
     ];
 
     public function __construct(
@@ -75,10 +75,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
     }
 
     /**
-     * @param array $taskInfo
      * @param DeutscherWetterdienstTask $task
-     * @param SchedulerModuleController $schedulerModule
-     * @return array
      */
     public function getAdditionalFields(
         array &$taskInfo,
@@ -112,9 +109,10 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
             );
             $fieldCode = $this->addFlashMessage($flashMessage, true);
         }
+
         $additionalFields[$fieldID] = [
             'code' => $fieldCode,
-            'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_deutscherwetterdienst.xlf:warnCells'
+            'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_deutscherwetterdienst.xlf:warnCells',
         ];
 
         $fieldID = 'dwd_recordStoragePage';
@@ -123,14 +121,14 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
             WeatherUtility::translate('buttons.recordStoragePage', 'deutscherwetterdienst') . '</a></span></div>';
         $additionalFields[$fieldID] = [
             'code' => $fieldCode,
-            'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_deutscherwetterdienst.xlf:recordStoragePage'
+            'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_deutscherwetterdienst.xlf:recordStoragePage',
         ];
 
         $fieldID = 'dwd_clearCache';
         $fieldCode = '<input type="text" class="form-control" name="tx_scheduler[' . $fieldID . ']" id="' . $fieldID . '" value="' . $taskInfo[$fieldID] . '" size="120" />';
         $additionalFields[$fieldID] = [
             'code' => $fieldCode,
-            'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_deutscherwetterdienst.xlf:clear_cache'
+            'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_deutscherwetterdienst.xlf:clear_cache',
         ];
 
         return $additionalFields;
@@ -148,8 +146,8 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
         $popupSettings = [
             'PopupWindow' => [
                 'width' => '800px',
-                'height' => '550px'
-            ]
+                'height' => '550px',
+            ],
         ];
         $this->pageRenderer->addInlineSettingArray('Popup', $popupSettings);
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
@@ -209,7 +207,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
 
             if (empty($value) && in_array($fieldName, $this->requiredFields, true)) {
                 $isValid = false;
-                $this->addMessage('Field: ' . $fieldName . ' must not be empty', FlashMessage::ERROR);
+                $this->addMessage('Field: ' . $fieldName . ' must not be empty', AbstractMessage::ERROR);
             } else {
                 $submittedData[$fieldName] = $value;
             }

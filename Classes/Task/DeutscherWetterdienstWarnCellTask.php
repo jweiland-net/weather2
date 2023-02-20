@@ -64,7 +64,7 @@ class DeutscherWetterdienstWarnCellTask extends AbstractTask
                     'warn_cell_id' => $warnCellId,
                     'name' => $name,
                     'short_name' => $shortName,
-                    'sign' => $sign
+                    'sign' => $sign,
                 ];
             }
         }

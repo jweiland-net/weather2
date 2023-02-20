@@ -7,6 +7,34 @@ Upgrade
 If you upgrade EXT:weather2 to a newer version, please read this section
 carefully!
 
+Update from 3.x to 4.0.0
+========================
+
+Add TYPO3 11 compatibility
+Remove TYPO3 9 compatibility
+
+We have removed all TYPO3 columns from `ext_tables.sql`. Please execute
+DB compare to update the database columns.
+
+Execute Flush Cache in Maintenance section of TYPO3 to update dependency
+injection cache.
+
+We require `recordStoragePid` as INT in `weather2` scheduler task. It may
+happen that a call to `setPid` will fail, because it is not an INT. That
+happens because all scheduler tasks including their earlier variable types
+are stored serialized in scheduler. While unserializing the old type (STRING)
+will not match the current type (INT) anymore. So please delete that task
+and create that task again. Sorry, no UpgradeWizard available for that
+operation.
+
+Update from 2.x to 3.0.0
+========================
+
+Add TYPO3 10 compatibility
+Remove TYPO3 8 compatibility
+
+Nothing to do.
+
 Update from 2.x to 2.0.4
 ========================
 

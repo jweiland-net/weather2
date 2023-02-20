@@ -115,9 +115,6 @@ class OpenWeatherMapTask extends AbstractTask
     /**
      * This method is the heart of the scheduler task. It will be fired if the scheduler
      * gets executed
-     *
-     * @return bool
-     * @throws \TYPO3\CMS\Extbase\Object\Exception
      */
     public function execute(): bool
     {
@@ -135,7 +132,7 @@ class OpenWeatherMapTask extends AbstractTask
         $this->removeOldRecordsFromDb();
 
         $this->url = sprintf(
-            'http://api.openweathermap.org/data/2.5/weather?q=%s,%s&units=%s&APPID=%s',
+            'https://api.openweathermap.org/data/2.5/weather?q=%s,%s&units=%s&APPID=%s',
             urlencode($this->city),
             urlencode($this->country),
             'metric',
@@ -198,7 +195,7 @@ class OpenWeatherMapTask extends AbstractTask
         }
 
         /** @var \stdClass $responseClass */
-        $responseClass = json_decode((string)$response->getBody());
+        $responseClass = json_decode((string)$response->getBody(), false);
 
         switch ($responseClass->cod) {
             case '200':
@@ -344,7 +341,7 @@ class OpenWeatherMapTask extends AbstractTask
             $this->dbExtTable,
             [
                 'pid' => $this->recordStoragePage,
-                'name' => $this->name
+                'name' => $this->name,
             ]
         );
     }

@@ -81,11 +81,6 @@ class CurrentWeather extends AbstractEntity
     /**
      * @var string
      */
-    protected $serializedArray = '';
-
-    /**
-     * @var string
-     */
     protected $icon = '';
 
     /**

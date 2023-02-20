@@ -31,7 +31,7 @@ class CurrentWeatherRepository extends Repository
                 $query->equals('name', trim($selection))
             )
             ->setOrderings([
-                'uid' => QueryInterface::ORDER_DESCENDING
+                'uid' => QueryInterface::ORDER_DESCENDING,
             ]);
 
         /** @var ?CurrentWeather $currentWeather */

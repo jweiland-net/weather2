@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Weather2\Task;
 
+use Doctrine\DBAL\DBALException;
 use JWeiland\Weather2\Domain\Model\DwdWarnCell;
 use JWeiland\Weather2\Domain\Model\WeatherAlert;
 use JWeiland\Weather2\Domain\Repository\DwdWarnCellRepository;
@@ -21,6 +22,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\Exception;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Service\CacheService;
@@ -89,7 +91,7 @@ class DeutscherWetterdienstTask extends AbstractTask
 
     /**
      * @return bool
-     * @throws \TYPO3\CMS\Extbase\Object\Exception
+     * @throws Exception
      */
     public function execute(): bool
     {
@@ -188,7 +190,7 @@ class DeutscherWetterdienstTask extends AbstractTask
                 $this->dbExtTable,
                 [
                     'comparison_hash' => $this->getComparisonHashForAlert($alert),
-                    'pid' => $this->recordStoragePage
+                    'pid' => $this->recordStoragePage,
                 ]
             )
             ->fetch();
@@ -221,7 +223,7 @@ class DeutscherWetterdienstTask extends AbstractTask
         bool $isPreliminaryInformation
     ): WeatherAlert {
         $weatherAlert = new WeatherAlert();
-        $weatherAlert->setPid((int)$this->recordStoragePage);
+        $weatherAlert->setPid($this->recordStoragePage);
         $weatherAlert->setDwdWarnCell($this->getDwdWarnCell($warnCellId));
         $weatherAlert->setComparisonHash($this->getComparisonHashForAlert($alert));
         $weatherAlert->setPreliminaryInformation($isPreliminaryInformation);
@@ -264,7 +266,7 @@ class DeutscherWetterdienstTask extends AbstractTask
     }
 
     /**
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     protected function removeOldAlertsFromDb(): void
     {

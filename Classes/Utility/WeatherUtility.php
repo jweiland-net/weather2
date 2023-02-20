@@ -21,7 +21,6 @@ class WeatherUtility
     /**
      * Returns the translation of $name from locallang for $task
      *
-     * @param string $name
      * @param string $task openweatherapi or deutscherwetterdienst or deutscherwetterdienstJs
      * @return string|null the translation or null if no translation was found
      */

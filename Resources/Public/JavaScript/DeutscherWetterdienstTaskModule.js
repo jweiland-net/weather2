@@ -16,13 +16,13 @@ define('TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule', ['jquery', 'jquery/
         if (!$('#dwd_warnCellItem_' + suggestion.data).length) {
           $('#dwd_selected_warn_cells_ul').append('<li class="list-group-item" id="dwd_warnCellItem_' + suggestion.data + '"><a href="#" class="badge dwd_removeItem">' + TYPO3.lang.removeItem + '</a>' + suggestion.value + '</div><input type="hidden" name="tx_scheduler[dwd_selectedWarnCells][]" value="' + suggestion.data + '" /></li>');
           $('#dwd_warnCellItem_' + suggestion.data + ' .dwd_removeItem').click(function () {
-              $(this).parent('li').remove();
-            });
+            $(this).parent('li').remove();
+          });
         }
       }
-    }).keypress(function(e) {
-      var code = (e.keyCode ? e.keyCode : e.which);
-      if(code == 13) {
+    }).keypress(function (e) {
+      let code = (e.keyCode ? e.keyCode : e.which);
+      if (code == 13) {
         return false;
       }
     });
