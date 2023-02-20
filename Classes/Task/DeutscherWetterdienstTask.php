@@ -221,7 +221,7 @@ class DeutscherWetterdienstTask extends AbstractTask
         bool $isPreliminaryInformation
     ): WeatherAlert {
         $weatherAlert = new WeatherAlert();
-        $weatherAlert->setPid((int)$this->recordStoragePage);
+        $weatherAlert->setPid($this->recordStoragePage);
         $weatherAlert->setDwdWarnCell($this->getDwdWarnCell($warnCellId));
         $weatherAlert->setComparisonHash($this->getComparisonHashForAlert($alert));
         $weatherAlert->setPreliminaryInformation($isPreliminaryInformation);
