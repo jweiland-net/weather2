@@ -1,4 +1,8 @@
 <?php
+if (!defined('TYPO3_MODE')) {
+    die('Access denied.');
+}
+
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_weatheralert',
@@ -16,7 +20,7 @@ return [
             'endtime' => 'endtime',
         ],
         'searchFields' => 'dwd_warn_cell,level,type,title,description,instruction',
-        'iconfile' => 'EXT:weather2/Resources/Public/Icons/tx_weather2_domain_model_weatheralert.gif'
+        'iconfile' => 'EXT:weather2/Resources/Public/Icons/tx_weather2_domain_model_weatheralert.gif',
     ],
     'types' => [
         '1' => ['showitem' => 'dwd_warn_cell, level, type, title, description, instruction, preliminary_information, start_date, end_date,--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tabs.access, starttime, endtime'],
@@ -33,7 +37,7 @@ return [
                 'checkbox' => 0,
                 'default' => 0,
                 'range' => [
-                    'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
+                    'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y')),
                 ],
             ],
         ],
@@ -48,7 +52,7 @@ return [
                 'checkbox' => 0,
                 'default' => 0,
                 'range' => [
-                    'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
+                    'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y')),
                 ],
             ],
         ],
@@ -63,7 +67,7 @@ return [
                 'foreign_table' => 'tx_weather2_domain_model_dwdwarncell',
                 'forgein_table_where' => 'ORDER BY name ASC',
                 'minitems' => 1,
-                'maxitems' => 1
+                'maxitems' => 1,
             ],
         ],
         'level' => [
@@ -81,11 +85,11 @@ return [
                     ['LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.2', 2],
                     ['LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.3', 3],
                     ['LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.4', 4],
-                    ['LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.5', 5]
+                    ['LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.5', 5],
                 ],
                 'size' => 1,
-                'eval' => 'int,required'
-            ]
+                'eval' => 'int,required',
+            ],
         ],
         'type' => [
             'exclude' => 1,
@@ -107,11 +111,11 @@ return [
                     ['LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.uv', 9],
                     ['LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.coast', 10],
                     ['LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.lake', 11],
-                    ['LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.sea', 12]
+                    ['LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningTypes.sea', 12],
                 ],
                 'size' => 1,
-                'eval' => 'int,required'
-            ]
+                'eval' => 'int,required',
+            ],
         ],
         'title' => [
             'exclude' => 1,
@@ -119,7 +123,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim,required'
+                'eval' => 'trim,required',
             ],
         ],
         'description' => [
@@ -127,7 +131,7 @@ return [
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_weatheralert.description',
             'config' => [
                 'type' => 'text',
-                'eval' => 'trim,required'
+                'eval' => 'trim,required',
             ],
         ],
         'instruction' => [
@@ -135,7 +139,7 @@ return [
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_weatheralert.instruction',
             'config' => [
                 'type' => 'text',
-                'eval' => 'trim'
+                'eval' => 'trim',
             ],
         ],
         'start_date' => [
@@ -164,16 +168,16 @@ return [
         ],
         'comparison_hash' => [
             'config' => [
-                'type' => 'passthrough'
-            ]
+                'type' => 'passthrough',
+            ],
         ],
         'preliminary_information' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_weatheralert.preliminary_information',
             'config' => [
                 'type' => 'check',
-                'renderType' => 'check'
-            ]
-        ]
+                'renderType' => 'check',
+            ],
+        ],
     ],
 ];

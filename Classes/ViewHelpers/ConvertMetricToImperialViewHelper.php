@@ -27,21 +27,23 @@ class ConvertMetricToImperialViewHelper extends AbstractViewHelper
 
     protected $escapeOutput = false;
 
-    /**
-     * Initialize Arguments
-     */
     public function initializeArguments(): void
     {
-        $this->registerArgument('as', 'string', 'Holds converted Weather data', false, 'convertedData');
-        $this->registerArgument('weatherModel', CurrentWeather::class, 'Current Weather Object', true);
+        $this->registerArgument(
+            'as',
+            'string',
+            'Holds converted Weather data',
+            false,
+            'convertedData'
+        );
+        $this->registerArgument(
+            'weatherModel',
+            CurrentWeather::class,
+            'Current Weather Object',
+            true
+        );
     }
 
-    /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
-     * @return string
-     */
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
@@ -50,6 +52,7 @@ class ConvertMetricToImperialViewHelper extends AbstractViewHelper
         /** @var CurrentWeather $currentWeather */
         $weatherModel = $arguments['weatherModel'];
         $convertedModel = clone $weatherModel;
+
         /** @var $converter WeatherConverterService */
         $converter = GeneralUtility::makeInstance(WeatherConverterService::class);
         $convertedModel->setTemperatureC((int)$converter->convertCelsiusToFahrenheit($weatherModel->getTemperatureC()));

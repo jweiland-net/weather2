@@ -61,7 +61,7 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
      * @var string[]
      */
     protected $coreExtensionsToLoad = [
-        'scheduler'
+        'scheduler',
     ];
 
     /**
@@ -166,7 +166,7 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
                     'main' => 'rain',
                     'icon' => '[ICON]',
                 ],
-            ]
+            ],
         ]));
 
         $this->responseProphecy

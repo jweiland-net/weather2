@@ -17,6 +17,11 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * Repository to find warn cells by name
+ *
+ * $warnCellId looks like INT, but don't know if there are values starting with 0.
+ * Further the values are very huge, which can result in problems on 32bit machines.
+ * So keep $warnCellId to string
+ * @method DwdWarnCell findOneByWarnCellId(string $warnCellId);
  */
 class DwdWarnCellRepository extends Repository
 {

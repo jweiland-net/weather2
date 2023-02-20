@@ -16,6 +16,7 @@ use JWeiland\Weather2\Task\DeutscherWetterdienstWarnCellTask;
 use JWeiland\Weather2\Task\OpenWeatherMapTask;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Updates\DatabaseUpdatedPrerequisite;
 use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 use TYPO3\CMS\Scheduler\Execution;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
@@ -30,8 +31,6 @@ class EmptyTaskLoggerUpgrade implements UpgradeWizardInterface
     /**
      * Return the identifier for this wizard
      * This should be the same string as used in the ext_localconf class registration
-     *
-     * @return string
      */
     public function getIdentifier(): string
     {
@@ -40,8 +39,6 @@ class EmptyTaskLoggerUpgrade implements UpgradeWizardInterface
 
     /**
      * Return the speaking name of this wizard
-     *
-     * @return string
      */
     public function getTitle(): string
     {
@@ -50,8 +47,6 @@ class EmptyTaskLoggerUpgrade implements UpgradeWizardInterface
 
     /**
      * Return the description for this wizard
-     *
-     * @return string
      */
     public function getDescription(): string
     {
@@ -86,8 +81,8 @@ class EmptyTaskLoggerUpgrade implements UpgradeWizardInterface
                         Execution::class,
                         DeutscherWetterdienstTask::class,
                         DeutscherWetterdienstWarnCellTask::class,
-                        OpenWeatherMapTask::class
-                    ]
+                        OpenWeatherMapTask::class,
+                    ],
                 ]
             );
             if ($task instanceof AbstractTask) {
@@ -96,10 +91,10 @@ class EmptyTaskLoggerUpgrade implements UpgradeWizardInterface
                 $connection->update(
                     'tx_scheduler_task',
                     [
-                        'serialized_task_object' => serialize($task)
+                        'serialized_task_object' => serialize($task),
                     ],
                     [
-                        'uid' => (int)$record['uid']
+                        'uid' => (int)$record['uid'],
                     ]
                 );
             }
@@ -110,8 +105,6 @@ class EmptyTaskLoggerUpgrade implements UpgradeWizardInterface
 
     /**
      * Get all scheduler Tasks of weather2
-     *
-     * @return array
      */
     protected function getWeather2SchedulerTasks(): array
     {
@@ -124,20 +117,20 @@ class EmptyTaskLoggerUpgrade implements UpgradeWizardInterface
                 $queryBuilder->expr()->orX(
                     $queryBuilder->expr()->like(
                         'serialized_task_object',
-                        $queryBuilder->createNamedParameter('%OpenWeatherMapTask%', \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter('%OpenWeatherMapTask%')
                     ),
                     $queryBuilder->expr()->like(
                         'serialized_task_object',
-                        $queryBuilder->createNamedParameter('%DeutscherWetterdienstTask%', \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter('%DeutscherWetterdienstTask%')
                     ),
                     $queryBuilder->expr()->like(
                         'serialized_task_object',
-                        $queryBuilder->createNamedParameter('%DeutscherWetterdienstWarnCellTask%', \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter('%DeutscherWetterdienstWarnCellTask%')
                     )
                 ),
                 $queryBuilder->expr()->like(
                     'serialized_task_object',
-                    $queryBuilder->createNamedParameter('%logger"%', \PDO::PARAM_STR)
+                    $queryBuilder->createNamedParameter('%logger"%')
                 )
             )
             ->execute();
@@ -156,7 +149,7 @@ class EmptyTaskLoggerUpgrade implements UpgradeWizardInterface
     public function getPrerequisites(): array
     {
         return [
-            DatabaseUpdatedPrerequisite::class
+            DatabaseUpdatedPrerequisite::class,
         ];
     }
 

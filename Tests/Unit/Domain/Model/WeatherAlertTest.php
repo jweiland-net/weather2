@@ -20,7 +20,7 @@ use Nimut\TestingFramework\TestCase\UnitTestCase;
 class WeatherAlertTest extends UnitTestCase
 {
     /**
-     * @var WeatherAlert|\PHPUnit_Framework_MockObject_MockObject
+     * @var WeatherAlert
      */
     protected $subject;
 

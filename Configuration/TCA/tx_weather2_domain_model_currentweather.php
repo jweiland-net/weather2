@@ -1,4 +1,8 @@
 <?php
+if (!defined('TYPO3_MODE')) {
+    die('Access denied.');
+}
+
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_currentweather',
@@ -15,7 +19,7 @@ return [
             'endtime' => 'endtime',
         ],
         'searchFields' => 'name,icon',
-        'iconfile' => 'EXT:weather2/Resources/Public/Icons/tx_weather2_domain_model_currentweather.gif'
+        'iconfile' => 'EXT:weather2/Resources/Public/Icons/tx_weather2_domain_model_currentweather.gif',
     ],
     'types' => [
         '1' => ['showitem' => 'name, measure_timestamp, temperature_c, pressure_hpa, humidity_percentage, min_temp_c, max_temp_c, wind_speed_m_p_s, wind_direction_deg, pop_percentage, rain_volume, snow_volume, clouds_percentage, icon, serialized_array, --div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access, starttime, endtime'],
@@ -32,7 +36,7 @@ return [
                 'checkbox' => 0,
                 'default' => 0,
                 'range' => [
-                    'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
+                    'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y')),
                 ],
             ],
         ],
@@ -47,7 +51,7 @@ return [
                 'checkbox' => 0,
                 'default' => 0,
                 'range' => [
-                    'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y'))
+                    'lower' => mktime(0, 0, 0, date('m'), date('d'), date('Y')),
                 ],
             ],
         ],
@@ -57,7 +61,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim'
+                'eval' => 'trim',
             ],
         ],
         'measure_timestamp' => [
@@ -66,8 +70,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 4,
-                'eval' => 'int'
-            ]
+                'eval' => 'int',
+            ],
         ],
         'temperature_c' => [
             'exclude' => 1,
@@ -75,8 +79,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'double2'
-            ]
+                'eval' => 'double2',
+            ],
         ],
         'pressure_hpa' => [
             'exclude' => 1,
@@ -84,8 +88,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'double2'
-            ]
+                'eval' => 'double2',
+            ],
         ],
         'humidity_percentage' => [
             'exclude' => 1,
@@ -93,8 +97,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'double2'
-            ]
+                'eval' => 'double2',
+            ],
         ],
         'min_temp_c' => [
             'exclude' => 1,
@@ -102,8 +106,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'double2'
-            ]
+                'eval' => 'double2',
+            ],
         ],
         'max_temp_c' => [
             'exclude' => 1,
@@ -111,8 +115,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'double2'
-            ]
+                'eval' => 'double2',
+            ],
         ],
         'wind_speed_m_p_s' => [
             'exclude' => 1,
@@ -120,8 +124,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'double2'
-            ]
+                'eval' => 'double2',
+            ],
         ],
         'wind_direction_deg' => [
             'exclude' => 1,
@@ -129,8 +133,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'double2'
-            ]
+                'eval' => 'double2',
+            ],
         ],
         'pop_percentage' => [
             'exclude' => 1,
@@ -138,8 +142,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'double2'
-            ]
+                'eval' => 'double2',
+            ],
         ],
         'snow_volume' => [
             'exclude' => 1,
@@ -147,8 +151,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'double2'
-            ]
+                'eval' => 'double2',
+            ],
         ],
         'rain_volume' => [
             'exclude' => 1,
@@ -156,8 +160,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'double2'
-            ]
+                'eval' => 'double2',
+            ],
         ],
         'clouds_percentage' => [
             'exclude' => 1,
@@ -165,8 +169,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'double2'
-            ]
+                'eval' => 'double2',
+            ],
         ],
         'serialized_array' => [
             'exclude' => 1,
@@ -174,7 +178,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim'
+                'eval' => 'trim',
             ],
         ],
         'icon' => [
@@ -183,7 +187,7 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 30,
-                'eval' => 'trim'
+                'eval' => 'trim',
             ],
         ],
         'condition_code' => [
@@ -191,8 +195,8 @@ return [
             'config' => [
                 'type' => 'input',
                 'size' => 4,
-                'eval' => 'int'
-            ]
+                'eval' => 'int',
+            ],
         ],
     ],
 ];
