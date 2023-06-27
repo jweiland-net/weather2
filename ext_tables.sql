@@ -30,7 +30,6 @@ CREATE TABLE tx_weather2_domain_model_weatheralert (
 	title varchar(255) DEFAULT '' NOT NULL,
 	description text DEFAULT '' NOT NULL,
 	instruction text DEFAULT '' NOT NULL,
-	response_timestamp int(11) DEFAULT '0' NOT NULL,
 	start_date int(11) unsigned DEFAULT '0' NOT NULL,
 	end_date int(11) unsigned DEFAULT '0' NOT NULL,
 	comparison_hash varchar(32) DEFAULT '' NOT NULL,
