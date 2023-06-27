@@ -1,0 +1,26 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  JWeiland\Weather2\Dashboard\Widget\:
+    resource: '../Classes/Dashboard/Widget/*'
+
+  dashboard.widget.weather-alert:
+    class: 'TYPO3\CMS\Dashboard\Widgets\NumberWithIconWidget'
+    arguments:
+      $view: '@dashboard.views.widget'
+      $dataProvider: '@JWeiland\Weather2\Dashboard\Provider\WeatherAlertDataProvider'
+      $options:
+        title: 'LLL:EXT:weather2/Resources/Private/Language/locallang.xlf:widget.weatherAlert.title'
+        subtitle: 'LLL:EXT:weather2/Resources/Private/Language/locallang.xlf:widget.weatherAlert.subtitle'
+        icon: 'ext-weather2'
+    tags:
+      - name: dashboard.widget
+        identifier: 'weather-alert'
+        groupNames: 'weather2'
+        title: 'LLL:EXT:weather2/Resources/Private/Language/locallang.xlf:widget.weatherAlert.title'
+        description: 'LLL:EXT:weather2/Resources/Private/Language/locallang.xlf:widget.weatherAlert.description'
+        iconIdentifier: 'ext-weather2'
+        height: 'small'
