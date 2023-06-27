@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <tx_weather2_domain_model_dwdwarncell>
+        <uid>1</uid>
+        <pid>0</pid>
+        <name>Enzkreis und Stadt Pforzheim</name>
+        <short_name>PFX</short_name>
+        <sign>BW</sign>
+        <warn_cell_id>908236999</warn_cell_id>
+    </tx_weather2_domain_model_dwdwarncell>
+    <tx_weather2_domain_model_dwdwarncell>
+        <uid>2</uid>
+        <pid>0</pid>
+        <name>Stadt Stuttgart</name>
+        <short_name>SXX</short_name>
+        <sign>BW</sign>
+        <warn_cell_id>108111000</warn_cell_id>
+    </tx_weather2_domain_model_dwdwarncell>
+    <tx_weather2_domain_model_dwdwarncell>
+        <uid>3</uid>
+        <pid>0</pid>
+        <name>Kreis Tübingen</name>
+        <short_name>TUE</short_name>
+        <sign>BW</sign>
+        <warn_cell_id>108416000</warn_cell_id>
+    </tx_weather2_domain_model_dwdwarncell>
+</dataset>

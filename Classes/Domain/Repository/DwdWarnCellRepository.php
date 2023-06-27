@@ -13,6 +13,7 @@ namespace JWeiland\Weather2\Domain\Repository;
 
 use JWeiland\Weather2\Domain\Model\DwdWarnCell;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
@@ -40,6 +41,9 @@ class DwdWarnCellRepository extends Repository
                         $query->equals('warn_cell_id', $name)
                     )
                 )
+                ->setOrderings([
+                    'uid' => QueryInterface::ORDER_ASCENDING,
+                ])
                 ->execute()
                 ->toArray();
         } catch (InvalidQueryException $invalidQueryException) {

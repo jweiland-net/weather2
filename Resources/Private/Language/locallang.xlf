@@ -3,6 +3,19 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2022-07-29T16:06:13Z" product-name="weather2">
 		<header/>
 		<body>
+			<trans-unit id="widget.weatherAlert.title">
+				<source>Weather Alerts</source>
+			</trans-unit>
+			<trans-unit id="widget.weatherAlert.description">
+				<source>Shows amount of weather alerts which are currently registered here in your TYPO3 system</source>
+			</trans-unit>
+			<trans-unit id="widget.weatherAlert.title">
+				<source>Registered Weather Alerts</source>
+			</trans-unit>
+			<trans-unit id="widget.weatherAlert.subtitle">
+				<source>See recurring of scheduler task for next update</source>
+			</trans-unit>
+
 			<trans-unit id="tx_weather2_domain_model_currentweather">
 				<source>Current Weather</source>
 			</trans-unit>
