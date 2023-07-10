@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-05-04T14:55:13Z"
-				product-name="weather2">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-05-04T14:55:13Z" product-name="weather2">
 		<header/>
 		<body>
 			<trans-unit id="tx_weather2.name">
@@ -25,73 +24,104 @@
 				<target>Internationales Einheitensystem (K)</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningTypes">
+				<source>Display selected warning types</source>
 				<target>Zeige ausgewählte Warntypen an</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningTypes.thunderstorm">
+				<source>Thunderstorm</source>
 				<target>Gewitter</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningTypes.storm">
+				<source>Storm</source>
 				<target>Sturm</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningTypes.rain">
+				<source>Rain</source>
 				<target>Regen</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningTypes.snow">
+				<source>Snow</source>
 				<target>Schnee</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningTypes.fog">
+				<source>Fog</source>
 				<target>Nebel</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningTypes.frost">
+				<source>Frost</source>
 				<target>Frost</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningTypes.ice">
+				<source>Ice</source>
 				<target>Glatteis</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningTypes.thaw">
+				<source>Thaw</source>
 				<target>Tauwetter</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningTypes.hotness">
+				<source>Hotness</source>
 				<target>Hitze</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningTypes.uv">
+				<source>UV</source>
 				<target>UV</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningTypes.coast">
+				<source>Coast</source>
 				<target>Küste</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningTypes.lake">
+				<source>Lake</source>
 				<target>Binnensee</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningTypes.sea">
+				<source>Sea</source>
 				<target>See</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningLevels">
+				<source>Display selected warning levels</source>
 				<target>Zeige ausgewählte Warnlevel an</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningLevels.0">
-				<target>0 (Amtliche Wetterwarnung)</target>
+				<source>No warning</source>
+				<target>Kein Warnung</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningLevels.1">
-				<target>1 (Amtliche Wetterwarnung)</target>
-			</trans-unit>
-			<trans-unit id="tx_weather2.warningLevels.20">
-				<target>1.4 (Hitze-Warnung)</target>
-			</trans-unit>
-			<trans-unit id="tx_weather2.warningLevels.10">
-				<target>1.5 (UV-Warnung)</target>
+				<source>Official WARNING</source>
+				<target>Amtliche WARNUNG</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningLevels.2">
-				<target>2 (Amtliche Wetterwarnung)</target>
+				<source>Official WARNING of THIRD STORM</source>
+				<target>Amtliche WARNUNG vor GEWITTER</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningLevels.3">
-				<target>3 (Amtliche Warnung vor markantem Wetter)</target>
+				<source>Official WARNING of STRONG THUNDERSTATES</source>
+				<target>Amtliche WARNUNG vor STARKEM GEWITTER</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningLevels.4">
-				<target>4 (Amtliche Unwetterwarnung)</target>
+				<source>Official STORM WARNING of SEVERE THUNDERSTORM with HEAVY RAIN and HAGUE</source>
+				<target>Amtliche UNWETTERWARNUNG vor SCHWEREM GEWITTER mit HEFTIGEM STARKREGEN und HAGEL</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningLevels.5">
-				<target>5 (Amtliche Warnung vor extremem Unwetter)</target>
+				<source>Official STORM WARNING of extrem THUNDERSTORMS</source>
+				<target>Amtliche UNWETTERWARNUNG vor EXTREMEN Unwetter</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.10">
+				<source>Hotness warning</source>
+				<target>Hitze-Warnung</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.20">
+				<source>UV warning</source>
+				<target>UV-Warnung</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.50">
+				<source>Official WARNING of HEAT</source>
+				<target>Amtliche WARNUNG vor HITZE</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.51">
+				<source>Official WARNING of extreme HEAT</source>
+				<target>Amtliche WARNUNG vor extremer HITZE</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.selectedWarnCells">
 				<source>Display warnings for selected cities</source>

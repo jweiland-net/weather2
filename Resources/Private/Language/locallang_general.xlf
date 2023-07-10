@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-05-04T14:55:13Z"
-				product-name="weather2">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-05-04T14:55:13Z" product-name="weather2">
 		<header/>
 		<body>
 			<trans-unit id="tx_weather2.name">
@@ -65,28 +64,34 @@
 				<source>Display selected warning levels</source>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningLevels.0">
-				<source>0 (Official weather warning)</source>
+				<source>No warning</source>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningLevels.1">
-				<source>1 (Official weather warning)</source>
-			</trans-unit>
-			<trans-unit id="tx_weather2.warningLevels.20">
-				<source>1.4 (UV warning)</source>
-			</trans-unit>
-			<trans-unit id="tx_weather2.warningLevels.10">
-				<source>1.5 (Hotness warning)</source>
+				<source>Official WARNING</source>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningLevels.2">
-				<source>2 (Official weather warning)</source>
+				<source>Official WARNING of THIRD STORM</source>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningLevels.3">
-				<source>3 (Official warning of striking weather)</source>
+				<source>Official WARNING of STRONG THUNDERSTATES</source>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningLevels.4">
-				<source>4 (Official storm warning)</source>
+				<source>Official STORM WARNING of SEVERE THUNDERSTORM with HEAVY RAIN and HAGUE</source>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningLevels.5">
-				<source>5 (Official warning of extreme weather)</source>
+				<source>Official STORM WARNING of extrem THUNDERSTORMS</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.10">
+				<source>Hotness warning</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.20">
+				<source>UV warning</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.50">
+				<source>Official WARNING of HEAT</source>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.51">
+				<source>Official WARNING of extreme HEAT</source>
 			</trans-unit>
 			<trans-unit id="tx_weather2.selectedWarnCells">
 				<source>Display warnings for selected cities</source>

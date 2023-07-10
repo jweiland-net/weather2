@@ -89,14 +89,6 @@
 										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.1</numIndex>
 										<numIndex index="1">1</numIndex>
 									</numIndex>
-									<numIndex index="20" type="array">
-										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.20</numIndex>
-										<numIndex index="1">20</numIndex>
-									</numIndex>
-									<numIndex index="10" type="array">
-										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.10</numIndex>
-										<numIndex index="1">10</numIndex>
-									</numIndex>
 									<numIndex index="2" type="array">
 										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.2</numIndex>
 										<numIndex index="1">2</numIndex>
@@ -112,6 +104,22 @@
 									<numIndex index="5" type="array">
 										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.5</numIndex>
 										<numIndex index="1">5</numIndex>
+									</numIndex>
+									<numIndex index="10" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.10</numIndex>
+										<numIndex index="1">10</numIndex>
+									</numIndex>
+									<numIndex index="20" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.20</numIndex>
+										<numIndex index="1">20</numIndex>
+									</numIndex>
+									<numIndex index="50" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.50</numIndex>
+										<numIndex index="1">50</numIndex>
+									</numIndex>
+									<numIndex index="51" type="array">
+										<numIndex index="0">LLL:EXT:weather2/Resources/Private/Language/locallang_general.xlf:tx_weather2.warningLevels.51</numIndex>
+										<numIndex index="1">51</numIndex>
 									</numIndex>
 								</items>
 								<enableMultiSelectFilterTextfield>true</enableMultiSelectFilterTextfield>
