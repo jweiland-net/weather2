@@ -84,36 +84,44 @@
 				<target>Zeige ausgewählte Warnlevel an</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningLevels.0">
-				<source>0 (Official weather warning)</source>
-				<target>0 (Amtliche Wetterwarnung)</target>
+				<source>No warning</source>
+				<target>Kein Warnung</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningLevels.1">
-				<source>1 (Official weather warning)</source>
-				<target>1 (Amtliche Wetterwarnung)</target>
-			</trans-unit>
-			<trans-unit id="tx_weather2.warningLevels.20">
-				<source>1.4 (UV warning)</source>
-				<target>1.4 (Hitze-Warnung)</target>
-			</trans-unit>
-			<trans-unit id="tx_weather2.warningLevels.10">
-				<source>1.5 (Hotness warning)</source>
-				<target>1.5 (UV-Warnung)</target>
+				<source>Official WARNING</source>
+				<target>Amtliche WARNUNG</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningLevels.2">
-				<source>2 (Official weather warning)</source>
-				<target>2 (Amtliche Wetterwarnung)</target>
+				<source>Official WARNING of THIRD STORM</source>
+				<target>Amtliche WARNUNG vor GEWITTER</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningLevels.3">
-				<source>3 (Official warning of striking weather)</source>
-				<target>3 (Amtliche Warnung vor markantem Wetter)</target>
+				<source>Official WARNING of STRONG THUNDERSTATES</source>
+				<target>Amtliche WARNUNG vor STARKEM GEWITTER</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningLevels.4">
-				<source>4 (Official storm warning)</source>
-				<target>4 (Amtliche Unwetterwarnung)</target>
+				<source>Official STORM WARNING of SEVERE THUNDERSTORM with HEAVY RAIN and HAGUE</source>
+				<target>Amtliche UNWETTERWARNUNG vor SCHWEREM GEWITTER mit HEFTIGEM STARKREGEN und HAGEL</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.warningLevels.5">
-				<source>5 (Official warning of extreme weather)</source>
-				<target>5 (Amtliche Warnung vor extremem Unwetter)</target>
+				<source>Official STORM WARNING of extrem THUNDERSTORMS</source>
+				<target>Amtliche UNWETTERWARNUNG vor EXTREMEN Unwetter</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.10">
+				<source>Hotness warning</source>
+				<target>Hitze-Warnung</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.20">
+				<source>UV warning</source>
+				<target>UV-Warnung</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.50">
+				<source>Official WARNING of HEAT</source>
+				<target>Amtliche WARNUNG vor HITZE</target>
+			</trans-unit>
+			<trans-unit id="tx_weather2.warningLevels.51">
+				<source>Official WARNING of extreme HEAT</source>
+				<target>Amtliche WARNUNG vor extremer HITZE</target>
 			</trans-unit>
 			<trans-unit id="tx_weather2.selectedWarnCells">
 				<source>Display warnings for selected cities</source>
