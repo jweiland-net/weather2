@@ -4,7 +4,7 @@
 	"description": "Display weather data and weather alerts using various Weather APIs. Default APIs: OpenWeatherMap and Deutscher Wetterdienst",
 	"license": "GPL-2.0-or-later",
 	"keywords": ["typo3", "TYPO3 CMS", "weather2", "weather report", "weather alert"],
-	"homepage": "https://www.jweiland.net",
+	"homepage": "https://jweiland.net",
 	"authors": [
 		{
 			"name": "Stefan Froemken",
@@ -25,6 +25,9 @@
 		"roave/security-advisories": "dev-latest",
 		"friendsofphp/php-cs-fixer": "^3.10",
 		"nimut/testing-framework": "^6.0"
+	},
+	"replace": {
+		"typo3-ter/weather2": "self.version"
 	},
 	"autoload": {
 		"psr-4": {
