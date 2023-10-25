@@ -34,3 +34,4 @@ nbproject
 
 # Ignore composer stuff
 /composer.lock
+.Build/
