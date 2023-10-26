@@ -63,9 +63,4 @@ call_user_func(static function () {
             ['source' => 'EXT:weather2/Resources/Public/Icons/' . $fileName]
         );
     }
-    $iconRegistry->registerIcon(
-        'ext-weather2',
-        \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-        ['source' => 'EXT:weather2/Resources/Public/Icons/Extension.svg']
-    );
 });
