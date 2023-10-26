@@ -221,6 +221,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task): void
     {
+        debug(func_get_args());
         $task->selectedWarnCells = $submittedData['dwd_selectedWarnCells'] ?: [];
         $task->recordStoragePage = (int)$submittedData['dwd_recordStoragePage'];
         $task->clearCache = $submittedData['dwd_clearCache'] ?? '';

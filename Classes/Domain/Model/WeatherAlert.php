@@ -19,7 +19,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 class WeatherAlert extends AbstractEntity
 {
     /**
-     * @var \JWeiland\Weather2\Domain\Model\DwdWarnCell
+     * @var DwdWarnCell
      */
     protected $dwdWarnCell;
 

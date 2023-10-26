@@ -13,10 +13,12 @@ namespace JWeiland\Weather2\Task;
 
 use JWeiland\Weather2\Utility\WeatherUtility;
 use SJBR\StaticInfoTables\Domain\Model\Country;
-use SJBR\StaticInfoTables\Domain\Repository\CountryRepository;
+//use SJBR\StaticInfoTables\Domain\Repository\CountryRepository;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,6 +35,8 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
      * @var CountryRepository
      */
     protected $countryRepository;
+
+    protected CountryProvider $countryProvider;
 
     /**
      * @var UriBuilder
@@ -75,11 +79,12 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
     ];
 
     public function __construct(
-        CountryRepository $countryRepository,
+        CountryProvider $countryProvider,
         UriBuilder $uriBuilder,
         PageRenderer $pageRenderer
     ) {
-        $this->countryRepository = $countryRepository;
+        //$this->countryRepository = $countryRepository;
+        $this->countryProvider = $countryProvider;
         $this->uriBuilder = $uriBuilder;
         $this->pageRenderer = $pageRenderer;
     }
@@ -338,18 +343,20 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
      */
     private function getCountryCodesOptionsHtml(string $selected = ''): string
     {
+        $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)
+            ->createFromUserPreferences($GLOBALS['BE_USER']);
         /** @var Country[] $countries */
-        $countries = $this->countryRepository->findAll();
-
+        $countries = $this->countryProvider->getAll();
+        //debug($countries);die;
         $options = [];
         foreach ($countries as $country) {
             $options[] = sprintf(
                 '<option%s value="%s">%s (%s)</option>',
                 // check 2 and 3 digit country code for compatibility reasons
-                $selected === $country->getIsoCodeA2() || $selected === $country->getIsoCodeA3() ? ' selected' : '',
-                $country->getIsoCodeA2(),
-                $country->getNameLocalized(),
-                $country->getIsoCodeA2()
+                $selected === $country->getAlpha2IsoCode() || $selected === $country->getAlpha3IsoCode() ? ' selected' : '',
+                $country->getAlpha2IsoCode(),
+                $languageService->sL($country->getLocalizedNameLabel()),
+                $country->getAlpha2IsoCode()
             );
         }
 

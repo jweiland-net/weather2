@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Weather2\Task;
 
+use TYPO3\CMS\Core\Context\Context;
 use JWeiland\Weather2\Domain\Model\CurrentWeather;
 use JWeiland\Weather2\Utility\WeatherUtility;
 use Psr\Http\Message\ResponseInterface;
@@ -19,7 +20,6 @@ use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Service\CacheService;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
@@ -125,7 +125,7 @@ class OpenWeatherMapTask extends AbstractTask
         $logEntry[] = 'Date format: "m.d.Y - H:i:s"';
         $this->logger->info(sprintf(
             implode("\n", $logEntry),
-            date('m.d.Y - H:i:s', $GLOBALS['EXEC_TIME']),
+            date('m.d.Y - H:i:s', GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp')),
             json_encode($this)
         ));
 
@@ -155,8 +155,7 @@ class OpenWeatherMapTask extends AbstractTask
 
         $this->responseClass = json_decode((string)$response->getBody());
         $this->logger->info(sprintf('Response class: %s', json_encode($this->responseClass)));
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $persistenceManager = $objectManager->get(PersistenceManager::class);
+        $persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
 
         $persistenceManager->add($this->getCurrentWeatherInstanceForResponseClass($this->responseClass));
         $persistenceManager->persistAll();

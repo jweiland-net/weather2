@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\Exception;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Service\CacheService;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
@@ -34,11 +33,6 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 class DeutscherWetterdienstTask extends AbstractTask
 {
     public const API_URL = 'https://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json';
-
-    /**
-     * @var ObjectManager
-     */
-    protected $objectManager;
 
     /**
      * @var string
@@ -95,8 +89,8 @@ class DeutscherWetterdienstTask extends AbstractTask
      */
     public function execute(): bool
     {
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->dwdWarnCellRepository = $this->objectManager->get(DwdWarnCellRepository::class);
+
+        $this->dwdWarnCellRepository = GeneralUtility::makeInstance(DwdWarnCellRepository::class);
         $response = GeneralUtility::makeInstance(RequestFactory::class)->request(self::API_URL);
         if (!$this->checkResponse($response)) {
             return false;
@@ -139,7 +133,7 @@ class DeutscherWetterdienstTask extends AbstractTask
      */
     protected function handleResponse(): void
     {
-        $this->persistenceManager = $this->objectManager->get(PersistenceManager::class);
+        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
         if (array_key_exists('warnings', $this->decodedResponse)) {
             $this->processDwdItems($this->decodedResponse['warnings'], false);
         }

@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Weather2\Domain\Repository;
 
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -54,10 +55,7 @@ class WeatherAlertRepository extends Repository
             $andConstraints[] = $query->logicalOr($warningConstraints['type']);
             $andConstraints[] = $query->logicalOr($warningConstraints['level']);
             $andConstraints[] = $query->logicalOr($warnCellConstraints);
-            $andConstraints[] = $query->logicalOr(
-                $query->greaterThanOrEqual('end_date', $GLOBALS['EXEC_TIME']),
-                $query->equals('end_date', 0)
-            );
+            $andConstraints[] = $query->logicalOr([$query->greaterThanOrEqual('end_date', GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp')), $query->equals('end_date', 0)]);
             if ($showPreliminaryInformation === false) {
                 $andConstraints[] = $query->equals('preliminary_information', 0);
             }
