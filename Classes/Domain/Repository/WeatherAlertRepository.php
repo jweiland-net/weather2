@@ -52,14 +52,14 @@ class WeatherAlertRepository extends Repository
             }
 
             $andConstraints = [];
-            $andConstraints[] = $query->logicalOr($warningConstraints['type']);
-            $andConstraints[] = $query->logicalOr($warningConstraints['level']);
-            $andConstraints[] = $query->logicalOr($warnCellConstraints);
-            $andConstraints[] = $query->logicalOr([$query->greaterThanOrEqual('end_date', GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp')), $query->equals('end_date', 0)]);
+            $andConstraints[] = $query->logicalOr(...$warningConstraints['type']);
+            $andConstraints[] = $query->logicalOr(...$warningConstraints['level']);
+            $andConstraints[] = $query->logicalOr(...$warnCellConstraints);
+            $andConstraints[] = $query->logicalOr(...[$query->greaterThanOrEqual('end_date', GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp')), $query->equals('end_date', 0)]);
             if ($showPreliminaryInformation === false) {
                 $andConstraints[] = $query->equals('preliminary_information', 0);
             }
-            $query->matching($query->logicalAnd($andConstraints));
+            $query->matching($query->logicalAnd(...$andConstraints));
         } catch (InvalidQueryException $invalidQueryException) {
             // Do nothing. Return all records
         }
