@@ -7,6 +7,14 @@ Upgrade
 If you upgrade EXT:weather2 to a newer version, please read this section
 carefully!
 
+Update from 4.x to 5.0
+======================
+
+Add TYPO3 12 Compatibility
+Removed older version compatibility
+Removed dependency with EXT:static_info_tables
+
+
 Update from 3.x to 4.0.0
 ========================
 
