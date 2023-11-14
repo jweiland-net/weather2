@@ -15,7 +15,6 @@ use JWeiland\Weather2\Domain\Model\DwdWarnCell;
 use JWeiland\Weather2\Domain\Repository\DwdWarnCellRepository;
 use JWeiland\Weather2\Utility\WeatherUtility;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -105,7 +104,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
                 FlashMessage::class,
                 WeatherUtility::translate('message.noDwdWarnCellsFound', 'deutscherwetterdienst'),
                 '',
-                AbstractMessage::WARNING
+                \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING
             );
             $fieldCode = $this->addFlashMessage($flashMessage, true);
         }
@@ -207,7 +206,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
 
             if (empty($value) && in_array($fieldName, $this->requiredFields, true)) {
                 $isValid = false;
-                $this->addMessage('Field: ' . $fieldName . ' must not be empty', AbstractMessage::ERROR);
+                $this->addMessage('Field: ' . $fieldName . ' must not be empty', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
             } else {
                 $submittedData[$fieldName] = $value;
             }

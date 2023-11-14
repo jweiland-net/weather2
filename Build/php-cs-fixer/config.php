@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use PhpCsFixer\Finder;
+use PhpCsFixer\Config;
+
 /*
  * This file is part of the package jweiland/yellowpages2.
  *
@@ -20,12 +23,12 @@ For the full copyright and license information, please read the
 LICENSE file that was distributed with this source code.
 COMMENT;
 
-$finder = PhpCsFixer\Finder::create()
+$finder = Finder::create()
     ->name('*.php')
     ->exclude('.build')
     ->in(__DIR__);
 
-return (new \PhpCsFixer\Config())
+return (new Config())
     ->setFinder($finder)
     ->setRiskyAllowed(true)
     ->setRules([

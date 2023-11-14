@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace JWeiland\Weather2\Tests\Unit\Service;
 
 use JWeiland\Weather2\Service\WeatherConverterService;
-use Nimut\TestingFramework\TestCase\UnitTestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case.

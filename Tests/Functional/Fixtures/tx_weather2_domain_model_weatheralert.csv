@@ -1,0 +1,3 @@
+"tx_weather2_domain_model_weatheralert",,,,,,,,,,
+,"uid","pid","dwd_warn_cell","level","type","title","description","instruction","start_date","preliminary_information"
+,1,0,"908236999",2,1,"Amtliche WARNUNG vor WINDBÖEN","Es treten Windböen mit Geschwindigkeiten bis 55 km/h (15 m/s, 30 kn, Bft 7) auf. In Schauernähe sowie in exponierten Lagen muss mit Sturmböen bis 65 km/h (18 m/s, 35 kn, Bft 8) gerechnet werden.","Geht in Deckung",1687802400,0

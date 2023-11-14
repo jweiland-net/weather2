@@ -14,7 +14,7 @@ namespace JWeiland\Weather2\Tests\Functional\Task;
 use GuzzleHttp\Psr7\Response;
 use JWeiland\Weather2\Domain\Model\CurrentWeather;
 use JWeiland\Weather2\Task\OpenWeatherMapTask;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\RequestFactory;
@@ -56,26 +56,15 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
      */
     protected $subject;
 
-    /**
-     * @var string[]
-     */
-    protected $coreExtensionsToLoad = [
-        'scheduler',
-    ];
+    protected array $coreExtensionsToLoad = ['scheduler',];
 
-    /**
-     * @var string[]
-     */
-    protected $testExtensionsToLoad = [
-        'typo3conf/ext/weather2',
-        'typo3conf/ext/static_info_tables',
-    ];
+    protected array $testExtensionsToLoad = ['typo3conf/ext/weather2'];
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
+        //$GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
 
         $this->stream = new Stream('php://temp', 'rw');
 
@@ -94,20 +83,9 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
 
         GeneralUtility::addInstance(RequestFactory::class, $this->requestFactoryMock);
 
-        $this->persistenceManagerMock = $this->createMock(PersistenceManager::class);
-        $this->persistenceManagerMock
-            ->expects(self::once())
-            ->method('persistAll');
-
-        /** @var ObjectManagerInterface|MockObject $objectManagerMock */
-        $objectManagerMock = $this->createMock(ObjectManager::class);
-        $objectManagerMock
-            ->expects(self::once())
-            ->method('get')
-            ->with(self::identicalTo(PersistenceManager::class))
-            ->willReturn($this->persistenceManagerMock);
-
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerMock);
+        $this->persistenceManagerMock = $this->getMockBuilder(PersistenceManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         // We have to use GM:makeInstance because of LoggerAwareInterface
         $this->subject = GeneralUtility::makeInstance(OpenWeatherMapTask::class);
