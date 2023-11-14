@@ -1,0 +1,2 @@
+page.20 = USER_INT
+page.20.userFunc = JWeiland\Replacer\Tests\Functional\Fixtures\DummyUserFunc->render

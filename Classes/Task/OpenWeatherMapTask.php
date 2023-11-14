@@ -156,7 +156,6 @@ class OpenWeatherMapTask extends AbstractTask
         $this->responseClass = json_decode((string)$response->getBody());
         $this->logger->info(sprintf('Response class: %s', json_encode($this->responseClass)));
         $persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
-
         $persistenceManager->add($this->getCurrentWeatherInstanceForResponseClass($this->responseClass));
         $persistenceManager->persistAll();
 

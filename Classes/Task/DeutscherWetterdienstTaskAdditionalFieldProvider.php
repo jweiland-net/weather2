@@ -98,7 +98,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
 
         $fieldID = 'dwd_selectedWarnCells';
         if ($this->areRegionsAvailable()) {
-            $fieldCode = '<input type="text" class="form-control ui-autocomplete-input" name="dwd_warn_cell_search" id="dwd_warn_cell_search" ' .
+            $fieldCode = '<input type="text" class="form-control" name="dwd_warn_cell_search" id="dwd_warn_cell_search" ' .
                 'placeholder="e.g. Pforzheim" size="30" /><br />' . $this->getHtmlForSelectedRegions($taskInfo);
         } else {
             $flashMessage = GeneralUtility::makeInstance(
@@ -116,9 +116,9 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
         ];
 
         $fieldID = 'dwd_recordStoragePage';
-        $fieldCode = '<div class="input-group"><input type="text" class="form-control" name="tx_scheduler[' . $fieldID . ']" id="' . $fieldID . '" value="' . $taskInfo[$fieldID] . '"
-size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStoragePage', 'openweatherapi') . ' --->"/><span class="input-group-btn"><a href="#" class="btn btn-default" onclick="TYPO3.FormEngine.openPopupWindow(\'db\',\'tx_scheduler[dwd_recordStoragePage]|||pages|\'); return false;">' .
-            WeatherUtility::translate('buttons.recordStoragePage', 'deutscherwetterdienst') . '</a></span></div>';
+        $fieldCode = '<div class="input-group">
+            <input type="text" class="form-control" name="tx_scheduler[' . $fieldID . ']" id="' . $fieldID . '" value="' . $taskInfo[$fieldID] . '" size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStoragePage', 'openweatherapi') . ' --->"/>
+        </div>';
         $additionalFields[$fieldID] = [
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_deutscherwetterdienst.xlf:recordStoragePage',
@@ -142,6 +142,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
         );
         $this->pageRenderer->addCssFile('EXT:weather2/Resources/Public/Css/dwdScheduler.css');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineValidation');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Weather2/jquery.autocomplete');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule');
         $popupSettings = [
             'PopupWindow' => [
@@ -159,7 +160,6 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
                 FormEngine.browserUrl = ' . GeneralUtility::quoteJSvalue((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser')) . ';
              }'
         );
-        $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
     }
 
     protected function areRegionsAvailable(): bool
@@ -221,7 +221,6 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task): void
     {
-        debug(func_get_args());
         $task->selectedWarnCells = $submittedData['dwd_selectedWarnCells'] ?: [];
         $task->recordStoragePage = (int)$submittedData['dwd_recordStoragePage'];
         $task->clearCache = $submittedData['dwd_clearCache'] ?? '';
