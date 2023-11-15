@@ -1,4 +1,4 @@
-name: Test replacer for TYPO3 12 LTS
+name: Test weather2 for TYPO3 12 LTS
 
 on:
   pull_request:
