@@ -36,7 +36,10 @@ class DwdWarnCellRepository extends Repository
         try {
             return $query
                 ->matching(
-                    $query->logicalOr(...[$query->like('name', '%' . trim($name) . '%'), $query->equals('warn_cell_id', $name)])
+                    $query->logicalOr(
+                        $query->like('name', '%' . trim($name) . '%'),
+                        $query->equals('warn_cell_id', $name)
+                    )
                 )
                 ->setOrderings([
                     'uid' => QueryInterface::ORDER_ASCENDING,
