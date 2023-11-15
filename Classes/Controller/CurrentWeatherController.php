@@ -11,8 +11,8 @@ declare(strict_types=1);
 
 namespace JWeiland\Weather2\Controller;
 
-use Psr\Http\Message\ResponseInterface;
 use JWeiland\Weather2\Domain\Repository\CurrentWeatherRepository;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**

@@ -89,7 +89,6 @@ class DeutscherWetterdienstTask extends AbstractTask
      */
     public function execute(): bool
     {
-
         $this->dwdWarnCellRepository = GeneralUtility::makeInstance(DwdWarnCellRepository::class);
         $response = GeneralUtility::makeInstance(RequestFactory::class)->request(self::API_URL);
         if (!$this->checkResponse($response)) {

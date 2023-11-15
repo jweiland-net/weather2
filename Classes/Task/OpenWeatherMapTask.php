@@ -11,10 +11,10 @@ declare(strict_types=1);
 
 namespace JWeiland\Weather2\Task;
 
-use TYPO3\CMS\Core\Context\Context;
 use JWeiland\Weather2\Domain\Model\CurrentWeather;
 use JWeiland\Weather2\Utility\WeatherUtility;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Mail\MailMessage;

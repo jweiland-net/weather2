@@ -14,7 +14,6 @@ namespace JWeiland\Weather2\Tests\Functional\Domain\Repository;
 use JWeiland\Weather2\Domain\Model\CurrentWeather;
 use JWeiland\Weather2\Domain\Repository\CurrentWeatherRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Test case.

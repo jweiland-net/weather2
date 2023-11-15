@@ -13,8 +13,8 @@ namespace JWeiland\Weather2\Tests\Functional\Domain\Repository;
 
 use JWeiland\Weather2\Domain\Model\WeatherAlert;
 use JWeiland\Weather2\Domain\Repository\WeatherAlertRepository;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case.

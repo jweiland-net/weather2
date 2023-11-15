@@ -14,14 +14,14 @@ namespace JWeiland\Weather2\Tests\Functional\Task;
 use GuzzleHttp\Psr7\Response;
 use JWeiland\Weather2\Domain\Model\CurrentWeather;
 use JWeiland\Weather2\Task\OpenWeatherMapTask;
-use TYPO3\CMS\Core\Log\Logger;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Stream;
+use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case.
@@ -50,7 +50,7 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
      */
     protected $subject;
 
-    protected array $coreExtensionsToLoad = ['scheduler',];
+    protected array $coreExtensionsToLoad = ['scheduler'];
 
     protected array $testExtensionsToLoad = ['typo3conf/ext/weather2'];
 
