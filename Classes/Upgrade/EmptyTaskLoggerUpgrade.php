@@ -112,22 +112,34 @@ class EmptyTaskLoggerUpgrade implements UpgradeWizardInterface
         $queryBuilder->getRestrictions()->removeAll();
         $statement = $queryBuilder
             ->select('uid', 'serialized_task_object')
-            ->from('tx_scheduler_task')->where($queryBuilder->expr()->or($queryBuilder->expr()->like(
-                'serialized_task_object',
-                $queryBuilder->createNamedParameter('%OpenWeatherMapTask%')
-            ), $queryBuilder->expr()->like(
-                'serialized_task_object',
-                $queryBuilder->createNamedParameter('%DeutscherWetterdienstTask%')
-            ), $queryBuilder->expr()->like(
-                'serialized_task_object',
-                $queryBuilder->createNamedParameter('%DeutscherWetterdienstWarnCellTask%')
-            )), $queryBuilder->expr()->like(
-                'serialized_task_object',
-                $queryBuilder->createNamedParameter('%logger"%')
-            ))->executeQuery();
+            ->from('tx_scheduler_task')
+            ->where(
+                $queryBuilder
+                    ->expr()
+                    ->or(
+                        $queryBuilder
+                            ->expr()
+                            ->like(
+                                'serialized_task_object',
+                                $queryBuilder->createNamedParameter('%OpenWeatherMapTask%')
+                            ),
+                        $queryBuilder->expr()->like(
+                            'serialized_task_object',
+                            $queryBuilder->createNamedParameter('%DeutscherWetterdienstTask%')
+                        ),
+                        $queryBuilder->expr()->like(
+                            'serialized_task_object',
+                            $queryBuilder->createNamedParameter('%DeutscherWetterdienstWarnCellTask%')
+                        )
+                    ),
+                $queryBuilder->expr()->like(
+                    'serialized_task_object',
+                    $queryBuilder->createNamedParameter('%logger"%')
+                )
+            )->executeQuery();
 
         $tasks = [];
-        while ($task = $statement->fetch()) {
+        while ($task = $statement->fetchAssociative()) {
             $tasks[] = $task;
         }
 
