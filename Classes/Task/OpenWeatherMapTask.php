@@ -110,7 +110,12 @@ class OpenWeatherMapTask extends AbstractTask
      *
      * @var string $emailReceiver
      */
-    public $emailReceiver = '';
+    public string $emailReceiver = '';
+
+    /**
+     * @var PersistenceManager
+     */
+    public $persistenceManager = '';
 
     /**
      * This method is the heart of the scheduler task. It will be fired if the scheduler
@@ -155,9 +160,10 @@ class OpenWeatherMapTask extends AbstractTask
 
         $this->responseClass = json_decode((string)$response->getBody());
         $this->logger->info(sprintf('Response class: %s', json_encode($this->responseClass)));
-        $persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
-        $persistenceManager->add($this->getCurrentWeatherInstanceForResponseClass($this->responseClass));
-        $persistenceManager->persistAll();
+
+        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
+        $this->persistenceManager->add($this->getCurrentWeatherInstanceForResponseClass($this->responseClass));
+        $this->persistenceManager->persistAll();
 
         if (!empty($this->clearCache)) {
             $cacheService = GeneralUtility::makeInstance(CacheService::class);
@@ -342,5 +348,10 @@ class OpenWeatherMapTask extends AbstractTask
                 'name' => $this->name,
             ]
         );
+    }
+
+    public function setPersistenceManager($persistenceManager)
+    {
+        $this->persistenceManager = $persistenceManager;
     }
 }

@@ -114,7 +114,6 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
                 FormEngine.browserUrl = ' . GeneralUtility::quoteJSvalue((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser')) . ';
              }'
         );
-        $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
 
         foreach ($this->insertFields as $fieldID) {
             if (empty($taskInfo[$fieldID])) {
@@ -137,8 +136,7 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
 
         $fieldID = 'recordStoragePage';
         $fieldCode = '<div class="input-group"><input type="text" class="form-control" name="tx_scheduler[recordStoragePage]" id="' . $fieldID . '" value="' . $taskInfo['recordStoragePage'] . '"
-size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage_page', 'openweatherapi') . ' --->"/><span class="input-group-btn"><a href="#" class="btn btn-default" onclick="TYPO3.FormEngine.openPopupWindow(\'db\',\'tx_scheduler[recordStoragePage]|||pages|\'); return false;">' .
-            WeatherUtility::translate('buttons.record_storage_page', 'openweatherapi') . '</a></span></div>';
+size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage_page', 'openweatherapi') . ' --->"/></div>';
 
         $additionalFields[$fieldID] = [
             'code' => $fieldCode,
