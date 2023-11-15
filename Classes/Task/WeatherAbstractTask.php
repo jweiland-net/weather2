@@ -27,7 +27,7 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 /**
  * WeatherAbstractTask Class for Scheduler
  */
-class WeatherAbstractTask extends AbstractTask
+abstract class WeatherAbstractTask extends AbstractTask
 {
     public function getDwdWarnCellRepository(): DwdWarnCellRepository
     {

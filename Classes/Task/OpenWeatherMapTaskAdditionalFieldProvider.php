@@ -136,7 +136,7 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
 
         $fieldID = 'recordStoragePage';
         $fieldCode = '<div class="input-group"><input type="text" class="form-control" name="tx_scheduler[recordStoragePage]" id="' . $fieldID . '" value="' . $taskInfo['recordStoragePage'] . '"
-size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage_page', 'openweatherapi') . ' --->"/></div>';
+size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage_page', 'openweatherapi') . '"/></div>';
 
         $additionalFields[$fieldID] = [
             'code' => $fieldCode,
@@ -288,7 +288,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
                     WeatherUtility::translate('message.api_code_200', 'openweatherapi'),
                     $responseClass->name,
                     $responseClass->sys->country
-                ), AbstractMessage::INFO);
+                ), ContextualFeedbackSeverity::INFO);
                 return true;
             case '404':
                 $this->addMessage(
