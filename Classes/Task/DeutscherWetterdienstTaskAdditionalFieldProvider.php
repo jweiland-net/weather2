@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
@@ -104,7 +105,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
                 FlashMessage::class,
                 WeatherUtility::translate('message.noDwdWarnCellsFound', 'deutscherwetterdienst'),
                 '',
-                \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::WARNING
+                ContextualFeedbackSeverity::WARNING
             );
             $fieldCode = $this->addFlashMessage($flashMessage, true);
         }
@@ -116,7 +117,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
 
         $fieldID = 'dwd_recordStoragePage';
         $fieldCode = '<div class="input-group">
-            <input type="text" class="form-control" name="tx_scheduler[' . $fieldID . ']" id="' . $fieldID . '" value="' . $taskInfo[$fieldID] . '" size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStoragePage', 'openweatherapi') . ' --->"/>
+            <input type="text" class="form-control" name="tx_scheduler[' . $fieldID . ']" id="' . $fieldID . '" value="' . $taskInfo[$fieldID] . '" size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStoragePage', 'openweatherapi') . '"/>
         </div>';
         $additionalFields[$fieldID] = [
             'code' => $fieldCode,
@@ -206,7 +207,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
 
             if (empty($value) && in_array($fieldName, $this->requiredFields, true)) {
                 $isValid = false;
-                $this->addMessage('Field: ' . $fieldName . ' must not be empty', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
+                $this->addMessage('Field: ' . $fieldName . ' must not be empty', ContextualFeedbackSeverity::ERROR);
             } else {
                 $submittedData[$fieldName] = $value;
             }

@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
@@ -81,7 +82,6 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
         UriBuilder $uriBuilder,
         PageRenderer $pageRenderer
     ) {
-        //$this->countryRepository = $countryRepository;
         $this->countryProvider = $countryProvider;
         $this->uriBuilder = $uriBuilder;
         $this->pageRenderer = $pageRenderer;
@@ -226,7 +226,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
             $value = is_string($field) ? trim($field) : $field;
             if (empty($value) && in_array($fieldName, $this->requiredFields, true)) {
                 $isValid = false;
-                $this->addMessage('Field: ' . $fieldName . ' can not be empty', \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
+                $this->addMessage('Field: ' . $fieldName . ' can not be empty', ContextualFeedbackSeverity::ERROR);
             } else {
                 $submittedData[$fieldName] = $value;
             }
@@ -262,21 +262,21 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         if ($response->getStatusCode() === 401) {
             $this->addMessage(
                 WeatherUtility::translate('message.api_response_401', 'openweatherapi'),
-                \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
             return false;
         }
         if ($response->getStatusCode() === 404) {
             $this->addMessage(
                 WeatherUtility::translate('message.api_code_404', 'openweatherapi'),
-                \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
             return false;
         }
         if ($response->getStatusCode() !== 200) {
             $this->addMessage(
                 WeatherUtility::translate('message.api_response_null', 'openweatherapi'),
-                \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
             return false;
         }
@@ -293,14 +293,14 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
             case '404':
                 $this->addMessage(
                     WeatherUtility::translate('message.api_code_404', 'openweatherapi'),
-                    \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 );
                 return false;
             default:
                 $this->addMessage(sprintf(
                     WeatherUtility::translate('message.api_code_none', 'openweatherapi'),
                     json_encode($responseClass)
-                ), \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR);
+                ), ContextualFeedbackSeverity::ERROR);
                 return false;
         }
     }
@@ -343,7 +343,6 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
             ->createFromUserPreferences($GLOBALS['BE_USER']);
         /** @var Country[] $countries */
         $countries = $this->countryProvider->getAll();
-        //debug($countries);die;
         $options = [];
         foreach ($countries as $country) {
             $options[] = sprintf(

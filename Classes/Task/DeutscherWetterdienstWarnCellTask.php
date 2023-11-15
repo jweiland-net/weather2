@@ -14,16 +14,11 @@ namespace JWeiland\Weather2\Task;
 use JWeiland\Weather2\Utility\WeatherUtility;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LogLevel;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Http\RequestFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * Fetch warn cells
  */
-class DeutscherWetterdienstWarnCellTask extends AbstractTask
+class DeutscherWetterdienstWarnCellTask extends WeatherAbstractTask
 {
     public const API_URL = 'https://www.dwd.de/DE/leistungen/opendata/help/warnungen/cap_warncellids_csv.csv?__blob=publicationFile&v=3';
 
@@ -32,7 +27,7 @@ class DeutscherWetterdienstWarnCellTask extends AbstractTask
      */
     public function execute(): bool
     {
-        $response = GeneralUtility::makeInstance(RequestFactory::class)->request($this::API_URL);
+        $response = $this->getRequestFactory()->request($this::API_URL);
         if (!$this->checkResponse($response)) {
             return false;
         }
@@ -42,7 +37,7 @@ class DeutscherWetterdienstWarnCellTask extends AbstractTask
 
     protected function processResponse(ResponseInterface $response): void
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+        $connection = $this->getConnectionPool()
             ->getConnectionForTable('tx_weather2_domain_model_dwdwarncell');
 
         $rawRows = explode(PHP_EOL, (string)$response->getBody());
@@ -69,7 +64,7 @@ class DeutscherWetterdienstWarnCellTask extends AbstractTask
             }
         }
 
-        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler = $this->getDataHandler();
         $dataHandler->start($data, []);
         $dataHandler->process_datamap();
     }

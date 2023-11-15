@@ -14,20 +14,14 @@ namespace JWeiland\Weather2\Task;
 use JWeiland\Weather2\Domain\Model\CurrentWeather;
 use JWeiland\Weather2\Utility\WeatherUtility;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Http\RequestFactory;
-use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
-use TYPO3\CMS\Extbase\Service\CacheService;
-use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * OpenWeatherMapTask Class for Scheduler
  */
-class OpenWeatherMapTask extends AbstractTask
+class OpenWeatherMapTask extends WeatherAbstractTask
 {
     /**
      * Api request url
@@ -115,7 +109,7 @@ class OpenWeatherMapTask extends AbstractTask
     /**
      * @var PersistenceManager
      */
-    public $persistenceManager = '';
+    protected PersistenceManager $persistenceManager;
 
     /**
      * This method is the heart of the scheduler task. It will be fired if the scheduler
@@ -130,7 +124,7 @@ class OpenWeatherMapTask extends AbstractTask
         $logEntry[] = 'Date format: "m.d.Y - H:i:s"';
         $this->logger->info(sprintf(
             implode("\n", $logEntry),
-            date('m.d.Y - H:i:s', GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp')),
+            date('m.d.Y - H:i:s', $this->getContextHandler()->getPropertyFromAspect('date', 'timestamp')),
             json_encode($this)
         ));
 
@@ -144,7 +138,7 @@ class OpenWeatherMapTask extends AbstractTask
             $this->apiKey
         );
         try {
-            $response = GeneralUtility::makeInstance(RequestFactory::class)->request($this->url);
+            $response = $this->getRequestFactory()->request($this->url);
         } catch (\Throwable $exception) {
             $errorMessage = 'Exception while fetching data from API: ' . $exception->getMessage();
             $this->logger->error($errorMessage);
@@ -161,12 +155,12 @@ class OpenWeatherMapTask extends AbstractTask
         $this->responseClass = json_decode((string)$response->getBody());
         $this->logger->info(sprintf('Response class: %s', json_encode($this->responseClass)));
 
-        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
+        $this->persistenceManager = $this->getPersistenceManager();
         $this->persistenceManager->add($this->getCurrentWeatherInstanceForResponseClass($this->responseClass));
         $this->persistenceManager->persistAll();
 
         if (!empty($this->clearCache)) {
-            $cacheService = GeneralUtility::makeInstance(CacheService::class);
+            $cacheService = $this->getCacheService();
             $cacheService->clearPageCache(GeneralUtility::intExplode(',', $this->clearCache));
         }
 
@@ -295,7 +289,7 @@ class OpenWeatherMapTask extends AbstractTask
             return;
         }
 
-        $mail = GeneralUtility::makeInstance(MailMessage::class);
+        $mail = $this->getMailMessageHandler();
         $fromAddress = '';
         $fromName = '';
         if (MailUtility::getSystemFromAddress()) {
@@ -338,7 +332,7 @@ class OpenWeatherMapTask extends AbstractTask
 
     protected function removeOldRecordsFromDb(): void
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
+        $connection = $this->getConnectionPool()
             ->getConnectionForTable($this->dbExtTable);
 
         $connection->delete(
@@ -348,10 +342,5 @@ class OpenWeatherMapTask extends AbstractTask
                 'name' => $this->name,
             ]
         );
-    }
-
-    public function setPersistenceManager($persistenceManager)
-    {
-        $this->persistenceManager = $persistenceManager;
     }
 }
