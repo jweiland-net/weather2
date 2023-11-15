@@ -32,7 +32,7 @@ class WeatherAlertRepositoryTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->importDataSet(__DIR__ . '/../../Fixtures/tx_weather2_domain_model_weatheralert.xml');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/tx_weather2_domain_model_weatheralert.csv');
 
         $this->subject = GeneralUtility::makeInstance(WeatherAlertRepository::class);
     }

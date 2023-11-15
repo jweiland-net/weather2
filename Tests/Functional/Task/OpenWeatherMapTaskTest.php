@@ -14,17 +14,14 @@ namespace JWeiland\Weather2\Tests\Functional\Task;
 use GuzzleHttp\Psr7\Response;
 use JWeiland\Weather2\Domain\Model\CurrentWeather;
 use JWeiland\Weather2\Task\OpenWeatherMapTask;
+use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Stream;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
-use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 
 /**
  * Test case.
@@ -46,10 +43,7 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
      */
     protected $requestFactoryMock;
 
-    /**
-     * @var PersistenceManagerInterface|MockObject
-     */
-    protected $persistenceManagerMock;
+    private PersistenceManager $persistenceManagerMock;
 
     /**
      * @var OpenWeatherMapTask
@@ -63,8 +57,6 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        //$GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
 
         $this->stream = new Stream('php://temp', 'rw');
 
@@ -87,14 +79,19 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        GeneralUtility::setSingletonInstance(PersistenceManager::class, $this->persistenceManagerMock);
+
         // We have to use GM:makeInstance because of LoggerAwareInterface
-        $this->subject = GeneralUtility::makeInstance(OpenWeatherMapTask::class);
+        $this->subject = $this->getAccessibleMock(OpenWeatherMapTask::class, null, [], '', false);
         $this->subject->city = 'Filderstadt';
         $this->subject->apiKey = 'IHaveForgottenToAddOne';
         $this->subject->clearCache = '';
         $this->subject->country = 'Germany';
         $this->subject->recordStoragePage = 1;
         $this->subject->name = 'Filderstadt';
+
+        $loggerMock = $this->createMock(Logger::class);
+        $this->subject->setLogger($loggerMock);
     }
 
     protected function tearDown(): void
@@ -157,8 +154,7 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
             ->method('getStatusCode')
             ->willReturn(200);
 
-        $this->persistenceManagerMock
-            ->expects(self::once())
+        $this->persistenceManagerMock->expects(self::once())
             ->method('add')
             ->with(self::callback(static function (CurrentWeather $currentWeather) {
                 return $currentWeather->getName() === 'Filderstadt'

@@ -31,7 +31,7 @@ class DwdWarnCellRepositoryTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->importDataSet(__DIR__ . '/../../Fixtures/tx_weather2_domain_model_dwdwarncell.xml');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/tx_weather2_domain_model_dwdwarncell.csv');
 
         $this->subject = GeneralUtility::makeInstance(DwdWarnCellRepository::class);
     }
