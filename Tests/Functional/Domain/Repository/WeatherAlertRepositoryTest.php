@@ -26,7 +26,9 @@ class WeatherAlertRepositoryTest extends FunctionalTestCase
      */
     protected $subject;
 
-    protected array $testExtensionsToLoad = ['typo3conf/ext/weather2'];
+    protected array $testExtensionsToLoad = [
+        'jweiland/weather2'
+    ];
 
     protected function setUp(): void
     {
