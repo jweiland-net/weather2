@@ -19,26 +19,16 @@ use JWeiland\Weather2\Utility\WeatherUtility;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\Exception;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
-use TYPO3\CMS\Extbase\Service\CacheService;
-use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * DeutscherWetterdienstTask Class for Scheduler
  */
-class DeutscherWetterdienstTask extends AbstractTask
+class DeutscherWetterdienstTask extends WeatherAbstractTask
 {
     public const API_URL = 'https://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json';
-
-    /**
-     * @var ObjectManager
-     */
-    protected $objectManager;
 
     /**
      * @var string
@@ -95,9 +85,8 @@ class DeutscherWetterdienstTask extends AbstractTask
      */
     public function execute(): bool
     {
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->dwdWarnCellRepository = $this->objectManager->get(DwdWarnCellRepository::class);
-        $response = GeneralUtility::makeInstance(RequestFactory::class)->request(self::API_URL);
+        $this->dwdWarnCellRepository = $this->getDwdWarnCellRepository();
+        $response = $this->getRequestFactory()->request(self::API_URL);
         if (!$this->checkResponse($response)) {
             return false;
         }
@@ -139,7 +128,7 @@ class DeutscherWetterdienstTask extends AbstractTask
      */
     protected function handleResponse(): void
     {
-        $this->persistenceManager = $this->objectManager->get(PersistenceManager::class);
+        $this->persistenceManager = $this->getPersistenceManager();
         if (array_key_exists('warnings', $this->decodedResponse)) {
             $this->processDwdItems($this->decodedResponse['warnings'], false);
         }
@@ -150,7 +139,7 @@ class DeutscherWetterdienstTask extends AbstractTask
         $this->persistenceManager->persistAll();
 
         if (!empty($this->clearCache)) {
-            $cacheService = GeneralUtility::makeInstance(CacheService::class);
+            $cacheService = $this->getCacheService();
             $cacheService->clearPageCache(GeneralUtility::intExplode(',', $this->clearCache));
         }
     }
@@ -183,7 +172,7 @@ class DeutscherWetterdienstTask extends AbstractTask
      */
     protected function getUidOfAlert(array $alert): int
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->dbExtTable);
+        $connection = $this->getConnectionPool()->getConnectionForTable($this->dbExtTable);
         $identicalAlert = $connection
             ->select(
                 ['uid'],
@@ -260,7 +249,8 @@ class DeutscherWetterdienstTask extends AbstractTask
     protected function getDwdWarnCell(string $warnCellId): DwdWarnCell
     {
         if (!array_key_exists($warnCellId, $this->warnCellRecords)) {
-            $this->warnCellRecords[$warnCellId] = $this->dwdWarnCellRepository->findOneByWarnCellId($warnCellId);
+            $this->warnCellRecords[$warnCellId] = $this->dwdWarnCellRepository
+                ->findOneByWarnCellId($warnCellId);
         }
         return $this->warnCellRecords[$warnCellId];
     }
@@ -270,12 +260,16 @@ class DeutscherWetterdienstTask extends AbstractTask
      */
     protected function removeOldAlertsFromDb(): void
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->dbExtTable);
-        $queryBuilder
-            ->delete($this->dbExtTable);
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable($this->dbExtTable);
+        $queryBuilder->delete($this->dbExtTable);
+
         if ($this->keepRecords) {
-            $queryBuilder->where($queryBuilder->expr()->notIn('uid', $this->keepRecords));
+            $queryBuilder->where($queryBuilder
+                ->expr()
+                ->notIn('uid', $this->keepRecords)
+            );
         }
-        $queryBuilder->execute();
+
+        $queryBuilder->executeStatement();
     }
 }

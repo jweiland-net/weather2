@@ -28,13 +28,14 @@ class WeatherAlertDataProvider implements NumberWithIconDataProviderInterface
 
     private function getWeatherAlerts(): array
     {
-        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tx_weather2_domain_model_weatheralert');
+        $queryBuilder = $this->getConnectionPool()
+            ->getQueryBuilderForTable('tx_weather2_domain_model_weatheralert');
         $queryBuilder->getRestrictions()->removeAll();
         $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $statement = $queryBuilder
             ->select('*')
             ->from('tx_weather2_domain_model_weatheralert')
-            ->execute();
+            ->executeQuery();
 
         $weatherAlerts = [];
         while ($weatherAlert = $statement->fetchAssociative()) {

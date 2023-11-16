@@ -1,16 +1,16 @@
 <?php
-if (!defined('TYPO3_MODE')) {
+if (!defined('TYPO3')) {
     die('Access denied.');
 }
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'JWeiland.weather2',
+    'Weather2',
     'Currentweather',
     'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:plugin.currentweather.title'
 );
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'JWeiland.weather2',
+    'Weather2',
     'Weatheralert',
     'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:plugin.weatheralert.title'
 );

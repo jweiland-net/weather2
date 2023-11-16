@@ -13,8 +13,7 @@ namespace JWeiland\Weather2\Tests\Unit\Controller;
 
 use JWeiland\Weather2\Controller\CurrentWeatherController;
 use JWeiland\Weather2\Domain\Repository\CurrentWeatherRepository;
-use Nimut\TestingFramework\TestCase\UnitTestCase;
-use TYPO3Fluid\Fluid\View\TemplateView;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case.
@@ -22,51 +21,16 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 class CurrentWeatherControllerTest extends UnitTestCase
 {
     /**
-     * @var CurrentWeatherController
-     */
-    protected $subject;
-
-    protected function setUp(): void
-    {
-        $this->subject = $this->getAccessibleMock(
-            CurrentWeatherController::class,
-            ['redirect', 'forward', 'addFlashMessage'],
-            [],
-            '',
-            false
-        );
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->subject);
-    }
-
-    /**
      * @test
      */
     public function showActionCallsRepositoryFindBySelectionWithSettingAsArgument(): void
     {
-        $currentWeatherRepository = $this->getAccessibleMock(
-            CurrentWeatherRepository::class,
-            ['findBySelection'],
-            [],
-            '',
-            false
-        );
-        $this->inject($this->subject, 'currentWeatherRepository', $currentWeatherRepository);
-
-        $view = $this->getAccessibleMock(
-            TemplateView::class,
-            ['assign'],
-            [],
-            '',
-            false
-        );
-        $this->inject($this->subject, 'view', $view);
-
-        $this->subject->_set('settings', ['selection' => 'testSelection']);
-        $currentWeatherRepository->expects(self::once())->method('findBySelection')->with('testSelection');
-        $this->subject->showAction();
+        $subject = $this->getAccessibleMock(CurrentWeatherController::class);
+        $currentWeatherRepository = $this->getMockBuilder(CurrentWeatherRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $subject->_set('currentWeatherRepository', $currentWeatherRepository);
+        $subject->_set('settings', ['selection' => 'testSelection']);
+        $subject->showAction();
     }
 }

@@ -1,54 +1,55 @@
-# Adapted from https://github.com/TYPO3GmbH/blog/blob/master/.github/workflows/ci.yml
-name: CI
+name: Test weather2 for TYPO3 12 LTS
 
-on: [pull_request]
+on:
+  pull_request:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  CGL:
+    name: Coding Style Check (TYPO3 Community CGL)
 
-    strategy:
-      fail-fast: false
-      matrix:
-        typo3: [^10.4, ^11.5]
-        php: ['7.4']
-        include:
-        - typo3: ^11.5
-          php: '8.0'
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Setup PHP ${{ matrix.php }}, with composer and extensions
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          extensions: mbstring, dom, zip, mysql
-
-      - name: Validate composer.json and composer.lock
-        run: composer validate
-
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache composer dependencies
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      - name: Install dependencies with typo3/cms-core:${{ matrix.typo3 }}
-        run: |
-          composer require typo3/cms-core:${{ matrix.typo3 }} --no-progress
-          git checkout composer.json
-      - name: php-cs-fixer
-        run: composer ci:php:fixer
+      - name: Composer
+        run: Build/Scripts/runTests.sh -t 12 -p 8.1 -s composerUpdate
 
       - name: Lint PHP
-        run: composer ci:php:lint
+        run: Build/Scripts/runTests.sh -t 12 -p 8.1 -s lint
+
+      - name: Validate code against CGL
+        run: Build/Scripts/runTests.sh -t 12 -p 8.1 -s cgl -n
+
+  testsuite:
+    name: PHP Unit and Functional Tests for TYPO3 Version 12 LTS
+
+    needs: CGL
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php:
+          - '8.1'
+          - '8.2'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Composer
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -t 12 -s composerUpdate
 
       - name: Unit Tests
-        run: composer ci:tests:unit
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -s unit
+
+      - name: Functional tests with mariadb
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -d mariadb -s functional
+
+      - name: Functional tests with postgres
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -d postgres -s functional
+
+      - name: Functional tests with sqlite
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -d sqlite -s functional

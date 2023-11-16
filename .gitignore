@@ -8,6 +8,9 @@
 docker-compose.yaml
 docker-compose.yml
 
+# Ignore environment files
+.env
+
 # Ignore temporary files (left by editors and OS)
 *~
 *.bak
@@ -34,3 +37,8 @@ nbproject
 
 # Ignore composer stuff
 /composer.lock
+
+# Ignore testing stuff
+/.Build
+/composer.json.orig
+/composer.json.testing

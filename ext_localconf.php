@@ -1,5 +1,5 @@
 <?php
-if (!defined('TYPO3_MODE')) {
+if (!defined('TYPO3')) {
     die('Access denied.');
 }
 
@@ -23,9 +23,6 @@ call_user_func(static function () {
         'title' => 'Get warn cell records from Deutscher Wetterdienst',
         'description' => 'Calls the Deutscher Wetterdienst api and saves warn cells into database. Required before using DeutscherWetterdienstTask!',
     ];
-
-    // Set logger to NULL in weather2 Tasks before serializing it to DB
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['weather2EmptyTaskLogger'] = \JWeiland\Weather2\Upgrade\EmptyTaskLoggerUpgrade::class;
 
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
         'Weather2',
@@ -63,9 +60,4 @@ call_user_func(static function () {
             ['source' => 'EXT:weather2/Resources/Public/Icons/' . $fileName]
         );
     }
-    $iconRegistry->registerIcon(
-        'ext-weather2',
-        \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-        ['source' => 'EXT:weather2/Resources/Public/Icons/Extension.svg']
-    );
 });

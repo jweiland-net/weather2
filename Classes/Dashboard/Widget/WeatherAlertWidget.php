@@ -17,20 +17,11 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 class WeatherAlertWidget implements WidgetInterface
 {
-    /**
-     * @var WidgetConfigurationInterface
-     */
-    private $configuration;
+    private WidgetConfigurationInterface $configuration;
 
-    /**
-     * @var StandaloneView
-     */
-    private $view;
+    private StandaloneView $view;
 
-    /**
-     * @var array
-     */
-    private $options = [];
+    private array $options = [];
 
     public function __construct(
         WidgetConfigurationInterface $configuration,

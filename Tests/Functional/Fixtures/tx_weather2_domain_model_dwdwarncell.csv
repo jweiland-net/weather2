@@ -1,0 +1,5 @@
+"tx_weather2_domain_model_dwdwarncell",,,,,,
+,"uid","pid","name","short_name","sign","warn_cell_id"
+,1,0,"Enzkreis und Stadt Pforzheim","PFX","BW","908236999"
+,2,0,"Stadt Stuttgart","SXX","BW","108111000"
+,3,0,"Kreis Tübingen","TUE","BW","108416000"

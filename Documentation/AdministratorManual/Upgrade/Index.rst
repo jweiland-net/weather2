@@ -7,6 +7,17 @@ Upgrade
 If you upgrade EXT:weather2 to a newer version, please read this section
 carefully!
 
+Update from 4.x to 5.0
+======================
+
+Add TYPO3 12 Compatibility
+Removed older version compatibility
+Removed dependency with EXT:static_info_tables
+Removed ObjectManager usage from scheduler tasks so after upgrading the
+extension its better to remove the old tasks and recreate the tasks. Because
+the old serialized version saved in the database.
+
+
 Update from 3.x to 4.0.0
 ========================
 

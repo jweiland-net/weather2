@@ -13,12 +13,13 @@ namespace JWeiland\Weather2\Task;
 
 use JWeiland\Weather2\Utility\WeatherUtility;
 use SJBR\StaticInfoTables\Domain\Model\Country;
-use SJBR\StaticInfoTables\Domain\Repository\CountryRepository;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Http\RequestFactory;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
@@ -33,6 +34,8 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
      * @var CountryRepository
      */
     protected $countryRepository;
+
+    protected CountryProvider $countryProvider;
 
     /**
      * @var UriBuilder
@@ -75,11 +78,11 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
     ];
 
     public function __construct(
-        CountryRepository $countryRepository,
+        CountryProvider $countryProvider,
         UriBuilder $uriBuilder,
         PageRenderer $pageRenderer
     ) {
-        $this->countryRepository = $countryRepository;
+        $this->countryProvider = $countryProvider;
         $this->uriBuilder = $uriBuilder;
         $this->pageRenderer = $pageRenderer;
     }
@@ -111,7 +114,6 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
                 FormEngine.browserUrl = ' . GeneralUtility::quoteJSvalue((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser')) . ';
              }'
         );
-        $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
 
         foreach ($this->insertFields as $fieldID) {
             if (empty($taskInfo[$fieldID])) {
@@ -134,8 +136,7 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
 
         $fieldID = 'recordStoragePage';
         $fieldCode = '<div class="input-group"><input type="text" class="form-control" name="tx_scheduler[recordStoragePage]" id="' . $fieldID . '" value="' . $taskInfo['recordStoragePage'] . '"
-size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage_page', 'openweatherapi') . ' --->"/><span class="input-group-btn"><a href="#" class="btn btn-default" onclick="TYPO3.FormEngine.openPopupWindow(\'db\',\'tx_scheduler[recordStoragePage]|||pages|\'); return false;">' .
-            WeatherUtility::translate('buttons.record_storage_page', 'openweatherapi') . '</a></span></div>';
+size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage_page', 'openweatherapi') . '"/></div>';
 
         $additionalFields[$fieldID] = [
             'code' => $fieldCode,
@@ -225,7 +226,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
             $value = is_string($field) ? trim($field) : $field;
             if (empty($value) && in_array($fieldName, $this->requiredFields, true)) {
                 $isValid = false;
-                $this->addMessage('Field: ' . $fieldName . ' can not be empty', AbstractMessage::ERROR);
+                $this->addMessage('Field: ' . $fieldName . ' can not be empty', ContextualFeedbackSeverity::ERROR);
             } else {
                 $submittedData[$fieldName] = $value;
             }
@@ -261,21 +262,21 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         if ($response->getStatusCode() === 401) {
             $this->addMessage(
                 WeatherUtility::translate('message.api_response_401', 'openweatherapi'),
-                AbstractMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
             return false;
         }
         if ($response->getStatusCode() === 404) {
             $this->addMessage(
                 WeatherUtility::translate('message.api_code_404', 'openweatherapi'),
-                AbstractMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
             return false;
         }
         if ($response->getStatusCode() !== 200) {
             $this->addMessage(
                 WeatherUtility::translate('message.api_response_null', 'openweatherapi'),
-                AbstractMessage::ERROR
+                ContextualFeedbackSeverity::ERROR
             );
             return false;
         }
@@ -287,19 +288,19 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
                     WeatherUtility::translate('message.api_code_200', 'openweatherapi'),
                     $responseClass->name,
                     $responseClass->sys->country
-                ), AbstractMessage::INFO);
+                ), ContextualFeedbackSeverity::INFO);
                 return true;
             case '404':
                 $this->addMessage(
                     WeatherUtility::translate('message.api_code_404', 'openweatherapi'),
-                    AbstractMessage::ERROR
+                    ContextualFeedbackSeverity::ERROR
                 );
                 return false;
             default:
                 $this->addMessage(sprintf(
                     WeatherUtility::translate('message.api_code_none', 'openweatherapi'),
                     json_encode($responseClass)
-                ), AbstractMessage::ERROR);
+                ), ContextualFeedbackSeverity::ERROR);
                 return false;
         }
     }
@@ -338,18 +339,19 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
      */
     private function getCountryCodesOptionsHtml(string $selected = ''): string
     {
+        $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)
+            ->createFromUserPreferences($GLOBALS['BE_USER']);
         /** @var Country[] $countries */
-        $countries = $this->countryRepository->findAll();
-
+        $countries = $this->countryProvider->getAll();
         $options = [];
         foreach ($countries as $country) {
             $options[] = sprintf(
                 '<option%s value="%s">%s (%s)</option>',
                 // check 2 and 3 digit country code for compatibility reasons
-                $selected === $country->getIsoCodeA2() || $selected === $country->getIsoCodeA3() ? ' selected' : '',
-                $country->getIsoCodeA2(),
-                $country->getNameLocalized(),
-                $country->getIsoCodeA2()
+                $selected === $country->getAlpha2IsoCode() || $selected === $country->getAlpha3IsoCode() ? ' selected' : '',
+                $country->getAlpha2IsoCode(),
+                $languageService->sL($country->getLocalizedNameLabel()),
+                $country->getAlpha2IsoCode()
             );
         }
 

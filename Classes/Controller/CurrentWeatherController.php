@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace JWeiland\Weather2\Controller;
 
 use JWeiland\Weather2\Domain\Repository\CurrentWeatherRepository;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
@@ -32,7 +33,7 @@ class CurrentWeatherController extends ActionController
     /**
      * Action to display the newest CurrentWeather model
      */
-    public function showAction(): void
+    public function showAction(): ResponseInterface
     {
         $this->view->assign(
             'currentWeather',
@@ -40,5 +41,6 @@ class CurrentWeatherController extends ActionController
                 $this->settings['selection'] ?? ''
             )
         );
+        return $this->htmlResponse();
     }
 }

@@ -12,8 +12,8 @@ declare(strict_types=1);
 namespace JWeiland\Weather2\Tests\Functional\Domain\Repository;
 
 use JWeiland\Weather2\Domain\Repository\DwdWarnCellRepository;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case.
@@ -25,19 +25,15 @@ class DwdWarnCellRepositoryTest extends FunctionalTestCase
      */
     protected $subject;
 
-    /**
-     * @var string[]
-     */
-    protected $testExtensionsToLoad = [
-        'typo3conf/ext/weather2',
-        'typo3conf/ext/static_info_tables',
+    protected array $testExtensionsToLoad = [
+        'jweiland/weather2'
     ];
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->importDataSet(__DIR__ . '/../../Fixtures/tx_weather2_domain_model_dwdwarncell.xml');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/tx_weather2_domain_model_dwdwarncell.csv');
 
         $this->subject = GeneralUtility::makeInstance(DwdWarnCellRepository::class);
     }

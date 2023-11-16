@@ -2,7 +2,7 @@
  * Module: TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule
  * Object that replace pages_ID with ID
  */
-define('TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule', ['jquery', 'jquery/autocomplete'], function ($) {
+define('TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule', ['jquery'], function ($) {
   $(document).ready(function () {
     $('#dwd_recordStoragePage').change(function () {
       $(this).val($(this).val().replace(/[^0-9]/g, ''));

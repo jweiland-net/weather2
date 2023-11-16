@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace JWeiland\Weather2\Controller;
 
 use JWeiland\Weather2\Domain\Repository\WeatherAlertRepository;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
@@ -32,7 +33,7 @@ class WeatherAlertController extends ActionController
     /**
      * Action to display the newest CurrentAlert model
      */
-    public function showAction(): void
+    public function showAction(): ResponseInterface
     {
         $this->view->assign(
             'weatherAlerts',
@@ -43,5 +44,6 @@ class WeatherAlertController extends ActionController
                 (bool)($this->settings['showPreliminaryInformation'] ?? false)
             )
         );
+        return $this->htmlResponse();
     }
 }

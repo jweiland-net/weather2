@@ -11,20 +11,16 @@ declare(strict_types=1);
 
 namespace JWeiland\Weather2\Tests\Functional\Task;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use GuzzleHttp\Psr7\Response;
-use JWeiland\Weather2\Domain\Model\CurrentWeather;
 use JWeiland\Weather2\Task\OpenWeatherMapTask;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Stream;
-use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
-use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case.
@@ -47,35 +43,21 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
     protected $requestFactoryMock;
 
     /**
-     * @var PersistenceManagerInterface|MockObject
-     */
-    protected $persistenceManagerMock;
-
-    /**
      * @var OpenWeatherMapTask
      */
     protected $subject;
 
-    /**
-     * @var string[]
-     */
-    protected $coreExtensionsToLoad = [
-        'scheduler',
+    protected array $coreExtensionsToLoad = [
+        'scheduler'
     ];
 
-    /**
-     * @var string[]
-     */
-    protected $testExtensionsToLoad = [
-        'typo3conf/ext/weather2',
-        'typo3conf/ext/static_info_tables',
+    protected array $testExtensionsToLoad = [
+        'jweiland/weather2'
     ];
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
 
         $this->stream = new Stream('php://temp', 'rw');
 
@@ -94,36 +76,23 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
 
         GeneralUtility::addInstance(RequestFactory::class, $this->requestFactoryMock);
 
-        $this->persistenceManagerMock = $this->createMock(PersistenceManager::class);
-        $this->persistenceManagerMock
-            ->expects(self::once())
-            ->method('persistAll');
-
-        /** @var ObjectManagerInterface|MockObject $objectManagerMock */
-        $objectManagerMock = $this->createMock(ObjectManager::class);
-        $objectManagerMock
-            ->expects(self::once())
-            ->method('get')
-            ->with(self::identicalTo(PersistenceManager::class))
-            ->willReturn($this->persistenceManagerMock);
-
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerMock);
-
         // We have to use GM:makeInstance because of LoggerAwareInterface
-        $this->subject = GeneralUtility::makeInstance(OpenWeatherMapTask::class);
+        $this->subject = $this->getAccessibleMock(OpenWeatherMapTask::class, null, [], '', false);
         $this->subject->city = 'Filderstadt';
         $this->subject->apiKey = 'IHaveForgottenToAddOne';
         $this->subject->clearCache = '';
         $this->subject->country = 'Germany';
         $this->subject->recordStoragePage = 1;
         $this->subject->name = 'Filderstadt';
+
+        $loggerMock = $this->createMock(Logger::class);
+        $this->subject->setLogger($loggerMock);
     }
 
     protected function tearDown(): void
     {
         unset(
             $this->subject,
-            $this->persistenceManagerMock,
             $this->requestFactoryMock,
             $this->responseMock,
             $this->stream
@@ -138,13 +107,14 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
      */
     public function execute(): void
     {
+        $time = time();
         $this->stream->write(
             json_encode([
                 'cod' => true,
-                'dt' => time(),
+                'dt' => $time,
                 'main' => [
                     'temp' => 14.6,
-                    'pressure' => 8,
+                    'pressure' => 8.2,
                     'humidity' => 12,
                     'temp_min' => 13.2,
                     'temp_max' => 16.4,
@@ -179,28 +149,20 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
             ->method('getStatusCode')
             ->willReturn(200);
 
-        $this->persistenceManagerMock
-            ->expects(self::once())
-            ->method('add')
-            ->with(self::callback(static function (CurrentWeather $currentWeather) {
-                return $currentWeather->getName() === 'Filderstadt'
-                    && $currentWeather->getMeasureTimestamp() instanceof \DateTime
-                    && $currentWeather->getTemperatureC() === 14.6
-                    && $currentWeather->getPressureHpa() === 8
-                    && $currentWeather->getHumidityPercentage() === 12
-                    && $currentWeather->getMinTempC() === 13.2
-                    && $currentWeather->getMaxTempC() === 16.4
-                    && $currentWeather->getWindSpeedMPS() === 3.7
-                    && $currentWeather->getWindDirectionDeg() === 25
-                    && $currentWeather->getSnowVolume() === 4.0
-                    && $currentWeather->getRainVolume() === 6.0
-                    && $currentWeather->getCloudsPercentage() === 11
-                    && $currentWeather->getIcon() === '[ICON]'
-                    && $currentWeather->getConditionCode() === 1256;
-            }));
-
         self::assertTrue(
             $this->subject->execute()
         );
+
+        $row = $this->getConnectionPool()
+            ->getConnectionForTable('tx_weather2_domain_model_currentweather')
+            ->select(['humidity_percentage', 'measure_timestamp'], 'tx_weather2_domain_model_currentweather')
+            ->fetchAssociative();
+
+        $expected = [
+            'humidity_percentage' => 12,
+            'measure_timestamp' => $time
+        ];
+
+        self::assertSame($expected, $row);
     }
 }

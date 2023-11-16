@@ -15,10 +15,10 @@ use JWeiland\Weather2\Domain\Model\DwdWarnCell;
 use JWeiland\Weather2\Domain\Repository\DwdWarnCellRepository;
 use JWeiland\Weather2\Utility\WeatherUtility;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
@@ -98,14 +98,14 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
 
         $fieldID = 'dwd_selectedWarnCells';
         if ($this->areRegionsAvailable()) {
-            $fieldCode = '<input type="text" class="form-control ui-autocomplete-input" name="dwd_warn_cell_search" id="dwd_warn_cell_search" ' .
+            $fieldCode = '<input type="text" class="form-control" name="dwd_warn_cell_search" id="dwd_warn_cell_search" ' .
                 'placeholder="e.g. Pforzheim" size="30" /><br />' . $this->getHtmlForSelectedRegions($taskInfo);
         } else {
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
                 WeatherUtility::translate('message.noDwdWarnCellsFound', 'deutscherwetterdienst'),
                 '',
-                AbstractMessage::WARNING
+                ContextualFeedbackSeverity::WARNING
             );
             $fieldCode = $this->addFlashMessage($flashMessage, true);
         }
@@ -116,9 +116,9 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
         ];
 
         $fieldID = 'dwd_recordStoragePage';
-        $fieldCode = '<div class="input-group"><input type="text" class="form-control" name="tx_scheduler[' . $fieldID . ']" id="' . $fieldID . '" value="' . $taskInfo[$fieldID] . '"
-size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStoragePage', 'openweatherapi') . ' --->"/><span class="input-group-btn"><a href="#" class="btn btn-default" onclick="TYPO3.FormEngine.openPopupWindow(\'db\',\'tx_scheduler[dwd_recordStoragePage]|||pages|\'); return false;">' .
-            WeatherUtility::translate('buttons.recordStoragePage', 'deutscherwetterdienst') . '</a></span></div>';
+        $fieldCode = '<div class="input-group">
+            <input type="text" class="form-control" name="tx_scheduler[' . $fieldID . ']" id="' . $fieldID . '" value="' . $taskInfo[$fieldID] . '" size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStoragePage', 'openweatherapi') . '"/>
+        </div>';
         $additionalFields[$fieldID] = [
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_deutscherwetterdienst.xlf:recordStoragePage',
@@ -142,6 +142,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
         );
         $this->pageRenderer->addCssFile('EXT:weather2/Resources/Public/Css/dwdScheduler.css');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineValidation');
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Weather2/jquery.autocomplete');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule');
         $popupSettings = [
             'PopupWindow' => [
@@ -159,7 +160,6 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
                 FormEngine.browserUrl = ' . GeneralUtility::quoteJSvalue((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser')) . ';
              }'
         );
-        $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
     }
 
     protected function areRegionsAvailable(): bool
@@ -207,7 +207,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.recordStorageP
 
             if (empty($value) && in_array($fieldName, $this->requiredFields, true)) {
                 $isValid = false;
-                $this->addMessage('Field: ' . $fieldName . ' must not be empty', AbstractMessage::ERROR);
+                $this->addMessage('Field: ' . $fieldName . ' must not be empty', ContextualFeedbackSeverity::ERROR);
             } else {
                 $submittedData[$fieldName] = $value;
             }
