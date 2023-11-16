@@ -14,6 +14,7 @@ namespace JWeiland\Weather2\Task;
 use JWeiland\Weather2\Domain\Model\CurrentWeather;
 use JWeiland\Weather2\Utility\WeatherUtility;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -107,11 +108,6 @@ class OpenWeatherMapTask extends WeatherAbstractTask
     public string $emailReceiver = '';
 
     /**
-     * @var PersistenceManager
-     */
-    protected PersistenceManager $persistenceManager;
-
-    /**
      * This method is the heart of the scheduler task. It will be fired if the scheduler
      * gets executed
      */
@@ -155,9 +151,8 @@ class OpenWeatherMapTask extends WeatherAbstractTask
         $this->responseClass = json_decode((string)$response->getBody());
         $this->logger->info(sprintf('Response class: %s', json_encode($this->responseClass)));
 
-        $this->persistenceManager = $this->getPersistenceManager();
-        $this->persistenceManager->add($this->getCurrentWeatherInstanceForResponseClass($this->responseClass));
-        $this->persistenceManager->persistAll();
+        // Changing the data save to query builder
+        $this->saveCurrentWeatherInstanceForResponseClass($this->responseClass);
 
         if (!empty($this->clearCache)) {
             $cacheService = $this->getCacheService();
@@ -220,63 +215,60 @@ class OpenWeatherMapTask extends WeatherAbstractTask
         }
     }
 
-    /**
-     * Returns filled CurrentWeather instance
-     *
-     * @param \stdClass $responseClass
-     * @return CurrentWeather
-     */
-    private function getCurrentWeatherInstanceForResponseClass(\stdClass $responseClass): CurrentWeather
+    public function saveCurrentWeatherInstanceForResponseClass(\stdClass $responseClass): int
     {
-        $currentWeather = new CurrentWeather();
-        $currentWeather->setPid($this->recordStoragePage);
-        $currentWeather->setName($this->name);
+        $weatherObjectArray = [
+            'pid' => $this->recordStoragePage,
+            'name' => $this->name,
+        ];
 
         if (isset($responseClass->main->temp)) {
-            $currentWeather->setTemperatureC($responseClass->main->temp);
+            $weatherObjectArray['temperature_c'] = $responseClass->main->temp;
         }
         if (isset($responseClass->main->pressure)) {
-            $currentWeather->setPressureHpa($responseClass->main->pressure);
+            $weatherObjectArray['pressure_hpa'] = $responseClass->main->pressure;
         }
         if (isset($responseClass->main->humidity)) {
-            $currentWeather->setHumidityPercentage($responseClass->main->humidity);
+            $weatherObjectArray['humidity_percentage'] = $responseClass->main->humidity;
         }
         if (isset($responseClass->main->temp_min)) {
-            $currentWeather->setMinTempC($responseClass->main->temp_min);
+            $weatherObjectArray['min_temp_c'] = $responseClass->main->temp_min;
         }
         if (isset($responseClass->main->temp_max)) {
-            $currentWeather->setMaxTempC($responseClass->main->temp_max);
+            $weatherObjectArray['max_temp_c'] = $responseClass->main->temp_max;
         }
         if (isset($responseClass->wind->speed)) {
-            $currentWeather->setWindSpeedMPS($responseClass->wind->speed);
+            $weatherObjectArray['wind_speed_m_p_s'] = $responseClass->wind->speed;
         }
         if (isset($responseClass->wind->deg)) {
-            $currentWeather->setWindDirectionDeg($responseClass->wind->deg);
+            $weatherObjectArray['wind_speed_m_p_s'] = $responseClass->wind->deg;
         }
         if (isset($responseClass->rain)) {
             $rain = (array)$responseClass->rain;
-            $currentWeather->setRainVolume((float)($rain['1h'] ?? 0.0));
+            $weatherObjectArray['rain_volume'] = (float)($rain['1h'] ?? 0.0);
         }
         if (isset($responseClass->snow)) {
             $snow = (array)$responseClass->snow;
-            $currentWeather->setSnowVolume((float)($snow['1h'] ?? 0.0));
+            $weatherObjectArray['snow_volume'] = (float)($snow['1h'] ?? 0.0);
         }
         if (isset($responseClass->clouds->all)) {
-            $currentWeather->setCloudsPercentage($responseClass->clouds->all);
+            $weatherObjectArray['clouds_percentage'] = $responseClass->clouds->all;
         }
         if (isset($responseClass->dt)) {
-            $measureTimestamp = new \DateTime();
-            $measureTimestamp->setTimestamp($responseClass->dt);
-            $currentWeather->setMeasureTimestamp($measureTimestamp);
+            $weatherObjectArray['measure_timestamp'] = $responseClass->dt;
         }
         if (isset($responseClass->weather[0]->icon)) {
-            $currentWeather->setIcon($responseClass->weather[0]->icon);
+            $weatherObjectArray['icon'] = $responseClass->weather[0]->icon;
         }
         if (isset($responseClass->weather[0]->id)) {
-            $currentWeather->setConditionCode($responseClass->weather[0]->id);
+            $weatherObjectArray['condition_code'] = $responseClass->weather[0]->id;
         }
 
-        return $currentWeather;
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tx_weather2_domain_model_currentweather');
+        return $queryBuilder
+            ->insert('tx_weather2_domain_model_currentweather')
+            ->values($weatherObjectArray)
+            ->executeStatement();
     }
 
     /**

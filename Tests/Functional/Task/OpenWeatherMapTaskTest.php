@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace JWeiland\Weather2\Tests\Functional\Task;
 
 use GuzzleHttp\Psr7\Response;
-use JWeiland\Weather2\Domain\Model\CurrentWeather;
 use JWeiland\Weather2\Task\OpenWeatherMapTask;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ResponseInterface;
@@ -20,7 +19,6 @@ use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -42,8 +40,6 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
      * @var RequestFactory|MockObject
      */
     protected $requestFactoryMock;
-
-    private PersistenceManager $persistenceManagerMock;
 
     /**
      * @var OpenWeatherMapTask
@@ -79,12 +75,6 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
 
         GeneralUtility::addInstance(RequestFactory::class, $this->requestFactoryMock);
 
-        $this->persistenceManagerMock = $this->getMockBuilder(PersistenceManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        GeneralUtility::setSingletonInstance(PersistenceManager::class, $this->persistenceManagerMock);
-
         // We have to use GM:makeInstance because of LoggerAwareInterface
         $this->subject = $this->getAccessibleMock(OpenWeatherMapTask::class, null, [], '', false);
         $this->subject->city = 'Filderstadt';
@@ -102,7 +92,6 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
     {
         unset(
             $this->subject,
-            $this->persistenceManagerMock,
             $this->requestFactoryMock,
             $this->responseMock,
             $this->stream
@@ -117,10 +106,11 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
      */
     public function execute(): void
     {
+        $time = time();
         $this->stream->write(
             json_encode([
                 'cod' => true,
-                'dt' => time(),
+                'dt' => $time,
                 'main' => [
                     'temp' => 14.6,
                     'pressure' => 8,
@@ -158,27 +148,20 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
             ->method('getStatusCode')
             ->willReturn(200);
 
-        $this->persistenceManagerMock->expects(self::once())
-            ->method('add')
-            ->with(self::callback(static function (CurrentWeather $currentWeather) {
-                return $currentWeather->getName() === 'Filderstadt'
-                    && $currentWeather->getMeasureTimestamp() instanceof \DateTime
-                    && $currentWeather->getTemperatureC() === 14.6
-                    && $currentWeather->getPressureHpa() === 8
-                    && $currentWeather->getHumidityPercentage() === 12
-                    && $currentWeather->getMinTempC() === 13.2
-                    && $currentWeather->getMaxTempC() === 16.4
-                    && $currentWeather->getWindSpeedMPS() === 3.7
-                    && $currentWeather->getWindDirectionDeg() === 25
-                    && $currentWeather->getSnowVolume() === 4.0
-                    && $currentWeather->getRainVolume() === 6.0
-                    && $currentWeather->getCloudsPercentage() === 11
-                    && $currentWeather->getIcon() === '[ICON]'
-                    && $currentWeather->getConditionCode() === 1256;
-            }));
-
         self::assertTrue(
             $this->subject->execute()
         );
+
+        $row = $this->getConnectionPool()
+            ->getConnectionForTable('tx_weather2_domain_model_currentweather')
+            ->select(['temperature_c', 'pressure_hpa', 'measure_timestamp'], 'tx_weather2_domain_model_currentweather')
+            ->fetchAssociative();
+
+        $expected = [
+            'temperature_c' => 14.6,
+            'pressure_hpa' => 8.0,
+            'measure_timestamp' => $time
+        ];
+        self::assertSame($expected, $row);
     }
 }

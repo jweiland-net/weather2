@@ -24,9 +24,6 @@ call_user_func(static function () {
         'description' => 'Calls the Deutscher Wetterdienst api and saves warn cells into database. Required before using DeutscherWetterdienstTask!',
     ];
 
-    // Set logger to NULL in weather2 Tasks before serializing it to DB
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['weather2EmptyTaskLogger'] = \JWeiland\Weather2\Upgrade\EmptyTaskLoggerUpgrade::class;
-
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
         'Weather2',
         'Currentweather',
