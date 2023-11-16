@@ -113,7 +113,7 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
                 'dt' => $time,
                 'main' => [
                     'temp' => 14.6,
-                    'pressure' => 8,
+                    'pressure' => 8.0,
                     'humidity' => 12,
                     'temp_min' => 13.2,
                     'temp_max' => 16.4,
