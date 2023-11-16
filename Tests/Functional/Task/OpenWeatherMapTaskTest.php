@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Weather2\Tests\Functional\Task;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use GuzzleHttp\Psr7\Response;
 use JWeiland\Weather2\Task\OpenWeatherMapTask;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -113,7 +114,7 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
                 'dt' => $time,
                 'main' => [
                     'temp' => 14.6,
-                    'pressure' => 8.0,
+                    'pressure' => 8.2,
                     'humidity' => 12,
                     'temp_min' => 13.2,
                     'temp_max' => 16.4,
@@ -154,14 +155,14 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
 
         $row = $this->getConnectionPool()
             ->getConnectionForTable('tx_weather2_domain_model_currentweather')
-            ->select(['temperature_c', 'pressure_hpa', 'measure_timestamp'], 'tx_weather2_domain_model_currentweather')
+            ->select(['humidity_percentage', 'measure_timestamp'], 'tx_weather2_domain_model_currentweather')
             ->fetchAssociative();
 
         $expected = [
-            'temperature_c' => 14.6,
-            'pressure_hpa' => 8.0,
+            'humidity_percentage' => 12,
             'measure_timestamp' => $time
         ];
+
         self::assertSame($expected, $row);
     }
 }

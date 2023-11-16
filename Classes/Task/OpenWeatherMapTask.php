@@ -223,10 +223,10 @@ class OpenWeatherMapTask extends WeatherAbstractTask
         ];
 
         if (isset($responseClass->main->temp)) {
-            $weatherObjectArray['temperature_c'] = $responseClass->main->temp;
+            $weatherObjectArray['temperature_c'] = (double) $responseClass->main->temp;
         }
         if (isset($responseClass->main->pressure)) {
-            $weatherObjectArray['pressure_hpa'] = $responseClass->main->pressure;
+            $weatherObjectArray['pressure_hpa'] = (double) $responseClass->main->pressure;
         }
         if (isset($responseClass->main->humidity)) {
             $weatherObjectArray['humidity_percentage'] = $responseClass->main->humidity;
