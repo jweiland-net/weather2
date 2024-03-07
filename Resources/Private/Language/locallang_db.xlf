@@ -10,6 +10,9 @@
 			<trans-unit id="tx_weather2_domain_model_currentweather.name">
 				<source>Name</source>
 			</trans-unit>
+			<trans-unit id="tx_weather2_domain_model_currentweather.description">
+				<source>Description</source>
+			</trans-unit>
 			<trans-unit id="tx_weather2_domain_model_currentweather.measure_timestamp">
 				<source>Measure Timestamp</source>
 			</trans-unit>
