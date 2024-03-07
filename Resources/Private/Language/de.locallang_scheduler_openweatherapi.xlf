@@ -20,6 +20,10 @@
 				<source>API-Key</source>
 				<target>API-Key</target>
 			</trans-unit>
+			<trans-unit id="languages">
+				<source>Language IDs (comma separated list with IDs)</source>
+				<target>Sprach IDs (kommaseparierte Liste mit IDs)</target>
+			</trans-unit>
 			<trans-unit id="clear_cache">
 				<source>Clear cache for pages (comma separated list with IDs)</source>
 				<target>Leere Cache für Seiten (kommaseparierte Liste mit IDs)</target>
