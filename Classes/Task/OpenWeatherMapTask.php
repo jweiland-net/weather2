@@ -241,7 +241,7 @@ class OpenWeatherMapTask extends WeatherAbstractTask
             $weatherObjectArray['wind_speed_m_p_s'] = $responseClass->wind->speed;
         }
         if (isset($responseClass->wind->deg)) {
-            $weatherObjectArray['wind_speed_m_p_s'] = $responseClass->wind->deg;
+            $weatherObjectArray['wind_direction_deg'] = $responseClass->wind->deg;
         }
         if (isset($responseClass->rain)) {
             $rain = (array)$responseClass->rain;
