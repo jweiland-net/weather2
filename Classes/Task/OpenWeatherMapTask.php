@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Core\Site\SiteFinder;
 
 /**
  * OpenWeatherMapTask Class for Scheduler
@@ -54,6 +55,11 @@ class OpenWeatherMapTask extends WeatherAbstractTask
      * @var string $apiKey
      */
     public $apiKey = '';
+
+     /**
+     * @var string $apiKey
+     */
+    public $languages = '';
 
     /**
      * Comma seperated list of page UIDs to clear cache
@@ -126,12 +132,49 @@ class OpenWeatherMapTask extends WeatherAbstractTask
 
         $this->removeOldRecordsFromDb();
 
-        $this->url = sprintf(
-            'https://api.openweathermap.org/data/2.5/weather?q=%s,%s&units=%s&APPID=%s',
+        //Check if languages were set in scheduler task
+        //if there are languages set, we need to find the twoLetterIsoCode for each language to receive the request in the desired language
+        //No Language was default until now, so we set the parameter -1 in sys_language_uid so we cann access this data in all languages and prevent breaking changes
+        if($this->languages != ''){
+            $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+            $site = $siteFinder->getSiteByPageId($this->recordStoragePage);
+            $languages = explode(",",$this->languages);
+            foreach ($languages as $langId) {
+                $langId = (int)$langId;
+                $langCode = $site->getLanguageById($langId)->getTwoLetterIsoCode();
+                $this->getWeatherData($langCode);
+                $this->saveCurrentWeatherInstanceForResponseClass($this->responseClass, $langId);
+            }
+        }else{
+            $this->getWeatherData();
+            $this->saveCurrentWeatherInstanceForResponseClass($this->responseClass);
+        }
+
+        if (!empty($this->clearCache)) {
+            $cacheService = $this->getCacheService();
+            $cacheService->clearPageCache(GeneralUtility::intExplode(',', $this->clearCache));
+        }
+
+        return true;
+    }
+
+    /**
+     * Fetches data from openweathermap api
+     *
+     * @param string $langCode
+     * @return void
+     */
+    private function getWeatherData(string $langCode = 'en'){
+        $parameters = [
             urlencode($this->city),
             urlencode($this->country),
             'metric',
-            $this->apiKey
+            $this->apiKey,
+            $langCode
+        ];
+        $this->url = sprintf(
+            'https://api.openweathermap.org/data/2.5/weather?q=%s,%s&units=%s&APPID=%s&lang=%s',
+            ...$parameters
         );
         try {
             $response = $this->getRequestFactory()->request($this->url);
@@ -150,16 +193,6 @@ class OpenWeatherMapTask extends WeatherAbstractTask
 
         $this->responseClass = json_decode((string)$response->getBody());
         $this->logger->info(sprintf('Response class: %s', json_encode($this->responseClass)));
-
-        // Changing the data save to query builder
-        $this->saveCurrentWeatherInstanceForResponseClass($this->responseClass);
-
-        if (!empty($this->clearCache)) {
-            $cacheService = $this->getCacheService();
-            $cacheService->clearPageCache(GeneralUtility::intExplode(',', $this->clearCache));
-        }
-
-        return true;
     }
 
     /**
@@ -215,13 +248,20 @@ class OpenWeatherMapTask extends WeatherAbstractTask
         }
     }
 
-    public function saveCurrentWeatherInstanceForResponseClass(\stdClass $responseClass): int
+    /**
+     * Saves the current weather instance to the database
+     *
+     * @param \stdClass $responseClass
+     * @param int $langId
+     * @return int
+     */
+    public function saveCurrentWeatherInstanceForResponseClass(\stdClass $responseClass, int $langId = -1): int
     {
         $weatherObjectArray = [
             'pid' => $this->recordStoragePage,
             'name' => $this->name,
+            'sys_language_uid' => $langId,
         ];
-
         if (isset($responseClass->main->temp)) {
             $weatherObjectArray['temperature_c'] = (double) $responseClass->main->temp;
         }
@@ -259,6 +299,9 @@ class OpenWeatherMapTask extends WeatherAbstractTask
         }
         if (isset($responseClass->weather[0]->icon)) {
             $weatherObjectArray['icon'] = $responseClass->weather[0]->icon;
+        }
+        if (isset($responseClass->weather[0]->description)) {
+            $weatherObjectArray['description'] = $responseClass->weather[0]->description;
         }
         if (isset($responseClass->weather[0]->id)) {
             $weatherObjectArray['condition_code'] = $responseClass->weather[0]->id;

@@ -69,6 +69,7 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
         'city',
         'country',
         'apiKey',
+        'languages',
         'clearCache',
         'errorNotification',
         'emailSenderName',
@@ -163,6 +164,13 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         $additionalFields[$fieldID] = [
             'code' => $fieldCode,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:api_key',
+        ];
+
+        $fieldID = 'languages';
+        $fieldCode = '<input type="text" class="form-control" name="tx_scheduler[languages]" id="' . $fieldID . '" value="' . $taskInfo['languages'] . '" size="120" />';
+        $additionalFields[$fieldID] = [
+            'code' => $fieldCode,
+            'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:languages',
         ];
 
         $fieldID = 'clearCache';
@@ -313,6 +321,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         $task->recordStoragePage = (int)($submittedData['recordStoragePage'] ?? 0);
         $task->country = $submittedData['country'] ?? '';
         $task->apiKey = $submittedData['apiKey'] ?? '';
+        $task->languages = $submittedData['languages'] ?? '';
         $task->clearCache = $submittedData['clearCache'] ?? '0';
         $task->errorNotification = $submittedData['errorNotification'] ?? '';
         $task->emailSenderName = $submittedData['emailSenderName'] ?? '';
