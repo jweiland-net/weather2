@@ -21,6 +21,8 @@ class FlexFormUserFunc
 {
     /**
      * Only display results if name equals in plugin specified name
+     *
+     * @param array<string, mixed> $fConfig
      */
     public function getSelection(array &$fConfig): void
     {

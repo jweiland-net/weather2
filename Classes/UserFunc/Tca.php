@@ -18,6 +18,8 @@ class Tca
 {
     /**
      * label_userFunc for tx_weather2_domain_model_dwdwarncell
+     *
+     * @param array<string, mixed> $parameters
      */
     public function getDwdWarnCellTitle(array &$parameters): void
     {

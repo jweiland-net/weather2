@@ -17,6 +17,8 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * The repository for CurrentWeather
+ *
+ * @extends Repository<CurrentWeather>
  */
 class CurrentWeatherRepository extends Repository
 {

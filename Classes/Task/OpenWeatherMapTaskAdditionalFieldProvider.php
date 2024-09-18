@@ -30,29 +30,16 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  */
 class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
 {
-    /**
-     * @var CountryRepository
-     */
-    protected $countryRepository;
-
     protected CountryProvider $countryProvider;
-
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
-
-    /**
-     * @var PageRenderer
-     */
-    protected $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected PageRenderer $pageRenderer;
 
     /**
      * This fields can not be empty!
      *
-     * @var array
+     * @var array<int, string> $requiredFields
      */
-    protected $requiredFields = [
+    protected array $requiredFields = [
         'name',
         'city',
         'country',
@@ -62,9 +49,9 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
     /**
      * Fields to insert from task if empty
      *
-     * @var array
+     * @var array<int, string> $insertFields
      */
-    protected $insertFields = [
+    protected array $insertFields = [
         'name',
         'city',
         'country',
@@ -89,6 +76,9 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
 
     /**
      * @param OpenWeatherMapTask|null $task
+     * @param array<string, mixed> $taskInfo
+     *
+     * @return array<string, mixed>
      * @throws RouteNotFoundException
      */
     public function getAdditionalFields(

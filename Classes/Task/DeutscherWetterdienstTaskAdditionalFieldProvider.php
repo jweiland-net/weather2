@@ -29,34 +29,23 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  */
 class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
 {
-    /**
-     * @var DwdWarnCellRepository
-     */
-    protected $dwdWarnCellRepository;
-
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
-
-    /**
-     * @var PageRenderer
-     */
-    protected $pageRenderer;
+    protected DwdWarnCellRepository $dwdWarnCellRepository;
+    protected UriBuilder $uriBuilder;
+    protected PageRenderer $pageRenderer;
 
     /**
      * This fields can not be empty!
      *
-     * @var array
+     * @var array<int, string>
      */
-    protected $requiredFields = [
+    protected array $requiredFields = [
         'dwd_regionSelection',
     ];
 
     /**
      * Fields to insert from task if empty
      *
-     * @var array
+     * @var array<int, mixed>
      */
     protected $insertFields = [
         'dwd_selectedWarnCells',
@@ -75,7 +64,10 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
     }
 
     /**
+     * @param array<string, mixed> $taskInfo
      * @param DeutscherWetterdienstTask $task
+     *
+     * @return array<string, mixed>
      */
     public function getAdditionalFields(
         array &$taskInfo,
@@ -167,6 +159,9 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
         return $this->dwdWarnCellRepository->countAll() > 0;
     }
 
+    /**
+     * @param array<string, mixed> $taskInfo
+     */
     public function getHtmlForSelectedRegions(array $taskInfo): string
     {
         $ulItems = '';
@@ -188,6 +183,9 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
         return '<ul class="list-group" id="dwd_selected_warn_cells_ul">' . $ulItems . '</ul>';
     }
 
+    /**
+     * @param array<string, mixed> $submittedData
+     */
     public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule): bool
     {
         $isValid = true;
@@ -217,7 +215,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
     }
 
     /**
-     * @param AbstractTask|DeutscherWetterdienstTask $task
+     * @param array<string, mixed> $submittedData
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task): void
     {

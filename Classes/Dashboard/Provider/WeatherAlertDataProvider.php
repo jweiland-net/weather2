@@ -26,6 +26,9 @@ class WeatherAlertDataProvider implements NumberWithIconDataProviderInterface
         return count($this->getWeatherAlerts());
     }
 
+    /**
+     * @return array<int, mixed>
+     */
     private function getWeatherAlerts(): array
     {
         $queryBuilder = $this->getConnectionPool()
