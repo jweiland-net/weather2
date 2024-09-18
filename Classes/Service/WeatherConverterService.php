@@ -42,7 +42,7 @@ class WeatherConverterService
             round($meters * 0.000621, 4),
             2,
             '.',
-            ''
+            '',
         );
     }
 }

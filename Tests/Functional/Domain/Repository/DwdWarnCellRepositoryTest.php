@@ -26,7 +26,7 @@ class DwdWarnCellRepositoryTest extends FunctionalTestCase
     protected $subject;
 
     protected array $testExtensionsToLoad = [
-        'jweiland/weather2'
+        'jweiland/weather2',
     ];
 
     protected function setUp(): void
@@ -54,7 +54,7 @@ class DwdWarnCellRepositoryTest extends FunctionalTestCase
     {
         self::assertCount(
             0,
-            $this->subject->findByName('Lindlar')
+            $this->subject->findByName('Lindlar'),
         );
     }
 
@@ -67,17 +67,17 @@ class DwdWarnCellRepositoryTest extends FunctionalTestCase
 
         self::assertCount(
             1,
-            $dwdWarnCells
+            $dwdWarnCells,
         );
 
         self::assertSame(
             'BW',
-            $dwdWarnCells[0]->getSign()
+            $dwdWarnCells[0]->getSign(),
         );
 
         self::assertSame(
             '108416000',
-            $dwdWarnCells[0]->getWarnCellId()
+            $dwdWarnCells[0]->getWarnCellId(),
         );
     }
 
@@ -90,17 +90,17 @@ class DwdWarnCellRepositoryTest extends FunctionalTestCase
 
         self::assertCount(
             2,
-            $dwdWarnCells
+            $dwdWarnCells,
         );
 
         self::assertSame(
             '908236999',
-            $dwdWarnCells[0]->getWarnCellId()
+            $dwdWarnCells[0]->getWarnCellId(),
         );
 
         self::assertSame(
             '108111000',
-            $dwdWarnCells[1]->getWarnCellId()
+            $dwdWarnCells[1]->getWarnCellId(),
         );
     }
 
@@ -113,12 +113,12 @@ class DwdWarnCellRepositoryTest extends FunctionalTestCase
 
         self::assertCount(
             1,
-            $dwdWarnCells
+            $dwdWarnCells,
         );
 
         self::assertSame(
             'Kreis Tübingen',
-            $dwdWarnCells[0]->getName()
+            $dwdWarnCells[0]->getName(),
         );
     }
 }

@@ -41,8 +41,8 @@ class WeatherAlertController extends ActionController
                 $this->settings['warnCells'] ?? '',
                 $this->settings['warningTypes'] ?? '',
                 $this->settings['warningLevels'] ?? '',
-                (bool)($this->settings['showPreliminaryInformation'] ?? false)
-            )
+                (bool)($this->settings['showPreliminaryInformation'] ?? false),
+            ),
         );
         return $this->htmlResponse();
     }

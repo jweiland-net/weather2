@@ -67,7 +67,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
     public function __construct(
         DwdWarnCellRepository $dwdWarnCellRepository,
         UriBuilder $uriBuilder,
-        PageRenderer $pageRenderer
+        PageRenderer $pageRenderer,
     ) {
         $this->dwdWarnCellRepository = $dwdWarnCellRepository;
         $this->uriBuilder = $uriBuilder;
@@ -80,7 +80,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
     public function getAdditionalFields(
         array &$taskInfo,
         $task,
-        SchedulerModuleController $schedulerModule
+        SchedulerModuleController $schedulerModule,
     ): array {
         $this->initialize();
         foreach ($this->insertFields as $fieldID) {
@@ -105,7 +105,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
                 FlashMessage::class,
                 WeatherUtility::translate('message.noDwdWarnCellsFound', 'deutscherwetterdienst'),
                 '',
-                ContextualFeedbackSeverity::WARNING
+                ContextualFeedbackSeverity::WARNING,
             );
             $fieldCode = $this->addFlashMessage($flashMessage, true);
         }
@@ -138,7 +138,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
     {
         $this->pageRenderer->loadRequireJs();
         $this->pageRenderer->addInlineLanguageLabelFile(
-            'EXT:weather2/Resources/Private/Language/locallang_scheduler_javascript_deutscherwetterdienst.xlf'
+            'EXT:weather2/Resources/Private/Language/locallang_scheduler_javascript_deutscherwetterdienst.xlf',
         );
         $this->pageRenderer->addCssFile('EXT:weather2/Resources/Public/Css/dwdScheduler.css');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineValidation');
@@ -158,7 +158,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
             'TYPO3/CMS/Backend/FormEngine',
             'function(FormEngine) {
                 FormEngine.browserUrl = ' . GeneralUtility::quoteJSvalue((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser')) . ';
-             }'
+             }',
         );
     }
 
@@ -196,7 +196,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
             $submittedData['dwd_recordStoragePage'] = preg_replace(
                 '/\D/',
                 '',
-                $submittedData['dwd_recordStoragePage']
+                $submittedData['dwd_recordStoragePage'],
             );
         } else {
             $submittedData['dwd_recordStoragePage'] = 0;

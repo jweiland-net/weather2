@@ -34,20 +34,20 @@ class ConvertMetricToImperialViewHelper extends AbstractViewHelper
             'string',
             'Holds converted Weather data',
             false,
-            'convertedData'
+            'convertedData',
         );
         $this->registerArgument(
             'weatherModel',
             CurrentWeather::class,
             'Current Weather Object',
-            true
+            true,
         );
     }
 
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
+        RenderingContextInterface $renderingContext,
     ): string {
         /** @var CurrentWeather $currentWeather */
         $weatherModel = $arguments['weatherModel'];

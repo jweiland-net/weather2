@@ -27,7 +27,7 @@ class WeatherAlertRepositoryTest extends FunctionalTestCase
     protected $subject;
 
     protected array $testExtensionsToLoad = [
-        'jweiland/weather2'
+        'jweiland/weather2',
     ];
 
     protected function setUp(): void
@@ -59,8 +59,8 @@ class WeatherAlertRepositoryTest extends FunctionalTestCase
                 '108416000',
                 '1',
                 '2',
-                false
-            )
+                false,
+            ),
         );
     }
 
@@ -73,26 +73,26 @@ class WeatherAlertRepositoryTest extends FunctionalTestCase
             '908236999,108111000',
             '1',
             '2',
-            false
+            false,
         );
 
         self::assertCount(
             1,
-            $weatherAlerts
+            $weatherAlerts,
         );
 
         /** @var WeatherAlert $firstWeatherAlert */
         $firstWeatherAlert = $weatherAlerts->getFirst();
         self::assertSame(
             'Amtliche WARNUNG vor WINDBÖEN',
-            $firstWeatherAlert->getTitle()
+            $firstWeatherAlert->getTitle(),
         );
         self::assertStringContainsString(
             'Geschwindigkeiten bis 55 km/h',
-            $firstWeatherAlert->getDescription()
+            $firstWeatherAlert->getDescription(),
         );
         self::assertNull(
-            $firstWeatherAlert->getEndDate()
+            $firstWeatherAlert->getEndDate(),
         );
     }
 }

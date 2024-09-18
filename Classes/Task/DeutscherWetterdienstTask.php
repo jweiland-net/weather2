@@ -117,7 +117,7 @@ class DeutscherWetterdienstTask extends WeatherAbstractTask
         if ($decodedResponse === null) {
             throw new \UnexpectedValueException(
                 'Response can not be decoded because it is an invalid string',
-                1485944083
+                1485944083,
             );
         }
         return $decodedResponse;
@@ -180,7 +180,7 @@ class DeutscherWetterdienstTask extends WeatherAbstractTask
                 [
                     'comparison_hash' => $this->getComparisonHashForAlert($alert),
                     'pid' => $this->recordStoragePage,
-                ]
+                ],
             )
             ->fetch();
         return $identicalAlert['uid'] ?? 0;
@@ -191,7 +191,7 @@ class DeutscherWetterdienstTask extends WeatherAbstractTask
         if ($response->getStatusCode() !== 200 || (string)$response->getBody() === '') {
             $this->logger->log(
                 LogLevel::ERROR,
-                WeatherUtility::translate('message.api_response_null', 'deutscherwetterdienst')
+                WeatherUtility::translate('message.api_response_null', 'deutscherwetterdienst'),
             );
             return false;
         }
@@ -209,7 +209,7 @@ class DeutscherWetterdienstTask extends WeatherAbstractTask
     protected function getWeatherAlertInstanceForAlert(
         array $alert,
         string $warnCellId,
-        bool $isPreliminaryInformation
+        bool $isPreliminaryInformation,
     ): WeatherAlert {
         $weatherAlert = new WeatherAlert();
         $weatherAlert->setPid($this->recordStoragePage);
@@ -264,9 +264,10 @@ class DeutscherWetterdienstTask extends WeatherAbstractTask
         $queryBuilder->delete($this->dbExtTable);
 
         if ($this->keepRecords) {
-            $queryBuilder->where($queryBuilder
+            $queryBuilder->where(
+                $queryBuilder
                 ->expr()
-                ->notIn('uid', $this->keepRecords)
+                ->notIn('uid', $this->keepRecords),
             );
         }
 

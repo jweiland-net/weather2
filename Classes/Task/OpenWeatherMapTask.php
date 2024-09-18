@@ -11,13 +11,10 @@ declare(strict_types=1);
 
 namespace JWeiland\Weather2\Task;
 
-use JWeiland\Weather2\Domain\Model\CurrentWeather;
 use JWeiland\Weather2\Utility\WeatherUtility;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
-use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
 /**
  * OpenWeatherMapTask Class for Scheduler
@@ -121,7 +118,7 @@ class OpenWeatherMapTask extends WeatherAbstractTask
         $this->logger->info(sprintf(
             implode("\n", $logEntry),
             date('m.d.Y - H:i:s', $this->getContextHandler()->getPropertyFromAspect('date', 'timestamp')),
-            json_encode($this)
+            json_encode($this),
         ));
 
         $this->removeOldRecordsFromDb();
@@ -131,7 +128,7 @@ class OpenWeatherMapTask extends WeatherAbstractTask
             urlencode($this->city),
             urlencode($this->country),
             'metric',
-            $this->apiKey
+            $this->apiKey,
         );
         try {
             $response = $this->getRequestFactory()->request($this->url);
@@ -140,7 +137,7 @@ class OpenWeatherMapTask extends WeatherAbstractTask
             $this->logger->error($errorMessage);
             $this->sendMail(
                 'Error while requesting weather data',
-                $errorMessage
+                $errorMessage,
             );
             return false;
         }
@@ -174,7 +171,7 @@ class OpenWeatherMapTask extends WeatherAbstractTask
             $this->logger->error(WeatherUtility::translate('message.api_response_401', 'openweatherapi'));
             $this->sendMail(
                 'Error while requesting weather data',
-                WeatherUtility::translate('message.api_response_401', 'openweatherapi')
+                WeatherUtility::translate('message.api_response_401', 'openweatherapi'),
             );
             return false;
         }
@@ -182,7 +179,7 @@ class OpenWeatherMapTask extends WeatherAbstractTask
             $this->logger->error(WeatherUtility::translate('message.api_response_null', 'openweatherapi'));
             $this->sendMail(
                 'Error while requesting weather data',
-                WeatherUtility::translate('message.api_response_null', 'openweatherapi')
+                WeatherUtility::translate('message.api_response_null', 'openweatherapi'),
             );
             return false;
         }
@@ -197,19 +194,19 @@ class OpenWeatherMapTask extends WeatherAbstractTask
                 $this->logger->error(WeatherUtility::translate('messages.api_code_404', 'openweatherapi'));
                 $this->sendMail(
                     'Error while requesting weather data',
-                    WeatherUtility::translate('messages.api_code_404', 'openweatherapi')
+                    WeatherUtility::translate('messages.api_code_404', 'openweatherapi'),
                 );
                 return false;
             default:
                 $this->logger->error(
                     sprintf(
                         WeatherUtility::translate('messages.api_code_none', 'openweatherapi'),
-                        (string)$response->getBody()
-                    )
+                        (string)$response->getBody(),
+                    ),
                 );
                 $this->sendMail(
                     'Error while requesting weather data',
-                    sprintf(WeatherUtility::translate('messages.api_code_none', 'openweatherapi'), (string)$response->getBody())
+                    sprintf(WeatherUtility::translate('messages.api_code_none', 'openweatherapi'), (string)$response->getBody()),
                 );
                 return false;
         }
@@ -223,10 +220,10 @@ class OpenWeatherMapTask extends WeatherAbstractTask
         ];
 
         if (isset($responseClass->main->temp)) {
-            $weatherObjectArray['temperature_c'] = (double) $responseClass->main->temp;
+            $weatherObjectArray['temperature_c'] = (float)$responseClass->main->temp;
         }
         if (isset($responseClass->main->pressure)) {
-            $weatherObjectArray['pressure_hpa'] = (double) $responseClass->main->pressure;
+            $weatherObjectArray['pressure_hpa'] = (float)$responseClass->main->pressure;
         }
         if (isset($responseClass->main->humidity)) {
             $weatherObjectArray['humidity_percentage'] = $responseClass->main->humidity;
@@ -303,7 +300,7 @@ class OpenWeatherMapTask extends WeatherAbstractTask
             $this->logger->error(
                 ($this->emailReceiver === '' ? 'E-Mail receiver address is missing ' : '') .
                 ($fromAddress === '' ? 'E-Mail sender address ' : '') .
-                ($fromName === '' ? 'E-Mail sender name is missing' : '')
+                ($fromName === '' ? 'E-Mail sender name is missing' : ''),
             );
 
             return;
@@ -332,7 +329,7 @@ class OpenWeatherMapTask extends WeatherAbstractTask
             [
                 'pid' => $this->recordStoragePage,
                 'name' => $this->name,
-            ]
+            ],
         );
     }
 }

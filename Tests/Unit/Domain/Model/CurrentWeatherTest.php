@@ -36,7 +36,7 @@ class CurrentWeatherTest extends UnitTestCase
     {
         self::assertSame(
             '',
-            $this->subject->getName()
+            $this->subject->getName(),
         );
     }
 
@@ -49,7 +49,7 @@ class CurrentWeatherTest extends UnitTestCase
 
         self::assertSame(
             'foo bar',
-            $this->subject->getName()
+            $this->subject->getName(),
         );
     }
 
@@ -59,7 +59,7 @@ class CurrentWeatherTest extends UnitTestCase
     public function getMeasureTimestampInitiallyReturnsNull(): void
     {
         self::assertNull(
-            $this->subject->getMeasureTimestamp()
+            $this->subject->getMeasureTimestamp(),
         );
     }
 
@@ -73,7 +73,7 @@ class CurrentWeatherTest extends UnitTestCase
 
         self::assertSame(
             $date,
-            $this->subject->getMeasureTimestamp()
+            $this->subject->getMeasureTimestamp(),
         );
     }
 
@@ -105,7 +105,7 @@ class CurrentWeatherTest extends UnitTestCase
     {
         self::assertSame(
             0.0,
-            $this->subject->getTemperatureC()
+            $this->subject->getTemperatureC(),
         );
     }
 
@@ -118,7 +118,7 @@ class CurrentWeatherTest extends UnitTestCase
 
         self::assertSame(
             123456.0,
-            $this->subject->getTemperatureC()
+            $this->subject->getTemperatureC(),
         );
     }
 
@@ -129,7 +129,7 @@ class CurrentWeatherTest extends UnitTestCase
     {
         self::assertSame(
             0,
-            $this->subject->getPressureHpa()
+            $this->subject->getPressureHpa(),
         );
     }
 
@@ -142,7 +142,7 @@ class CurrentWeatherTest extends UnitTestCase
 
         self::assertSame(
             123456,
-            $this->subject->getPressureHpa()
+            $this->subject->getPressureHpa(),
         );
     }
 
@@ -153,7 +153,7 @@ class CurrentWeatherTest extends UnitTestCase
     {
         self::assertSame(
             0,
-            $this->subject->getHumidityPercentage()
+            $this->subject->getHumidityPercentage(),
         );
     }
 
@@ -166,7 +166,7 @@ class CurrentWeatherTest extends UnitTestCase
 
         self::assertSame(
             123456,
-            $this->subject->getHumidityPercentage()
+            $this->subject->getHumidityPercentage(),
         );
     }
 
@@ -177,7 +177,7 @@ class CurrentWeatherTest extends UnitTestCase
     {
         self::assertSame(
             0.0,
-            $this->subject->getMinTempC()
+            $this->subject->getMinTempC(),
         );
     }
 
@@ -190,7 +190,7 @@ class CurrentWeatherTest extends UnitTestCase
 
         self::assertSame(
             123456.0,
-            $this->subject->getMinTempC()
+            $this->subject->getMinTempC(),
         );
     }
 
@@ -201,7 +201,7 @@ class CurrentWeatherTest extends UnitTestCase
     {
         self::assertSame(
             0.0,
-            $this->subject->getMaxTempC()
+            $this->subject->getMaxTempC(),
         );
     }
 
@@ -214,7 +214,7 @@ class CurrentWeatherTest extends UnitTestCase
 
         self::assertSame(
             123456.0,
-            $this->subject->getMaxTempC()
+            $this->subject->getMaxTempC(),
         );
     }
 
@@ -225,7 +225,7 @@ class CurrentWeatherTest extends UnitTestCase
     {
         self::assertSame(
             0.0,
-            $this->subject->getWindSpeedMPS()
+            $this->subject->getWindSpeedMPS(),
         );
     }
 
@@ -238,7 +238,7 @@ class CurrentWeatherTest extends UnitTestCase
 
         self::assertSame(
             123456.0,
-            $this->subject->getWindSpeedMPS()
+            $this->subject->getWindSpeedMPS(),
         );
     }
 
@@ -249,7 +249,7 @@ class CurrentWeatherTest extends UnitTestCase
     {
         self::assertSame(
             0,
-            $this->subject->getWindDirectionDeg()
+            $this->subject->getWindDirectionDeg(),
         );
     }
 
@@ -262,7 +262,7 @@ class CurrentWeatherTest extends UnitTestCase
 
         self::assertSame(
             123456,
-            $this->subject->getWindDirectionDeg()
+            $this->subject->getWindDirectionDeg(),
         );
     }
 
@@ -273,7 +273,7 @@ class CurrentWeatherTest extends UnitTestCase
     {
         self::assertSame(
             0.0,
-            $this->subject->getSnowVolume()
+            $this->subject->getSnowVolume(),
         );
     }
 
@@ -286,7 +286,7 @@ class CurrentWeatherTest extends UnitTestCase
 
         self::assertSame(
             21.45,
-            $this->subject->getSnowVolume()
+            $this->subject->getSnowVolume(),
         );
     }
 
@@ -297,7 +297,7 @@ class CurrentWeatherTest extends UnitTestCase
     {
         self::assertSame(
             0.0,
-            $this->subject->getRainVolume()
+            $this->subject->getRainVolume(),
         );
     }
 
@@ -310,7 +310,7 @@ class CurrentWeatherTest extends UnitTestCase
 
         self::assertSame(
             21.45,
-            $this->subject->getRainVolume()
+            $this->subject->getRainVolume(),
         );
     }
 
@@ -321,7 +321,7 @@ class CurrentWeatherTest extends UnitTestCase
     {
         self::assertSame(
             0,
-            $this->subject->getCloudsPercentage()
+            $this->subject->getCloudsPercentage(),
         );
     }
 
@@ -334,7 +334,7 @@ class CurrentWeatherTest extends UnitTestCase
 
         self::assertSame(
             123456,
-            $this->subject->getCloudsPercentage()
+            $this->subject->getCloudsPercentage(),
         );
     }
 
@@ -345,7 +345,7 @@ class CurrentWeatherTest extends UnitTestCase
     {
         self::assertSame(
             '',
-            $this->subject->getIcon()
+            $this->subject->getIcon(),
         );
     }
 
@@ -358,7 +358,7 @@ class CurrentWeatherTest extends UnitTestCase
 
         self::assertSame(
             'foo bar',
-            $this->subject->getIcon()
+            $this->subject->getIcon(),
         );
     }
 }

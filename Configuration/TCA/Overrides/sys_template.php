@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('TYPO3')) {
     die('Access denied.');
 }
@@ -6,5 +7,5 @@ if (!defined('TYPO3')) {
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
     'weather2',
     'Configuration/TypoScript',
-    'weather2'
+    'weather2',
 );

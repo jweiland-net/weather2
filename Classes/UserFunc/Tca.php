@@ -24,7 +24,7 @@ class Tca
         $parameters['title'] = sprintf(
             '%s (%s)',
             $parameters['row']['name'] ?? '',
-            $parameters['row']['warn_cell_id'] ?? ''
+            $parameters['row']['warn_cell_id'] ?? '',
         );
     }
 }

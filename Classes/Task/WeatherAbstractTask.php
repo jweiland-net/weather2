@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace JWeiland\Weather2\Task;
 
-use Doctrine\DBAL\DBALExceptionDBALException;
 use JWeiland\Weather2\Domain\Repository\DwdWarnCellRepository;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -19,7 +18,6 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Service\CacheService;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;

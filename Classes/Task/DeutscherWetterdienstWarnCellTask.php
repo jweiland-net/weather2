@@ -78,7 +78,7 @@ class DeutscherWetterdienstWarnCellTask extends WeatherAbstractTask
         if ($response->getStatusCode() !== 200 || (string)$response->getBody() === '') {
             $this->logger->log(
                 LogLevel::ERROR,
-                WeatherUtility::translate('message.api_response_null', 'deutscherwetterdienst')
+                WeatherUtility::translate('message.api_response_null', 'deutscherwetterdienst'),
             );
 
             return false;

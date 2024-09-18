@@ -26,7 +26,7 @@ class WeatherAlertWidget implements WidgetInterface
     public function __construct(
         WidgetConfigurationInterface $configuration,
         StandaloneView $view,
-        array $options
+        array $options,
     ) {
         $this->configuration = $configuration;
         $this->view = $view;

@@ -28,7 +28,7 @@ class CurrentWeatherRepository extends Repository
         $query = $this->createQuery();
         $query
             ->matching(
-                $query->equals('name', trim($selection))
+                $query->equals('name', trim($selection)),
             )
             ->setOrderings([
                 'uid' => QueryInterface::ORDER_DESCENDING,

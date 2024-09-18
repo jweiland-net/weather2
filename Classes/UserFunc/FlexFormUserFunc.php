@@ -25,7 +25,7 @@ class FlexFormUserFunc
     public function getSelection(array &$fConfig): void
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable(
-            'tx_weather2_domain_model_currentweather'
+            'tx_weather2_domain_model_currentweather',
         );
         $result = $connection->select(['name'], 'tx_weather2_domain_model_currentweather')->fetchAll();
 
