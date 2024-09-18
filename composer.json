@@ -1,10 +1,15 @@
 {
 	"name": "jweiland/weather2",
-	"type": "typo3-cms-extension",
 	"description": "Display weather data and weather alerts using various Weather APIs. Default APIs: OpenWeatherMap and Deutscher Wetterdienst",
 	"license": "GPL-2.0-or-later",
-	"keywords": ["typo3", "TYPO3 CMS", "weather2", "weather report", "weather alert"],
-	"homepage": "https://jweiland.net",
+	"type": "typo3-cms-extension",
+	"keywords": [
+		"typo3",
+		"TYPO3 CMS",
+		"weather2",
+		"weather report",
+		"weather alert"
+	],
 	"authors": [
 		{
 			"name": "Stefan Froemken",
@@ -17,6 +22,7 @@
 			"role": "Developer"
 		}
 	],
+	"homepage": "https://jweiland.net",
 	"support": {
 		"email": "projects@jweiland.net",
 		"issues": "https://github.com/jweiland-net/weather2/issues",
@@ -28,9 +34,10 @@
 		"typo3/cms-scheduler": "^12.4"
 	},
 	"require-dev": {
-		"roave/security-advisories": "dev-latest",
+		"ergebnis/composer-normalize": "~2.42.0",
 		"friendsofphp/php-cs-fixer": "^3.14",
 		"phpunit/phpunit": "^9.6",
+		"roave/security-advisories": "dev-latest",
 		"typo3/coding-standards": "^0.6",
 		"typo3/testing-framework": "^7.0.2"
 	},
@@ -48,19 +55,20 @@
 		}
 	},
 	"config": {
-		"sort-packages": true,
-		"vendor-dir": ".Build/vendor",
-		"bin-dir": ".Build/bin",
 		"allow-plugins": {
-			"typo3/cms-composer-installers": true,
-			"typo3/class-alias-loader": true
-		}
+			"ergebnis/composer-normalize": true,
+			"typo3/class-alias-loader": true,
+			"typo3/cms-composer-installers": true
+		},
+		"bin-dir": ".Build/bin",
+		"sort-packages": true,
+		"vendor-dir": ".Build/vendor"
 	},
 	"extra": {
 		"typo3/cms": {
 			"app-dir": ".Build",
-			"web-dir": ".Build/Web",
-			"extension-key": "weather2"
+			"extension-key": "weather2",
+			"web-dir": ".Build/Web"
 		}
 	}
 }
