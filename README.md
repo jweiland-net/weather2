@@ -7,6 +7,8 @@
 [![Monthly Downloads][extension-monthly-downloads]][extension-packagist-url]
 [![TYPO3 12.4][TYPO3-shield]][TYPO3-12-url]
 
+![Build Status][extension-ci-shield]
+
 Display weather data and weather alerts using various Weather APIs.
 Default APIs: OpenWeatherMap and Deutscher Wetterdienst
 
@@ -39,6 +41,8 @@ per mail `projects@jweiland.net`.
 <!-- MARKDOWN LINKS & IMAGES -->
 
 [extension-build-shield]: https://poser.pugx.org/jweiland/weather2/v/stable.svg?style=for-the-badge
+
+[extension-ci-shield]: https://github.com/jweiland-net/weather2/workflows/CI/badge.svg
 
 [extension-downloads-badge]: https://poser.pugx.org/jweiland/weather2/d/total.svg?style=for-the-badge
 
