@@ -42,7 +42,7 @@ per mail `projects@jweiland.net`.
 
 [extension-build-shield]: https://poser.pugx.org/jweiland/weather2/v/stable.svg?style=for-the-badge
 
-[extension-ci-shield]: https://github.com/jweiland-net/weather2/workflows/CI/badge.svg
+[extension-ci-shield]: https://github.com/jweiland-net/weather2/actions/workflows/ci.yml/badge.svg
 
 [extension-downloads-badge]: https://poser.pugx.org/jweiland/weather2/d/total.svg?style=for-the-badge
 
