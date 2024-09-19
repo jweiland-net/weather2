@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('TYPO3')) {
     die('Access denied.');
 }
@@ -29,7 +30,7 @@ call_user_func(static function () {
         'Currentweather',
         [
             \JWeiland\Weather2\Controller\CurrentWeatherController::class => 'show',
-        ]
+        ],
     );
 
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
@@ -37,12 +38,12 @@ call_user_func(static function () {
         'Weatheralert',
         [
             \JWeiland\Weather2\Controller\WeatherAlertController::class => 'show',
-        ]
+        ],
     );
 
     // Add weather2 plugins to new element wizard
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
-        '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:weather2/Configuration/TSconfig/ContentElementWizard.tsconfig">'
+        '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:weather2/Configuration/TSconfig/ContentElementWizard.tsconfig">',
     );
 
     // Register Bitmap Icon Identifier
@@ -57,7 +58,7 @@ call_user_func(static function () {
         $iconRegistry->registerIcon(
             $identifier,
             \TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider::class,
-            ['source' => 'EXT:weather2/Resources/Public/Icons/' . $fileName]
+            ['source' => 'EXT:weather2/Resources/Public/Icons/' . $fileName],
         );
     }
 });

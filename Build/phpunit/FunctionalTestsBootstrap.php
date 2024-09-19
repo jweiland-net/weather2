@@ -9,9 +9,9 @@
 
 use TYPO3\TestingFramework\Core\Testbase;
 
-call_user_func(function () {
+(static function () {
     $testbase = new Testbase();
     $testbase->defineOriginalRootPath();
     $testbase->createDirectory(ORIGINAL_ROOT . 'typo3temp/var/tests');
     $testbase->createDirectory(ORIGINAL_ROOT . 'typo3temp/var/transient');
-});
+})();

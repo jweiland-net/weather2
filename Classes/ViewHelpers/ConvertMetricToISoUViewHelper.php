@@ -34,26 +34,24 @@ class ConvertMetricToISoUViewHelper extends AbstractViewHelper
             'string',
             'Holds converted Weather data',
             false,
-            'convertedData'
+            'convertedData',
         );
         $this->registerArgument(
             'weatherModel',
             CurrentWeather::class,
             'Current Weather Object',
-            true
+            true,
         );
     }
 
     public static function renderStatic(
         array $arguments,
         \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
+        RenderingContextInterface $renderingContext,
     ): string {
-        /** @var CurrentWeather $currentWeather */
         $weatherModel = $arguments['weatherModel'];
         $convertedModel = clone $weatherModel;
 
-        /** @var $converter WeatherConverterService */
         $converter = GeneralUtility::makeInstance(WeatherConverterService::class);
         $convertedModel->setTemperatureC((int)$converter->convertCelsiusToKelvin($weatherModel->getTemperatureC()));
         $convertedModel->setMinTempC((int)$converter->convertCelsiusToKelvin($weatherModel->getMinTempC()));

@@ -21,12 +21,20 @@ class WeatherAlertWidget implements WidgetInterface
 
     private StandaloneView $view;
 
+    /**
+     * @var array<string, mixed>
+     */
     private array $options = [];
 
+    /**
+     * @param WidgetConfigurationInterface $configuration
+     * @param StandaloneView $view
+     * @param array<string, mixed> $options
+     */
     public function __construct(
         WidgetConfigurationInterface $configuration,
         StandaloneView $view,
-        array $options
+        array $options,
     ) {
         $this->configuration = $configuration;
         $this->view = $view;
@@ -45,6 +53,9 @@ class WeatherAlertWidget implements WidgetInterface
         return $this->view->render();
     }
 
+    /**
+     * @return mixed[]
+     */
     public function getOptions(): array
     {
         return $this->options;

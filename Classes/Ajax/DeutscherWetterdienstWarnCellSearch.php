@@ -34,7 +34,7 @@ class DeutscherWetterdienstWarnCellSearch
     public function renderWarnCells(ServerRequestInterface $request): Response
     {
         $dwdWarnCells = $this->dwdWarnCellRepository->findByName(
-            htmlspecialchars(strip_tags($request->getQueryParams()['query'] ?? ''))
+            htmlspecialchars(strip_tags($request->getQueryParams()['query'] ?? '')),
         );
 
         $suggestions = [];
@@ -44,13 +44,13 @@ class DeutscherWetterdienstWarnCellSearch
                 'value' => sprintf(
                     '%s (%s)',
                     $dwdWarnCell->getName(),
-                    $dwdWarnCell->getWarnCellId()
+                    $dwdWarnCell->getWarnCellId(),
                 ),
             ];
         }
 
         return new JsonResponse(
-            ['suggestions' => $suggestions]
+            ['suggestions' => $suggestions],
         );
     }
 }

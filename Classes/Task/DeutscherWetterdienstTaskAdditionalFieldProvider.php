@@ -29,34 +29,23 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  */
 class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
 {
-    /**
-     * @var DwdWarnCellRepository
-     */
-    protected $dwdWarnCellRepository;
-
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
-
-    /**
-     * @var PageRenderer
-     */
-    protected $pageRenderer;
+    protected DwdWarnCellRepository $dwdWarnCellRepository;
+    protected UriBuilder $uriBuilder;
+    protected PageRenderer $pageRenderer;
 
     /**
      * This fields can not be empty!
      *
-     * @var array
+     * @var array<int, string>
      */
-    protected $requiredFields = [
+    protected array $requiredFields = [
         'dwd_regionSelection',
     ];
 
     /**
      * Fields to insert from task if empty
      *
-     * @var array
+     * @var array<int, mixed>
      */
     protected $insertFields = [
         'dwd_selectedWarnCells',
@@ -67,7 +56,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
     public function __construct(
         DwdWarnCellRepository $dwdWarnCellRepository,
         UriBuilder $uriBuilder,
-        PageRenderer $pageRenderer
+        PageRenderer $pageRenderer,
     ) {
         $this->dwdWarnCellRepository = $dwdWarnCellRepository;
         $this->uriBuilder = $uriBuilder;
@@ -75,12 +64,15 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
     }
 
     /**
+     * @param array<string, mixed> $taskInfo
      * @param DeutscherWetterdienstTask $task
+     *
+     * @return array<string, mixed>
      */
     public function getAdditionalFields(
         array &$taskInfo,
         $task,
-        SchedulerModuleController $schedulerModule
+        SchedulerModuleController $schedulerModule,
     ): array {
         $this->initialize();
         foreach ($this->insertFields as $fieldID) {
@@ -105,7 +97,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
                 FlashMessage::class,
                 WeatherUtility::translate('message.noDwdWarnCellsFound', 'deutscherwetterdienst'),
                 '',
-                ContextualFeedbackSeverity::WARNING
+                ContextualFeedbackSeverity::WARNING,
             );
             $fieldCode = $this->addFlashMessage($flashMessage, true);
         }
@@ -138,7 +130,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
     {
         $this->pageRenderer->loadRequireJs();
         $this->pageRenderer->addInlineLanguageLabelFile(
-            'EXT:weather2/Resources/Private/Language/locallang_scheduler_javascript_deutscherwetterdienst.xlf'
+            'EXT:weather2/Resources/Private/Language/locallang_scheduler_javascript_deutscherwetterdienst.xlf',
         );
         $this->pageRenderer->addCssFile('EXT:weather2/Resources/Public/Css/dwdScheduler.css');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineValidation');
@@ -158,7 +150,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
             'TYPO3/CMS/Backend/FormEngine',
             'function(FormEngine) {
                 FormEngine.browserUrl = ' . GeneralUtility::quoteJSvalue((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser')) . ';
-             }'
+             }',
         );
     }
 
@@ -167,6 +159,9 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
         return $this->dwdWarnCellRepository->countAll() > 0;
     }
 
+    /**
+     * @param array<string, mixed> $taskInfo
+     */
     public function getHtmlForSelectedRegions(array $taskInfo): string
     {
         $ulItems = '';
@@ -188,6 +183,9 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
         return '<ul class="list-group" id="dwd_selected_warn_cells_ul">' . $ulItems . '</ul>';
     }
 
+    /**
+     * @param array<string, mixed> $submittedData
+     */
     public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule): bool
     {
         $isValid = true;
@@ -196,7 +194,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
             $submittedData['dwd_recordStoragePage'] = preg_replace(
                 '/\D/',
                 '',
-                $submittedData['dwd_recordStoragePage']
+                $submittedData['dwd_recordStoragePage'],
             );
         } else {
             $submittedData['dwd_recordStoragePage'] = 0;
@@ -217,10 +215,11 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
     }
 
     /**
-     * @param AbstractTask|DeutscherWetterdienstTask $task
+     * @param array<string, mixed> $submittedData
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task): void
     {
+        /** @var DeutscherWetterdienstTask $task */
         $task->selectedWarnCells = $submittedData['dwd_selectedWarnCells'] ?: [];
         $task->recordStoragePage = (int)$submittedData['dwd_recordStoragePage'];
         $task->clearCache = $submittedData['dwd_clearCache'] ?? '';

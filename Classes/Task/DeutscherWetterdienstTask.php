@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace JWeiland\Weather2\Task;
 
-use Doctrine\DBAL\DBALException;
 use JWeiland\Weather2\Domain\Model\DwdWarnCell;
 use JWeiland\Weather2\Domain\Model\WeatherAlert;
 use JWeiland\Weather2\Domain\Repository\DwdWarnCellRepository;
@@ -20,7 +19,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LogLevel;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
 /**
@@ -29,59 +27,54 @@ use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 class DeutscherWetterdienstTask extends WeatherAbstractTask
 {
     public const API_URL = 'https://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json';
-
-    /**
-     * @var string
-     */
-    protected $dbExtTable = 'tx_weather2_domain_model_weatheralert';
+    protected string $dbExtTable = 'tx_weather2_domain_model_weatheralert';
 
     /**
      * JSON response from dwd api
      *
-     * @var array
+     * @var array<string, mixed>
      */
-    protected $decodedResponse = [];
+    protected array $decodedResponse = [];
 
     /**
      * Fetch only these warn cells
      *
-     * @var array
+     * @var array<string, mixed>
      */
-    public $selectedWarnCells = [];
+    public array $selectedWarnCells = [];
 
     /**
      * @var int
      */
-    public $recordStoragePage = 0;
+    public int $recordStoragePage = 0;
 
     /**
      * @var string
      */
-    public $clearCache = '';
+    public string $clearCache = '';
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
-    protected $keepRecords = [];
+    protected array $keepRecords = [];
 
     /**
      * @var PersistenceManager
      */
-    protected $persistenceManager;
+    protected PersistenceManager $persistenceManager;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
-    protected $warnCellRecords = [];
+    protected array $warnCellRecords = [];
 
     /**
      * @var DwdWarnCellRepository
      */
-    protected $dwdWarnCellRepository;
+    protected DwdWarnCellRepository $dwdWarnCellRepository;
 
     /**
      * @return bool
-     * @throws Exception
      */
     public function execute(): bool
     {
@@ -108,6 +101,7 @@ class DeutscherWetterdienstTask extends WeatherAbstractTask
      * You cannot use json_decode for that only, because dwd adds JavaScript code into
      * the json file...
      *
+     * @return array<string, mixed>
      * @throws \UnexpectedValueException
      */
     protected function decodeResponse(ResponseInterface $response): array
@@ -117,7 +111,7 @@ class DeutscherWetterdienstTask extends WeatherAbstractTask
         if ($decodedResponse === null) {
             throw new \UnexpectedValueException(
                 'Response can not be decoded because it is an invalid string',
-                1485944083
+                1485944083,
             );
         }
         return $decodedResponse;
@@ -144,6 +138,9 @@ class DeutscherWetterdienstTask extends WeatherAbstractTask
         }
     }
 
+    /**
+     * @param array<int, mixed> $category
+     */
     protected function processDwdItems(array $category, bool $isPreliminaryInformation): void
     {
         foreach ($this->selectedWarnCells as $warnCellId) {
@@ -161,6 +158,9 @@ class DeutscherWetterdienstTask extends WeatherAbstractTask
         }
     }
 
+    /**
+     * @param array<string, mixed> $alert
+     */
     protected function getComparisonHashForAlert(array $alert): string
     {
         return md5(serialize($alert));
@@ -169,6 +169,8 @@ class DeutscherWetterdienstTask extends WeatherAbstractTask
     /**
      * Either returns the uid of a record that equals $alert
      * OR returns zero if there is no record for that $alert
+     *
+     * @param array<string, mixed> $alert
      */
     protected function getUidOfAlert(array $alert): int
     {
@@ -180,7 +182,7 @@ class DeutscherWetterdienstTask extends WeatherAbstractTask
                 [
                     'comparison_hash' => $this->getComparisonHashForAlert($alert),
                     'pid' => $this->recordStoragePage,
-                ]
+                ],
             )
             ->fetch();
         return $identicalAlert['uid'] ?? 0;
@@ -191,7 +193,7 @@ class DeutscherWetterdienstTask extends WeatherAbstractTask
         if ($response->getStatusCode() !== 200 || (string)$response->getBody() === '') {
             $this->logger->log(
                 LogLevel::ERROR,
-                WeatherUtility::translate('message.api_response_null', 'deutscherwetterdienst')
+                WeatherUtility::translate('message.api_response_null', 'deutscherwetterdienst'),
             );
             return false;
         }
@@ -205,11 +207,13 @@ class DeutscherWetterdienstTask extends WeatherAbstractTask
 
     /**
      * Returns filled WeatherAlert instance
+     *
+     * @param array<string, mixed> $alert
      */
     protected function getWeatherAlertInstanceForAlert(
         array $alert,
         string $warnCellId,
-        bool $isPreliminaryInformation
+        bool $isPreliminaryInformation,
     ): WeatherAlert {
         $weatherAlert = new WeatherAlert();
         $weatherAlert->setPid($this->recordStoragePage);
@@ -255,18 +259,16 @@ class DeutscherWetterdienstTask extends WeatherAbstractTask
         return $this->warnCellRecords[$warnCellId];
     }
 
-    /**
-     * @throws DBALException
-     */
     protected function removeOldAlertsFromDb(): void
     {
         $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable($this->dbExtTable);
         $queryBuilder->delete($this->dbExtTable);
 
         if ($this->keepRecords) {
-            $queryBuilder->where($queryBuilder
+            $queryBuilder->where(
+                $queryBuilder
                 ->expr()
-                ->notIn('uid', $this->keepRecords)
+                ->notIn('uid', $this->keepRecords),
             );
         }
 

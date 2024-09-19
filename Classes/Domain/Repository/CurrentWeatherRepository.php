@@ -17,6 +17,8 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * The repository for CurrentWeather
+ *
+ * @extends Repository<CurrentWeather>
  */
 class CurrentWeatherRepository extends Repository
 {
@@ -28,7 +30,7 @@ class CurrentWeatherRepository extends Repository
         $query = $this->createQuery();
         $query
             ->matching(
-                $query->equals('name', trim($selection))
+                $query->equals('name', trim($selection)),
             )
             ->setOrderings([
                 'uid' => QueryInterface::ORDER_DESCENDING,

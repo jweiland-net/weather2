@@ -23,11 +23,13 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  * Further the values are very huge, which can result in problems on 32bit machines.
  * So keep $warnCellId to string
  * @method DwdWarnCell findOneByWarnCellId(string $warnCellId);
+ *
+ * @extends Repository<DwdWarnCell>
  */
 class DwdWarnCellRepository extends Repository
 {
     /**
-     * @return DwdWarnCell[]
+     * @return mixed[]
      */
     public function findByName(string $name): array
     {
@@ -38,8 +40,8 @@ class DwdWarnCellRepository extends Repository
                 ->matching(
                     $query->logicalOr(
                         $query->like('name', '%' . trim($name) . '%'),
-                        $query->equals('warn_cell_id', $name)
-                    )
+                        $query->equals('warn_cell_id', $name),
+                    ),
                 )
                 ->setOrderings([
                     'uid' => QueryInterface::ORDER_ASCENDING,

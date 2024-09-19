@@ -12,9 +12,9 @@ declare(strict_types=1);
 namespace JWeiland\Weather2\Task;
 
 use JWeiland\Weather2\Utility\WeatherUtility;
-use SJBR\StaticInfoTables\Domain\Model\Country;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Country\Country;
 use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -30,29 +30,16 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  */
 class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
 {
-    /**
-     * @var CountryRepository
-     */
-    protected $countryRepository;
-
     protected CountryProvider $countryProvider;
-
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
-
-    /**
-     * @var PageRenderer
-     */
-    protected $pageRenderer;
+    protected UriBuilder $uriBuilder;
+    protected PageRenderer $pageRenderer;
 
     /**
      * This fields can not be empty!
      *
-     * @var array
+     * @var array<int, string> $requiredFields
      */
-    protected $requiredFields = [
+    protected array $requiredFields = [
         'name',
         'city',
         'country',
@@ -62,9 +49,9 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
     /**
      * Fields to insert from task if empty
      *
-     * @var array
+     * @var array<int, string> $insertFields
      */
-    protected $insertFields = [
+    protected array $insertFields = [
         'name',
         'city',
         'country',
@@ -80,7 +67,7 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
     public function __construct(
         CountryProvider $countryProvider,
         UriBuilder $uriBuilder,
-        PageRenderer $pageRenderer
+        PageRenderer $pageRenderer,
     ) {
         $this->countryProvider = $countryProvider;
         $this->uriBuilder = $uriBuilder;
@@ -89,12 +76,15 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
 
     /**
      * @param OpenWeatherMapTask|null $task
+     * @param array<string, mixed> $taskInfo
+     *
+     * @return array<string, mixed>
      * @throws RouteNotFoundException
      */
     public function getAdditionalFields(
         array &$taskInfo,
         $task,
-        SchedulerModuleController $schedulerModule
+        SchedulerModuleController $schedulerModule,
     ): array {
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineValidation');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Weather2/OpenWeatherMapTaskModule');
@@ -112,7 +102,7 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
             'TYPO3/CMS/Backend/FormEngine',
             'function(FormEngine) {
                 FormEngine.browserUrl = ' . GeneralUtility::quoteJSvalue((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser')) . ';
-             }'
+             }',
         );
 
         foreach ($this->insertFields as $fieldID) {
@@ -210,9 +200,12 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         return $additionalFields;
     }
 
+    /**
+     * @param array<string, mixed> $submittedData
+     */
     public function validateAdditionalFields(
         array &$submittedData,
-        SchedulerModuleController $schedulerModule
+        SchedulerModuleController $schedulerModule,
     ): bool {
         $isValid = true;
 
@@ -235,7 +228,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         $isValidResponseCode = $this->isValidResponseCode(
             $submittedData['city'],
             $submittedData['country'],
-            $submittedData['apiKey']
+            $submittedData['apiKey'],
         );
 
         if (!$isValidResponseCode) {
@@ -248,35 +241,35 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
     private function isValidResponseCode(
         string $city,
         string $country,
-        string $apiKey
+        string $apiKey,
     ): bool {
         $url = sprintf(
             'https://api.openweathermap.org/data/2.5/weather?q=%s,%s&units=%s&APPID=%s',
             urlencode($city),
             urlencode($country),
             'metric',
-            $apiKey
+            $apiKey,
         );
 
         $response = GeneralUtility::makeInstance(RequestFactory::class)->request($url);
         if ($response->getStatusCode() === 401) {
             $this->addMessage(
                 WeatherUtility::translate('message.api_response_401', 'openweatherapi'),
-                ContextualFeedbackSeverity::ERROR
+                ContextualFeedbackSeverity::ERROR,
             );
             return false;
         }
         if ($response->getStatusCode() === 404) {
             $this->addMessage(
                 WeatherUtility::translate('message.api_code_404', 'openweatherapi'),
-                ContextualFeedbackSeverity::ERROR
+                ContextualFeedbackSeverity::ERROR,
             );
             return false;
         }
         if ($response->getStatusCode() !== 200) {
             $this->addMessage(
                 WeatherUtility::translate('message.api_response_null', 'openweatherapi'),
-                ContextualFeedbackSeverity::ERROR
+                ContextualFeedbackSeverity::ERROR,
             );
             return false;
         }
@@ -287,24 +280,27 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
                 $this->addMessage(sprintf(
                     WeatherUtility::translate('message.api_code_200', 'openweatherapi'),
                     $responseClass->name,
-                    $responseClass->sys->country
+                    $responseClass->sys->country,
                 ), ContextualFeedbackSeverity::INFO);
                 return true;
             case '404':
                 $this->addMessage(
                     WeatherUtility::translate('message.api_code_404', 'openweatherapi'),
-                    ContextualFeedbackSeverity::ERROR
+                    ContextualFeedbackSeverity::ERROR,
                 );
                 return false;
             default:
                 $this->addMessage(sprintf(
                     WeatherUtility::translate('message.api_code_none', 'openweatherapi'),
-                    json_encode($responseClass)
+                    json_encode($responseClass),
                 ), ContextualFeedbackSeverity::ERROR);
                 return false;
         }
     }
 
+    /**
+     * @param array<string, mixed> $submittedData
+     */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task): void
     {
         /** @var OpenWeatherMapTask $task */
@@ -351,7 +347,7 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
                 $selected === $country->getAlpha2IsoCode() || $selected === $country->getAlpha3IsoCode() ? ' selected' : '',
                 $country->getAlpha2IsoCode(),
                 $languageService->sL($country->getLocalizedNameLabel()),
-                $country->getAlpha2IsoCode()
+                $country->getAlpha2IsoCode(),
             );
         }
 

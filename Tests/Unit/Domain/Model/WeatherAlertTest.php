@@ -36,7 +36,7 @@ class WeatherAlertTest extends UnitTestCase
     {
         self::assertSame(
             0,
-            $this->subject->getLevel()
+            $this->subject->getLevel(),
         );
     }
 
@@ -49,7 +49,7 @@ class WeatherAlertTest extends UnitTestCase
 
         self::assertSame(
             123456,
-            $this->subject->getLevel()
+            $this->subject->getLevel(),
         );
     }
 
@@ -60,7 +60,7 @@ class WeatherAlertTest extends UnitTestCase
     {
         self::assertSame(
             0,
-            $this->subject->getType()
+            $this->subject->getType(),
         );
     }
 
@@ -73,7 +73,7 @@ class WeatherAlertTest extends UnitTestCase
 
         self::assertSame(
             123456,
-            $this->subject->getType()
+            $this->subject->getType(),
         );
     }
 
@@ -84,7 +84,7 @@ class WeatherAlertTest extends UnitTestCase
     {
         self::assertSame(
             '',
-            $this->subject->getTitle()
+            $this->subject->getTitle(),
         );
     }
 
@@ -97,7 +97,7 @@ class WeatherAlertTest extends UnitTestCase
 
         self::assertSame(
             'foo bar',
-            $this->subject->getTitle()
+            $this->subject->getTitle(),
         );
     }
 
@@ -110,7 +110,7 @@ class WeatherAlertTest extends UnitTestCase
 
         self::assertSame(
             'foo bar',
-            $this->subject->getDescription()
+            $this->subject->getDescription(),
         );
     }
 
@@ -121,7 +121,7 @@ class WeatherAlertTest extends UnitTestCase
     {
         self::assertSame(
             '',
-            $this->subject->getInstruction()
+            $this->subject->getInstruction(),
         );
     }
 
@@ -134,7 +134,7 @@ class WeatherAlertTest extends UnitTestCase
 
         self::assertSame(
             'foo bar',
-            $this->subject->getInstruction()
+            $this->subject->getInstruction(),
         );
     }
 
@@ -144,7 +144,7 @@ class WeatherAlertTest extends UnitTestCase
     public function getStarttimeInitiallyReturnsNull(): void
     {
         self::assertNull(
-            $this->subject->getStarttime()
+            $this->subject->getStarttime(),
         );
     }
 
@@ -158,7 +158,7 @@ class WeatherAlertTest extends UnitTestCase
 
         self::assertSame(
             $date,
-            $this->subject->getStarttime()
+            $this->subject->getStarttime(),
         );
     }
 
@@ -189,7 +189,7 @@ class WeatherAlertTest extends UnitTestCase
     public function getEndtimeInitiallyReturnsNull(): void
     {
         self::assertNull(
-            $this->subject->getEndtime()
+            $this->subject->getEndtime(),
         );
     }
 
@@ -203,7 +203,7 @@ class WeatherAlertTest extends UnitTestCase
 
         self::assertSame(
             $date,
-            $this->subject->getEndtime()
+            $this->subject->getEndtime(),
         );
     }
 

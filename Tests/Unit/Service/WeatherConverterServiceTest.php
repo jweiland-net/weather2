@@ -32,7 +32,7 @@ class WeatherConverterServiceTest extends UnitTestCase
     protected function tearDown(): void
     {
         unset(
-            $this->subject
+            $this->subject,
         );
     }
 
@@ -57,7 +57,7 @@ class WeatherConverterServiceTest extends UnitTestCase
     {
         self::assertSame(
             $expectedCelsius,
-            $this->subject->convertFahrenheitToCelsius($fahrenheit)
+            $this->subject->convertFahrenheitToCelsius($fahrenheit),
         );
     }
 
@@ -82,7 +82,7 @@ class WeatherConverterServiceTest extends UnitTestCase
     {
         self::assertSame(
             $expectedCelsius,
-            $this->subject->convertKelvinToCelsius($kelvin)
+            $this->subject->convertKelvinToCelsius($kelvin),
         );
     }
 
@@ -107,7 +107,7 @@ class WeatherConverterServiceTest extends UnitTestCase
     {
         self::assertSame(
             $expectedFahrenheit,
-            $this->subject->convertCelsiusToFahrenheit($celsius)
+            $this->subject->convertCelsiusToFahrenheit($celsius),
         );
     }
 
@@ -132,7 +132,7 @@ class WeatherConverterServiceTest extends UnitTestCase
     {
         self::assertSame(
             $expectedKelvin,
-            $this->subject->convertCelsiusToKelvin($celsius)
+            $this->subject->convertCelsiusToKelvin($celsius),
         );
     }
 
@@ -159,7 +159,7 @@ class WeatherConverterServiceTest extends UnitTestCase
     {
         self::assertSame(
             $expectedMiles,
-            $this->subject->convertMetersToMiles($meters)
+            $this->subject->convertMetersToMiles($meters),
         );
     }
 }

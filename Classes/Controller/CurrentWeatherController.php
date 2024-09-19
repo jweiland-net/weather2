@@ -38,8 +38,8 @@ class CurrentWeatherController extends ActionController
         $this->view->assign(
             'currentWeather',
             $this->currentWeatherRepository->findBySelection(
-                $this->settings['selection'] ?? ''
-            )
+                $this->settings['selection'] ?? '',
+            ),
         );
         return $this->htmlResponse();
     }

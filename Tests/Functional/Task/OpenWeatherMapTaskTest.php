@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace JWeiland\Weather2\Tests\Functional\Task;
 
-use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use GuzzleHttp\Psr7\Response;
 use JWeiland\Weather2\Task\OpenWeatherMapTask;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -48,11 +47,11 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
     protected $subject;
 
     protected array $coreExtensionsToLoad = [
-        'scheduler'
+        'scheduler',
     ];
 
     protected array $testExtensionsToLoad = [
-        'jweiland/weather2'
+        'jweiland/weather2',
     ];
 
     protected function setUp(): void
@@ -95,7 +94,7 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
             $this->subject,
             $this->requestFactoryMock,
             $this->responseMock,
-            $this->stream
+            $this->stream,
         );
 
         parent::tearDown();
@@ -141,7 +140,7 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
                         'icon' => '[ICON]',
                     ],
                 ],
-            ], JSON_THROW_ON_ERROR)
+            ], JSON_THROW_ON_ERROR),
         );
 
         $this->responseMock
@@ -150,7 +149,7 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
             ->willReturn(200);
 
         self::assertTrue(
-            $this->subject->execute()
+            $this->subject->execute(),
         );
 
         $row = $this->getConnectionPool()
@@ -160,7 +159,7 @@ class OpenWeatherMapTaskTest extends FunctionalTestCase
 
         $expected = [
             'humidity_percentage' => 12,
-            'measure_timestamp' => $time
+            'measure_timestamp' => $time,
         ];
 
         self::assertSame($expected, $row);

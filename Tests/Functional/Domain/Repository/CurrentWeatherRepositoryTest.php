@@ -26,7 +26,7 @@ class CurrentWeatherRepositoryTest extends FunctionalTestCase
     protected $subject;
 
     protected array $testExtensionsToLoad = [
-        'jweiland/weather2'
+        'jweiland/weather2',
     ];
 
     protected function setUp(): void
@@ -42,7 +42,7 @@ class CurrentWeatherRepositoryTest extends FunctionalTestCase
     public function findBySelectionWillReturnNull(): void
     {
         self::assertNull(
-            $this->subject->findBySelection('Lindlar')
+            $this->subject->findBySelection('Lindlar'),
         );
     }
 
@@ -55,17 +55,17 @@ class CurrentWeatherRepositoryTest extends FunctionalTestCase
 
         self::assertInstanceOf(
             CurrentWeather::class,
-            $currentWeatherObject
+            $currentWeatherObject,
         );
 
         self::assertSame(
             24.32,
-            $currentWeatherObject->getTemperatureC()
+            $currentWeatherObject->getTemperatureC(),
         );
 
         self::assertSame(
             1.2,
-            $currentWeatherObject->getRainVolume()
+            $currentWeatherObject->getRainVolume(),
         );
     }
 }

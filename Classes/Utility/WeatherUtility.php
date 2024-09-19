@@ -30,20 +30,20 @@ class WeatherUtility
             case 'openweatherapi':
                 $text = LocalizationUtility::translate(
                     'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_openweatherapi.xlf:' . trim($name),
-                    ''
+                    '',
                 );
                 break;
             case 'deutscherwetterdienst':
                 $text = LocalizationUtility::translate(
                     'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_deutscherwetterdienst.xlf:' . trim($name),
-                    ''
+                    '',
                 );
                 break;
 
             case 'deutscherwetterdienstJs':
                 $text = LocalizationUtility::translate(
                     'LLL:EXT:weather2/Resources/Private/Language/locallang_scheduler_javascript_deutscherwetterdienst.xlf:' . trim($name),
-                    ''
+                    '',
                 );
                 break;
             default:
