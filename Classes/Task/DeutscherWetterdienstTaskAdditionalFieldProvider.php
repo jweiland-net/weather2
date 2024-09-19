@@ -219,6 +219,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task): void
     {
+        /** @var DeutscherWetterdienstTask $task */
         $task->selectedWarnCells = $submittedData['dwd_selectedWarnCells'] ?: [];
         $task->recordStoragePage = (int)$submittedData['dwd_recordStoragePage'];
         $task->clearCache = $submittedData['dwd_clearCache'] ?? '';

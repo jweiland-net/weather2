@@ -12,9 +12,9 @@ declare(strict_types=1);
 namespace JWeiland\Weather2\Task;
 
 use JWeiland\Weather2\Utility\WeatherUtility;
-use SJBR\StaticInfoTables\Domain\Model\Country;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Country\Country;
 use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -200,6 +200,9 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         return $additionalFields;
     }
 
+    /**
+     * @param array<string, mixed> $submittedData
+     */
     public function validateAdditionalFields(
         array &$submittedData,
         SchedulerModuleController $schedulerModule,
@@ -295,6 +298,9 @@ size="30" placeholder="' . WeatherUtility::translate('placeholder.record_storage
         }
     }
 
+    /**
+     * @param array<string, mixed> $submittedData
+     */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task): void
     {
         /** @var OpenWeatherMapTask $task */
