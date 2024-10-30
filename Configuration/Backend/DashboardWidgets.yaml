@@ -10,8 +10,9 @@ services:
   dashboard.widget.weather-alert:
     class: 'TYPO3\CMS\Dashboard\Widgets\NumberWithIconWidget'
     arguments:
-      $view: '@dashboard.views.widget'
+      $configuration: '@TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface'
       $dataProvider: '@JWeiland\Weather2\Dashboard\Provider\WeatherAlertDataProvider'
+      $backendViewFactory: '@TYPO3\CMS\Backend\View\BackendViewFactory'
       $options:
         title: 'LLL:EXT:weather2/Resources/Private/Language/locallang.xlf:widget.weatherAlert.title'
         subtitle: 'LLL:EXT:weather2/Resources/Private/Language/locallang.xlf:widget.weatherAlert.subtitle'
