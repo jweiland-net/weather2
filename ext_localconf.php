@@ -13,6 +13,7 @@ use JWeiland\Weather2\Task\OpenWeatherMapTask;
 use JWeiland\Weather2\Task\OpenWeatherMapTaskAdditionalFieldProvider;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
 call_user_func(static function () {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][OpenWeatherMapTask::class] = [
