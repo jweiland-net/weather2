@@ -128,14 +128,13 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
 
     protected function initialize(): void
     {
-        $this->pageRenderer->loadRequireJs();
         $this->pageRenderer->addInlineLanguageLabelFile(
             'EXT:weather2/Resources/Private/Language/locallang_scheduler_javascript_deutscherwetterdienst.xlf',
         );
         $this->pageRenderer->addCssFile('EXT:weather2/Resources/Public/Css/dwdScheduler.css');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineValidation');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Weather2/jquery.autocomplete');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/FormEngineValidation');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Weather2/jquery.autocomplete');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Weather2/DeutscherWetterdienstTaskModule');
         $popupSettings = [
             'PopupWindow' => [
                 'width' => '800px',
@@ -146,7 +145,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
         $this->pageRenderer->addInlineSetting('FormEngine', 'formName', 'tx_scheduler_form');
         $this->pageRenderer->addInlineSetting('FormEngine', 'backPath', '');
-        $this->pageRenderer->loadRequireJsModule(
+        $this->pageRenderer->loadJavaScriptModule(
             'TYPO3/CMS/Backend/FormEngine',
             'function(FormEngine) {
                 FormEngine.browserUrl = ' . GeneralUtility::quoteJSvalue((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser')) . ';

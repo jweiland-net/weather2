@@ -86,8 +86,8 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
         $task,
         SchedulerModuleController $schedulerModule,
     ): array {
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/FormEngineValidation');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Weather2/OpenWeatherMapTaskModule');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Backend/FormEngineValidation');
+        $this->pageRenderer->loadJavaScriptModule('TYPO3/CMS/Weather2/OpenWeatherMapTaskModule');
         $popupSettings = [
             'PopupWindow' => [
                 'width' => '800px',
@@ -98,7 +98,7 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
         $this->pageRenderer->addInlineSetting('FormEngine', 'formName', 'tx_scheduler_form');
         $this->pageRenderer->addInlineSetting('FormEngine', 'backPath', '');
-        $this->pageRenderer->loadRequireJsModule(
+        $this->pageRenderer->loadJavaScriptModule(
             'TYPO3/CMS/Backend/FormEngine',
             'function(FormEngine) {
                 FormEngine.browserUrl = ' . GeneralUtility::quoteJSvalue((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser')) . ';
