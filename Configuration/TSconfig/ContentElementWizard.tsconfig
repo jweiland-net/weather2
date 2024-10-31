@@ -3,7 +3,7 @@ mod.wizards.newContentElement.wizardItems.plugins {
     weather2_current {
       iconIdentifier = ext-weather2-table-currentweather
       title = LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:plugin.currentweather.title
-      description = LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:plugin.currentweather.title
+      description = LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:plugin.currentweather.descriptiom
       tt_content_defValues {
         CType = list
         list_type = weather2_currentweather
@@ -12,7 +12,7 @@ mod.wizards.newContentElement.wizardItems.plugins {
     weather2_alert {
       iconIdentifier = ext-weather2-table-weatheralert
       title = LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:plugin.weatheralert.title
-      description = LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:plugin.weatheralert.title
+      description = LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:plugin.weatheralert.descriptiom
       tt_content_defValues {
         CType = list
         list_type = weather2_weatheralert
