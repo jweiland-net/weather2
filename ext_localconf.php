@@ -11,7 +11,6 @@ use JWeiland\Weather2\Task\DeutscherWetterdienstTaskAdditionalFieldProvider;
 use JWeiland\Weather2\Task\DeutscherWetterdienstWarnCellTask;
 use JWeiland\Weather2\Task\OpenWeatherMapTask;
 use JWeiland\Weather2\Task\OpenWeatherMapTaskAdditionalFieldProvider;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
