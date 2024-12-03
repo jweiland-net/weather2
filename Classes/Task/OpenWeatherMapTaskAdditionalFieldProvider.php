@@ -99,10 +99,7 @@ class OpenWeatherMapTaskAdditionalFieldProvider extends AbstractAdditionalFieldP
         $this->pageRenderer->addInlineSetting('FormEngine', 'formName', 'tx_scheduler_form');
         $this->pageRenderer->addInlineSetting('FormEngine', 'backPath', '');
         $this->pageRenderer->loadJavaScriptModule(
-            'TYPO3/CMS/Backend/FormEngine',
-            'function(FormEngine) {
-                FormEngine.browserUrl = ' . GeneralUtility::quoteJSvalue((string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser')) . ';
-             }',
+            'TYPO3/CMS/Backend/FormEngine'
         );
 
         foreach ($this->insertFields as $fieldID) {
