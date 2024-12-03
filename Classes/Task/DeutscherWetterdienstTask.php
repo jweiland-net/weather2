@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Weather2\Task;
 
+use Doctrine\DBAL\Exception;
 use JWeiland\Weather2\Domain\Model\DwdWarnCell;
 use JWeiland\Weather2\Domain\Model\WeatherAlert;
 use JWeiland\Weather2\Domain\Repository\DwdWarnCellRepository;
@@ -171,6 +172,7 @@ class DeutscherWetterdienstTask extends WeatherAbstractTask
      * OR returns zero if there is no record for that $alert
      *
      * @param array<string, mixed> $alert
+     * @throws Exception
      */
     protected function getUidOfAlert(array $alert): int
     {
@@ -184,7 +186,8 @@ class DeutscherWetterdienstTask extends WeatherAbstractTask
                     'pid' => $this->recordStoragePage,
                 ],
             )
-            ->fetch();
+            ->fetchAssociative();
+
         return $identicalAlert['uid'] ?? 0;
     }
 
