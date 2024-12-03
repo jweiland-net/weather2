@@ -146,7 +146,7 @@ class DeutscherWetterdienstTaskAdditionalFieldProvider extends AbstractAdditiona
         $this->pageRenderer->addInlineSetting('FormEngine', 'formName', 'tx_scheduler_form');
         $this->pageRenderer->addInlineSetting('FormEngine', 'backPath', '');
         $this->pageRenderer->loadJavaScriptModule(
-            'TYPO3/CMS/Backend/FormEngine'
+            'TYPO3/CMS/Backend/FormEngine',
         );
     }
 
