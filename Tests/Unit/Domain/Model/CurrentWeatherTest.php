@@ -19,13 +19,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class CurrentWeatherTest extends UnitTestCase
 {
-    /**
-     * @var CurrentWeather
-     */
-    protected $subject;
+    protected CurrentWeather $subject;
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->subject = new CurrentWeather();
     }
 
@@ -77,7 +76,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    public function dataProviderForSetMeasureTimestamp(): array
+    public static function dataProviderForSetMeasureTimestamp(): array
     {
         $arguments = [];
         $arguments['set MeasureTimestamp with Null'] = [null];

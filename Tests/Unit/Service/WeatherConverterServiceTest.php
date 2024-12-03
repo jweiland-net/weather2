@@ -36,7 +36,7 @@ class WeatherConverterServiceTest extends UnitTestCase
         );
     }
 
-    public function fahrenheitToCelsiusDataProvider(): array
+    public static function fahrenheitToCelsiusDataProvider(): array
     {
         return [
             'Convert 100 fahrenheit to celsius' => [100.0, 37.7778],
@@ -61,7 +61,7 @@ class WeatherConverterServiceTest extends UnitTestCase
         );
     }
 
-    public function kelvinToCelsiusDataProvider(): array
+    public static function kelvinToCelsiusDataProvider(): array
     {
         return [
             'Convert 100 kelvin to celsius' => [100.0, -173.15],
@@ -86,7 +86,7 @@ class WeatherConverterServiceTest extends UnitTestCase
         );
     }
 
-    public function celsiusToFahrenheitDataProvider(): array
+    public static function celsiusToFahrenheitDataProvider(): array
     {
         return [
             'Convert 100 celsius to fahrenheit' => [100.0, 212.0],
@@ -111,7 +111,7 @@ class WeatherConverterServiceTest extends UnitTestCase
         );
     }
 
-    public function celsiusToKelvinDataProvider(): array
+    public static function celsiusToKelvinDataProvider(): array
     {
         return [
             'Convert 100 celsius to kelvin' => [100.0, 373.15],
@@ -136,7 +136,7 @@ class WeatherConverterServiceTest extends UnitTestCase
         );
     }
 
-    public function metersToMilesDataProvider(): array
+    public static function metersToMilesDataProvider(): array
     {
         return [
             'Convert 5000 meters to miles' => [5000.0, '3.11'],

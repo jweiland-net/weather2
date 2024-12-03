@@ -19,13 +19,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class WeatherAlertTest extends UnitTestCase
 {
-    /**
-     * @var WeatherAlert
-     */
-    protected $subject;
+    protected WeatherAlert $subject;
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->subject = new WeatherAlert();
     }
 
@@ -162,7 +161,7 @@ class WeatherAlertTest extends UnitTestCase
         );
     }
 
-    public function dataProviderForSetStarttime(): array
+    public static function dataProviderForSetStarttime(): array
     {
         $arguments = [];
         $arguments['set Starttime with Null'] = [null];
@@ -207,7 +206,7 @@ class WeatherAlertTest extends UnitTestCase
         );
     }
 
-    public function dataProviderForSetEndtime(): array
+    public static function dataProviderForSetEndtime(): array
     {
         $arguments = [];
         $arguments['set Endtime with Null'] = [null];
