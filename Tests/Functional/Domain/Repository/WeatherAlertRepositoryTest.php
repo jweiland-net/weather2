@@ -13,16 +13,10 @@ namespace JWeiland\Weather2\Tests\Functional\Domain\Repository;
 
 use JWeiland\Weather2\Domain\Model\WeatherAlert;
 use JWeiland\Weather2\Domain\Repository\WeatherAlertRepository;
+use JWeiland\Weather2\Tests\Functional\Traits\InitializeFrontendControllerMockTrait;
 use PHPUnit\Framework\MockObject\Exception;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
-use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -30,6 +24,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class WeatherAlertRepositoryTest extends FunctionalTestCase
 {
+    use InitializeFrontendControllerMockTrait;
+
     protected WeatherAlertRepository $subject;
 
     protected array $testExtensionsToLoad = [
@@ -112,37 +108,5 @@ class WeatherAlertRepositoryTest extends FunctionalTestCase
         self::assertNull(
             $firstWeatherAlert->getEndDate(),
         );
-    }
-
-    /**
-     * Create a TypoScriptFrontendController mock instance.
-     *
-     * @throws Exception
-     */
-    protected function createFrontendControllerMock(array $config = []): void
-    {
-        $controllerMock = $this->createMock(TypoScriptFrontendController::class);
-        $controllerMock->cObj = new ContentObjectRenderer($controllerMock);
-        $controllerMock->cObj->data = [
-            'uid' => 1,
-            'pid' => 0,
-            'title' => 'Startpage',
-            'nav_title' => 'Car',
-        ];
-
-        // Set the configuration
-        $configProperty = new \ReflectionProperty($controllerMock, 'config');
-        $configProperty->setAccessible(true);
-        ArrayUtility::mergeRecursiveWithOverrule($controllerMock->config, $config);
-
-        $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
-        $frontendTypoScript->setSetupArray([]);
-
-        $controllerMock->config = $config;
-
-        $this->request = (new ServerRequest())
-            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE)
-            ->withAttribute('frontend.controller', $controllerMock)
-            ->withAttribute('frontend.typoscript', $frontendTypoScript);
     }
 }

@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace JWeiland\Weather2\Tests\Functional\Domain\Repository;
 
 use JWeiland\Weather2\Domain\Repository\DwdWarnCellRepository;
+use JWeiland\Weather2\Tests\Functional\Traits\InitializeFrontendControllerMockTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -20,6 +21,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class DwdWarnCellRepositoryTest extends FunctionalTestCase
 {
+    use InitializeFrontendControllerMockTrait;
+
     /**
      * @var DwdWarnCellRepository
      */
@@ -36,6 +39,8 @@ class DwdWarnCellRepositoryTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/tx_weather2_domain_model_dwdwarncell.csv');
 
         $this->subject = GeneralUtility::makeInstance(DwdWarnCellRepository::class);
+
+        $this->createFrontendControllerMock();
     }
 
     protected function tearDown(): void
