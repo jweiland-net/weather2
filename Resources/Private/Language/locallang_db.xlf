@@ -103,9 +103,18 @@
 			<trans-unit id="plugin.currentweather.title">
 				<source>Current Weather</source>
 			</trans-unit>
+			<trans-unit id="plugin.currentweather.description">
+				<source>Display the current weather conditions, including temperature, humidity, wind speed, and more, for a specific location.</source>
+			</trans-unit>
 			<trans-unit id="plugin.weatheralert.title">
 				<source>Weather Alerts</source>
 			</trans-unit>
+			<trans-unit id="plugin.weatheralert.description">
+				<source>Show real weather alerts and warnings, keeping users informed about severe weather conditions in their area.</source>
+			</trans-unit>
+
+
+			plugin.currentweather.descriptiom
 		</body>
 	</file>
 </xliff>

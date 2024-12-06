@@ -10,6 +10,10 @@ services:
   JWeiland\Weather2\:
     resource: '../Classes/*'
 
+  # Called by makeInstance in TYPO3's PluginPreview
+  JWeiland\Weather2\Backend\Preview\Weather2PluginPreview:
+    public: true
+
   # Will be called by GeneralUtility in AjaxRoutes
   JWeiland\Weather2\Ajax\DeutscherWetterdienstWarnCellSearch:
     public: true

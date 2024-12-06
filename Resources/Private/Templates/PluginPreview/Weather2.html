@@ -1,0 +1,49 @@
+<html lang="en"
+      xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Config</th>
+        <th>Value</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><strong>Plugin</strong></td>
+        <td>{pluginName}</td>
+    </tr>
+    <f:if condition="{pi_flexform_transformed.settings.measureUnits}">
+        <tr>
+            <td><strong>Measure Units</strong></td>
+            <td>{pi_flexform_transformed.settings.measureUnits}</td>
+        </tr>
+    </f:if>
+    <f:if condition="{pi_flexform_transformed.settings.selection}">
+        <tr>
+            <td><strong>Selected Record</strong></td>
+            <td>{pi_flexform_transformed.settings.selection}</td>
+        </tr>
+    </f:if>
+    <f:if condition="{pi_flexform_transformed.settings.warningTypes}">
+        <tr>
+            <td><strong>Display selected warning types</strong></td>
+            <td>{pi_flexform_transformed.settings.warningTypes}</td>
+        </tr>
+    </f:if>
+    <f:if condition="{pi_flexform_transformed.settings.warningLevels}">
+        <tr>
+            <td><strong>Display selected warning levels</strong></td>
+            <td>{pi_flexform_transformed.settings.warningLevels}</td>
+        </tr>
+    </f:if>
+    <f:if condition="{pi_flexform_transformed.settings.warnCells}">
+        <tr>
+            <td><strong>Display warnings for selected cities</strong></td>
+            <td>{pi_flexform_transformed.settings.warnCells}</td>
+        </tr>
+    </f:if>
+</table>
+</html>

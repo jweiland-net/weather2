@@ -1,0 +1,43 @@
+categories:
+  Weather2:
+    label: 'Weather2'
+  Weather2.templates:
+    label: 'Templates'
+    parent: Weather2
+  Weather2.pages:
+    label: 'Pages'
+    parent: Weather2
+
+settings:
+  weather2.templateRootPath:
+    label: 'Templates'
+    category: Weather2.templates
+    description: 'Path to template root'
+    type: string
+    default: 'EXT:weather2/Resources/Private/Templates/'
+  weather2.partialRootPath:
+    label: 'Partials'
+    category: Weather2.templates
+    description: 'Path to partial root'
+    type: string
+    default: 'EXT:weather2/Resources/Private/Partials/'
+  weather2.layoutRootPath:
+    label: 'Layouts'
+    category: Weather2.templates
+    description: 'Path to layout root'
+    type: string
+    default: 'EXT:weather2/Resources/Private/Layouts/'
+  weather2.iconsPath:
+    label: 'Icons Path'
+    category: Weather2.templates
+    description: 'Path for weather icons'
+    type: string
+    default: 'EXT:weather2/Resources/Public/WeatherIcons/'
+  weather2.storagePid:
+    label: 'Default storage PID'
+    category: Weather2.pages
+    description: 'Folder for storing weather records and fetched data'
+    type: int
+    default: 0
+
+

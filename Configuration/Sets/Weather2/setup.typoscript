@@ -13,25 +13,25 @@ plugin.tx_weather2 {
   view {
     templateRootPaths {
       0 = EXT:weather2/Resources/Private/Templates/
-      1 = {$plugin.tx_weather2.view.templateRootPath}
+      1 = {$weather2.templateRootPath}
     }
 
     partialRootPaths {
       0 = EXT:weather2/Resources/Private/Partials/
-      1 = {$plugin.tx_weather2.view.partialRootPath}
+      1 = {$weather2.partialRootPath}
     }
 
     layoutRootPaths {
       0 = EXT:weather2/Resources/Private/Layouts/
-      1 = {$plugin.tx_weather2.view.layoutRootPath}
+      1 = {$weather2.layoutRootPath}
     }
   }
 
   persistence {
-    storagePid = {$plugin.tx_weather2.persistence.storagePid}
+    storagePid = {$weather2.storagePid}
   }
 
   settings {
-    iconsPath = {$plugin.tx_weather2.iconsPath}
+    iconsPath = {$weather2.iconsPath}
   }
 }
