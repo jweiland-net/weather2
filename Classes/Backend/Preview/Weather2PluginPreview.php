@@ -34,8 +34,7 @@ class Weather2PluginPreview extends StandardContentPreviewRenderer
     public function __construct(
         protected FlexFormService $flexFormService,
         protected ViewFactoryInterface $viewFactory,
-    ) {
-    }
+    ) {}
 
     public function renderPageModulePreviewContent(GridColumnItem $item): string
     {
@@ -47,7 +46,7 @@ class Weather2PluginPreview extends StandardContentPreviewRenderer
         $view = $this->viewFactory->create(
             new ViewFactoryData(
                 templatePathAndFilename: self::PREVIEW_TEMPLATE,
-            )
+            ),
         );
         $view->assignMultiple($ttContentRecord);
 
