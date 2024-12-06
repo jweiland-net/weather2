@@ -16,7 +16,7 @@ call_user_func(static function () {
             CurrentWeatherController::class => 'show',
         ],
         [],
-        ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+        ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
     );
 
     ExtensionUtility::configurePlugin(
@@ -26,6 +26,6 @@ call_user_func(static function () {
             WeatherAlertController::class => 'show',
         ],
         [],
-        ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+        ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
     );
 });

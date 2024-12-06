@@ -33,7 +33,7 @@ class Weather2PluginPreview extends StandardContentPreviewRenderer
 
     public function __construct(
         protected FlexFormService $flexFormService,
-        protected ViewFactoryInterface $viewFactory
+        protected ViewFactoryInterface $viewFactory,
     ) {}
 
     public function renderPageModulePreviewContent(GridColumnItem $item): string
@@ -44,7 +44,7 @@ class Weather2PluginPreview extends StandardContentPreviewRenderer
         }
 
         $view = $this->viewFactory->create(new ViewFactoryData(
-            templatePathAndFilename: self::PREVIEW_TEMPLATE
+            templatePathAndFilename: self::PREVIEW_TEMPLATE,
         ));
         $view->assignMultiple($ttContentRecord);
 
@@ -76,12 +76,12 @@ class Weather2PluginPreview extends StandardContentPreviewRenderer
     {
         $langKey = sprintf(
             'plugin.%s.title',
-            str_replace('weather2_', '', $ttContentRecord['CType'])
+            str_replace('weather2_', '', $ttContentRecord['CType']),
         );
 
         $view->assign(
             'pluginName',
-            LocalizationUtility::translate('LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:' . $langKey)
+            LocalizationUtility::translate('LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:' . $langKey),
         );
     }
 

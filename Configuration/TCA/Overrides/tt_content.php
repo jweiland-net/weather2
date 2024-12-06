@@ -14,7 +14,7 @@ ExtensionUtility::registerPlugin(
     'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:plugin.currentweather.title',
     'plugin-current-weather',
     'plugins',
-    'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:plugin.currentweather.description'
+    'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:plugin.currentweather.description',
 );
 
 ExtensionUtility::registerPlugin(
@@ -23,7 +23,7 @@ ExtensionUtility::registerPlugin(
     'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:plugin.weatheralert.title',
     'plugin-weather-alert',
     'plugins',
-    'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:plugin.weatheralert.description'
+    'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:plugin.weatheralert.description',
 );
 
 ExtensionManagementUtility::addPiFlexFormValue(
@@ -36,7 +36,7 @@ ExtensionManagementUtility::addToAllTCAtypes(
     'tt_content',
     '--div--;Configuration,pi_flexform',
     'weather2_currentweather',
-    'after:subheader'
+    'after:subheader',
 );
 
 ExtensionManagementUtility::addPiFlexFormValue(
@@ -49,7 +49,7 @@ ExtensionManagementUtility::addToAllTCAtypes(
     'tt_content',
     '--div--;Configuration,pi_flexform',
     'weather2_weatheralert',
-    'after:subheader'
+    'after:subheader',
 );
 
 $GLOBALS['TCA']['tt_content']['types']['weather2_currentweather']['previewRenderer'] = Weather2PluginPreview::class;
