@@ -34,7 +34,8 @@ class Weather2PluginPreview extends StandardContentPreviewRenderer
     public function __construct(
         protected FlexFormService $flexFormService,
         protected ViewFactoryInterface $viewFactory,
-    ) {}
+    ) {
+    }
 
     public function renderPageModulePreviewContent(GridColumnItem $item): string
     {
@@ -43,9 +44,11 @@ class Weather2PluginPreview extends StandardContentPreviewRenderer
             return '';
         }
 
-        $view = $this->viewFactory->create(new ViewFactoryData(
-            templatePathAndFilename: self::PREVIEW_TEMPLATE,
-        ));
+        $view = $this->viewFactory->create(
+            new ViewFactoryData(
+                templatePathAndFilename: self::PREVIEW_TEMPLATE,
+            )
+        );
         $view->assignMultiple($ttContentRecord);
 
         $this->addPluginName($view, $ttContentRecord);
@@ -59,6 +62,9 @@ class Weather2PluginPreview extends StandardContentPreviewRenderer
         return $view->render();
     }
 
+    /**
+     * @param array<string, mixed> $ttContentRecord
+     */
     protected function isValidPlugin(array $ttContentRecord): bool
     {
         if (!isset($ttContentRecord['CType'])) {
@@ -72,6 +78,9 @@ class Weather2PluginPreview extends StandardContentPreviewRenderer
         return true;
     }
 
+    /**
+     * @param array<string, mixed> $ttContentRecord
+     */
     protected function addPluginName(ViewInterface $view, array $ttContentRecord): void
     {
         $langKey = sprintf(
@@ -85,6 +94,10 @@ class Weather2PluginPreview extends StandardContentPreviewRenderer
         );
     }
 
+    /**
+     * @param array<string, mixed> $ttContentRecord
+     * @return array<string, mixed>
+     */
     protected function getPiFlexformData(array $ttContentRecord): array
     {
         $data = [];
