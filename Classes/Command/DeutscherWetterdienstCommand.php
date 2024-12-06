@@ -158,7 +158,7 @@ final class DeutscherWetterdienstCommand extends Command
         $recordStoragePid = (int)$input->getArgument('recordStoragePage');
         foreach ($selectedWarnCells as $warnCellId) {
             $dwdWarnCells = $this->getDwdRecordsFindByName(
-                htmlspecialchars(strip_tags($warnCellId ?? '')),
+                htmlspecialchars(strip_tags($warnCellId)),
             );
             $progressBar = new ProgressBar($output, count($dwdWarnCells));
             $progressBar->start();
@@ -175,7 +175,7 @@ final class DeutscherWetterdienstCommand extends Command
                                 $alert,
                                 $dwdWarnCell['uid'],
                                 $isPreliminaryInformation,
-                                $recordStoragePid
+                                $recordStoragePid,
                             );
                             $this->insertRecord($row);
                             $progressBar->advance();
@@ -188,6 +188,9 @@ final class DeutscherWetterdienstCommand extends Command
         }
     }
 
+    /**
+     * @param array<string, mixed> $row
+     */
     private function insertRecord(array $row): void
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_weather2_domain_model_weatheralert');
@@ -251,12 +254,13 @@ final class DeutscherWetterdienstCommand extends Command
      * Returns filled WeatherAlert instance
      *
      * @param array<string, mixed> $alert
+     * @return array<string, mixed>
      */
     protected function getWeatherAlertInstanceForAlert(
         array $alert,
         int $warnCellId,
         bool $isPreliminaryInformation,
-        int $recordStoragePid
+        int $recordStoragePid,
     ): array {
         $weatherAlert['pid'] = $recordStoragePid;
         $weatherAlert['dwd_warn_cell'] = $warnCellId;
@@ -317,6 +321,10 @@ final class DeutscherWetterdienstCommand extends Command
         $queryBuilder->executeStatement();
     }
 
+    /**
+     * @return array<int, mixed>
+     * @throws Exception
+     */
     protected function getDwdRecordsFindByName(string $name): array
     {
         $table = 'tx_weather2_domain_model_dwdwarncell';
@@ -330,8 +338,8 @@ final class DeutscherWetterdienstCommand extends Command
                 ->where(
                     $queryBuilder->expr()->or(
                         $queryBuilder->expr()->eq('name', $queryBuilder->createNamedParameter(trim($name))),
-                        $queryBuilder->expr()->eq('warn_cell_id', $queryBuilder->createNamedParameter($name))
-                    )
+                        $queryBuilder->expr()->eq('warn_cell_id', $queryBuilder->createNamedParameter($name)),
+                    ),
                 )
                 ->orderBy('uid', 'ASC');
 

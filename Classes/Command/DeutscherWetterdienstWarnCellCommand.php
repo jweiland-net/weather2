@@ -30,7 +30,7 @@ final class DeutscherWetterdienstWarnCellCommand extends Command
     public function __construct(
         protected readonly LoggerInterface $logger,
         protected readonly RequestFactory $requestFactory,
-        protected readonly ConnectionPool $connectionPool
+        protected readonly ConnectionPool $connectionPool,
     ) {
         parent::__construct();
     }
@@ -38,7 +38,7 @@ final class DeutscherWetterdienstWarnCellCommand extends Command
     protected function configure(): void
     {
         $this->setHelp(
-            'Calls the Deutscher Wetterdienst api and saves warn cells into database. Required before using DeutscherWetterdienstTask!'
+            'Calls the Deutscher Wetterdienst api and saves warn cells into database. Required before using DeutscherWetterdienstTask!',
         );
     }
 
@@ -56,7 +56,7 @@ final class DeutscherWetterdienstWarnCellCommand extends Command
         } catch (\Throwable $e) {
             $this->logger->error(
                 sprintf('Error while updating warn cells: %s', $e->getMessage()),
-                ['exception' => $e]
+                ['exception' => $e],
             );
             $output->writeln($e->getMessage());
             $output->writeln('<error>An error occurred. Check the logs for details.</error>');
@@ -82,6 +82,9 @@ final class DeutscherWetterdienstWarnCellCommand extends Command
         }
     }
 
+    /**
+     * @return array<int, mixed>
+     */
     private function parseResponse(ResponseInterface $response): array
     {
         $rawRows = explode(PHP_EOL, trim((string)$response->getBody()));
@@ -108,6 +111,9 @@ final class DeutscherWetterdienstWarnCellCommand extends Command
         return $rows;
     }
 
+    /**
+     * @param array<int, mixed> $rows
+     */
     private function updateDatabase(array $rows, OutputInterface $output): void
     {
         $connection = $this->connectionPool->getConnectionForTable('tx_weather2_domain_model_dwdwarncell');
@@ -139,6 +145,9 @@ final class DeutscherWetterdienstWarnCellCommand extends Command
         return (int)$count > 0;
     }
 
+    /**
+     * @param array<string, mixed> $row
+     */
     private function insertRecord(Connection $connection, array $row): void
     {
         $connection->insert('tx_weather2_domain_model_dwdwarncell', [

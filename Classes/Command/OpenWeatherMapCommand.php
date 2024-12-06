@@ -18,7 +18,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -39,7 +38,7 @@ final class OpenWeatherMapCommand extends Command
         private readonly LoggerInterface $logger,
         private readonly RequestFactory $requestFactory,
         private readonly CacheService $cacheService,
-        private readonly ConnectionPool $connectionPool
+        private readonly ConnectionPool $connectionPool,
     ) {
         parent::__construct();
     }
@@ -122,18 +121,10 @@ final class OpenWeatherMapCommand extends Command
     {
         if ($response->getStatusCode() === 401) {
             $this->logger->error(WeatherUtility::translate('message.api_response_401', 'openweatherapi'));
-            $this->sendMail(
-                'Error while requesting weather data',
-                WeatherUtility::translate('message.api_response_401', 'openweatherapi'),
-            );
             return false;
         }
         if ($response->getStatusCode() !== 200) {
             $this->logger->error(WeatherUtility::translate('message.api_response_null', 'openweatherapi'));
-            $this->sendMail(
-                'Error while requesting weather data',
-                WeatherUtility::translate('message.api_response_null', 'openweatherapi'),
-            );
             return false;
         }
 
@@ -145,23 +136,12 @@ final class OpenWeatherMapCommand extends Command
                 return true;
             case '404':
                 $this->logger->error(WeatherUtility::translate('messages.api_code_404', 'openweatherapi'));
-                $this->sendMail(
-                    'Error while requesting weather data',
-                    WeatherUtility::translate('messages.api_code_404', 'openweatherapi'),
-                );
                 return false;
             default:
                 $this->logger->error(
                     sprintf(
                         WeatherUtility::translate('messages.api_code_none', 'openweatherapi'),
                         (string)$response->getBody(),
-                    ),
-                );
-                $this->sendMail(
-                    'Error while requesting weather data',
-                    sprintf(
-                        WeatherUtility::translate('messages.api_code_none', 'openweatherapi'),
-                        (string)$response->getBody()
                     ),
                 );
                 return false;
