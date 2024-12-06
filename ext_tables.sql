@@ -41,7 +41,7 @@ CREATE TABLE tx_weather2_domain_model_weatheralert (
 #
 CREATE TABLE tx_weather2_domain_model_dwdwarncell (
 	warn_cell_id varchar(30) DEFAULT '' NOT NULL,
-	name varchar(60) DEFAULT '' NOT NULL,
+	name varchar(100) DEFAULT '' NOT NULL,
 	short_name varchar(30) DEFAULT '' NOT NULL,
 	sign varchar(10) DEFAULT '' NOT NULL
 );

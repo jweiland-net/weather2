@@ -1,5 +1,5 @@
 imports:
-  - { resource: Backend/DashboardWidgets.yaml }
+  - {resource: Backend/DashboardWidgets.yaml}
 
 services:
   _defaults:
@@ -21,3 +21,22 @@ services:
   # Will be called by GeneralUtility in ScheduleModuleController
   JWeiland\Weather2\Task\OpenWeatherMapTaskAdditionalFieldProvider:
     public: true
+
+  # Symfony Commands
+  JWeiland\Weather2\Command\DeutscherWetterdienstCommand:
+    tags:
+      - name: console.command
+        command: 'weather2:fetch:deutscherWetterdienstAPI'
+        description: 'Calls the Deutscher Wetterdienst api and saves response in weather2 format into database'
+
+  JWeiland\Weather2\Command\DeutscherWetterdienstWarnCellCommand:
+    tags:
+      - name: console.command
+        command: 'weather2:fetch:warnCellsFromDeutscherWetterdienstAPI'
+        description: 'Calls the Deutscher Wetterdienst api and saves warn cells into database. Required before using DeutscherWetterdienstTask!'
+
+  JWeiland\Weather2\Command\OpenWeatherMapCommand:
+    tags:
+      - name: console.command
+        command: 'weather2:fetch:fromOpenWeatherAPI'
+        description: 'Calls the api of openweathermap.org and saves response into database.'
