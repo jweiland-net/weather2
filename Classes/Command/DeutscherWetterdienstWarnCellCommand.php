@@ -13,78 +13,140 @@ namespace JWeiland\Weather2\Command;
 
 use JWeiland\Weather2\Utility\WeatherUtility;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\RequestFactory;
 
-final class DeutscherWetterdienstWarnCellCommand extends WeatherAbstractCommand
+final class DeutscherWetterdienstWarnCellCommand extends Command
 {
     public const API_URL = 'https://www.dwd.de/DE/leistungen/opendata/help/warnungen/cap_warncellids_csv.csv?__blob=publicationFile&v=3';
 
+    public function __construct(
+        protected readonly LoggerInterface $logger,
+        protected readonly RequestFactory $requestFactory,
+        protected readonly ConnectionPool $connectionPool
+    ) {
+        parent::__construct();
+    }
+
     protected function configure(): void
     {
-        $this->setHelp('Calls the Deutscher Wetterdienst api and saves warn cells into database. Required before using DeutscherWetterdienstTask!');
+        $this->setHelp(
+            'Calls the Deutscher Wetterdienst api and saves warn cells into database. Required before using DeutscherWetterdienstTask!'
+        );
     }
+
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $response = $this->getRequestFactory()->request($this::API_URL);
-        if (!$this->checkResponse($response)) {
+        $output->writeln('<info>Starting to fetch warn cell data...</info>');
+
+        try {
+            $response = $this->fetchWarnCellData();
+            $rows = $this->parseResponse($response);
+            $this->updateDatabase($rows, $output);
+
+            $output->writeln('<info>Warn cell data has been successfully updated.</info>');
+            return Command::SUCCESS;
+        } catch (\Throwable $e) {
+            $this->logger->error(
+                sprintf('Error while updating warn cells: %s', $e->getMessage()),
+                ['exception' => $e]
+            );
+            $output->writeln($e->getMessage());
+            $output->writeln('<error>An error occurred. Check the logs for details.</error>');
             return Command::FAILURE;
         }
-        $this->processResponse($response);
-        return Command::SUCCESS;
     }
 
-    protected function processResponse(ResponseInterface $response): void
+    protected function fetchWarnCellData(): ResponseInterface
     {
-        $connection = $this->getConnectionPool()
-            ->getConnectionForTable('tx_weather2_domain_model_dwdwarncell');
+        try {
+            $response = $this->requestFactory->request($this::API_URL);
+            if ($response->getStatusCode() !== 200 || (string)$response->getBody() === '') {
+                $this->logger->log(
+                    LogLevel::ERROR,
+                    WeatherUtility::translate('message.api_response_null', 'deutscherwetterdienst'),
+                );
+                throw new \RuntimeException('Invalid response from API.');
+            }
 
-        $rawRows = explode(PHP_EOL, (string)$response->getBody());
-        // remove header
-        array_shift($rawRows);
+            return $response;
+        } catch (\Exception $e) {
+            throw new \RuntimeException('Failed to fetch warn cell data: ' . $e->getMessage(), 0, $e);
+        }
+    }
 
-        $data = [];
-        $i = 0;
-        foreach ($rawRows as $rawRow) {
-            if ($rawRow === '') {
+    private function parseResponse(ResponseInterface $response): array
+    {
+        $rawRows = explode(PHP_EOL, trim((string)$response->getBody()));
+        array_shift($rawRows); // Remove header row
+
+        $rows = [];
+        foreach ($rawRows as $index => $rawRow) {
+            $fields = str_getcsv($rawRow, ';');
+            if (count($fields) !== 5) {
+                $this->logger->warning(sprintf('Malformed row at line %d: %s', $index + 2, $rawRow));
                 continue;
             }
 
-            [$warnCellId, $name, $nuts, $shortName, $sign] = str_getcsv($rawRow, ';');
-            // check if a record for this id already exists
-            if ($connection->count('uid', 'tx_weather2_domain_model_dwdwarncell', ['warn_cell_id' => $warnCellId]) === 0) {
-                $data['tx_weather2_domain_model_dwdwarncell']['NEW' . $i++] = [
-                    'pid' => 0,
-                    'warn_cell_id' => $warnCellId,
-                    'name' => $name,
-                    'short_name' => $shortName,
-                    'sign' => $sign,
-                ];
-            }
+            [$warnCellId, $name, $nuts, $shortName, $sign] = $fields;
+            $rows[] = [
+                'warn_cell_id' => $warnCellId,
+                'name' => $name,
+                'nuts' => $nuts,
+                'short_name' => $shortName,
+                'sign' => $sign,
+            ];
         }
 
-        $dataHandler = $this->getDataHandler();
-        $dataHandler->start($data, []);
-        $dataHandler->process_datamap();
+        return $rows;
     }
 
-    /**
-     * @param ResponseInterface $response
-     * @return bool Returns true if response is valid or false in case of an error
-     */
-    private function checkResponse(ResponseInterface $response): bool
+    private function updateDatabase(array $rows, OutputInterface $output): void
     {
-        if ($response->getStatusCode() !== 200 || (string)$response->getBody() === '') {
-            $this->logger->log(
-                LogLevel::ERROR,
-                WeatherUtility::translate('message.api_response_null', 'deutscherwetterdienst'),
-            );
+        $connection = $this->connectionPool->getConnectionForTable('tx_weather2_domain_model_dwdwarncell');
 
-            return false;
+        $progressBar = new ProgressBar($output, count($rows));
+        $progressBar->start();
+
+        foreach ($rows as $row) {
+            if (!$this->doesRecordExist($connection, $row['warn_cell_id'])) {
+                $this->insertRecord($connection, $row);
+            }
+            $progressBar->advance();
         }
 
-        return true;
+        $progressBar->finish();
+        $output->writeln('');
+    }
+
+    private function doesRecordExist(Connection $connection, string $warnCellId): bool
+    {
+        $queryBuilder = $connection->createQueryBuilder();
+        $count = $queryBuilder
+            ->count('uid')
+            ->from('tx_weather2_domain_model_dwdwarncell')
+            ->where($queryBuilder->expr()->eq('warn_cell_id', $queryBuilder->createNamedParameter($warnCellId)))
+            ->executeQuery()
+            ->fetchOne();
+
+        return (int)$count > 0;
+    }
+
+    private function insertRecord(Connection $connection, array $row): void
+    {
+        $connection->insert('tx_weather2_domain_model_dwdwarncell', [
+            'pid' => 0,
+            'warn_cell_id' => $row['warn_cell_id'],
+            'name' => $row['name'],
+            'short_name' => $row['short_name'],
+            'sign' => $row['sign'],
+        ]);
     }
 }
