@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace JWeiland\Weather2\Command;
 
+use JWeiland\Weather2\Service\OpenWeatherService;
+use JWeiland\Weather2\Service\WeatherDataHandlerService;
 use JWeiland\Weather2\Utility\WeatherUtility;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -18,27 +20,13 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Http\RequestFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Service\CacheService;
 
 final class OpenWeatherMapCommand extends Command
 {
-    private const DB_EXT_TABLE = 'tx_weather2_domain_model_currentweather';
-    protected string $url = '';
-    protected \stdClass $responseClass;
-    protected string $clearCache = '';
-    protected string $name = '';
-    protected string $country = '';
-    protected string $city = '';
-    protected int $recordStoragePage = 0;
-
     public function __construct(
-        private readonly LoggerInterface $logger,
-        private readonly RequestFactory $requestFactory,
-        private readonly CacheService $cacheService,
-        private readonly ConnectionPool $connectionPool,
+        private readonly OpenWeatherService $weatherService,
+        private readonly WeatherDataHandlerService $weatherDataHandlerService,
+        private readonly LoggerInterface $logger
     ) {
         parent::__construct();
     }
@@ -64,154 +52,38 @@ final class OpenWeatherMapCommand extends Command
         $output->writeln('<info>Starting OpenWeatherMap data fetch...</info>');
 
         try {
-            // Assign arguments
-            $this->name = ($input->getArgument('name')) ?? '';
-            $this->city = ($input->getArgument('recordStoragePage')) ?? '';
-            $this->country = ($input->getArgument('recordStoragePage')) ?? '';
-            $this->recordStoragePage = (int)$input->getArgument('recordStoragePage');
+            // Gather inputs
+            $name = $input->getArgument('name');
+            $city = $input->getArgument('city');
+            $country = $input->getArgument('country');
+            $apiKey = $input->getArgument('apiKey');
+            $recordStoragePage = (int)$input->getArgument('recordStoragePage');
+            $clearCache = $input->getArgument('clearCache') ?? '';
 
-            $this->removeOldRecordsFromDb();
-            $this->url = sprintf(
-                'https://api.openweathermap.org/data/2.5/weather?q=%s,%s&units=%s&APPID=%s',
-                urlencode($input->getArgument('city')),
-                urlencode($input->getArgument('country')),
-                'metric',
-                $input->getArgument('apiKey'),
-            );
+            // Delegate logic to services
+            $this->weatherDataHandlerService->removeOldRecords($name, $recordStoragePage);
+            $response = $this->weatherService->fetchWeatherData($city, $country, $apiKey);
 
-            // Log request details
-            $this->logger->info('Requesting data from OpenWeatherMap API', ['url' => $this->url]);
+            // Decode the JSON response into an stdClass
+            $responseClass = json_decode((string)$response->getBody(), false);
 
-            // Make API request
-            $response = $this->requestFactory->request($this->url);
-
-            if (!($this->checkResponseCode($response))) {
+            if (!$responseClass) {
+                $this->logger->error('Failed to decode API response as JSON.');
+                $output->writeln('<error>Invalid API response.</error>');
                 return Command::FAILURE;
             }
+            $this->weatherDataHandlerService->saveWeatherData($responseClass, $recordStoragePage, $name);
 
-            $this->responseClass = json_decode((string)$response->getBody());
-            $this->logger->info(sprintf('Response class: %s', json_encode($this->responseClass)));
-
-            // Changing the data save to query builder
-            $this->saveCurrentWeatherInstanceForResponseClass($this->responseClass);
-
-            if (!empty($input->getArgument('clearCache'))) {
-                $cacheService = $this->cacheService;
-                $cacheService->clearPageCache(GeneralUtility::intExplode(',', $this->clearCache));
+            if (!empty($clearCache)) {
+                $this->weatherDataHandlerService->clearCache($clearCache);
             }
 
-            $output->writeln('<info>Open Weather Map data successfully updated!</info>');
+            $output->writeln('<info>Weather data successfully updated!</info>');
             return Command::SUCCESS;
         } catch (\Throwable $e) {
-            $errorMessage = 'Exception while fetching data from API: ' . $e->getMessage();
-            $this->logger->error($errorMessage);
-
+            $this->logger->error('Error fetching weather data: ' . $e->getMessage());
             $output->writeln('<error>' . $e->getMessage() . '</error>');
             return Command::FAILURE;
         }
-    }
-
-    /**
-     * Checks the JSON response
-     *
-     * @param ResponseInterface $response
-     * @return bool Returns true if given data is valid or false in case of an error
-     */
-    private function checkResponseCode(ResponseInterface $response): bool
-    {
-        if ($response->getStatusCode() === 401) {
-            $this->logger->error(WeatherUtility::translate('message.api_response_401', 'openweatherapi'));
-            return false;
-        }
-        if ($response->getStatusCode() !== 200) {
-            $this->logger->error(WeatherUtility::translate('message.api_response_null', 'openweatherapi'));
-            return false;
-        }
-
-        /** @var \stdClass $responseClass */
-        $responseClass = json_decode((string)$response->getBody(), false);
-
-        switch ($responseClass->cod) {
-            case '200':
-                return true;
-            case '404':
-                $this->logger->error(WeatherUtility::translate('messages.api_code_404', 'openweatherapi'));
-                return false;
-            default:
-                $this->logger->error(
-                    sprintf(
-                        WeatherUtility::translate('messages.api_code_none', 'openweatherapi'),
-                        (string)$response->getBody(),
-                    ),
-                );
-                return false;
-        }
-    }
-
-    public function saveCurrentWeatherInstanceForResponseClass(\stdClass $responseClass): int
-    {
-        $recordStoragePage = (int)$this->recordStoragePage;
-        $weatherObjectArray = [
-            'pid' => $this->recordStoragePage,
-            'name' => $this->name,
-        ];
-
-        if (isset($responseClass->main->temp)) {
-            $weatherObjectArray['temperature_c'] = (float)$responseClass->main->temp;
-        }
-        if (isset($responseClass->main->pressure)) {
-            $weatherObjectArray['pressure_hpa'] = (float)$responseClass->main->pressure;
-        }
-        if (isset($responseClass->main->humidity)) {
-            $weatherObjectArray['humidity_percentage'] = $responseClass->main->humidity;
-        }
-        if (isset($responseClass->main->temp_min)) {
-            $weatherObjectArray['min_temp_c'] = $responseClass->main->temp_min;
-        }
-        if (isset($responseClass->main->temp_max)) {
-            $weatherObjectArray['max_temp_c'] = $responseClass->main->temp_max;
-        }
-        if (isset($responseClass->wind->speed)) {
-            $weatherObjectArray['wind_speed_m_p_s'] = $responseClass->wind->speed;
-        }
-        if (isset($responseClass->wind->deg)) {
-            $weatherObjectArray['wind_speed_m_p_s'] = $responseClass->wind->deg;
-        }
-        if (isset($responseClass->rain)) {
-            $rain = (array)$responseClass->rain;
-            $weatherObjectArray['rain_volume'] = (float)($rain['1h'] ?? 0.0);
-        }
-        if (isset($responseClass->snow)) {
-            $snow = (array)$responseClass->snow;
-            $weatherObjectArray['snow_volume'] = (float)($snow['1h'] ?? 0.0);
-        }
-        if (isset($responseClass->clouds->all)) {
-            $weatherObjectArray['clouds_percentage'] = $responseClass->clouds->all;
-        }
-        if (isset($responseClass->dt)) {
-            $weatherObjectArray['measure_timestamp'] = $responseClass->dt;
-        }
-        if (isset($responseClass->weather[0]->icon)) {
-            $weatherObjectArray['icon'] = $responseClass->weather[0]->icon;
-        }
-        if (isset($responseClass->weather[0]->id)) {
-            $weatherObjectArray['condition_code'] = $responseClass->weather[0]->id;
-        }
-
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_weather2_domain_model_currentweather');
-        return $queryBuilder
-            ->insert('tx_weather2_domain_model_currentweather')
-            ->values($weatherObjectArray)
-            ->executeStatement();
-    }
-
-    protected function removeOldRecordsFromDb(): void
-    {
-        $this->connectionPool
-            ->getConnectionForTable(self::DB_EXT_TABLE)
-            ->delete(self::DB_EXT_TABLE, [
-                'pid' => $this->recordStoragePage,
-                'name' => $this->name,
-            ]);
     }
 }
