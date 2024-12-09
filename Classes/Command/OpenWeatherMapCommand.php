@@ -38,7 +38,7 @@ final class OpenWeatherMapCommand extends Command
             ->addArgument('country', InputArgument::REQUIRED, 'Country Code (e.g. DE)')
             ->addArgument('apiKey', InputArgument::REQUIRED, 'API-Key')
             ->addArgument(
-                'clearCache',
+                'clearCacheIds',
                 InputArgument::OPTIONAL,
                 'Clear cache for pages (comma separated list with IDs)',
             )
@@ -56,7 +56,7 @@ final class OpenWeatherMapCommand extends Command
             $country = $input->getArgument('country');
             $apiKey = $input->getArgument('apiKey');
             $recordStoragePage = (int)$input->getArgument('recordStoragePage');
-            $clearCache = $input->getArgument('clearCache') ?? '';
+            $clearCacheIds = $input->getArgument('clearCacheIds') ?? '';
 
             // Delegate logic to services
             $this->weatherDataHandlerService->removeOldRecords($name, $recordStoragePage);
@@ -72,8 +72,8 @@ final class OpenWeatherMapCommand extends Command
             }
             $this->weatherDataHandlerService->saveWeatherData($responseClass, $recordStoragePage, $name);
 
-            if (!empty($clearCache)) {
-                $this->weatherDataHandlerService->clearCache($clearCache);
+            if (!empty($clearCacheIds)) {
+                $this->weatherDataHandlerService->clearCache($clearCacheIds);
             }
 
             $output->writeln('<info>Weather data successfully updated!</info>');
