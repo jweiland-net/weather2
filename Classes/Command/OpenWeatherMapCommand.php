@@ -25,8 +25,8 @@ use TYPO3\CMS\Extbase\Service\CacheService;
 
 final class OpenWeatherMapCommand extends Command
 {
+    private const DB_EXT_TABLE = 'tx_weather2_domain_model_currentweather';
     protected string $url = '';
-    protected string $dbExtTable = 'tx_weather2_domain_model_currentweather';
     protected \stdClass $responseClass;
     public string $clearCache = '';
     public string $name = '';
@@ -208,8 +208,8 @@ final class OpenWeatherMapCommand extends Command
     protected function removeOldRecordsFromDb(): void
     {
         $this->connectionPool
-            ->getConnectionForTable($this->dbExtTable)
-            ->delete($this->dbExtTable, [
+            ->getConnectionForTable(self::DB_EXT_TABLE)
+            ->delete(self::DB_EXT_TABLE, [
                 'pid' => $this->recordStoragePage,
                 'name' => $this->name,
             ]);
