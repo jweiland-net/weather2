@@ -39,5 +39,3 @@ settings:
     description: 'Folder for storing weather records and fetched data'
     type: int
     default: 0
-
-
