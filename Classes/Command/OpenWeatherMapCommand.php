@@ -66,12 +66,12 @@ final class OpenWeatherMapCommand extends Command
             $responseClass = json_decode((string)$response->getBody(), false);
 
             if (!$responseClass) {
-                $this->logger->error('Failed to decode API response as JSON.');
-                $output->writeln('<error>Invalid API response.</error>');
-                return Command::FAILURE;
+                throw new \RuntimeException('Failed to decode API response as JSON.');
             }
+            // Save the weather data to the database
             $this->weatherDataHandlerService->saveWeatherData($responseClass, $recordStoragePage, $name);
 
+            // Clear cache if IDs are provided
             if (!empty($clearCacheIds)) {
                 $this->weatherDataHandlerService->clearCache($clearCacheIds);
             }
