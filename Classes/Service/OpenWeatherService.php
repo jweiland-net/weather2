@@ -15,7 +15,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Http\RequestFactory;
 
-final class OpenWeatherService implements WeatherServiceInterface
+class OpenWeatherService implements WeatherServiceInterface
 {
     private const API_URL = 'https://api.openweathermap.org/data/2.5/weather?q=%s,%s&units=%s&APPID=%s';
 

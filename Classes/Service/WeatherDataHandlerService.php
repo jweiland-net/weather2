@@ -15,7 +15,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\CacheService;
 
-final class WeatherDataHandlerService
+class WeatherDataHandlerService
 {
     public function __construct(
         private readonly ConnectionPool $connectionPool,

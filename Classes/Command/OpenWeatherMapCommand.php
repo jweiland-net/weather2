@@ -13,6 +13,7 @@ namespace JWeiland\Weather2\Command;
 
 use JWeiland\Weather2\Service\OpenWeatherService;
 use JWeiland\Weather2\Service\WeatherDataHandlerService;
+use JWeiland\Weather2\Service\WeatherServiceInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -22,7 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class OpenWeatherMapCommand extends Command
 {
     public function __construct(
-        private readonly OpenWeatherService $weatherService,
+        private readonly WeatherServiceInterface $weatherService,
         private readonly WeatherDataHandlerService $weatherDataHandlerService,
         private readonly LoggerInterface $logger,
     ) {
@@ -38,7 +39,7 @@ final class OpenWeatherMapCommand extends Command
             ->addArgument('country', InputArgument::REQUIRED, 'Country Code (e.g. DE)')
             ->addArgument('apiKey', InputArgument::REQUIRED, 'API-Key')
             ->addArgument(
-                'clearCacheIds',
+                'pageIdsToClear',
                 InputArgument::OPTIONAL,
                 'Clear cache for pages (comma separated list with IDs)',
             )
@@ -56,7 +57,7 @@ final class OpenWeatherMapCommand extends Command
             $country = $input->getArgument('country');
             $apiKey = $input->getArgument('apiKey');
             $recordStoragePage = (int)$input->getArgument('recordStoragePage');
-            $clearCacheIds = $input->getArgument('clearCacheIds') ?? '';
+            $pageIdsToClear = $input->getArgument('pageIdsToClear') ?? '';
 
             // Delegate logic to services
             $this->weatherDataHandlerService->removeOldRecords($name, $recordStoragePage);
@@ -72,8 +73,8 @@ final class OpenWeatherMapCommand extends Command
             $this->weatherDataHandlerService->saveWeatherData($responseClass, $recordStoragePage, $name);
 
             // Clear cache if IDs are provided
-            if (!empty($clearCacheIds)) {
-                $this->weatherDataHandlerService->clearCache($clearCacheIds);
+            if (!empty($pageIdsToClear)) {
+                $this->weatherDataHandlerService->clearCache($pageIdsToClear);
             }
 
             $output->writeln('<info>Weather data successfully updated!</info>');
