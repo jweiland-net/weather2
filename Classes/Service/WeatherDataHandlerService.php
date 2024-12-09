@@ -17,7 +17,7 @@ use TYPO3\CMS\Extbase\Service\CacheService;
 
 class WeatherDataHandlerService
 {
-    private const string CURRENT_WEATHER_TABLE_NAME = 'tx_weather2_domain_model_currentweather';
+    private const CURRENT_WEATHER_TABLE_NAME = 'tx_weather2_domain_model_currentweather';
 
     public function __construct(
         private readonly ConnectionPool $connectionPool,
