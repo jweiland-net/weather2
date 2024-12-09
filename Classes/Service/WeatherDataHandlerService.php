@@ -17,6 +17,8 @@ use TYPO3\CMS\Extbase\Service\CacheService;
 
 class WeatherDataHandlerService
 {
+    private const string CURRENT_WEATHER_TABLE_NAME = 'tx_weather2_domain_model_currentweather';
+
     public function __construct(
         private readonly ConnectionPool $connectionPool,
         private readonly CacheService $cacheService,
@@ -25,8 +27,8 @@ class WeatherDataHandlerService
     public function removeOldRecords(string $name, int $recordStoragePage): void
     {
         $this->connectionPool
-            ->getConnectionForTable('tx_weather2_domain_model_currentweather')
-            ->delete('tx_weather2_domain_model_currentweather', [
+            ->getConnectionForTable(self::CURRENT_WEATHER_TABLE_NAME)
+            ->delete(self::CURRENT_WEATHER_TABLE_NAME, [
                 'pid' => $recordStoragePage,
                 'name' => $name,
             ]);
@@ -86,8 +88,8 @@ class WeatherDataHandlerService
 
         try {
             $this->connectionPool
-                ->getQueryBuilderForTable('tx_weather2_domain_model_currentweather')
-                ->insert('tx_weather2_domain_model_currentweather')
+                ->getQueryBuilderForTable(self::CURRENT_WEATHER_TABLE_NAME)
+                ->insert(self::CURRENT_WEATHER_TABLE_NAME)
                 ->values($weatherObjectArray)
                 ->executeStatement();
         } catch (\Doctrine\DBAL\Exception $e) {
