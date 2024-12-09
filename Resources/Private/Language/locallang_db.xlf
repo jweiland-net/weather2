@@ -112,9 +112,6 @@
 			<trans-unit id="plugin.weatheralert.description">
 				<source>Show real weather alerts and warnings, keeping users informed about severe weather conditions in their area.</source>
 			</trans-unit>
-
-
-			plugin.currentweather.descriptiom
 		</body>
 	</file>
 </xliff>
