@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace JWeiland\Weather2\Command;
 
-use JWeiland\Weather2\Service\OpenWeatherService;
 use JWeiland\Weather2\Service\WeatherDataHandlerService;
 use JWeiland\Weather2\Service\WeatherServiceInterface;
 use Psr\Log\LoggerInterface;
