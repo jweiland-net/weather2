@@ -84,11 +84,15 @@ final class WeatherDataHandlerService
             $weatherObjectArray['condition_code'] = $responseClass->weather[0]->id;
         }
 
-        $this->connectionPool
-            ->getQueryBuilderForTable('tx_weather2_domain_model_currentweather')
-            ->insert('tx_weather2_domain_model_currentweather')
-            ->values($weatherObjectArray)
-            ->executeStatement();
+        try {
+            $this->connectionPool
+                ->getQueryBuilderForTable('tx_weather2_domain_model_currentweather')
+                ->insert('tx_weather2_domain_model_currentweather')
+                ->values($weatherObjectArray)
+                ->executeStatement();
+        } catch (\Doctrine\DBAL\Exception $e) {
+            throw new \RuntimeException('Failed to save weather data to the database: ' . $e->getMessage());
+        }
     }
 
     public function clearCache(string $cacheIds): void
