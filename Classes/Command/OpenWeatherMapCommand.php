@@ -28,11 +28,11 @@ final class OpenWeatherMapCommand extends Command
     private const DB_EXT_TABLE = 'tx_weather2_domain_model_currentweather';
     protected string $url = '';
     protected \stdClass $responseClass;
-    public string $clearCache = '';
-    public string $name = '';
-    public string $country = '';
-    public string $city = '';
-    public int $recordStoragePage = 0;
+    protected string $clearCache = '';
+    protected string $name = '';
+    protected string $country = '';
+    protected string $city = '';
+    protected int $recordStoragePage = 0;
 
     public function __construct(
         private readonly LoggerInterface $logger,
