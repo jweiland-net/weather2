@@ -44,3 +44,6 @@ services:
       - name: console.command
         command: 'weather2:fetch:fromOpenWeatherAPI'
         description: 'Calls the api of openweathermap.org and saves response into database.'
+
+  JWeiland\Weather2\Service\WeatherServiceInterface:
+    class: JWeiland\Weather2\Service\OpenWeatherService
