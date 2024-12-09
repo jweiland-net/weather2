@@ -99,7 +99,7 @@ class WeatherDataHandlerService
 
     public function clearCache(string $cacheIds): void
     {
-        $cacheIdsArray = GeneralUtility::intExplode(',', $cacheIds);
+        $cacheIdsArray = GeneralUtility::intExplode(',', $cacheIds, true);
         $this->cacheService->clearPageCache($cacheIdsArray);
     }
 }
