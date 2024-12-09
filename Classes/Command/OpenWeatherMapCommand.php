@@ -13,8 +13,6 @@ namespace JWeiland\Weather2\Command;
 
 use JWeiland\Weather2\Service\OpenWeatherService;
 use JWeiland\Weather2\Service\WeatherDataHandlerService;
-use JWeiland\Weather2\Utility\WeatherUtility;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -26,7 +24,7 @@ final class OpenWeatherMapCommand extends Command
     public function __construct(
         private readonly OpenWeatherService $weatherService,
         private readonly WeatherDataHandlerService $weatherDataHandlerService,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
     ) {
         parent::__construct();
     }

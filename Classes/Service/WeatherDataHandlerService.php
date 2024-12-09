@@ -12,14 +12,14 @@ declare(strict_types=1);
 namespace JWeiland\Weather2\Service;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Extbase\Service\CacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Service\CacheService;
 
 final class WeatherDataHandlerService
 {
     public function __construct(
         private readonly ConnectionPool $connectionPool,
-        private readonly CacheService $cacheService
+        private readonly CacheService $cacheService,
     ) {}
 
     public function removeOldRecords(string $name, int $recordStoragePage): void
@@ -35,7 +35,7 @@ final class WeatherDataHandlerService
     public function saveWeatherData(
         \stdClass $responseClass,
         int $recordStoragePage,
-        string $name
+        string $name,
     ): void {
         $weatherObjectArray = [
             'pid' => $recordStoragePage,
