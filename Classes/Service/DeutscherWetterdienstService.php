@@ -20,7 +20,7 @@ class DeutscherWetterdienstService
     public function __construct(
         private readonly WarnCellFetcherInterface $fetcher,
         private readonly WarnCellParserInterface $parser,
-        private readonly WarnCellRepositoryInterface $repository
+        private readonly WarnCellRepositoryInterface $repository,
     ) {}
 
     public function fetchAndStoreWarnCells(OutputInterface $output): void

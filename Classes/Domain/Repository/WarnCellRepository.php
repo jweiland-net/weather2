@@ -20,7 +20,7 @@ class WarnCellRepository implements WarnCellRepositoryInterface
     private const WARN_CELL_TABLE_NAME = 'tx_weather2_domain_model_dwdwarncell';
 
     public function __construct(
-        private readonly ConnectionPool $connectionPool
+        private readonly ConnectionPool $connectionPool,
     ) {}
 
     public function updateDatabase(array $rows, ProgressBar $progressBar = null): void

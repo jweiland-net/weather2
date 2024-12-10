@@ -19,11 +19,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class DeutscherWetterdienstWarnCellCommand extends Command
 {
     public function __construct(
-        private readonly DeutscherWetterdienstService $warnCellService
+        private readonly DeutscherWetterdienstService $warnCellService,
     ) {
         parent::__construct();
     }
-
 
     protected function configure(): void
     {

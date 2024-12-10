@@ -21,7 +21,7 @@ class WarnCellFetcher implements WarnCellFetcherInterface
 
     public function __construct(
         private readonly RequestFactory $requestFactory,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
     ) {}
 
     public function fetchData(): ResponseInterface
