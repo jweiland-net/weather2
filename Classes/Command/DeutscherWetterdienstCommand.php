@@ -154,7 +154,7 @@ final class DeutscherWetterdienstCommand extends Command
      */
     protected function processDwdItems(array $category, bool $isPreliminaryInformation, InputInterface $input, OutputInterface $output): void
     {
-        $selectedWarnCells = explode(',', $input->getArgument('selectedWarnCells'));
+        $selectedWarnCells = GeneralUtility::trimExplode(',', $input->getArgument('selectedWarnCells'));
         $recordStoragePid = (int)$input->getArgument('recordStoragePage');
         foreach ($selectedWarnCells as $warnCellId) {
             $dwdWarnCells = $this->getDwdRecordsFindByName(
@@ -243,11 +243,6 @@ final class DeutscherWetterdienstCommand extends Command
             return false;
         }
         return true;
-    }
-
-    protected function getBackendUserAuthentication(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 
     /**
