@@ -15,20 +15,23 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class WarnCellParser implements WarnCellParserInterface
 {
+    /**
+     * @return array<int, mixed>
+     */
     public function parse(string $data): array
     {
-        $rawRows = GeneralUtility::trimExplode(PHP_EOL, $data, true);
-        array_shift($rawRows); // Remove header row
+        $warnCellRecords = GeneralUtility::trimExplode(PHP_EOL, $data, true);
+        array_shift($warnCellRecords); // Remove header row
 
-        $rows = [];
-        foreach ($rawRows as $index => $rawRow) {
-            $fields = str_getcsv($rawRow, ';');
+        $warnCellResults = [];
+        foreach ($warnCellRecords as $index => $warnCellRecord) {
+            $fields = str_getcsv($warnCellRecord, ';');
             if (count($fields) !== 5) {
                 continue;
             }
 
-            [$warnCellId, $name, $shortName, $sign] = $fields;
-            $rows[] = [
+            [$warnCellId, $name,$shortName, $sign] = $fields;
+            $warnCellResults[] = [
                 'warn_cell_id' => $warnCellId,
                 'name' => $name,
                 'short_name' => $shortName,
@@ -36,6 +39,6 @@ class WarnCellParser implements WarnCellParserInterface
             ];
         }
 
-        return $rows;
+        return $warnCellResults;
     }
 }

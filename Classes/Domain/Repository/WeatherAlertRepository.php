@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Weather2\Domain\Repository;
 
+use Doctrine\DBAL\Exception;
 use JWeiland\Weather2\Domain\Model\WeatherAlert;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
@@ -88,6 +89,10 @@ class WeatherAlertRepository extends Repository implements WeatherAlertRepositor
         return $query->execute();
     }
 
+    /**
+     * @return array<int, mixed>
+     * @throws Exception
+     */
     public function getDwdAlertsFindByName(string $alertName): array
     {
         $connection = $this->connectionPool->getConnectionForTable(self::WARN_CELL_TABLE_NAME);
@@ -99,7 +104,7 @@ class WeatherAlertRepository extends Repository implements WeatherAlertRepositor
                 ->from(self::WARN_CELL_TABLE_NAME)
                 ->where(
                     $queryBuilder->expr()->or(
-                        $queryBuilder->expr()->eq('name', $queryBuilder->createNamedParameter(trim($alertName))),
+                        $queryBuilder->expr()->like('name', $queryBuilder->createNamedParameter('%' . trim($alertName) . '%')),
                         $queryBuilder->expr()->eq('warn_cell_id', $queryBuilder->createNamedParameter($alertName)),
                     ),
                 )
@@ -112,7 +117,7 @@ class WeatherAlertRepository extends Repository implements WeatherAlertRepositor
         }
     }
 
-    public function getUidOfAlert(array $alert, int $recordStoragePid, string $comparisonHash): int
+    public function getUidOfAlert(int $recordStoragePid, string $comparisonHash): int
     {
         $connection = $this->connectionPool->getConnectionForTable(self::ALERT_TABLE_NAME);
         $identicalAlert = $connection
@@ -129,17 +134,20 @@ class WeatherAlertRepository extends Repository implements WeatherAlertRepositor
         return $identicalAlert['uid'] ?? 0;
     }
 
-    public function insertAlertRecord(array $row): int
+    public function insertAlertRecord(array $weatherAlertInfo): int
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::ALERT_TABLE_NAME);
         $queryBuilder
             ->insert(self::ALERT_TABLE_NAME)
-            ->values($row)
+            ->values($weatherAlertInfo)
             ->executeStatement();
 
         return (int)$queryBuilder->getConnection()->lastInsertId();
     }
 
+    /**
+     * @param array<int, mixed> $keepRecords
+     */
     public function removeOldAlertsFromDb(array $keepRecords): int
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::ALERT_TABLE_NAME);

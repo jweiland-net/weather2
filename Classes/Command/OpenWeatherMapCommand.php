@@ -23,7 +23,6 @@ final class OpenWeatherMapCommand extends Command
 {
     public function __construct(
         private readonly WeatherServiceInterface $weatherService,
-        private readonly WeatherDataHandlerService $weatherDataHandlerService,
         private readonly LoggerInterface $logger,
     ) {
         parent::__construct();
@@ -62,6 +61,9 @@ final class OpenWeatherMapCommand extends Command
         }
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function getArgumentsFromInput(InputInterface $input): array
     {
         return [

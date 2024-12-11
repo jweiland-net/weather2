@@ -23,13 +23,13 @@ class WarnCellRepository implements WarnCellRepositoryInterface
         private readonly ConnectionPool $connectionPool,
     ) {}
 
-    public function updateDatabase(array $rows, ProgressBar $progressBar = null): void
+    public function updateDatabase(array $warnCellRecords, ProgressBar $progressBar = null): void
     {
         $connection = $this->connectionPool->getConnectionForTable(self::WARN_CELL_TABLE_NAME);
 
-        foreach ($rows as $row) {
-            if (!$this->doesRecordExist($connection, $row['warn_cell_id'])) {
-                $this->insertRecord($connection, $row);
+        foreach ($warnCellRecords as $warnCellRecord) {
+            if (!$this->doesRecordExist($connection, $warnCellRecord['warn_cell_id'])) {
+                $this->insertRecord($connection, $warnCellRecord);
             }
 
             if ($progressBar !== null) {
@@ -51,14 +51,17 @@ class WarnCellRepository implements WarnCellRepositoryInterface
         return (bool)$result;
     }
 
-    private function insertRecord(Connection $connection, array $row): void
+    /**
+     * @param array<string, mixed> $warnCellRecord
+     */
+    private function insertRecord(Connection $connection, array $warnCellRecord): void
     {
         $connection->insert(self::WARN_CELL_TABLE_NAME, [
             'pid' => 0,
-            'warn_cell_id' => $row['warn_cell_id'],
-            'name' => $row['name'],
-            'short_name' => $row['short_name'],
-            'sign' => $row['sign'],
+            'warn_cell_id' => $warnCellRecord['warn_cell_id'],
+            'name' => $warnCellRecord['name'],
+            'short_name' => $warnCellRecord['short_name'],
+            'sign' => $warnCellRecord['sign'],
         ]);
     }
 }

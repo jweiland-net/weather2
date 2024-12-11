@@ -13,5 +13,8 @@ namespace JWeiland\Weather2\Parser;
 
 interface WeatherAlertParserInterface
 {
+    /**
+     * @return array<string, mixed>
+     */
     public function parse(string $data): array;
 }

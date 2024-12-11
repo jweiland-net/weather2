@@ -28,12 +28,12 @@ class DeutscherWetterdienstWarncellService
     public function fetchAndStoreWarnCells(OutputInterface $output): void
     {
         $response = $this->fetcher->fetchData();
-        $rows = $this->parser->parse((string)$response->getBody());
+        $warnCellRecords = $this->parser->parse((string)$response->getBody());
 
-        $progressBar = new ProgressBar($output, count($rows));
+        $progressBar = new ProgressBar($output, count($warnCellRecords));
         $progressBar->start();
 
-        $this->repository->updateDatabase($rows, $progressBar);
+        $this->repository->updateDatabase($warnCellRecords, $progressBar);
 
         $progressBar->finish();
         $output->writeln('');

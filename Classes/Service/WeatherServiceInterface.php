@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace JWeiland\Weather2\Service;
 
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 interface WeatherServiceInterface
 {
@@ -19,4 +20,9 @@ interface WeatherServiceInterface
      * Fetch weather data from a provider.
      */
     public function fetchWeatherData(string $city, string $country, string $apiKey): ResponseInterface;
+
+    /**
+     * @param array<string,mixed> $arguments
+     */
+    public function processWeatherData(array $arguments, OutputInterface $output): void;
 }

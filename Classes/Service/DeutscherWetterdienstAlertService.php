@@ -22,6 +22,9 @@ use TYPO3\CMS\Extbase\Service\CacheService;
 
 class DeutscherWetterdienstAlertService
 {
+    /**
+     * @var array<int>
+     */
     protected array $keepRecords = [];
 
     public function __construct(
@@ -34,17 +37,20 @@ class DeutscherWetterdienstAlertService
     public function fetchAndStoreAlerts(InputInterface $input, OutputInterface $output): void
     {
         $response = $this->fetcher->fetchData();
-        $rows = $this->parser->parse((string)$response->getBody());
-        $this->handleResponse($input, $output, $rows);
+        $weatherAlertRecords = $this->parser->parse((string)$response->getBody());
+        $this->handleResponse($input, $output, $weatherAlertRecords);
     }
 
-    protected function handleResponse(InputInterface $input, OutputInterface $output, array $rows): void
+    /**
+     * @param array<string, mixed> $weatherAlertRecords
+     */
+    protected function handleResponse(InputInterface $input, OutputInterface $output, array $weatherAlertRecords): void
     {
-        if (array_key_exists('warnings', $rows)) {
-            $this->processAlertData($rows['warnings'], false, $input, $output);
+        if (array_key_exists('warnings', $weatherAlertRecords)) {
+            $this->processAlertData($weatherAlertRecords['warnings'], false, $input, $output);
         }
-        if (array_key_exists('vorabInformation', $rows)) {
-            $this->processAlertData($rows['vorabInformation'], true, $input, $output);
+        if (array_key_exists('vorabInformation', $weatherAlertRecords)) {
+            $this->processAlertData($weatherAlertRecords['vorabInformation'], true, $input, $output);
         }
 
         $this->cleanupOldAlerts($output);
@@ -67,6 +73,9 @@ class DeutscherWetterdienstAlertService
         }
     }
 
+    /**
+     * @param array<int, mixed> $data
+     */
     protected function processAlertData(array $data, bool $isPreliminaryInformation, InputInterface $input, OutputInterface $output): void
     {
         $selectedWarnCells = GeneralUtility::trimExplode(',', $input->getArgument('selectedWarnCells'));
@@ -81,6 +90,9 @@ class DeutscherWetterdienstAlertService
         $output->writeln('');
     }
 
+    /**
+     * @param array<int, mixed> $data
+     */
     protected function processWarnCellAlerts(
         string $warnCellId,
         array $data,
@@ -88,7 +100,7 @@ class DeutscherWetterdienstAlertService
         int $recordStoragePid,
         ProgressBar $progressBar,
         OutputInterface $output,
-    ) {
+    ): void {
         $dwdWarnCells = $this->repository->getDwdAlertsFindByName(
             htmlspecialchars(strip_tags($warnCellId)),
         );
@@ -102,6 +114,9 @@ class DeutscherWetterdienstAlertService
         }
     }
 
+    /**
+     * @param array<string, mixed> $alert
+     */
     protected function processAlert(
         array $alert,
         int $warnCellId,
@@ -109,9 +124,9 @@ class DeutscherWetterdienstAlertService
         int $recordStoragePid,
         ProgressBar $progressBar,
         OutputInterface $output,
-    ) {
+    ): void {
         $comparisonHash = $this->getComparisonHashForAlert($alert);
-        if ($alertUid = $this->repository->getUidOfAlert($alert, $recordStoragePid, $comparisonHash)) {
+        if ($alertUid = $this->repository->getUidOfAlert($recordStoragePid, $comparisonHash)) {
             $this->keepRecords[] = $alertUid;
             $output->writeln('');
             $output->writeln(sprintf('<comment>Alert with hash %s already exists.</comment>', $comparisonHash));
@@ -121,6 +136,9 @@ class DeutscherWetterdienstAlertService
         $progressBar->advance();
     }
 
+    /**
+     * @param array<string, mixed> $alert
+     */
     protected function insertNewAlert(
         array $alert,
         int $warnCellId,
@@ -128,8 +146,8 @@ class DeutscherWetterdienstAlertService
         int $recordStoragePid,
         OutputInterface $output,
     ): void {
-        $row = $this->getWeatherAlertInstanceForAlert($alert, $warnCellId, $isPreliminaryInformation, $recordStoragePid);
-        $alertUid = $this->repository->insertAlertRecord($row);
+        $weatherAlertInfo = $this->getWeatherAlertInstanceForAlert($alert, $warnCellId, $isPreliminaryInformation, $recordStoragePid);
+        $alertUid = $this->repository->insertAlertRecord($weatherAlertInfo);
         $this->keepRecords[] = $alertUid;
         $output->writeln('');
         $output->writeln(sprintf('<comment>Inserted new alert with UID %u.</comment>', $alertUid));
@@ -181,6 +199,9 @@ class DeutscherWetterdienstAlertService
         return $weatherAlert;
     }
 
+    /**
+     * @param array<string, mixed> $alert
+     */
     protected function getComparisonHashForAlert(array $alert): string
     {
         return md5(serialize($alert));

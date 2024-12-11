@@ -13,5 +13,8 @@ namespace JWeiland\Weather2\Parser;
 
 interface WarnCellParserInterface
 {
+    /**
+     * @return array<int, mixed>
+     */
     public function parse(string $data): array;
 }

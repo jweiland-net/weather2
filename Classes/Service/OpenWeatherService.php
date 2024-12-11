@@ -26,6 +26,9 @@ class OpenWeatherService implements WeatherServiceInterface
         private readonly WeatherDataHandlerService $weatherDataHandlerService,
     ) {}
 
+    /**
+     * @param array<string,mixed> $arguments
+     */
     public function processWeatherData(array $arguments, OutputInterface $output): void
     {
         $this->removeOldRecords($arguments['name'], $arguments['recordStoragePage'], $output);
@@ -58,7 +61,7 @@ class OpenWeatherService implements WeatherServiceInterface
         return $this->requestFactory->request($url);
     }
 
-    private function saveWeatherData($response, int $recordStoragePage, string $name, OutputInterface $output): void
+    private function saveWeatherData(ResponseInterface $response, int $recordStoragePage, string $name, OutputInterface $output): void
     {
         // Perform saving logic
         $responseClass = json_decode((string)$response->getBody(), false);

@@ -15,5 +15,8 @@ use Symfony\Component\Console\Helper\ProgressBar;
 
 interface WarnCellRepositoryInterface
 {
-    public function updateDatabase(array $rows, ProgressBar $progressBar = null): void;
+    /**
+     * @param array<int, mixed> $warnCellRecords
+     */
+    public function updateDatabase(array $warnCellRecords, ProgressBar $progressBar = null): void;
 }
