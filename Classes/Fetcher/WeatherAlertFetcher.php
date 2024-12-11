@@ -9,15 +9,17 @@ declare(strict_types=1);
  * LICENSE file that was distributed with this source code.
  */
 
-namespace JWeiland\Weather2\Service;
+namespace JWeiland\Weather2\Fetcher;
 
+use JWeiland\Weather2\Utility\WeatherUtility;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Log\LogLevel;
 
-class WarnCellFetcher implements WarnCellFetcherInterface
+class WeatherAlertFetcher implements WeatherAlertFetcherInterface
 {
-    private const API_URL = 'https://www.dwd.de/DE/leistungen/opendata/help/warnungen/cap_warncellids_csv.csv?__blob=publicationFile&v=3';
+    private const API_URL = 'https://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json';
 
     public function __construct(
         private readonly RequestFactory $requestFactory,
@@ -29,7 +31,10 @@ class WarnCellFetcher implements WarnCellFetcherInterface
         $response = $this->requestFactory->request(self::API_URL);
 
         if ($response->getStatusCode() !== 200 || (string)$response->getBody() === '') {
-            $this->logger->error('Invalid response from API.');
+            $this->logger->log(
+                LogLevel::ERROR,
+                WeatherUtility::translate('message.api_response_null', 'deutscherwetterdienst'),
+            );
             throw new \RuntimeException('Invalid response from API.');
         }
 

@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Weather2\Command;
 
-use JWeiland\Weather2\Service\DeutscherWetterdienstService;
+use JWeiland\Weather2\Service\DeutscherWetterdienstWarncellService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class DeutscherWetterdienstWarnCellCommand extends Command
 {
     public function __construct(
-        private readonly DeutscherWetterdienstService $warnCellService,
+        private readonly DeutscherWetterdienstWarncellService $warnCellService,
     ) {
         parent::__construct();
     }

@@ -12,10 +12,12 @@ declare(strict_types=1);
 namespace JWeiland\Weather2\Service;
 
 use JWeiland\Weather2\Domain\Repository\WarnCellRepositoryInterface;
+use JWeiland\Weather2\Fetcher\WarnCellFetcherInterface;
+use JWeiland\Weather2\Parser\WarnCellParserInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DeutscherWetterdienstService
+class DeutscherWetterdienstWarncellService
 {
     public function __construct(
         private readonly WarnCellFetcherInterface $fetcher,

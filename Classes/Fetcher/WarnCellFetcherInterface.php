@@ -9,9 +9,11 @@ declare(strict_types=1);
  * LICENSE file that was distributed with this source code.
  */
 
-namespace JWeiland\Weather2\Service;
+namespace JWeiland\Weather2\Fetcher;
 
-interface WarnCellParserInterface
+use Psr\Http\Message\ResponseInterface;
+
+interface WarnCellFetcherInterface
 {
-    public function parse(string $data): array;
+    public function fetchData(): ResponseInterface;
 }

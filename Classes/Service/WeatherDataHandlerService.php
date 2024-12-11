@@ -86,6 +86,9 @@ class WeatherDataHandlerService
             $weatherObjectArray['condition_code'] = $responseClass->weather[0]->id;
         }
 
+        // Serialized Object
+        $weatherObjectArray['serialized_array'] = serialize($responseClass->weather[0]);
+
         try {
             $this->connectionPool
                 ->getQueryBuilderForTable(self::CURRENT_WEATHER_TABLE_NAME)

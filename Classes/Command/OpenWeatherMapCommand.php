@@ -50,38 +50,27 @@ final class OpenWeatherMapCommand extends Command
         $output->writeln('<info>Starting OpenWeatherMap data fetch...</info>');
 
         try {
-            // Gather inputs
-            $name = $input->getArgument('name');
-            $city = $input->getArgument('city');
-            $country = $input->getArgument('country');
-            $apiKey = $input->getArgument('apiKey');
-            $recordStoragePage = (int)$input->getArgument('recordStoragePage');
-            $pageIdsToClear = $input->getArgument('pageIdsToClear') ?? '';
-
-            // Delegate logic to services
-            $this->weatherDataHandlerService->removeOldRecords($name, $recordStoragePage);
-            $response = $this->weatherService->fetchWeatherData($city, $country, $apiKey);
-
-            // Decode the JSON response into an stdClass
-            $responseClass = json_decode((string)$response->getBody(), false);
-            if (!$responseClass) {
-                throw new \RuntimeException('Failed to decode API response as JSON.');
-            }
-
-            // Save the weather data to the database
-            $this->weatherDataHandlerService->saveWeatherData($responseClass, $recordStoragePage, $name);
-
-            // Clear cache if IDs are provided
-            if (!empty($pageIdsToClear)) {
-                $this->weatherDataHandlerService->clearCache($pageIdsToClear);
-            }
-
+            $arguments = $this->getArgumentsFromInput($input);
+            $this->weatherService->processWeatherData($arguments, $output);
             $output->writeln('<info>Weather data successfully updated!</info>');
+
             return Command::SUCCESS;
         } catch (\Throwable $e) {
             $this->logger->error('Error fetching weather data: ' . $e->getMessage());
             $output->writeln('<error>' . $e->getMessage() . '</error>');
             return Command::FAILURE;
         }
+    }
+
+    private function getArgumentsFromInput(InputInterface $input): array
+    {
+        return [
+            'name' => $input->getArgument('name'),
+            'city' => $input->getArgument('city'),
+            'country' => $input->getArgument('country'),
+            'apiKey' => $input->getArgument('apiKey'),
+            'recordStoragePage' => (int)$input->getArgument('recordStoragePage'),
+            'pageIdsToClear' => $input->getArgument('pageIdsToClear') ?? '',
+        ];
     }
 }
