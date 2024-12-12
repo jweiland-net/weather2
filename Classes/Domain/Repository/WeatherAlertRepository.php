@@ -106,7 +106,12 @@ class WeatherAlertRepository extends Repository implements WeatherAlertRepositor
                 ->from(self::WARN_CELL_TABLE_NAME)
                 ->where(
                     $queryBuilder->expr()->or(
-                        $queryBuilder->expr()->like('name', $queryBuilder->createNamedParameter('%' . trim($alertName) . '%')),
+                        $queryBuilder->expr()->like(
+                            'name',
+                            $queryBuilder->createNamedParameter(
+                                '%' . $queryBuilder->escapeLikeWildcards(trim($alertName)) . '%'
+                            )
+                        ),
                         $queryBuilder->expr()->eq('warn_cell_id', $queryBuilder->createNamedParameter($alertName)),
                     ),
                 )
