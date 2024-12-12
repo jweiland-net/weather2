@@ -178,9 +178,10 @@ return [
             'exclude' => 1,
             'label' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_currentweather.serialized_array',
             'config' => [
-                'type' => 'input',
-                'size' => 30,
+                'type' => 'text',
                 'eval' => 'trim',
+                'default' => '',
+                'readOnly' => true,
             ],
         ],
         'icon' => [

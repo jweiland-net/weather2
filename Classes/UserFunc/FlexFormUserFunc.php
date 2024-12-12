@@ -29,8 +29,8 @@ class FlexFormUserFunc
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable(
             'tx_weather2_domain_model_currentweather',
         );
-        $result = $connection->select(['name'], 'tx_weather2_domain_model_currentweather')->fetchAll();
 
+        $result = $connection->select(['name'], 'tx_weather2_domain_model_currentweather')->fetchAllAssociative();
         foreach ($result as $data) {
             array_unshift($fConfig['items'], [$data['name'], $data['name']]);
         }

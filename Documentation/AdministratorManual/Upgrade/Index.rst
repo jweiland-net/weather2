@@ -7,6 +7,12 @@ Upgrade
 If you upgrade EXT:weather2 to a newer version, please read this section
 carefully!
 
+Update from 5.x to 6.0
+======================
+
+Added TYPO3 13 Compatibility
+Removed all schedulers and replaced with Symfony Console Commands.
+
 Update from 4.x to 5.0
 ======================
 

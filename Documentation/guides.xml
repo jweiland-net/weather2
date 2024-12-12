@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<guides xmlns="https://www.phpdoc.org/guides" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				xsi:schemaLocation="https://www.phpdoc.org/guides ../vendor/phpdocumentor/guides-cli/resources/schema/guides.xsd"
+				links-are-relative="true">
+	<extension class="\T3Docs\Typo3DocsTheme\DependencyInjection\Typo3DocsThemeExtension"
+						 project-contact="projects@jweiland.net" project-repository="https://github.com/jweiland-net/weather2"
+						 project-issues="https://github.com/jweiland-net/weather2/issues" edit-on-github-branch="master"
+						 edit-on-github="jweiland-net/weather2" typo3-core-preferred="stable"/>
+	<project title="weather2" release="6.0" version="6.0.0" copyright="since 2013 by jweiland.net"/>
+	<inventory id="t3coreapi" url="https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/"/>
+	<inventory id="t3install" url="https://docs.typo3.org/m/typo3/guide-installation/main/en-us/"/>
+	<inventory id="t3sitepackage" url="https://docs.typo3.org/m/typo3/tutorial-sitepackage/main/en-us/"/>
+	<inventory id="t3viewhelper" url="https://docs.typo3.org/other/typo3/view-helper-reference/main/en-us/"/>
+</guides>
