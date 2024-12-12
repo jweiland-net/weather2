@@ -33,7 +33,9 @@ class WeatherAlertRepository extends Repository implements WeatherAlertRepositor
 
     public function __construct(
         private readonly ConnectionPool $connectionPool,
-    ) {}
+    ) {
+        parent::__construct();
+    }
 
     /**
      * Returns current alerts filtered by user selection
