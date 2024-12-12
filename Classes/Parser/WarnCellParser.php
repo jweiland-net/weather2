@@ -30,12 +30,12 @@ class WarnCellParser implements WarnCellParserInterface
         foreach ($warnCellRecords as $index => $warnCellRecord) {
             // Ensure row has exactly 5 fields
             if (count($warnCellRecord) === 5) {
-                [$warnCellId, $name, $shortName, , $sign] = $warnCellRecord; // Skip CCC field
+                [$warnCellId, $name, $shortName, , $federalState] = $warnCellRecord; // Skip CCC field
                 $parsedWarnCells[] = [
                     'warn_cell_id' => $warnCellId,
                     'name' => $name,
                     'short_name' => $shortName,
-                    'sign' => $sign,
+                    'sign' => $federalState,
                 ];
             }
         }
