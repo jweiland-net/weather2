@@ -12,13 +12,10 @@ declare(strict_types=1);
 namespace JWeiland\Weather2\Parser;
 
 use JWeiland\Weather2\Helper\CsvHelper;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class WarnCellParser implements WarnCellParserInterface
 {
-    public function __construct(private readonly CsvHelper $csvHelper)
-    {
-    }
+    public function __construct(private readonly CsvHelper $csvHelper) {}
 
     /**
      * @return array<int, mixed>

@@ -42,7 +42,7 @@ class Tca
         $parameters['title'] = sprintf(
             '%s (%s)',
             $parameters['row']['name'] ?? '(No Name)',
-            $record['warn_cell_id'] ?? '(No Warn Cell ID)'
+            $record['warn_cell_id'] ?? '(No Warn Cell ID)',
         );
     }
 }
