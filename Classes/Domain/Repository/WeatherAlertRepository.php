@@ -109,8 +109,8 @@ class WeatherAlertRepository extends Repository implements WeatherAlertRepositor
                         $queryBuilder->expr()->like(
                             'name',
                             $queryBuilder->createNamedParameter(
-                                '%' . $queryBuilder->escapeLikeWildcards(trim($alertName)) . '%'
-                            )
+                                '%' . $queryBuilder->escapeLikeWildcards(trim($alertName)) . '%',
+                            ),
                         ),
                         $queryBuilder->expr()->eq('warn_cell_id', $queryBuilder->createNamedParameter($alertName)),
                     ),
