@@ -31,20 +31,28 @@ class CsvHelper
         fwrite($stream, $csvData);
         rewind($stream);
 
-        $headerSkipped = false;
         $csvRows = [];
-        while (($row = fgetcsv($stream, 0, $delimiter)) !== false) {
+        $file = new \SplFileObject('php://memory', 'rb+');
+        $file->fwrite($csvData);
+        $file->rewind();
+
+        $headerSkipped = false;
+
+        while (!$file->eof()) {
+            $row = $file->fgetcsv($delimiter);
+
             if ($skipHeader && !$headerSkipped) {
                 $headerSkipped = true;
                 continue;
             }
-            $csvRows[] = $row;
+
+            if ($row !== false) {
+                $csvRows[] = $row;
+            }
         }
 
-        // Ensure the stream is closed only if it's valid
-        if (is_resource($stream)) {
-            fclose($stream);
-        }
+        // Close the stream
+        fclose($stream);
 
         return $csvRows;
     }
