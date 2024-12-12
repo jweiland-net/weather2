@@ -47,41 +47,53 @@ class WeatherDataHandlerService
         if (isset($responseClass->main->temp)) {
             $weatherObjectArray['temperature_c'] = (float)$responseClass->main->temp;
         }
+
         if (isset($responseClass->main->pressure)) {
             $weatherObjectArray['pressure_hpa'] = (float)$responseClass->main->pressure;
         }
+
         if (isset($responseClass->main->humidity)) {
             $weatherObjectArray['humidity_percentage'] = $responseClass->main->humidity;
         }
+
         if (isset($responseClass->main->temp_min)) {
             $weatherObjectArray['min_temp_c'] = $responseClass->main->temp_min;
         }
+
         if (isset($responseClass->main->temp_max)) {
             $weatherObjectArray['max_temp_c'] = $responseClass->main->temp_max;
         }
+
         if (isset($responseClass->wind->speed)) {
             $weatherObjectArray['wind_speed_m_p_s'] = $responseClass->wind->speed;
         }
+
         if (isset($responseClass->wind->deg)) {
             $weatherObjectArray['wind_speed_m_p_s'] = $responseClass->wind->deg;
         }
+
         if (isset($responseClass->rain)) {
             $rain = (array)$responseClass->rain;
             $weatherObjectArray['rain_volume'] = (float)($rain['1h'] ?? 0.0);
         }
+
         if (isset($responseClass->snow)) {
             $snow = (array)$responseClass->snow;
             $weatherObjectArray['snow_volume'] = (float)($snow['1h'] ?? 0.0);
         }
+
         if (isset($responseClass->clouds->all)) {
             $weatherObjectArray['clouds_percentage'] = $responseClass->clouds->all;
         }
+
         if (isset($responseClass->dt)) {
             $weatherObjectArray['measure_timestamp'] = $responseClass->dt;
         }
+
         if (isset($responseClass->weather[0]->icon)) {
             $weatherObjectArray['icon'] = $responseClass->weather[0]->icon;
         }
+
         if (isset($responseClass->weather[0]->id)) {
             $weatherObjectArray['condition_code'] = $responseClass->weather[0]->id;
         }
@@ -102,7 +114,7 @@ class WeatherDataHandlerService
 
     public function clearCache(string $cacheIds): void
     {
-        $cacheIdsArray = GeneralUtility::intExplode(',', $cacheIds, true);
+        $cacheIdsArray = GeneralUtility::intExplode(',', $cacheIds);
         $this->cacheService->clearPageCache($cacheIdsArray);
     }
 }

@@ -16,7 +16,7 @@ class WeatherAlertParser implements WeatherAlertParserInterface
     public function parse(string $data): array
     {
         $pattern = '/^warnWetter\.loadWarnings\(|\);$/';
-        $parseAlertData = json_decode(preg_replace($pattern, '', (string)$data), true);
+        $parseAlertData = json_decode(preg_replace($pattern, '', $data), true);
         if ($parseAlertData === null) {
             throw new \UnexpectedValueException(
                 'Response can not be parsed because it is an invalid string',

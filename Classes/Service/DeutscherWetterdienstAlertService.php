@@ -49,6 +49,7 @@ class DeutscherWetterdienstAlertService
         if (array_key_exists('warnings', $weatherAlertRecords)) {
             $this->processAlertData($weatherAlertRecords['warnings'], false, $input, $output);
         }
+
         if (array_key_exists('vorabInformation', $weatherAlertRecords)) {
             $this->processAlertData($weatherAlertRecords['vorabInformation'], true, $input, $output);
         }
@@ -86,6 +87,7 @@ class DeutscherWetterdienstAlertService
         foreach ($selectedWarnCells as $warnCellId) {
             $this->processWarnCellAlerts($warnCellId, $data, $isPreliminaryInformation, $recordStoragePid, $progressBar, $output);
         }
+
         $progressBar->finish();
         $output->writeln('');
     }
@@ -133,6 +135,7 @@ class DeutscherWetterdienstAlertService
         } else {
             $this->insertNewAlert($alert, $warnCellId, $isPreliminaryInformation, $recordStoragePid, $output);
         }
+
         $progressBar->advance();
     }
 
@@ -173,27 +176,33 @@ class DeutscherWetterdienstAlertService
         if (isset($alert['level'])) {
             $weatherAlert['level'] = $alert['level'];
         }
+
         if (isset($alert['type'])) {
             $weatherAlert['type'] = $alert['type'];
         }
+
         if (isset($alert['headline'])) {
             $weatherAlert['title'] = $alert['headline'];
         }
+
         if (isset($alert['description'])) {
             $weatherAlert['description'] = $alert['description'];
         }
+
         if (isset($alert['instruction'])) {
             $weatherAlert['instruction'] = $alert['instruction'];
         }
+
         if (isset($alert['start'])) {
             $startTime = new \DateTime();
             $startTime->setTimestamp((int)substr((string)$alert['start'], 0, -3));
-            $weatherAlert['start_date'] = (int)$startTime->getTimestamp();
+            $weatherAlert['start_date'] = $startTime->getTimestamp();
         }
+
         if (isset($alert['end'])) {
             $endTime = new \DateTime();
             $endTime->setTimestamp((int)substr((string)$alert['end'], 0, -3));
-            $weatherAlert['end_date'] = (int)$endTime->getTimestamp();
+            $weatherAlert['end_date'] = $endTime->getTimestamp();
         }
 
         return $weatherAlert;

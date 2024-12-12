@@ -27,9 +27,13 @@ class OpenWeatherMapCommandTest extends FunctionalTestCase
     protected array $testExtensionsToLoad = ['typo3conf/ext/weather2'];
 
     private LoggerInterface $logger;
+
     private RequestFactory $requestFactory;
+
     private CacheService $cacheService;
+
     private ConnectionPool $connectionPool;
+
     private CommandTester $commandTester;
 
     protected function setUp(): void

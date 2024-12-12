@@ -16,5 +16,5 @@ interface WarnCellParserInterface
     /**
      * @return array<int, mixed>
      */
-    public function parse(string $data): array;
+    public function parse(string $warnCellData): array;
 }
