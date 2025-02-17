@@ -49,4 +49,4 @@ jobs:
         run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -d mysql -s functional
 
       - name: 'Execute functional tests'
-        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -d mariadb -s functional
+        run: Build/Scripts/runTests.sh -p ${{ matrix.php }} -d mariadb 10.5 -s functional
