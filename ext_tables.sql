@@ -3,21 +3,21 @@
 #
 CREATE TABLE tx_weather2_domain_model_currentweather
 (
-	name                varchar(255) DEFAULT '' NOT NULL,
+	name                varchar(255)  DEFAULT ''    NOT NULL,
 	measure_timestamp   int(11) DEFAULT '0' NOT NULL,
-	temperature_c double(4,2) DEFAULT '0.0' NOT NULL,
+	temperature_c       numeric(4, 2) DEFAULT '0.0' NOT NULL,
 	pressure_hpa double(4,2) DEFAULT '0' NOT NULL,
 	humidity_percentage int(11) unsigned DEFAULT '0' NOT NULL,
-	min_temp_c double(4,2) DEFAULT '0.0' NOT NULL,
-	max_temp_c double(4,2) DEFAULT '0.0' NOT NULL,
-	wind_speed_m_p_s double(4,2) DEFAULT '0.0' NOT NULL,
+	min_temp_c          numeric(4, 2) DEFAULT '0.0' NOT NULL,
+	max_temp_c          numeric(4, 2) DEFAULT '0.0' NOT NULL,
+	wind_speed_m_p_s    varchar(30)   DEFAULT ''    NOT NULL,
 	wind_direction_deg  int(11) DEFAULT '0' NOT NULL,
 	pop_percentage      int(11) unsigned DEFAULT '0' NOT NULL,
-	rain_volume double (4,2) DEFAULT '0.0' NOT NULL,
-	snow_volume double(4,2) DEFAULT '0.0' NOT NULL,
+	rain_volume         numeric(4, 2) DEFAULT '0.0' NOT NULL,
+	snow_volume         numeric(4, 2) DEFAULT '0.0' NOT NULL,
 	clouds_percentage   int(11) unsigned DEFAULT '0' NOT NULL,
-	serialized_array    text         DEFAULT '' NOT NULL,
-	icon                varchar(30)  DEFAULT '' NOT NULL,
+	serialized_array    text          DEFAULT ''    NOT NULL,
+	icon                varchar(30)   DEFAULT ''    NOT NULL,
 	condition_code      int(11) unsigned DEFAULT '0' NOT NULL
 );
 
