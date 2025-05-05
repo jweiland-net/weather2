@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace JWeiland\Weather2\Tests\Unit\Domain\Model;
 
 use JWeiland\Weather2\Domain\Model\CurrentWeather;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -28,9 +30,7 @@ class CurrentWeatherTest extends UnitTestCase
         $this->subject = new CurrentWeather();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getNameInitiallyReturnsEmptyString(): void
     {
         self::assertSame(
@@ -39,9 +39,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setNameSetsName(): void
     {
         $this->subject->setName('foo bar');
@@ -52,9 +50,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMeasureTimestampInitiallyReturnsNull(): void
     {
         self::assertNull(
@@ -62,9 +58,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setMeasureTimestampSetsMeasureTimestamp(): void
     {
         $date = new \DateTime();
@@ -86,20 +80,15 @@ class CurrentWeatherTest extends UnitTestCase
         return $arguments;
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider dataProviderForSetMeasureTimestamp
-     */
+    #[Test]
+    #[DataProvider('dataProviderForSetMeasureTimestamp')]
     public function setMeasureTimestampWithInvalidValuesResultsInException($argument): void
     {
         $this->expectException(\TypeError::class);
         $this->subject->setMeasureTimestamp($argument);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTemperatureCInitiallyReturnsZero(): void
     {
         self::assertSame(
@@ -108,9 +97,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setTemperatureCSetsTemperatureC(): void
     {
         $this->subject->setTemperatureC(123456.0);
@@ -121,9 +108,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPressureHpaInitiallyReturnsZero(): void
     {
         self::assertSame(
@@ -132,9 +117,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setPressureHpaSetsPressureHpa(): void
     {
         $this->subject->setPressureHpa(123456);
@@ -145,9 +128,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHumidityPercentageInitiallyReturnsZero(): void
     {
         self::assertSame(
@@ -156,9 +137,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setHumidityPercentageSetsHumidityPercentage(): void
     {
         $this->subject->setHumidityPercentage(123456);
@@ -169,9 +148,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMinTempCInitiallyReturnsZero(): void
     {
         self::assertSame(
@@ -180,9 +157,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setMinTempCSetsMinTempC(): void
     {
         $this->subject->setMinTempC(123456.0);
@@ -193,9 +168,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMaxTempCInitiallyReturnsZero(): void
     {
         self::assertSame(
@@ -204,9 +177,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setMaxTempCSetsMaxTempC(): void
     {
         $this->subject->setMaxTempC(123456.0);
@@ -217,9 +188,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getWindSpeedMPSInitiallyReturnsZero(): void
     {
         self::assertSame(
@@ -228,9 +197,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setWindSpeedMPSSetsWindSpeedMPS(): void
     {
         $this->subject->setWindSpeedMPS(123456.0);
@@ -241,9 +208,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getWindDirectionDegInitiallyReturnsZero(): void
     {
         self::assertSame(
@@ -252,9 +217,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setWindDirectionDegSetsWindDirectionDeg(): void
     {
         $this->subject->setWindDirectionDeg(123456);
@@ -265,9 +228,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSnowVolumeInitiallyReturnsZero(): void
     {
         self::assertSame(
@@ -276,9 +237,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSnowVolumeSetsSnowVolume(): void
     {
         $this->subject->setSnowVolume(21.45);
@@ -289,9 +248,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRainVolumeInitiallyReturnsZero(): void
     {
         self::assertSame(
@@ -300,9 +257,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRainVolumeSetsRainVolume(): void
     {
         $this->subject->setRainVolume(21.45);
@@ -313,9 +268,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCloudsPercentageInitiallyReturnsZero(): void
     {
         self::assertSame(
@@ -324,9 +277,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCloudsPercentageSetsCloudsPercentage(): void
     {
         $this->subject->setCloudsPercentage(123456);
@@ -337,9 +288,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIconInitiallyReturnsEmptyString(): void
     {
         self::assertSame(
@@ -348,9 +297,7 @@ class CurrentWeatherTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setIconSetsIcon(): void
     {
         $this->subject->setIcon('foo bar');
