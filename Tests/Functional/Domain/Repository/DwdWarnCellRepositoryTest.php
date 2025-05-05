@@ -52,9 +52,7 @@ class DwdWarnCellRepositoryTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findBySelectionWillReturnEmptyArray(): void
     {
         self::assertCount(
@@ -63,9 +61,7 @@ class DwdWarnCellRepositoryTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findByNameWillReturnDwdWarnCellsByFullName(): void
     {
         $dwdWarnCells = $this->subject->findByName('Kreis Tübingen');
@@ -86,9 +82,7 @@ class DwdWarnCellRepositoryTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findByNameWillReturnDwdWarnCellsByPartName(): void
     {
         $dwdWarnCells = $this->subject->findByName('Stadt');
@@ -109,9 +103,7 @@ class DwdWarnCellRepositoryTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findByNameWillReturnDwdWarnCellsByWarnCellId(): void
     {
         $dwdWarnCells = $this->subject->findByName('108416000');

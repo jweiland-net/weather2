@@ -14,6 +14,7 @@ namespace JWeiland\Weather2\Tests\Functional\Domain\Repository;
 use JWeiland\Weather2\Domain\Model\CurrentWeather;
 use JWeiland\Weather2\Domain\Repository\CurrentWeatherRepository;
 use JWeiland\Weather2\Tests\Functional\Traits\InitializeFrontendControllerMockTrait;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -41,9 +42,7 @@ class CurrentWeatherRepositoryTest extends FunctionalTestCase
         $this->createFrontendControllerMock();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findBySelectionWillReturnNull(): void
     {
         self::assertNull(
@@ -51,9 +50,7 @@ class CurrentWeatherRepositoryTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findBySelectionWillReturnCurrentWeatherObject(): void
     {
         $currentWeatherObject = $this->subject->findBySelection('Stuttgart');

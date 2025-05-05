@@ -62,9 +62,7 @@ class WeatherAlertRepositoryTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findByUserSelectionWillReturnEmptyResult(): void
     {
         self::assertCount(
@@ -78,9 +76,7 @@ class WeatherAlertRepositoryTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findByUserSelectionWillReturnWeatherAlert(): void
     {
         $weatherAlerts = $this->subject->findByUserSelection(
