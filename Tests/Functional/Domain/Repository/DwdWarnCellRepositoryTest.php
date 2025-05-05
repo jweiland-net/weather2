@@ -13,6 +13,7 @@ namespace JWeiland\Weather2\Tests\Functional\Domain\Repository;
 
 use JWeiland\Weather2\Domain\Repository\DwdWarnCellRepository;
 use JWeiland\Weather2\Tests\Functional\Traits\InitializeFrontendControllerMockTrait;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -52,9 +53,7 @@ class DwdWarnCellRepositoryTest extends FunctionalTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findBySelectionWillReturnEmptyArray(): void
     {
         self::assertCount(
@@ -63,9 +62,7 @@ class DwdWarnCellRepositoryTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findByNameWillReturnDwdWarnCellsByFullName(): void
     {
         $dwdWarnCells = $this->subject->findByName('Kreis Tübingen');
@@ -86,9 +83,7 @@ class DwdWarnCellRepositoryTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findByNameWillReturnDwdWarnCellsByPartName(): void
     {
         $dwdWarnCells = $this->subject->findByName('Stadt');
@@ -109,9 +104,7 @@ class DwdWarnCellRepositoryTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findByNameWillReturnDwdWarnCellsByWarnCellId(): void
     {
         $dwdWarnCells = $this->subject->findByName('108416000');

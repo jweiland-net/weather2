@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace JWeiland\Weather2\Tests\Unit\Service;
 
 use JWeiland\Weather2\Service\WeatherConverterService;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -48,11 +50,8 @@ class WeatherConverterServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider fahrenheitToCelsiusDataProvider
-     */
+    #[Test]
+    #[DataProvider('fahrenheitToCelsiusDataProvider')]
     public function convertFahrenheitToCelsius(float $fahrenheit, float $expectedCelsius): void
     {
         self::assertSame(
@@ -73,11 +72,8 @@ class WeatherConverterServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider kelvinToCelsiusDataProvider
-     */
+    #[Test]
+    #[DataProvider('kelvinToCelsiusDataProvider')]
     public function convertKelvonToCelsius(float $kelvin, float $expectedCelsius): void
     {
         self::assertSame(
@@ -98,11 +94,8 @@ class WeatherConverterServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider celsiusToFahrenheitDataProvider
-     */
+    #[Test]
+    #[DataProvider('celsiusToFahrenheitDataProvider')]
     public function convertCelsiusToFahrenheit(float $celsius, float $expectedFahrenheit): void
     {
         self::assertSame(
@@ -123,11 +116,8 @@ class WeatherConverterServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider celsiusToKelvinDataProvider
-     */
+    #[Test]
+    #[DataProvider('celsiusToKelvinDataProvider')]
     public function convertCelsiusToKelvin(float $celsius, float $expectedKelvin): void
     {
         self::assertSame(
@@ -150,11 +140,8 @@ class WeatherConverterServiceTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     *
-     * @dataProvider metersToMilesDataProvider
-     */
+    #[Test]
+    #[DataProvider('metersToMilesDataProvider')]
     public function convertMetersToMiles(float $meters, string $expectedMiles): void
     {
         self::assertSame(

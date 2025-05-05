@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace JWeiland\Weather2\Tests\Unit\Domain\Model;
 
 use JWeiland\Weather2\Domain\Model\WeatherAlert;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -28,9 +30,7 @@ class WeatherAlertTest extends UnitTestCase
         $this->subject = new WeatherAlert();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getLevelInitiallyReturnsZero(): void
     {
         self::assertSame(
@@ -39,9 +39,7 @@ class WeatherAlertTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setLevelSetsLevel(): void
     {
         $this->subject->setLevel(123456);
@@ -52,9 +50,7 @@ class WeatherAlertTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeInitiallyReturnsZero(): void
     {
         self::assertSame(
@@ -63,9 +59,7 @@ class WeatherAlertTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setTypeSetsType(): void
     {
         $this->subject->setType(123456);
@@ -76,9 +70,7 @@ class WeatherAlertTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTitleInitiallyReturnsEmptyString(): void
     {
         self::assertSame(
@@ -87,9 +79,7 @@ class WeatherAlertTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setTitleSetsTitle(): void
     {
         $this->subject->setTitle('foo bar');
@@ -100,9 +90,7 @@ class WeatherAlertTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setDescriptionSetsDescription(): void
     {
         $this->subject->setDescription('foo bar');
@@ -113,9 +101,7 @@ class WeatherAlertTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getInstructionInitiallyReturnsEmptyString(): void
     {
         self::assertSame(
@@ -124,9 +110,7 @@ class WeatherAlertTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setInstructionSetsInstruction(): void
     {
         $this->subject->setInstruction('foo bar');
@@ -137,9 +121,7 @@ class WeatherAlertTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getStarttimeInitiallyReturnsNull(): void
     {
         self::assertNull(
@@ -147,9 +129,7 @@ class WeatherAlertTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setStarttimeSetsStarttime(): void
     {
         $date = new \DateTime();
@@ -172,19 +152,15 @@ class WeatherAlertTest extends UnitTestCase
         return $arguments;
     }
 
-    /**
-     * @test
-     * @dataProvider dataProviderForSetStarttime
-     */
+    #[Test]
+    #[DataProvider('dataProviderForSetStarttime')]
     public function setStarttimeWithInvalidValuesResultsInException($argument): void
     {
         $this->expectException(\TypeError::class);
         $this->subject->setStarttime($argument);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getEndtimeInitiallyReturnsNull(): void
     {
         self::assertNull(
@@ -192,9 +168,7 @@ class WeatherAlertTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setEndtimeSetsEndtime(): void
     {
         $date = new \DateTime();
@@ -216,10 +190,8 @@ class WeatherAlertTest extends UnitTestCase
         return $arguments;
     }
 
-    /**
-     * @test
-     * @dataProvider dataProviderForSetEndtime
-     */
+    #[Test]
+    #[DataProvider('dataProviderForSetEndtime')]
     public function setEndtimeWithInvalidValuesResultsInException($argument): void
     {
         $this->expectException(\TypeError::class);
