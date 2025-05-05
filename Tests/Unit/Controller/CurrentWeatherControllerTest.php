@@ -13,6 +13,7 @@ namespace JWeiland\Weather2\Tests\Unit\Controller;
 
 use JWeiland\Weather2\Controller\CurrentWeatherController;
 use JWeiland\Weather2\Domain\Repository\CurrentWeatherRepository;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -20,9 +21,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class CurrentWeatherControllerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function showActionCallsRepositoryFindBySelectionWithSettingAsArgument(): void
     {
         $subject = $this->getAccessibleMock(CurrentWeatherController::class);
