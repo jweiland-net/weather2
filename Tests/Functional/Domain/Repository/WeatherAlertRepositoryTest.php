@@ -14,6 +14,7 @@ namespace JWeiland\Weather2\Tests\Functional\Domain\Repository;
 use JWeiland\Weather2\Domain\Model\WeatherAlert;
 use JWeiland\Weather2\Domain\Repository\WeatherAlertRepository;
 use JWeiland\Weather2\Tests\Functional\Traits\InitializeFrontendControllerMockTrait;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\Exception;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
