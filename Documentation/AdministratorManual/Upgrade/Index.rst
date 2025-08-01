@@ -12,6 +12,8 @@ Update from 5.x to 6.0
 
 Added TYPO3 13 Compatibility
 Removed all schedulers and replaced with Symfony Console Commands.
+There is a upgrade wizard available with this extension to convert the older
+list type plugins to custom CType.
 
 Update from 4.x to 5.0
 ======================

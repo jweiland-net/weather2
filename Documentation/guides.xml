@@ -6,7 +6,7 @@
 						 project-contact="projects@jweiland.net" project-repository="https://github.com/jweiland-net/weather2"
 						 project-issues="https://github.com/jweiland-net/weather2/issues" edit-on-github-branch="master"
 						 edit-on-github="jweiland-net/weather2" typo3-core-preferred="stable"/>
-	<project title="weather2" release="6.1" version="6.1.0" copyright="since 2013 by jweiland.net"/>
+	<project title="weather2" release="6.1" version="6.1.1" copyright="since 2013 by jweiland.net"/>
 	<inventory id="t3coreapi" url="https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/"/>
 	<inventory id="t3install" url="https://docs.typo3.org/m/typo3/guide-installation/main/en-us/"/>
 	<inventory id="t3sitepackage" url="https://docs.typo3.org/m/typo3/tutorial-sitepackage/main/en-us/"/>

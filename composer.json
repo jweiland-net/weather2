@@ -69,7 +69,7 @@
 		"typo3/cms": {
 			"app-dir": ".Build",
 			"extension-key": "weather2",
-			"web-dir": ".Build/Web"
+			"web-dir": ".Build/public"
 		}
 	}
 }
