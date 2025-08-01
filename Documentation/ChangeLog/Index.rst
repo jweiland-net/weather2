@@ -7,6 +7,11 @@
 ChangeLog
 =========
 
+Version 6.1.1
+=============
+
+*   [BUGFIX] Update testing directory
+
 Version 6.1.0
 =============
 
