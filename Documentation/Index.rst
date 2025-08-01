@@ -42,9 +42,12 @@ Extension to display weather data and weather alerts using various Weather APIs.
 
     Introduction/Index
     User/Index
+    Installation/Index
+    Configuration/Index
     AdministratorManual/Index
     Developer/Index
     KnownProblems/Index
+    ChangeLog/Index
     Links
 
 ..  Meta Menu
