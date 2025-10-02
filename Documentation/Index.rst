@@ -18,7 +18,7 @@ Weather 2
     en
 
 :Author:
-    Stefan Froemken
+    Stefan Froemken, Hoja Mustaffa Abdul Latheef
 
 :License:
     This document is published under the
@@ -45,6 +45,7 @@ Extension to display weather data and weather alerts using various Weather APIs.
     AdministratorManual/Index
     Developer/Index
     KnownProblems/Index
+    ChangeLog/Index
     Links
 
 ..  Meta Menu
