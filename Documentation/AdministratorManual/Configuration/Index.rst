@@ -165,14 +165,6 @@ How do I get set up?
 Weather alerts
 ==============
 
-..  note::
-
-    The screenshots in this section still show the field layout of the former,
-    dedicated Scheduler task types. Since version 7.0.0 the generic
-    :guilabel:`Execute console commands` task is used instead, see
-    :ref:`Console commands overview <admin-manual-configuration-commands>`. The
-    screenshots will be refreshed accordingly.
-
 ..  _get-warn-cells-from-deutscher-wetterdienst:
 
 Get warn cells from Deutscher Wetterdienst
