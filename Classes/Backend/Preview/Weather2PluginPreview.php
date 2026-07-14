@@ -90,9 +90,11 @@ class Weather2PluginPreview extends StandardContentPreviewRenderer
      */
     protected function getPiFlexFormData(RecordInterface $ttContentRecord): array
     {
-        if ($ttContentRecord->has('pi_flexform') && $ttContentRecord->get('pi_flexform') !== '') {
-            return $this->flexFormTools->convertFlexFormContentToArray($ttContentRecord->get('pi_flexform'));
+        $piFlexform = $ttContentRecord->getRawRecord()->get('pi_flexform');
+        if ($piFlexform !== '') {
+            return $this->flexFormTools->convertFlexFormContentToArray($piFlexform);
         }
+
         return [];
     }
 }
