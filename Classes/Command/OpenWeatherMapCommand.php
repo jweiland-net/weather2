@@ -30,7 +30,13 @@ final class OpenWeatherMapCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setHelp('Calls the api of openweathermap.org and saves response into database')
+            ->setDescription('Fetch current weather conditions for a city from OpenWeatherMap and store them in weather2')
+            ->setHelp(
+                'Calls the OpenWeatherMap API (api.openweathermap.org) for the given city/country and stores the '
+                . 'returned current weather conditions (e.g. temperature, wind, humidity) in the weather2 database. '
+                . 'This is unrelated to the Deutscher Wetterdienst commands - it only provides current weather '
+                . 'display data, not storm/weather warnings.',
+            )
             ->addArgument('name', InputArgument::REQUIRED, 'Name')
             ->addArgument('city', InputArgument::REQUIRED, 'City name (e.g. Munich)')
             ->addArgument('country', InputArgument::REQUIRED, 'Country Code (e.g. DE)')

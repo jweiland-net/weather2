@@ -26,9 +26,17 @@ final class DeutscherWetterdienstWarnCellCommand extends Command
 
     protected function configure(): void
     {
-        $this->setHelp(
-            'Calls the Deutscher Wetterdienst api and saves warn cells into database. Required before using DeutscherWetterdienstCommand!',
-        );
+        $this
+            ->setDescription('Fetch the DWD warn cell reference list (place name <-> warn cell ID) and store it in weather2')
+            ->setHelp(
+                'Downloads the official CSV reference list of Deutscher Wetterdienst "Warncell-IDs" from dwd.de. '
+                . 'A Warncell-ID is the numeric code DWD uses to identify one of roughly 11,000 warning regions '
+                . '(districts, cities, sea areas) across Germany. This command does NOT fetch any actual weather '
+                . 'warnings - it only stores the place name to warn cell ID mapping needed to translate a human '
+                . 'readable place (e.g. "Pforzheim") into the warn cell ID(s) required by '
+                . '"weather2:fetch:deutscherWetterdienstAPI". Run this command first, and re-run it occasionally, '
+                . 'since DWD revises warn cell boundaries and IDs from time to time.',
+            );
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int

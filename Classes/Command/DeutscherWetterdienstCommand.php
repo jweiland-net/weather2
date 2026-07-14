@@ -28,12 +28,18 @@ final class DeutscherWetterdienstCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Fetch and process weather alerts from Deutscher Wetterdienst')
-            ->setHelp('Calls the Deutscher Wetterdienst api and saves response in weather2 format into database')
+            ->setDescription('Fetch active weather warnings from Deutscher Wetterdienst for selected places and store them in weather2')
+            ->setHelp(
+                'Calls the DWD weather warnings API (warnings.json), which returns all currently active alerts '
+                . 'grouped by warn cell ID. Resolves the given place name(s) to their warn cell ID(s) using the '
+                . 'local warn cell table, and stores matching alerts (storm, flood, etc.) in the weather2 database. '
+                . 'Requires "weather2:fetch:warnCellsFromDeutscherWetterdienstAPI" to have been run at least once '
+                . 'beforehand, since this command relies on the place name to warn cell ID lookup that command provides.',
+            )
             ->addArgument(
                 'selectedWarnCells',
                 InputArgument::REQUIRED,
-                'Fetch alerts for selected cities (e.g. Pforzheim)',
+                'Comma separated list of place names matched against the local warn cell table (e.g. Pforzheim,Karlsruhe)',
             )
             ->addArgument(
                 'recordStoragePage',
