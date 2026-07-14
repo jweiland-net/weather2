@@ -25,7 +25,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class Weather2PluginPreview extends StandardContentPreviewRenderer
 {
-    private const PREVIEW_TEMPLATE = 'EXT:weather2/Resources/Private/Templates/PluginPreview/Weather2.html';
+    private const PREVIEW_TEMPLATE = 'EXT:weather2/Resources/Private/Templates/PluginPreview/Weather2.fluid.html';
 
     private const ALLOWED_PLUGINS = [
         'weather2_currentweather',
