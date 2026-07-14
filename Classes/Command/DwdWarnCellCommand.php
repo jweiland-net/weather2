@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
     name: 'weather2:fetch:dwdWarnCells',
-    description: 'Fetch the DWD warn cell reference list (place name <-> warn cell ID) and store it in weather2',
+    description: 'Fetch the DWD warn cell reference list (place name <-> warn cell ID) and store it in weather2. Does not fetch actual warnings, run this before weather2:fetch:dwdAlerts.',
 )]
 final class DwdWarnCellCommand extends Command
 {

@@ -21,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
     name: 'weather2:fetch:openWeatherMap',
-    description: 'Fetch current weather conditions for a city from OpenWeatherMap and store them in weather2',
+    description: 'Fetch current weather conditions for a city from OpenWeatherMap and store them in weather2. Independent of the two Deutscher Wetterdienst commands.',
 )]
 final class OpenWeatherMapCommand extends Command
 {

@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
     name: 'weather2:fetch:dwdAlerts',
-    description: 'Fetch active weather warnings from Deutscher Wetterdienst for selected places and store them in weather2',
+    description: 'Fetch active weather warnings from Deutscher Wetterdienst for selected places and store them in weather2. Requires weather2:fetch:dwdWarnCells to have been run at least once before.',
 )]
 final class DwdAlertCommand extends Command
 {
