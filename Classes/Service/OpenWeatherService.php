@@ -66,7 +66,7 @@ class OpenWeatherService implements WeatherServiceInterface
         // Perform saving logic
         $responseClass = json_decode((string)$response->getBody(), false);
         if (!$responseClass) {
-            throw new \RuntimeException('Failed to decode API response as JSON.');
+            throw new \RuntimeException('Failed to decode API response as JSON.', 6580476968);
         }
 
         $this->weatherDataHandlerService->saveWeatherData($responseClass, $recordStoragePage, $name);

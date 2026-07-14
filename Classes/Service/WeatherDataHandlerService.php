@@ -11,17 +11,18 @@ declare(strict_types=1);
 
 namespace JWeiland\Weather2\Service;
 
+use Doctrine\DBAL\Exception;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\CacheService;
 
-class WeatherDataHandlerService
+readonly class WeatherDataHandlerService
 {
     private const CURRENT_WEATHER_TABLE_NAME = 'tx_weather2_domain_model_currentweather';
 
     public function __construct(
-        private readonly ConnectionPool $connectionPool,
-        private readonly CacheService $cacheService,
+        private ConnectionPool $connectionPool,
+        private CacheService $cacheService,
     ) {}
 
     public function removeOldRecords(string $name, int $recordStoragePage): void
@@ -107,8 +108,8 @@ class WeatherDataHandlerService
                 ->insert(self::CURRENT_WEATHER_TABLE_NAME)
                 ->values($weatherObjectArray)
                 ->executeStatement();
-        } catch (\Doctrine\DBAL\Exception $e) {
-            throw new \RuntimeException('Failed to save weather data to the database: ' . $e->getMessage());
+        } catch (Exception $e) {
+            throw new \RuntimeException('Failed to save weather data to the database: ' . $e->getMessage(), $e->getCode(), $e);
         }
     }
 

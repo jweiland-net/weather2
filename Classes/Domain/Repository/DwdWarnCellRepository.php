@@ -48,7 +48,7 @@ class DwdWarnCellRepository extends Repository
                 ])
                 ->execute()
                 ->toArray();
-        } catch (InvalidQueryException $invalidQueryException) {
+        } catch (InvalidQueryException) {
             return [];
         }
     }

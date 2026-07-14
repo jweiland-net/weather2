@@ -18,90 +18,63 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class WeatherAlert extends AbstractEntity
 {
-    /**
-     * @var DwdWarnCell
-     */
-    protected $dwdWarnCell;
+    protected ?DwdWarnCell $dwdWarnCell = null;
 
     /**
      * Level of alert
      * There is a detailed description in the documentation for this
      * e.g. yellow, red, ...
-     *
-     * @var int
      */
-    protected $level = 0;
+    protected int $level = 0;
 
     /**
      * Type of alert
      * There is a detailed description in the documentation for this
      * e.g. frost, storm, ...
-     *
-     * @var int
      */
-    protected $type = 0;
+    protected int $type = 0;
 
     /**
      * Alert title
-     *
-     * @var string
      */
-    protected $title = '';
+    protected string $title = '';
 
     /**
      * Alert description
-     *
-     * @var string
      */
-    protected $description = '';
+    protected string $description = '';
 
     /**
      * Alert Instruction
      * e.g. Stay at home, close your windows, etc.
-     *
-     * @var string
      */
-    protected $instruction = '';
+    protected string $instruction = '';
 
     /**
      * TYPO3 starttime
-     *
-     * @var \DateTime
      */
-    protected $starttime;
+    protected ?\DateTime $starttime = null;
 
     /**
      * TYPO3 endtime
-     *
-     * @var \DateTime
      */
-    protected $endtime;
+    protected ?\DateTime $endtime = null;
 
     /**
      * Start date of the weather alert!
-     *
-     * @var \DateTime
      */
-    protected $startDate;
+    protected ?\DateTime $startDate = null;
 
     /**
      * End date of the weather alert!
-     *
-     * @var \DateTime
      */
-    protected $endDate;
+    protected ?\DateTime $endDate = null;
 
-    /**
-     * @var string
-     */
-    protected $comparisonHash = '';
+    protected string $comparisonHash = '';
 
-    /**
-     * @var bool
-     */
-    protected $preliminaryInformation = false;
+    protected bool $preliminaryInformation = false;
 
-    public function getDwdWarnCell(): DwdWarnCell
+    public function getDwdWarnCell(): ?DwdWarnCell
     {
         return $this->dwdWarnCell;
     }

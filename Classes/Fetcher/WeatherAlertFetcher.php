@@ -17,13 +17,13 @@ use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Log\LogLevel;
 
-class WeatherAlertFetcher implements WeatherAlertFetcherInterface
+readonly class WeatherAlertFetcher implements WeatherAlertFetcherInterface
 {
     private const API_URL = 'https://www.dwd.de/DWD/warnungen/warnapp/json/warnings.json';
 
     public function __construct(
-        private readonly RequestFactory $requestFactory,
-        private readonly LoggerInterface $logger,
+        private RequestFactory $requestFactory,
+        private LoggerInterface $logger,
     ) {}
 
     public function fetchData(): ResponseInterface
@@ -35,7 +35,7 @@ class WeatherAlertFetcher implements WeatherAlertFetcherInterface
                 LogLevel::ERROR,
                 WeatherUtility::translate('message.api_response_null', 'deutscherwetterdienst'),
             );
-            throw new \RuntimeException('Invalid response from API.');
+            throw new \RuntimeException('Invalid response from API.', 2774378641);
         }
 
         return $response;

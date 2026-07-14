@@ -13,9 +13,11 @@ namespace JWeiland\Weather2\Parser;
 
 use JWeiland\Weather2\Helper\CsvHelper;
 
-class WarnCellParser implements WarnCellParserInterface
+readonly class WarnCellParser implements WarnCellParserInterface
 {
-    public function __construct(private readonly CsvHelper $csvHelper) {}
+    public function __construct(
+        private CsvHelper $csvHelper,
+    ) {}
 
     /**
      * @return array<int, mixed>
@@ -24,7 +26,7 @@ class WarnCellParser implements WarnCellParserInterface
     {
         $warnCellRecords = $this->csvHelper->convertCsvToArray($warnCellData, ';', true);
         $parsedWarnCells = [];
-        foreach ($warnCellRecords as $index => $warnCellRecord) {
+        foreach ($warnCellRecords as $warnCellRecord) {
             // Ensure row has exactly 5 fields
             if (count($warnCellRecord) === 5) {
                 [$warnCellId, $name, $shortName, , $federalState] = $warnCellRecord; // Skip CCC field

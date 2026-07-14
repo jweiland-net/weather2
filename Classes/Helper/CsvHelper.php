@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace JWeiland\Weather2\Helper;
 
-class CsvHelper
+readonly class CsvHelper
 {
     /**
      * Converts a CSV string into an array of rows.
@@ -25,7 +25,7 @@ class CsvHelper
         $stream = fopen('php://memory', 'rb+');
 
         if ($stream === false) {
-            throw new \RuntimeException('Failed to open memory stream.');
+            throw new \RuntimeException('Failed to open memory stream.', 9288060786);
         }
 
         fwrite($stream, $csvData);

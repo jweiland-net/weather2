@@ -20,15 +20,9 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  */
 class CurrentWeatherController extends ActionController
 {
-    /**
-     * @var CurrentWeatherRepository
-     */
-    protected $currentWeatherRepository;
-
-    public function injectCurrentWeatherRepository(CurrentWeatherRepository $currentWeatherRepository): void
-    {
-        $this->currentWeatherRepository = $currentWeatherRepository;
-    }
+    public function __construct(
+        protected readonly CurrentWeatherRepository $currentWeatherRepository,
+    ) {}
 
     /**
      * Action to display the newest CurrentWeather model
@@ -41,6 +35,7 @@ class CurrentWeatherController extends ActionController
                 $this->settings['selection'] ?? '',
             ),
         );
+
         return $this->htmlResponse();
     }
 }

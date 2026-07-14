@@ -13,7 +13,6 @@ namespace JWeiland\Weather2\Tests\Functional\Domain\Repository;
 
 use JWeiland\Weather2\Domain\Model\CurrentWeather;
 use JWeiland\Weather2\Domain\Repository\CurrentWeatherRepository;
-use JWeiland\Weather2\Tests\Functional\Traits\InitializeFrontendControllerMockTrait;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -22,12 +21,13 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class CurrentWeatherRepositoryTest extends FunctionalTestCase
 {
-    use InitializeFrontendControllerMockTrait;
+    protected CurrentWeatherRepository $subject;
 
-    /**
-     * @var CurrentWeatherRepository
-     */
-    protected $subject;
+    protected array $coreExtensionsToLoad = [
+        'typo3/cms-dashboard',
+        'typo3/cms-install',
+        'typo3/cms-scheduler',
+    ];
 
     protected array $testExtensionsToLoad = [
         'jweiland/weather2',
@@ -38,8 +38,8 @@ class CurrentWeatherRepositoryTest extends FunctionalTestCase
         parent::setUp();
 
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/tx_weather2_domain_model_currentweather.csv');
+
         $this->subject = $this->getContainer()->get(CurrentWeatherRepository::class);
-        $this->createFrontendControllerMock();
     }
 
     #[Test]

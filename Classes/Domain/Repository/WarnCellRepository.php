@@ -23,7 +23,7 @@ class WarnCellRepository implements WarnCellRepositoryInterface
         private readonly ConnectionPool $connectionPool,
     ) {}
 
-    public function updateDatabase(array $warnCellRecords, ProgressBar $progressBar = null): void
+    public function updateDatabase(array $warnCellRecords, ?ProgressBar $progressBar = null): void
     {
         $connection = $this->connectionPool->getConnectionForTable(self::WARN_CELL_TABLE_NAME);
 
@@ -32,7 +32,7 @@ class WarnCellRepository implements WarnCellRepositoryInterface
                 $this->insertRecord($connection, $warnCellRecord);
             }
 
-            if ($progressBar !== null) {
+            if ($progressBar instanceof ProgressBar) {
                 $progressBar->advance();
             }
         }

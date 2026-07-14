@@ -18,25 +18,13 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class DwdWarnCell extends AbstractEntity
 {
-    /**
-     * @var string
-     */
-    protected $warnCellId = '';
+    protected string $warnCellId = '';
 
-    /**
-     * @var string
-     */
-    protected $name = '';
+    protected string $name = '';
 
-    /**
-     * @var string
-     */
-    protected $shortName = '';
+    protected string $shortName = '';
 
-    /**
-     * @var string
-     */
-    protected $sign = '';
+    protected string $sign = '';
 
     public function getWarnCellId(): string
     {

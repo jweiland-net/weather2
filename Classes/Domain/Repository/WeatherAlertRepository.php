@@ -33,6 +33,7 @@ class WeatherAlertRepository extends Repository implements WeatherAlertRepositor
 
     public function __construct(
         private readonly ConnectionPool $connectionPool,
+        private readonly Context $context,
     ) {
         parent::__construct();
     }
@@ -76,7 +77,7 @@ class WeatherAlertRepository extends Repository implements WeatherAlertRepositor
             $andConstraints[] = $query->logicalOr(
                 $query->greaterThanOrEqual(
                     'end_date',
-                    GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp'),
+                    $this->context->getPropertyFromAspect('date', 'timestamp'),
                 ),
                 $query->equals('end_date', 0),
             );
@@ -84,7 +85,7 @@ class WeatherAlertRepository extends Repository implements WeatherAlertRepositor
                 $andConstraints[] = $query->equals('preliminary_information', 0);
             }
             $query->matching($query->logicalAnd(...$andConstraints));
-        } catch (InvalidQueryException $invalidQueryException) {
+        } catch (InvalidQueryException) {
             // Do nothing. Return all records
         }
 
@@ -118,7 +119,7 @@ class WeatherAlertRepository extends Repository implements WeatherAlertRepositor
                 ->orderBy('uid', 'ASC');
 
             return $queryBuilder->executeQuery()->fetchAllAssociative();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // Handle exception if needed
             return [];
         }

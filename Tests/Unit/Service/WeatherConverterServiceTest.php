@@ -21,10 +21,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class WeatherConverterServiceTest extends UnitTestCase
 {
-    /**
-     * @var WeatherConverterService
-     */
-    protected $subject;
+    protected WeatherConverterService $subject;
 
     protected function setUp(): void
     {

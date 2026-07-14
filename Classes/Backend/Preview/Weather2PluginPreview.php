@@ -13,7 +13,8 @@ namespace JWeiland\Weather2\Backend\Preview;
 
 use TYPO3\CMS\Backend\Preview\StandardContentPreviewRenderer;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
-use TYPO3\CMS\Core\Service\FlexFormService;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Core\View\ViewInterface;
@@ -32,9 +33,11 @@ class Weather2PluginPreview extends StandardContentPreviewRenderer
     ];
 
     public function __construct(
-        protected FlexFormService $flexFormService,
+        protected FlexFormTools $flexFormTools,
         protected ViewFactoryInterface $viewFactory,
-    ) {}
+    ) {
+        parent::__construct();
+    }
 
     public function renderPageModulePreviewContent(GridColumnItem $item): string
     {
@@ -48,12 +51,12 @@ class Weather2PluginPreview extends StandardContentPreviewRenderer
                 templatePathAndFilename: self::PREVIEW_TEMPLATE,
             ),
         );
-        $view->assignMultiple($ttContentRecord);
+        $view->assignMultiple($ttContentRecord->toArray());
 
         $this->addPluginName($view, $ttContentRecord);
 
         // Add data from column pi_flexform
-        $piFlexformData = $this->getPiFlexformData($ttContentRecord);
+        $piFlexformData = $this->getPiFlexFormData($ttContentRecord);
         if ($piFlexformData !== []) {
             $view->assign('pi_flexform_transformed', $piFlexformData);
         }
@@ -61,30 +64,19 @@ class Weather2PluginPreview extends StandardContentPreviewRenderer
         return $view->render();
     }
 
-    /**
-     * @param array<string, mixed> $ttContentRecord
-     */
-    protected function isValidPlugin(array $ttContentRecord): bool
+    protected function isValidPlugin(RecordInterface $ttContentRecord): bool
     {
-        if (!isset($ttContentRecord['CType'])) {
+        if (!$ttContentRecord->has('CType')) {
             return false;
         }
-
-        if (!in_array($ttContentRecord['CType'], self::ALLOWED_PLUGINS, true)) {
-            return false;
-        }
-
-        return true;
+        return in_array($ttContentRecord->get('CType'), self::ALLOWED_PLUGINS, true);
     }
 
-    /**
-     * @param array<string, mixed> $ttContentRecord
-     */
-    protected function addPluginName(ViewInterface $view, array $ttContentRecord): void
+    protected function addPluginName(ViewInterface $view, RecordInterface $ttContentRecord): void
     {
         $langKey = sprintf(
             'plugin.%s.title',
-            str_replace('weather2_', '', $ttContentRecord['CType']),
+            str_replace('weather2_', '', $ttContentRecord->get('CType')),
         );
 
         $view->assign(
@@ -94,16 +86,13 @@ class Weather2PluginPreview extends StandardContentPreviewRenderer
     }
 
     /**
-     * @param array<string, mixed> $ttContentRecord
      * @return array<string, mixed>
      */
-    protected function getPiFlexformData(array $ttContentRecord): array
+    protected function getPiFlexFormData(RecordInterface $ttContentRecord): array
     {
-        $data = [];
-        if (!empty($ttContentRecord['pi_flexform'] ?? '')) {
-            $data = $this->flexFormService->convertFlexFormContentToArray($ttContentRecord['pi_flexform']);
+        if ($ttContentRecord->has('pi_flexform') && $ttContentRecord->get('pi_flexform') !== '') {
+            return $this->flexFormTools->convertFlexFormContentToArray($ttContentRecord->get('pi_flexform'));
         }
-
-        return $data;
+        return [];
     }
 }

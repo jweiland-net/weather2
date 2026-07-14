@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+use JWeiland\Weather2\UserFunc\Tca;
+
 if (!defined('TYPO3')) {
     die('Access denied.');
 }
@@ -8,7 +12,7 @@ return [
     'ctrl' => [
         'title' => 'LLL:EXT:weather2/Resources/Private/Language/locallang_db.xlf:tx_weather2_domain_model_dwdwarncell',
         'label' => 'name',
-        'label_userFunc' => \JWeiland\Weather2\UserFunc\Tca::class . '->getDwdWarnCellTitle',
+        'label_userFunc' => Tca::class . '->getDwdWarnCellTitle',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'rootLevel' => 1,
@@ -16,7 +20,6 @@ return [
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],
-        'searchFields' => 'name,warn_cell_id,sign',
         'iconfile' => 'EXT:weather2/Resources/Public/Icons/tx_weather2_domain_model_dwdwarncell.gif',
     ],
     'types' => [
@@ -48,6 +51,7 @@ return [
                 'size' => 30,
                 'eval' => 'trim',
                 'required' => true,
+                'searchable' => false,
             ],
         ],
         'sign' => [

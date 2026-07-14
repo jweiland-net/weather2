@@ -1,9 +1,0 @@
-<f:layout name="Default"/>
-
-<f:section name="main">
-	<f:if condition="{weatherAlerts}">
-		<f:for each="{weatherAlerts}" as="weatherAlert">
-			<f:render partial="WeatherAlert/WeatherAlert" arguments="{weatherAlert: weatherAlert}"/>
-		</f:for>
-	</f:if>
-</f:section>

@@ -13,7 +13,6 @@ namespace JWeiland\Weather2\Tests\Functional\Domain\Repository;
 
 use JWeiland\Weather2\Domain\Model\WeatherAlert;
 use JWeiland\Weather2\Domain\Repository\WeatherAlertRepository;
-use JWeiland\Weather2\Tests\Functional\Traits\InitializeFrontendControllerMockTrait;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\Exception;
 use Psr\Http\Message\ServerRequestInterface;
@@ -25,20 +24,19 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class WeatherAlertRepositoryTest extends FunctionalTestCase
 {
-    use InitializeFrontendControllerMockTrait;
-
     protected WeatherAlertRepository $subject;
+
+    protected array $coreExtensionsToLoad = [
+        'typo3/cms-dashboard',
+        'typo3/cms-install',
+        'typo3/cms-scheduler',
+    ];
 
     protected array $testExtensionsToLoad = [
         'jweiland/weather2',
     ];
 
     protected ServerRequestInterface $request;
-
-    /**
-     * @var ConfigurationManager|MockObject
-     */
-    protected MockObject $configurationManagerMock;
 
     /**
      * @throws Exception
@@ -48,10 +46,9 @@ class WeatherAlertRepositoryTest extends FunctionalTestCase
         parent::setUp();
 
         $this->subject = GeneralUtility::makeInstance(WeatherAlertRepository::class);
+
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/pages.csv');
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/tx_weather2_domain_model_weatheralert.csv');
-
-        $this->createFrontendControllerMock();
     }
 
     protected function tearDown(): void

@@ -11,46 +11,37 @@ declare(strict_types=1);
 
 namespace JWeiland\Weather2\Dashboard\Widget;
 
+use TYPO3\CMS\Core\View\ViewFactoryData;
+use TYPO3\CMS\Core\View\ViewFactoryInterface;
+use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 
 class WeatherAlertWidget implements WidgetInterface
 {
-    private WidgetConfigurationInterface $configuration;
-
-    private StandaloneView $view;
-
     /**
-     * @var array<string, mixed>
-     */
-    private array $options = [];
-
-    /**
-     * @param WidgetConfigurationInterface $configuration
-     * @param StandaloneView $view
      * @param array<string, mixed> $options
      */
-    public function __construct(
-        WidgetConfigurationInterface $configuration,
-        StandaloneView $view,
-        array $options,
-    ) {
-        $this->configuration = $configuration;
-        $this->view = $view;
-        $this->options = $options;
-    }
+    public function __construct(private readonly WidgetConfigurationInterface $configuration, private readonly ViewFactoryInterface $viewFactory, private readonly array $options) {}
 
     public function renderWidgetContent(): string
     {
-        $this->view->setTemplate('Widget/Connections');
-        $this->view->assignMultiple([
+        $view = $this->getView();
+        $view->assignMultiple([
             'items' => [],
             'configuration' => $this->configuration,
             'options' => $this->getOptions(),
         ]);
 
-        return $this->view->render();
+        return $view->render();
+    }
+
+    private function getView(): ViewInterface
+    {
+        // $this->view->setTemplate('Widget/Connections');
+        return $this->viewFactory->create(new ViewFactoryData(
+            templateRootPaths: ['EXT:weather2/Resources/Private/Templates/Widget/'],
+        ));
     }
 
     /**

@@ -128,7 +128,7 @@ class DeutscherWetterdienstAlertService
         OutputInterface $output,
     ): void {
         $comparisonHash = $this->getComparisonHashForAlert($alert);
-        if ($alertUid = $this->repository->getUidOfAlert($recordStoragePid, $comparisonHash)) {
+        if (($alertUid = $this->repository->getUidOfAlert($recordStoragePid, $comparisonHash)) !== 0) {
             $this->keepRecords[] = $alertUid;
             $output->writeln('');
             $output->writeln(sprintf('<comment>Alert with hash %s already exists.</comment>', $comparisonHash));

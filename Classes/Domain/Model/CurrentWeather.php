@@ -18,75 +18,33 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  */
 class CurrentWeather extends AbstractEntity
 {
-    /**
-     * @var string
-     */
-    protected $name = '';
+    protected string $name = '';
 
-    /**
-     * @var \DateTime
-     */
-    protected $measureTimestamp;
+    protected ?\DateTime $measureTimestamp = null;
 
-    /**
-     * @var float
-     */
-    protected $temperatureC = 0.0;
+    protected float $temperatureC = 0.0;
 
-    /**
-     * @var int
-     */
-    protected $pressureHpa = 0;
+    protected int $pressureHpa = 0;
 
-    /**
-     * @var int
-     */
-    protected $humidityPercentage = 0;
+    protected int $humidityPercentage = 0;
 
-    /**
-     * @var float
-     */
-    protected $minTempC = 0.0;
+    protected float $minTempC = 0.0;
 
-    /**
-     * @var float
-     */
-    protected $maxTempC = 0.0;
+    protected float $maxTempC = 0.0;
 
-    /**
-     * @var float
-     */
-    protected $windSpeedMPS = 0.0;
+    protected float $windSpeedMPS = 0.0;
 
-    /**
-     * @var int
-     */
-    protected $windDirectionDeg = 0;
+    protected int $windDirectionDeg = 0;
 
-    /**
-     * @var float
-     */
-    protected $snowVolume = 0.0;
+    protected float $snowVolume = 0.0;
 
-    /**
-     * @var float
-     */
-    protected $rainVolume = 0.0;
+    protected float $rainVolume = 0.0;
 
-    /**
-     * @var int
-     */
-    protected $cloudsPercentage = 0;
+    protected int $cloudsPercentage = 0;
 
-    /**
-     * @var string
-     */
-    protected $icon = '';
+    protected string $icon = '';
 
-    /**
-     * @var int
-     */
-    protected $conditionCode = 0;
+    protected int $conditionCode = 0;
 
     public function getName(): string
     {

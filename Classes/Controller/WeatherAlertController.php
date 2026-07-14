@@ -20,15 +20,9 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  */
 class WeatherAlertController extends ActionController
 {
-    /**
-     * @var WeatherAlertRepository
-     */
-    protected $weatherAlertRepository;
-
-    public function injectWeatherAlertRepository(WeatherAlertRepository $weatherAlertRepository): void
-    {
-        $this->weatherAlertRepository = $weatherAlertRepository;
-    }
+    public function __construct(
+        protected readonly WeatherAlertRepository $weatherAlertRepository,
+    ) {}
 
     /**
      * Action to display the newest CurrentAlert model
@@ -44,6 +38,7 @@ class WeatherAlertController extends ActionController
                 (bool)($this->settings['showPreliminaryInformation'] ?? false),
             ),
         );
+
         return $this->htmlResponse();
     }
 }

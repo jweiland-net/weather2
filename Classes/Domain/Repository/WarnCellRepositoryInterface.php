@@ -18,5 +18,5 @@ interface WarnCellRepositoryInterface
     /**
      * @param array<int, mixed> $warnCellRecords
      */
-    public function updateDatabase(array $warnCellRecords, ProgressBar $progressBar = null): void;
+    public function updateDatabase(array $warnCellRecords, ?ProgressBar $progressBar = null): void;
 }

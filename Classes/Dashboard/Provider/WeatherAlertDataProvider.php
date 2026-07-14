@@ -18,6 +18,7 @@ use TYPO3\CMS\Dashboard\Widgets\NumberWithIconDataProviderInterface;
 
 class WeatherAlertDataProvider implements NumberWithIconDataProviderInterface
 {
+    public function __construct(private readonly ConnectionPool $connectionPool) {}
     /**
      * Return the number of weather alerts registered in TYPO3 database
      */
@@ -31,10 +32,11 @@ class WeatherAlertDataProvider implements NumberWithIconDataProviderInterface
      */
     private function getWeatherAlerts(): array
     {
-        $queryBuilder = $this->getConnectionPool()
+        $queryBuilder = $this->connectionPool
             ->getQueryBuilderForTable('tx_weather2_domain_model_weatheralert');
         $queryBuilder->getRestrictions()->removeAll();
         $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
         $statement = $queryBuilder
             ->select('*')
             ->from('tx_weather2_domain_model_weatheralert')
@@ -46,10 +48,5 @@ class WeatherAlertDataProvider implements NumberWithIconDataProviderInterface
         }
 
         return $weatherAlerts;
-    }
-
-    private function getConnectionPool(): ConnectionPool
-    {
-        return GeneralUtility::makeInstance(ConnectionPool::class);
     }
 }

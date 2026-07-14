@@ -10,23 +10,18 @@ services:
   JWeiland\Weather2\:
     resource: '../Classes/*'
 
-  # Called by makeInstance in TYPO3's PluginPreview
-  JWeiland\Weather2\Backend\Preview\Weather2PluginPreview:
-    public: true
-
   # Will be called by GeneralUtility in AjaxRoutes
   JWeiland\Weather2\Ajax\DeutscherWetterdienstWarnCellSearch:
     public: true
 
-  # Will be called by GeneralUtility in ScheduleModuleController
-  JWeiland\Weather2\Task\DeutscherWetterdienstTaskAdditionalFieldProvider:
+  # Called by makeInstance in TYPO3's PluginPreview
+  JWeiland\Weather2\Backend\Preview\Weather2PluginPreview:
     public: true
 
-  # Will be called by GeneralUtility in ScheduleModuleController
-  JWeiland\Weather2\Task\OpenWeatherMapTaskAdditionalFieldProvider:
+  # Called by makeInstance from FlexForm
+  JWeiland\Weather2\UserFunc\FlexFormUserFunc:
     public: true
 
-  # Symfony Commands
   JWeiland\Weather2\Command\DeutscherWetterdienstCommand:
     tags:
       - name: console.command
@@ -47,3 +42,12 @@ services:
 
   JWeiland\Weather2\Service\WeatherServiceInterface:
     class: JWeiland\Weather2\Service\OpenWeatherService
+
+  # Will be called by GeneralUtility in ScheduleModuleController
+  JWeiland\Weather2\Task\DeutscherWetterdienstTaskAdditionalFieldProvider:
+    public: true
+
+  # Will be called by GeneralUtility in ScheduleModuleController
+  JWeiland\Weather2\Task\OpenWeatherMapTaskAdditionalFieldProvider:
+    public: true
+

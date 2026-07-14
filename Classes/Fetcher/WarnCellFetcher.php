@@ -15,13 +15,13 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Http\RequestFactory;
 
-class WarnCellFetcher implements WarnCellFetcherInterface
+readonly class WarnCellFetcher implements WarnCellFetcherInterface
 {
     private const API_URL = 'https://www.dwd.de/DE/leistungen/opendata/help/warnungen/cap_warncellids_csv.csv?__blob=publicationFile&v=3';
 
     public function __construct(
-        private readonly RequestFactory $requestFactory,
-        private readonly LoggerInterface $logger,
+        private RequestFactory $requestFactory,
+        private LoggerInterface $logger,
     ) {}
 
     public function fetchData(): ResponseInterface
@@ -30,7 +30,7 @@ class WarnCellFetcher implements WarnCellFetcherInterface
 
         if ($response->getStatusCode() !== 200 || (string)$response->getBody() === '') {
             $this->logger->error('Invalid response from API.');
-            throw new \RuntimeException('Invalid response from API.');
+            throw new \RuntimeException('Invalid response from API.', 4487136702);
         }
 
         return $response;

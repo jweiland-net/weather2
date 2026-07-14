@@ -1,5 +1,2 @@
 parameters:
-    excludePaths:
-        - %currentWorkingDirectory%/Classes/Hook/PageLayoutViewHook.php
-        - %currentWorkingDirectory%/Classes/Utility/StringUtility.php
-        - %currentWorkingDirectory%/Classes/Preview/WallsIoBackendPreviewRenderer
+  excludePaths:

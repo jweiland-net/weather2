@@ -12,25 +12,31 @@ declare(strict_types=1);
 namespace JWeiland\Weather2\UserFunc;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * FlexFormUserFunc
- */
-class FlexFormUserFunc
+readonly class FlexFormUserFunc
 {
+    protected const TABLE = 'tx_weather2_domain_model_currentweather';
+
+    public function __construct(
+        private ConnectionPool $connectionPool,
+    ) {}
+
     /**
-     * Only display results if name equals in plugin specified name
+     * Only display results if the name equals in the plugin-specified name
      *
      * @param array<string, mixed> $fConfig
      */
     public function getSelection(array &$fConfig): void
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable(
-            'tx_weather2_domain_model_currentweather',
-        );
+        $connection = $this->connectionPool->getConnectionForTable(self::TABLE);
 
-        $result = $connection->select(['name'], 'tx_weather2_domain_model_currentweather')->fetchAllAssociative();
+        $result = $connection
+            ->select(
+                ['name'],
+                self::TABLE,
+            )
+            ->fetchAllAssociative();
+
         foreach ($result as $data) {
             array_unshift($fConfig['items'], [$data['name'], $data['name']]);
         }
