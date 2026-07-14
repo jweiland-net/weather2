@@ -13,11 +13,16 @@ namespace JWeiland\Weather2\Command;
 
 use JWeiland\Weather2\Service\WeatherServiceInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'weather2:fetch:openWeatherMap',
+    description: 'Fetch current weather conditions for a city from OpenWeatherMap and store them in weather2',
+)]
 final class OpenWeatherMapCommand extends Command
 {
     public function __construct(
@@ -30,7 +35,6 @@ final class OpenWeatherMapCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Fetch current weather conditions for a city from OpenWeatherMap and store them in weather2')
             ->setHelp(
                 'Calls the OpenWeatherMap API (api.openweathermap.org) for the given city/country and stores the '
                 . 'returned current weather conditions (e.g. temperature, wind, humidity) in the weather2 database. '

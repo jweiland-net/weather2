@@ -71,7 +71,7 @@ Add the following TypoScript to your setup:
       settings {
         # possible values: Metric | Imperial | Isou
         measureUnits = Metric
-        # possible values: The "name" argument you set for the "weather2:fetch:fromOpenWeatherAPI" command
+        # possible values: The "name" argument you set for the "weather2:fetch:openWeatherMap" command
         selection = Reutlingen
       }
     }

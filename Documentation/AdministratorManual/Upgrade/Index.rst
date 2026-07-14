@@ -9,6 +9,26 @@ Upgrade
 If you upgrade :file:`EXT:weather2` to a newer version, please read this section
 carefully!
 
+..  _upgrade-6-to-7:
+
+Update from 6.x to 7.0
+======================
+
+The three console commands were renamed to be shorter and to make it clear which
+one fetches warnings and which one only fetches the region reference data:
+
+*   `weather2:fetch:deutscherWetterdienstAPI` is now `weather2:fetch:dwdAlerts`
+*   `weather2:fetch:warnCellsFromDeutscherWetterdienstAPI` is now
+    `weather2:fetch:dwdWarnCells`
+*   `weather2:fetch:fromOpenWeatherAPI` is now `weather2:fetch:openWeatherMap`
+
+If you already have Scheduler tasks of type :guilabel:`Execute console commands`
+referencing one of the old command identifiers, edit each task and re-select the
+command under its new name - the old identifier no longer exists and the task
+will fail otherwise. See
+:ref:`Console commands overview <admin-manual-configuration-commands>` for the
+arguments of each command and whether it should be single or recurring.
+
 ..  _upgrade-5-to-6:
 
 Update from 5.x to 6.0
@@ -20,11 +40,9 @@ commands. Your existing weather2 Scheduler tasks will no longer run and should b
 deleted. For each one, create a new task of type :guilabel:`Execute console
 commands` instead, and select the matching weather2 command
 (`weather2:fetch:fromOpenWeatherAPI`, `weather2:fetch:warnCellsFromDeutscherWetterdienstAPI`
-or `weather2:fetch:deutscherWetterdienstAPI`). See
-:ref:`Console commands overview <admin-manual-configuration-commands>` for the
-arguments of each command and whether it should be single or recurring.
-There is an upgrade wizard available with this extension to convert the older
-list type plugins to custom CType.
+or `weather2:fetch:deutscherWetterdienstAPI` - renamed again in version 7.0, see
+above). There is an upgrade wizard available with this extension to convert the
+older list type plugins to custom CType.
 
 ..  _upgrade-4-to-5:
 

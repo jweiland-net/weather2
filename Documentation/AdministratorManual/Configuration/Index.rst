@@ -53,8 +53,8 @@ they should be set up.
 
 ..  _admin-manual-configuration-command-warncells:
 
-`weather2:fetch:warnCellsFromDeutscherWetterdienstAPI`
-------------------------------------------------------
+`weather2:fetch:dwdWarnCells`
+-----------------------------
 
 :Purpose:
     Downloads the official DWD warn cell reference list (place name to warn cell ID
@@ -75,8 +75,8 @@ they should be set up.
 
 ..  _admin-manual-configuration-command-dwd-alerts:
 
-`weather2:fetch:deutscherWetterdienstAPI`
------------------------------------------
+`weather2:fetch:dwdAlerts`
+--------------------------
 
 :Purpose:
     Fetches the currently active weather warnings from Deutscher Wetterdienst for
@@ -91,7 +91,7 @@ they should be set up.
         should be cleared after the run.
 
 :Depends on:
-    :ref:`weather2:fetch:warnCellsFromDeutscherWetterdienstAPI
+    :ref:`weather2:fetch:dwdWarnCells
     <admin-manual-configuration-command-warncells>` must have been executed at
     least once beforehand, so the place names can be resolved to warn cell IDs.
 
@@ -101,8 +101,8 @@ they should be set up.
 
 ..  _admin-manual-configuration-command-openweathermap:
 
-`weather2:fetch:fromOpenWeatherAPI`
------------------------------------
+`weather2:fetch:openWeatherMap`
+-------------------------------
 
 :Purpose:
     Fetches current weather conditions (temperature, wind, humidity, ...) for one
@@ -145,7 +145,7 @@ How do I get set up?
 #.  Enable the scheduler extension in your TYPO3 installation if not already done
 #.  Go to the scheduler module and add a new task of type
     :guilabel:`Execute console commands`, then select the command
-    `weather2:fetch:fromOpenWeatherAPI`
+    `weather2:fetch:openWeatherMap`
     (see :ref:`Console commands overview <admin-manual-configuration-commands>`)
 #.  Fill in the command's arguments. Please note that the `name` argument is later
     used to only display this specific record
@@ -172,7 +172,7 @@ Get warn cells from Deutscher Wetterdienst
 
 #.  Go to the scheduler module.
 #.  Add a new task of type :guilabel:`Execute console commands` and select the
-    command `weather2:fetch:warnCellsFromDeutscherWetterdienstAPI`.
+    command `weather2:fetch:dwdWarnCells`.
 #.  Set this task as single execution because you have to execute this only once.
 #.  Save and exit
 #.  Execute the task
@@ -218,7 +218,7 @@ Get weather alerts from Deutscher Wetterdienst
 
 #.  Go to the scheduler module.
 #.  Add a new task of type :guilabel:`Execute console commands` and select the
-    command `weather2:fetch:deutscherWetterdienstAPI`.
+    command `weather2:fetch:dwdAlerts`.
 #.  You should set recurring as type and e.g. 3600 as frequency to get the latest
     alerts every hour.
 #.  Fill in the `selectedWarnCells` argument with a comma separated list of place
