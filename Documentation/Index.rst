@@ -1,6 +1,8 @@
 ﻿..  include:: /Includes.rst.txt
 
 
+..  _start:
+
 =========
 Weather 2
 =========

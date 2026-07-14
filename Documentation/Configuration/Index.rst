@@ -7,7 +7,7 @@
 Configuration
 =============
 
-This chapter describes the various configuration settings of yellowpages2.
+This chapter describes the various configuration settings of weather2.
 
 ..  toctree::
     :maxdepth: 2

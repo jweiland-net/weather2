@@ -1,46 +1,59 @@
-﻿..  include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
 ..  _user-manual:
 
 ============
-Users Manual
+Users manual
 ============
+
+..  _user-manual-plugin-current-weather:
 
 Adding a new plugin to display weather reports
 ==============================================
 
-To add a new plugin just create a new content element, choose insert plugin and select *Current Weather* under plugin.
+To add a new plugin just create a new content element, choose insert plugin and select
+*Current Weather* under plugin.
 Now you can select the desired measure unit and record identifier to display records.
 
 ..  figure:: ../Images/CurrentWeather/BackendPluginContentElement.gif
     :width: 725px
     :alt: Backend plugin content element
+    :zoom: lightbox
+
+..  _user-manual-plugin-weather-alerts:
 
 Adding a new plugin to display weather alerts
 =============================================
 
-To add a new plugin just create a new content element, choose insert plugin and select *Weather Alerts* as plugin.
-Now you can select which regions, alarm level and alarm types should be displayed. Additionally you can select the
-record storage page.
+To add a new plugin just create a new content element, choose insert plugin and select
+*Weather Alerts* as plugin.
+Now you can select which regions, alarm level and alarm types should be displayed.
+Additionally you can select the record storage page.
 
 ..  figure:: ../Images/WeatherAlert/PluginConfiguration.jpeg
     :width: 725px
     :alt: Backend plugin content element
+    :zoom: lightbox
 
+
+..  _user-manual-fluid-rendering:
 
 Render weather reports and alerts inside a fluid template
 =========================================================
 
-Maybe you want to include the plugins inside a fluid template without a plugin.
-Important: Include the static template of weather2 inside the root page.
+Maybe you want to include the plugins inside a Fluid template without a plugin.
+Important: include the static template of weather2 inside the root page.
+
+..  _user-manual-fluid-rendering-current-weather:
 
 Render weather reports inside a fluid template
------------------------------------------------
+----------------------------------------------
 
 Add the following TypoScript to your setup:
 
 ..  code-block:: typoscript
+    :caption: EXT:site_package/Configuration/TypoScript/setup.typoscript
 
     # weather reports
     lib.weather2_currentweather = USER
@@ -63,13 +76,14 @@ Add the following TypoScript to your setup:
       }
     }
 
-
 Use the following snippet in your Fluid template:
 
 ..  code-block:: html
+    :caption: EXT:site_package/Resources/Private/Templates/Page/Default.html
 
     <f:cObject typoscriptObjectPath="lib.weather2_currentweather" />
 
+..  _user-manual-fluid-rendering-weather-alert:
 
 Render weather alerts inside a fluid template
 ---------------------------------------------
@@ -77,6 +91,7 @@ Render weather alerts inside a fluid template
 Add the following TypoScript to your setup:
 
 ..  code-block:: typoscript
+    :caption: EXT:site_package/Configuration/TypoScript/setup.typoscript
 
     # weather alerts
     lib.weather2_weatheralert = USER
@@ -100,21 +115,23 @@ Add the following TypoScript to your setup:
       }
     }
 
-
 ..  figure:: ../Images/WeatherAlert/WarningTypes.jpg
     :width: 100px
     :alt: Warning types
+    :zoom: lightbox
 
     Warning types
 
 ..  figure:: ../Images/WeatherAlert/WarningLevels.jpg
     :width: 200px
     :alt: Warning levels
+    :zoom: lightbox
 
     Warning levels
 
 Use the following snippet in your Fluid template:
 
 ..  code-block:: html
+    :caption: EXT:site_package/Resources/Private/Templates/Page/Default.html
 
     <f:cObject typoscriptObjectPath="lib.weather2_weatheralert" />

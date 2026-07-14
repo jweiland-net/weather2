@@ -1,11 +1,11 @@
 ..  include:: /Includes.rst.txt
 
 
-..  _configuration:
+..  _configuration-typoscript:
 
-=============
-Configuration
-=============
+==========
+TypoScript
+==========
 
 ..  tip::
 
@@ -13,58 +13,83 @@ Configuration
 
     You can do this in two ways:
 
-    - **Via TypoScript Constants**, like shown below.
-    - **Via the Site Configuration in TYPO3 v13**:
-      Go to **Site Management → Sites → Your Site → Settings (weather2)**
+    -   **Via TypoScript constants**, as shown below.
+    -   **Via the site configuration in TYPO3 v13**:
+        Go to :guilabel:`Site Management > Sites > Your Site > Settings (weather2)`.
 
-    There is also a **Backend Module for settings** available in TYPO3 13
-    (under **Admin Tools → Settings → Extension Configuration**).
+    There is also a **backend module for settings** available in TYPO3 13
+    (under :guilabel:`Admin Tools > Settings > Extension Configuration`).
 
-    For map-related options, see: `Maps2 Documentation <https://docs.typo3.org/p/jweiland/maps2/master/en-us/>`_
+    For map-related options, see the
+    `maps2 documentation <https://docs.typo3.org/p/jweiland/maps2/master/en-us/>`__.
 
+
+..  _configuration-typoscript-view:
 
 View
 ====
 
-view.templateRootPaths
-----------------------
+..  confval-menu::
+    :name: configuration-typoscript-view-settings
+    :display: table
 
-Default: Value from Constants *EXT:weather2/Resources/Private/Templates/*
+    ..  confval:: templateRootPaths
+        :name: configuration-typoscript-view-templateRootPaths
+        :type: array
+        :Path: :typoscript:`plugin.tx_weather2.view.templateRootPaths`
+        :default: :file:`EXT:weather2/Resources/Private/Templates/`
 
-You can override our Templates with your own SitePackage extension. We prefer to change this value in TS Constants.
+        You can override our templates with your own site package extension. We prefer
+        to change this value in TypoScript constants.
 
-view.partialRootPaths
----------------------
+    ..  confval:: partialRootPaths
+        :name: configuration-typoscript-view-partialRootPaths
+        :type: array
+        :Path: :typoscript:`plugin.tx_weather2.view.partialRootPaths`
+        :default: :file:`EXT:weather2/Resources/Private/Partials/`
 
-Default: Value from Constants *EXT:weather2/Resources/Private/Partials/*
+        You can override our partials with your own site package extension. We prefer
+        to change this value in TypoScript constants.
 
-You can override our Partials with your own SitePackage extension. We prefer to change this value in TS Constants.
+    ..  confval:: layoutsRootPaths
+        :name: configuration-typoscript-view-layoutsRootPaths
+        :type: array
+        :Path: :typoscript:`plugin.tx_weather2.view.layoutsRootPaths`
+        :default: :file:`EXT:weather2/Resources/Layouts/Templates/`
 
-view.layoutsRootPaths
----------------------
+        You can override our layouts with your own site package extension. We prefer
+        to change this value in TypoScript constants.
 
-Default: Value from Constants *EXT:weather2/Resources/Layouts/Templates/*
 
-You can override our Layouts with your own SitePackage extension. We prefer to change this value in TS Constants.
-
+..  _configuration-typoscript-persistence:
 
 Persistence
 ===========
 
-persistence.storagePid
-----------------------
+..  confval:: storagePid
+    :name: configuration-typoscript-persistence-storagePid
+    :type: integer list
+    :Path: :typoscript:`plugin.tx_weather2.persistence.storagePid`
+    :required: false
 
-Set this value to a Storage Folder (PID) where you have stored the records.
+    Set this value to one or more storage folders (PIDs) where you have stored the
+    records.
 
-Example: `plugin.tx_weather2.persistence.storagePid = 21,45,3234`
+    Example: :typoscript:`plugin.tx_weather2.persistence.storagePid = 21,45,3234`
 
+
+..  _configuration-typoscript-settings:
 
 Settings
 ========
 
-settings.iconsPath
-------------------
+..  confval:: iconsPath
+    :name: configuration-typoscript-settings-iconsPath
+    :type: string
+    :Path: :typoscript:`plugin.tx_weather2.settings.iconsPath`
+    :required: false
 
-Set this value to a Storage Folder (PID) where you have stored the records.
+    Set this value to a path, relative to the public web root, where your custom
+    weather icons are stored, if you want to override the bundled icon set.
 
-Example: `plugin.tx_weather2.settings.iconsPath = path/to/icons`
+    Example: :typoscript:`plugin.tx_weather2.settings.iconsPath = path/to/icons`
