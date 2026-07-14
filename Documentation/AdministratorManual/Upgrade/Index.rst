@@ -15,7 +15,14 @@ Update from 5.x to 6.0
 ======================
 
 Added TYPO3 13 compatibility.
-Removed all schedulers and replaced with Symfony console commands.
+Removed all weather2 Scheduler task types and replaced them with Symfony console
+commands. Your existing weather2 Scheduler tasks will no longer run and should be
+deleted. For each one, create a new task of type :guilabel:`Execute console
+commands` instead, and select the matching weather2 command
+(`weather2:fetch:fromOpenWeatherAPI`, `weather2:fetch:warnCellsFromDeutscherWetterdienstAPI`
+or `weather2:fetch:deutscherWetterdienstAPI`). See
+:ref:`Console commands overview <admin-manual-configuration-commands>` for the
+arguments of each command and whether it should be single or recurring.
 There is an upgrade wizard available with this extension to convert the older
 list type plugins to custom CType.
 

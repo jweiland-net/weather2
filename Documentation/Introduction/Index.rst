@@ -23,9 +23,10 @@ What does it do?
 This extension is mainly used to display weather data received from
 openweathermap.org and weather alerts received from Deutscher Wetterdienst.
 The extension however is designed to work with every weather API by creating
-your own scheduler (Symfony console commands since version 6) and map values to
-the existing database structure. Moreover it is possible to organize records
-using storage pages and a custom identifier for each record.
+your own Symfony console command (the pattern used by weather2 itself since
+version 6) and mapping the returned values to the existing database structure.
+Moreover it is possible to organize records using storage pages and a custom
+identifier for each record.
 
 ..  _screenshots:
 

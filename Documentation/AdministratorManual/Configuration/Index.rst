@@ -12,7 +12,9 @@ Storage page
 ============
 
 #.  Create a storage page
-#.  Refer to it in the scheduler task
+#.  Refer to it in the `recordStoragePage` argument when you set up the Scheduler
+    task for the relevant console command (see
+    :ref:`Console commands overview <admin-manual-configuration-commands>`)
 #.  Also refer to it in the plugin
 
 ..  _admin-manual-configuration-multi-plugin-use:
@@ -20,8 +22,9 @@ Storage page
 Multi plugin use
 ----------------
 
-You can configure your scheduler task to save data to a specific storage page that you
-can later use in the plugin to access data.
+You can configure the `recordStoragePage` argument of a console command's Scheduler
+task to save data to a specific storage page that you can later use in the plugin to
+access data.
 
 ..  _admin-manual-configuration-change-timezone:
 
@@ -31,6 +34,100 @@ Change timezone
 Go into your TYPO3 install tool and change the timezone under
 :guilabel:`All configuration > System > phpTimeZone`.
 This will change the timezone.
+
+..  _admin-manual-configuration-commands:
+
+Console commands overview
+=========================
+
+Since version 7.0.0, weather2 no longer ships its own Scheduler task types. All
+data fetching is implemented as Symfony console commands instead. To run one
+regularly (or once), go to the scheduler module, add a new task, choose the task
+type :guilabel:`Execute console commands`
+(:php:`\TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask`), select the desired
+weather2 command from the list, and fill in its arguments in the form fields that
+appear below.
+
+The following three commands are available. They are listed in the order in which
+they should be set up.
+
+..  _admin-manual-configuration-command-warncells:
+
+`weather2:fetch:warnCellsFromDeutscherWetterdienstAPI`
+------------------------------------------------------
+
+:Purpose:
+    Downloads the official DWD warn cell reference list (place name to warn cell ID
+    mapping) and stores it in weather2. It does **not** fetch any weather warnings
+    itself.
+
+:Arguments:
+    None.
+
+:Depends on:
+    Nothing. Run this command **first**, before the other two.
+
+:Recommended scheduling:
+    Set the Scheduler task type to :guilabel:`Single execution` and run it once.
+    Re-run it manually from time to time, since Deutscher Wetterdienst occasionally
+    revises warn cell boundaries and IDs. Alternatively, configure it as a
+    low-frequency recurring task, e.g. once a month.
+
+..  _admin-manual-configuration-command-dwd-alerts:
+
+`weather2:fetch:deutscherWetterdienstAPI`
+-----------------------------------------
+
+:Purpose:
+    Fetches the currently active weather warnings from Deutscher Wetterdienst for
+    the configured place names and stores them in weather2.
+
+:Arguments:
+    #.  `selectedWarnCells` (required) - comma separated list of place names,
+        matched against your local warn cell records, e.g. `Pforzheim,Karlsruhe`.
+    #.  `recordStoragePage` (required) - the storage page (PID) the fetched records
+        should be saved to.
+    #.  `pageIdsToClear` (optional) - comma separated list of page IDs whose cache
+        should be cleared after the run.
+
+:Depends on:
+    :ref:`weather2:fetch:warnCellsFromDeutscherWetterdienstAPI
+    <admin-manual-configuration-command-warncells>` must have been executed at
+    least once beforehand, so the place names can be resolved to warn cell IDs.
+
+:Recommended scheduling:
+    Configure it as a :guilabel:`Recurring` task, e.g. every hour, to keep the
+    displayed alerts up to date.
+
+..  _admin-manual-configuration-command-openweathermap:
+
+`weather2:fetch:fromOpenWeatherAPI`
+-----------------------------------
+
+:Purpose:
+    Fetches current weather conditions (temperature, wind, humidity, ...) for one
+    city from OpenWeatherMap. It is unrelated to the two Deutscher Wetterdienst
+    commands above.
+
+:Arguments:
+    #.  `name` (required) - a freely chosen identifier for this report. It is used
+        later as the `selection` TypoScript setting to pick which report to
+        display, see
+        :ref:`Render weather reports inside a fluid template
+        <user-manual-fluid-rendering-current-weather>`.
+    #.  `city` (required) - city name, e.g. `Munich`.
+    #.  `country` (required) - country code, e.g. `DE`.
+    #.  `apiKey` (required) - your OpenWeatherMap API key.
+    #.  `pageIdsToClear` (optional) - comma separated list of page IDs whose cache
+        should be cleared after the run.
+    #.  `recordStoragePage` (optional) - the storage page (PID) the fetched record
+        should be saved to.
+
+:Depends on:
+    Nothing. Independent from the other two commands - set up one task per city.
+
+:Recommended scheduling:
+    Configure it as a :guilabel:`Recurring` task, e.g. every 30 to 60 minutes.
 
 ..  _admin-manual-configuration-current-weather:
 
@@ -46,9 +143,12 @@ How do I get set up?
     your API key
 #.  Download the extension from the TYPO3 Extension Repository
 #.  Enable the scheduler extension in your TYPO3 installation if not already done
-#.  Create a new scheduler task of type :guilabel:`Call openweathermap.org api (weather2)`
-#.  Configure the scheduler by filling out the required fields. Please note that the
-    field "name" is later used to only display specific records
+#.  Go to the scheduler module and add a new task of type
+    :guilabel:`Execute console commands`, then select the command
+    `weather2:fetch:fromOpenWeatherAPI`
+    (see :ref:`Console commands overview <admin-manual-configuration-commands>`)
+#.  Fill in the command's arguments. Please note that the `name` argument is later
+    used to only display this specific record
 #.  Create a new content element with the weather extension plugin selected
 #.  Select the measure units and city to display
 #.  Add the extension template file to your template
@@ -65,14 +165,23 @@ How do I get set up?
 Weather alerts
 ==============
 
+..  note::
+
+    The screenshots in this section still show the field layout of the former,
+    dedicated Scheduler task types. Since version 7.0.0 the generic
+    :guilabel:`Execute console commands` task is used instead, see
+    :ref:`Console commands overview <admin-manual-configuration-commands>`. The
+    screenshots will be refreshed accordingly.
+
 ..  _get-warn-cells-from-deutscher-wetterdienst:
 
 Get warn cells from Deutscher Wetterdienst
 ------------------------------------------
 
 #.  Go to the scheduler module.
-#.  Add a new task and select :guilabel:`Get warn cells from Deutscher Wetterdienst`.
-#.  Set this task as single because you have to execute this only once.
+#.  Add a new task of type :guilabel:`Execute console commands` and select the
+    command `weather2:fetch:warnCellsFromDeutscherWetterdienstAPI`.
+#.  Set this task as single execution because you have to execute this only once.
 #.  Save and exit
 #.  Execute the task
 #.  If the execution was successful you will see all the region records in your root
@@ -116,23 +225,25 @@ Get weather alerts from Deutscher Wetterdienst
 ----------------------------------------------
 
 #.  Go to the scheduler module.
-#.  Add a new task and select :guilabel:`Get weather alerts from Deutscher Wetterdienst`.
-#.  You should set recurring as type and e.g. 3600 as frequency to get the latest alerts
-    every hour.
-#.  Now you can search for your regions. Please make sure you added the warn cell
-    records (cities/locations) or got them from Deutscher Wetterdienst. Don't know?
-    Take a look into
+#.  Add a new task of type :guilabel:`Execute console commands` and select the
+    command `weather2:fetch:deutscherWetterdienstAPI`.
+#.  You should set recurring as type and e.g. 3600 as frequency to get the latest
+    alerts every hour.
+#.  Fill in the `selectedWarnCells` argument with a comma separated list of place
+    names. Please make sure you added the warn cell records (cities/locations) or
+    got them from Deutscher Wetterdienst. Don't know? Take a look into
     :ref:`Get warn cells from Deutscher Wetterdienst <get-warn-cells-from-deutscher-wetterdienst>`
     and/or :ref:`Create warn cells manually <create-warn-cells-manually>`.
-#.  You can add multiple cities to your selection.
+#.  You can add multiple place names to the `selectedWarnCells` argument, comma
+    separated.
 
     ..  figure:: ../../Images/WeatherAlert/WeatherAlertSchedulerSelectedCities.jpg
         :width: 350px
         :alt: List of selected cities (warn cell records)
 
-#.  If you have a record storage page you can select it additionally. This can be
-    useful for `Multi plugin use`_. Otherwise the records will be saved on the root
-    page.
+#.  If you have a record storage page you can fill in its PID in the
+    `recordStoragePage` argument additionally. This can be useful for
+    `Multi plugin use`_. Otherwise the records will be saved on the root page.
 
     ..  figure:: ../../Images/WeatherAlert/WeatherAlertSchedulerStoragePage.jpeg
         :width: 350px
