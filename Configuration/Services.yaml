@@ -26,28 +26,20 @@ services:
     tags:
       - name: console.command
         command: 'weather2:fetch:deutscherWetterdienstAPI'
-        description: 'Calls the Deutscher Wetterdienst api and saves response in weather2 format into database'
+        description: 'Fetch active weather warnings from Deutscher Wetterdienst for selected places and store them in weather2. Requires weather2:fetch:warnCellsFromDeutscherWetterdienstAPI to have been run before.'
 
   JWeiland\Weather2\Command\DeutscherWetterdienstWarnCellCommand:
     tags:
       - name: console.command
         command: 'weather2:fetch:warnCellsFromDeutscherWetterdienstAPI'
-        description: 'Calls the Deutscher Wetterdienst api and saves warn cells into database. Required before using DeutscherWetterdienstTask!'
+        description: 'Fetch the DWD warn cell reference list (place name <-> warn cell ID) and store it in weather2. Does not fetch actual warnings, run this before weather2:fetch:deutscherWetterdienstAPI.'
 
   JWeiland\Weather2\Command\OpenWeatherMapCommand:
     tags:
       - name: console.command
         command: 'weather2:fetch:fromOpenWeatherAPI'
-        description: 'Calls the api of openweathermap.org and saves response into database.'
+        description: 'Fetch current weather conditions for a city from OpenWeatherMap and store them in weather2. Unrelated to the Deutscher Wetterdienst warning commands.'
 
   JWeiland\Weather2\Service\WeatherServiceInterface:
     class: JWeiland\Weather2\Service\OpenWeatherService
-
-  # Will be called by GeneralUtility in ScheduleModuleController
-  JWeiland\Weather2\Task\DeutscherWetterdienstTaskAdditionalFieldProvider:
-    public: true
-
-  # Will be called by GeneralUtility in ScheduleModuleController
-  JWeiland\Weather2\Task\OpenWeatherMapTaskAdditionalFieldProvider:
-    public: true
 
