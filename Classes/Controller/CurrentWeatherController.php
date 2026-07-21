@@ -15,9 +15,6 @@ use JWeiland\Weather2\Domain\Repository\CurrentWeatherRepository;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
-/**
- * CurrentWeatherController
- */
 class CurrentWeatherController extends ActionController
 {
     public function __construct(

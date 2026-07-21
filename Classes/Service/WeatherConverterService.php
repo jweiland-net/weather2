@@ -11,9 +11,6 @@ declare(strict_types=1);
 
 namespace JWeiland\Weather2\Service;
 
-/**
- * WeatherConverterService
- */
 class WeatherConverterService
 {
     public function convertFahrenheitToCelsius(float $fahrenheit): float

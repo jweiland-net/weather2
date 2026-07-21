@@ -13,9 +13,6 @@ namespace JWeiland\Weather2\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-/**
- * WeatherAlert
- */
 class WeatherAlert extends AbstractEntity
 {
     protected ?DwdWarnCell $dwdWarnCell = null;

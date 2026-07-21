@@ -13,9 +13,6 @@ namespace JWeiland\Weather2\Utility;
 
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
-/**
- * Utility for weather2 extension
- */
 class WeatherUtility
 {
     /**
