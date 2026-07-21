@@ -1,0 +1,3 @@
+"tt_content",,,,,,,,,,,
+,"uid","pid","hidden","deleted","t3ver_oid","t3ver_wsid","colPos","CType","header","pi_flexform"
+,1,1,0,0,0,0,0,"weather2_weatheralert","Weather Alerts","<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?><T3FlexForms><data><sheet index=""sDEF""><language index=""lDEF""><field index=""settings.warningTypes""><value index=""vDEF"">1</value></field><field index=""settings.warningLevels""><value index=""vDEF"">2</value></field><field index=""settings.warnCells""><value index=""vDEF"">108416000</value></field><field index=""settings.showPreliminaryInformation""><value index=""vDEF"">0</value></field></language></sheet></data></T3FlexForms>"

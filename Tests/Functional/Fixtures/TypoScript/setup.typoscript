@@ -1,0 +1,52 @@
+config {
+  no_cache = 1
+  debug = 0
+  admPanel = 0
+  disableAllHeaderCode = 1
+  sendCacheHeaders = 0
+}
+
+tt_content.weather2_currentweather = USER
+tt_content.weather2_currentweather {
+  userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+  extensionName = Weather2
+  pluginName = Currentweather
+}
+
+tt_content.weather2_weatheralert = USER
+tt_content.weather2_weatheralert {
+  userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+  extensionName = Weather2
+  pluginName = Weatheralert
+}
+
+plugin.tx_weather2 {
+  view {
+    templateRootPaths {
+      0 = EXT:weather2/Resources/Private/Templates/
+    }
+    partialRootPaths {
+      0 = EXT:weather2/Resources/Private/Partials/
+    }
+    layoutRootPaths {
+      0 = EXT:weather2/Resources/Private/Layouts/
+    }
+  }
+  persistence {
+    storagePid = 0,1
+  }
+  settings {
+    iconsPath = EXT:weather2/Resources/Public/WeatherIcons/
+  }
+}
+
+page = PAGE
+page {
+  typeNum = 0
+  10 = CONTENT
+  10.table = tt_content
+  10.select {
+    orderBy = sorting
+    where = {#colPos}=0
+  }
+}
