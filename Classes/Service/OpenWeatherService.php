@@ -92,12 +92,15 @@ class OpenWeatherService implements WeatherServiceInterface
         $output->writeln('<info>Weather data saved successfully!</info>');
     }
 
+    /**
+     * @return array<int, string>
+     */
     private function getSiteLanguages(int $recordStoragePage, OutputInterface $output): array
     {
         try {
             $languages = [];
             foreach ($this->siteFinder->getSiteByPageId($recordStoragePage)->getAllLanguages() as $siteLanguage) {
-                $languages[$siteLanguage->getLanguageId()] = $siteLanguage->getTwoLetterIsoCode();
+                $languages[$siteLanguage->getLanguageId()] = $siteLanguage->getLocale()->getLanguageCode();
             }
 
             return $languages;
