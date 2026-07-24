@@ -19,7 +19,7 @@ interface WeatherServiceInterface
     /**
      * Fetch weather data from a provider.
      */
-    public function fetchWeatherData(string $city, string $country, string $apiKey): ResponseInterface;
+    public function fetchWeatherData(string $city, string $country, string $apiKey, string $langCode = 'en'): ResponseInterface;
 
     /**
      * @param array<string,mixed> $arguments

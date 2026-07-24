@@ -39,10 +39,12 @@ readonly class WeatherDataHandlerService
         \stdClass $responseClass,
         int $recordStoragePage,
         string $name,
+        int $languageId = 0,
     ): void {
         $weatherObjectArray = [
             'pid' => $recordStoragePage,
             'name' => $name,
+            'sys_language_uid' => $languageId,
         ];
 
         if (isset($responseClass->main->temp)) {
@@ -97,6 +99,10 @@ readonly class WeatherDataHandlerService
 
         if (isset($responseClass->weather[0]->id)) {
             $weatherObjectArray['condition_code'] = $responseClass->weather[0]->id;
+        }
+
+        if (isset($responseClass->weather[0]->description)) {
+            $weatherObjectArray['description'] = $responseClass->weather[0]->description;
         }
 
         // Serialized Object

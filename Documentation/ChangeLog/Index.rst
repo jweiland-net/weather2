@@ -12,6 +12,7 @@ ChangeLog
 Version 7.0.0
 =============
 
+*   [TASK] Fetch a localized weather description from OpenWeatherMap
 *   [TASK] Add TYPO3 14 compatibility
 *   [TASK] Remove TYPO3 13 compatibility
 
