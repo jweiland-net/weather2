@@ -6,7 +6,12 @@
 <weather:ConvertMetricToISoU weatherModel="{currentWeather}" as="convertedData">
     <div class="weather2-item weather2-report" id="weather2-weather{currentWeather.uid}">
         <f:variable name="weatherCondition">
-            <f:translate key="LLL:EXT:weather2/Resources/Private/Language/locallang_openweathermap_codes.xlf:{currentWeather.conditionCode}"/>
+            <f:if condition="{currentWeather.description}">
+                <f:then>{currentWeather.description}</f:then>
+                <f:else>
+                    <f:translate key="LLL:EXT:weather2/Resources/Private/Language/locallang_openweathermap_codes.xlf:{currentWeather.conditionCode}"/>
+                </f:else>
+            </f:if>
         </f:variable>
 
         <div class="primary">

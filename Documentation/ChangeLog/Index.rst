@@ -7,11 +7,21 @@
 ChangeLog
 =========
 
+..  _changelog-8-0-0:
+
+Version 8.0.0
+=============
+
+*   [FEATURE] Fetch a localized weather description from OpenWeatherMap for every
+    language configured on the record storage page's site, and store it per
+    language on :php:`tx_weather2_domain_model_currentweather`
+
 ..  _changelog-7-0-0:
 
 Version 7.0.0
 =============
 
+*   [TASK] Fetch a localized weather description from OpenWeatherMap
 *   [TASK] Add TYPO3 14 compatibility
 *   [TASK] Remove TYPO3 13 compatibility
 
