@@ -25,7 +25,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class Weather2PluginPreview extends StandardContentPreviewRenderer
 {
-    private const PREVIEW_TEMPLATE = 'EXT:weather2/Resources/Private/Templates/PluginPreview/Weather2.html';
+    private const PREVIEW_TEMPLATE = 'EXT:weather2/Resources/Private/Templates/PluginPreview/Weather2.fluid.html';
 
     private const ALLOWED_PLUGINS = [
         'weather2_currentweather',
@@ -56,9 +56,9 @@ class Weather2PluginPreview extends StandardContentPreviewRenderer
         $this->addPluginName($view, $ttContentRecord);
 
         // Add data from column pi_flexform
-        $piFlexformData = $this->getPiFlexFormData($ttContentRecord);
-        if ($piFlexformData !== []) {
-            $view->assign('pi_flexform_transformed', $piFlexformData);
+        $piFlexFormData = $this->getPiFlexFormData($ttContentRecord);
+        if ($piFlexFormData !== []) {
+            $view->assign('pi_flexform_transformed', $piFlexFormData);
         }
 
         return $view->render();
@@ -69,6 +69,7 @@ class Weather2PluginPreview extends StandardContentPreviewRenderer
         if (!$ttContentRecord->has('CType')) {
             return false;
         }
+
         return in_array($ttContentRecord->get('CType'), self::ALLOWED_PLUGINS, true);
     }
 
@@ -90,9 +91,11 @@ class Weather2PluginPreview extends StandardContentPreviewRenderer
      */
     protected function getPiFlexFormData(RecordInterface $ttContentRecord): array
     {
-        if ($ttContentRecord->has('pi_flexform') && $ttContentRecord->get('pi_flexform') !== '') {
-            return $this->flexFormTools->convertFlexFormContentToArray($ttContentRecord->get('pi_flexform'));
+        $piFlexForm = $ttContentRecord->getRawRecord()->get('pi_flexform');
+        if ($piFlexForm !== '') {
+            return $this->flexFormTools->convertFlexFormContentToArray($piFlexForm);
         }
+
         return [];
     }
 }

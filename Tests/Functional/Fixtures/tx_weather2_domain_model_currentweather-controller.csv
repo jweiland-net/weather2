@@ -1,0 +1,3 @@
+"tx_weather2_domain_model_currentweather",,,,,,,,,,,,,,,,
+,"uid","pid","name","temperature_c","pressure_hpa","humidity_percentage","min_temp_c","max_temp_c","wind_speed_m_p_s","wind_direction_deg","pop_percentage","rain_volume","snow_volume","clouds_percentage","icon","condition_code"
+,1,1,"Stuttgart","24.32","1013","62","22.82","26.25","7.2","252","0","1.2","0",31,"01d",800

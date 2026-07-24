@@ -13,9 +13,6 @@ namespace JWeiland\Weather2\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-/**
- * Warn cell of DWD.de
- */
 class DwdWarnCell extends AbstractEntity
 {
     protected string $warnCellId = '';

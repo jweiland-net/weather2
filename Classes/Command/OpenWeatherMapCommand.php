@@ -13,11 +13,16 @@ namespace JWeiland\Weather2\Command;
 
 use JWeiland\Weather2\Service\WeatherServiceInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'weather2:fetch:openWeatherMap',
+    description: 'Fetch current weather conditions for a city from OpenWeatherMap and store them in weather2. Independent of the two Deutscher Wetterdienst commands.',
+)]
 final class OpenWeatherMapCommand extends Command
 {
     public function __construct(
@@ -30,7 +35,12 @@ final class OpenWeatherMapCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setHelp('Calls the api of openweathermap.org and saves response into database')
+            ->setHelp(
+                'Calls the OpenWeatherMap API (api.openweathermap.org) for the given city/country and stores the '
+                . 'returned current weather conditions (e.g. temperature, wind, humidity) in the weather2 database. '
+                . 'This is unrelated to the Deutscher Wetterdienst commands - it only provides current weather '
+                . 'display data, not storm/weather warnings.',
+            )
             ->addArgument('name', InputArgument::REQUIRED, 'Name')
             ->addArgument('city', InputArgument::REQUIRED, 'City name (e.g. Munich)')
             ->addArgument('country', InputArgument::REQUIRED, 'Country Code (e.g. DE)')

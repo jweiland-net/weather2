@@ -12,12 +12,17 @@ declare(strict_types=1);
 namespace JWeiland\Weather2\Command;
 
 use JWeiland\Weather2\Service\DeutscherWetterdienstAlertService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class DeutscherWetterdienstCommand extends Command
+#[AsCommand(
+    name: 'weather2:fetch:dwdAlerts',
+    description: 'Fetch active weather warnings from Deutscher Wetterdienst for selected places and store them in weather2. Requires weather2:fetch:dwdWarnCells to have been run at least once before.',
+)]
+final class DwdAlertCommand extends Command
 {
     public function __construct(
         private readonly DeutscherWetterdienstAlertService $alertService,
@@ -28,12 +33,17 @@ final class DeutscherWetterdienstCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Fetch and process weather alerts from Deutscher Wetterdienst')
-            ->setHelp('Calls the Deutscher Wetterdienst api and saves response in weather2 format into database')
+            ->setHelp(
+                'Calls the DWD weather warnings API (warnings.json), which returns all currently active alerts '
+                . 'grouped by warn cell ID. Resolves the given place name(s) to their warn cell ID(s) using the '
+                . 'local warn cell table, and stores matching alerts (storm, flood, etc.) in the weather2 database. '
+                . 'Requires "weather2:fetch:dwdWarnCells" to have been run at least once beforehand, since this '
+                . 'command relies on the place name to warn cell ID lookup that command provides.',
+            )
             ->addArgument(
                 'selectedWarnCells',
                 InputArgument::REQUIRED,
-                'Fetch alerts for selected cities (e.g. Pforzheim)',
+                'Comma separated list of place names matched against the local warn cell table (e.g. Pforzheim,Karlsruhe)',
             )
             ->addArgument(
                 'recordStoragePage',
@@ -49,10 +59,10 @@ final class DeutscherWetterdienstCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln('<info>Starting to fetch warn cell data...</info>');
+        $output->writeln('<info>Starting to fetch weather alerts...</info>');
         try {
             $this->alertService->fetchAndStoreAlerts($input, $output);
-            $output->writeln('<info>Warn alert data has been successfully updated.</info>');
+            $output->writeln('<info>Weather alert data has been successfully updated.</info>');
 
             return Command::SUCCESS;
         } catch (\Throwable $exception) {

@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace JWeiland\Weather2\Dashboard\Provider;
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -18,9 +20,13 @@ use TYPO3\CMS\Dashboard\Widgets\NumberWithIconDataProviderInterface;
 
 class WeatherAlertDataProvider implements NumberWithIconDataProviderInterface
 {
-    public function __construct(private readonly ConnectionPool $connectionPool) {}
+    public function __construct(
+        private readonly ConnectionPool $connectionPool,
+        private readonly Context $context,
+    ) {}
+
     /**
-     * Return the number of weather alerts registered in TYPO3 database
+     * Return the number of currently active (not yet expired) weather alerts registered in TYPO3 database
      */
     public function getNumber(): int
     {
@@ -40,6 +46,18 @@ class WeatherAlertDataProvider implements NumberWithIconDataProviderInterface
         $statement = $queryBuilder
             ->select('*')
             ->from('tx_weather2_domain_model_weatheralert')
+            ->where(
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->gte(
+                        'end_date',
+                        $queryBuilder->createNamedParameter(
+                            $this->context->getPropertyFromAspect('date', 'timestamp'),
+                            Connection::PARAM_INT,
+                        ),
+                    ),
+                    $queryBuilder->expr()->eq('end_date', 0),
+                ),
+            )
             ->executeQuery();
 
         $weatherAlerts = [];

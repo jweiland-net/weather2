@@ -13,9 +13,6 @@ namespace JWeiland\Weather2\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
-/**
- * CurrentWeather
- */
 class CurrentWeather extends AbstractEntity
 {
     protected string $name = '';
