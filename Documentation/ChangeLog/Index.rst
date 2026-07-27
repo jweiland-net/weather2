@@ -7,6 +7,14 @@
 ChangeLog
 =========
 
+..  _changelog-7-0-1:
+
+Version 7.0.1
+=============
+
+*   [BUGFIX] Add missing "target-language" attribute to German translation files
+*   [TASK] Update XLIFF files to version 1.2 for improved compatibility
+
 ..  _changelog-7-0-0:
 
 Version 7.0.0
